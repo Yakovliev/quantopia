@@ -1,13 +1,17 @@
 # Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
+# Learn more at https://jupyterbook.org/en/stable/structure/toc.html
 
 format: jb-book
 root: intro
-chapters:
-  - caption: Math
-  - file: content/gradient_operator
-  - file: content/gradient_directional_derivative
-  sections:
-    - caption: Divergence
-    - file: content/continuity_equation
-    - file: content/divergence
+
+parts:
+  - caption: Math 1
+    chapters:
+      - file: content/gradient_operator
+      - file: content/gradient_directional_derivative
+
+parts:
+  - caption: Math 2
+    chapters:
+      - file: content/continuity_equation
+      - file: content/divergence
