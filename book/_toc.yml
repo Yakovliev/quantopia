@@ -4,7 +4,10 @@
 format: jb-book
 root: intro
 chapters:
+  - caption: Math
   - file: content/gradient_operator
   - file: content/gradient_directional_derivative
-  - file: content/divergence
-  - file: content/continuity_equation
+  sections:
+    - caption: Divergence
+    - file: content/continuity_equation
+    - file: content/divergence
