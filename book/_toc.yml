@@ -9,8 +9,6 @@ parts:
     chapters:
       - file: content/gradient_operator
       - file: content/gradient_directional_derivative
-
-parts:
   - caption: Math 2
     chapters:
       - file: content/continuity_equation
