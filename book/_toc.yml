@@ -4,39 +4,19 @@
 format: jb-book
 root: intro
 
-# parts:
-#   - caption: MATH
-#     chapters:
-#       - file: math_content/01_basics/gradient_operator
-#       - file: math_content/01_basics/gradient_directional_derivative
-#       - file: math_content/01_basics/divergence
-#   - caption: PHYSICS
-#     chapters:
-#       - file: physics_content/continuity_equation
-
-# parts:
-#   - caption: MATH 01_basics
-#     chapters:
-#       - file: math_content/01_basics/gradient_operator
-#         sections:
-#           - file: math_content/01_basics/gradient_directional_derivative
-#           - file: math_content/01_basics/divergence
-
-#   - caption: PHYSICS
-#     chapters:
-#       - file: physics_content/continuity_equation
-
 options:  # Add these options
   numbered: false
   expand_sections: false  # This makes sections collapsed by default
 parts:
-  - caption: MATH 01_basics
+  - caption: MATH
     chapters:
       - file: math_content/01_basics/gradient_operator
-        sections:  # Now sections will work as dropdown
+        sections:
           - file: math_content/01_basics/gradient_directional_derivative
           - file: math_content/01_basics/divergence
 
   - caption: PHYSICS
     chapters:
-      - file: physics_content/continuity_equation
+      - file: physics_content/continuity_equation_01
+        sections:
+          - file: physics_content/continuity_equation_02

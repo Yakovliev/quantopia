@@ -1,0 +1,23 @@
+
+
+for plotly:
+
+fig.update_layout(title='3D Surface Plot with Gradient Vectors for f(x, y) = x<sup>3</sup> - 3xy + y<sup>3</sup>',
+                  scene=dict(
+                      xaxis_title='X',
+                      yaxis_title='Y',
+                      zaxis_title='f(x, y)',
+                      aspectratio=dict(x=1, y=1, z=0.5)
+                  ),
+              !!!!!!!!!!!!!!!!!!!!!    autosize=True, height=600)
+
+
+for seaborn and matplotlib:
+
+!!!!!!!!!!!!!!!
+plt.tight_layout()
+plt.show()
+
+
+
+
