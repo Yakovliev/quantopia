@@ -1,6 +1,6 @@
 # Quantopia: Physics, Python, and Pi (Alpha Version)
 
-Welcome to **Physics, Python, and Pi** (PPP), a unique learning platform where we combine the power of Python programming with the beauty of physics and mathematics. Our goal is to transform how you learn complex scientific concepts by combining theoretical understanding with practical computational skills.
+Welcome to **Quantopia**, a unique learning platform where we combine the power of Python programming with the beauty of physics and mathematics. Our goal is to transform how you learn complex scientific concepts by combining theoretical understanding with practical computational skills.
 
 ## About the Project
 
