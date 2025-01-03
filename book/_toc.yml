@@ -5,11 +5,11 @@ format: jb-book
 root: intro
 
 parts:
-  - caption: Math 1
+  - caption: MATH
     chapters:
-      - file: content/gradient_operator
-      - file: content/gradient_directional_derivative
-  - caption: Math 2
+      - file: math_content/01_basics/gradient_operator
+      - file: math_content/01_basics/gradient_directional_derivative
+      - file: math_content/01_basics/divergence
+  - caption: PHYSICS
     chapters:
-      - file: content/continuity_equation
-      - file: content/divergence
+      - file: physics_content/continuity_equation
