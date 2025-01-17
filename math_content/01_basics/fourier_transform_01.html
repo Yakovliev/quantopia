@@ -468,9 +468,7 @@ x(t)
 \]</div>
 <p>This pair of equations is often called the <strong>Fourier transform pair</strong>:</p>
 <div class="math notranslate nohighlight">
-\[
-x(t) \;\;\xleftrightarrow[\text{Inverse}]{\text{Fourier}} \;\; X(\omega).
-\]</div>
+\[ x(t) \;\;\overset{\text{Fourier}}{\underset{\text{Inverse}}{\longleftrightarrow}} \;\; X(\omega) \]</div>
 <p><strong>Remark</strong>: In some contexts, the Fourier transform is defined with a different normalization constant (e.g., <span class="math notranslate nohighlight">\(\frac{1}{2\pi}\)</span> or <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{2\pi}}\)</span>) or by using <span class="math notranslate nohighlight">\(2\pi \xi\)</span> rather than <span class="math notranslate nohighlight">\(\omega\)</span>, where <span class="math notranslate nohighlight">\(\xi\)</span> is an ordinary frequency (Hz). The exact definition can vary depending on the field of application. We will stick to the most common engineering definition above (with no <span class="math notranslate nohighlight">\(1/2\pi\)</span> factor in front of the integral).</p>
 </section>
 <hr class="docutils" />
@@ -561,15 +559,19 @@ X_3(\omega) = X_1\left(\frac{\omega}{2\pi}\right) = \sqrt{2\pi} X_2(\omega).
 <h2>3. Properties of the Continuous-Time Fourier Transform<a class="headerlink" href="#properties-of-the-continuous-time-fourier-transform" title="Link to this heading">#</a></h2>
 <p>There are numerous properties that make the Fourier transform extremely useful. We list a few common ones here:</p>
 <ol class="arabic">
-<li><p><strong>Linearity</strong><br />
-$<span class="math notranslate nohighlight">\(
-\mathcal{F}\{a\,x(t) + b\,y(t)\} = a\,X(\omega) + b\,Y(\omega).
-\)</span>$</p></li>
+<li><p><strong>Linearity</strong></p>
+<div class="math notranslate nohighlight">
+\[
+   \mathcal{F}\{a\,x(t) + b\,y(t)\} = a\,X(\omega) + b\,Y(\omega).
+   \]</div>
+</li>
 <li><p><strong>Time Shift</strong><br />
-If <span class="math notranslate nohighlight">\(x(t) \xleftrightarrow{\mathcal{F}} X(\omega)\)</span>, then
-$<span class="math notranslate nohighlight">\(
-x(t - t_0) \xleftrightarrow{\mathcal{F}} e^{-i \omega t_0}\, X(\omega).
-\)</span>$</p></li>
+If <span class="math notranslate nohighlight">\(x(t) \xleftrightarrow{\mathcal{F}} X(\omega)\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+   x(t - t_0) \xleftrightarrow{\mathcal{F}} e^{-i \omega t_0}\, X(\omega).
+   \]</div>
+</li>
 <li><p><strong>Frequency Shift</strong><br />
 $<span class="math notranslate nohighlight">\(
 e^{i \omega_0 t}\, x(t) \xleftrightarrow{\mathcal{F}} X(\omega - \omega_0).
