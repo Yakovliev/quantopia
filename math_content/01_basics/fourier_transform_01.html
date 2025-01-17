@@ -566,42 +566,51 @@ X_3(\omega) = X_1\left(\frac{\omega}{2\pi}\right) = \sqrt{2\pi} X_2(\omega).
    \]</div>
 </li>
 <li><p><strong>Time Shift</strong><br />
-If <span class="math notranslate nohighlight">\(x(t) \xleftrightarrow{\mathcal{F}} X(\omega)\)</span>, then</p>
+If <span class="math notranslate nohighlight">\(x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega)\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
-   x(t - t_0) \xleftrightarrow{\mathcal{F}} e^{-i \omega t_0}\, X(\omega).
+   x(t - t_0) \overset{\mathcal{F}}{\longleftrightarrow} e^{-i \omega t_0}\, X(\omega).
    \]</div>
 </li>
-<li><p><strong>Frequency Shift</strong><br />
-$<span class="math notranslate nohighlight">\(
-e^{i \omega_0 t}\, x(t) \xleftrightarrow{\mathcal{F}} X(\omega - \omega_0).
-\)</span>$</p></li>
-<li><p><strong>Time Scaling</strong><br />
-$<span class="math notranslate nohighlight">\(
-x(a t) \xleftrightarrow{\mathcal{F}} \frac{1}{|a|} X\!\Bigl(\frac{\omega}{a}\Bigr), 
-\quad (a \neq 0).
-\)</span>$</p>
+<li><p><strong>Frequency Shift</strong></p>
+<div class="math notranslate nohighlight">
+\[
+   e^{i \omega_0 t}\, x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega - \omega_0).
+   \]</div>
+</li>
+<li><p><strong>Time Scaling</strong></p>
+<div class="math notranslate nohighlight">
+\[
+   x(a t) \overset{\mathcal{F}}{\longleftrightarrow} \frac{1}{|a|} X\!\Bigl(\frac{\omega}{a}\Bigr), 
+   \quad (a \neq 0).
+   \]</div>
 <p>The case <span class="math notranslate nohighlight">\(a = -1\)</span> leads to the time-reversal property:</p>
 <div class="math notranslate nohighlight">
 \[
-   x(- t) \xleftrightarrow{\mathcal{F}} X\!\Bigl(-\omega\Bigr).
+   x(- t) \overset{\mathcal{F}}{\longleftrightarrow} X\!\Bigl(-\omega\Bigr).
    \]</div>
 </li>
-<li><p><strong>Differentiation in Time</strong><br />
-$<span class="math notranslate nohighlight">\(
-\frac{d^n x(t)}{dt^n} \xleftrightarrow{\mathcal{F}}
-(i \omega)^n \, X(\omega).
-\)</span>$</p></li>
-<li><p><strong>Convolution</strong><br />
-$<span class="math notranslate nohighlight">\(
-(x * y)(t) \;\;\xleftrightarrow{\mathcal{F}}\;\; X(\omega)\, Y(\omega),
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>*$ denotes convolution.</p></li>
-<li><p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Parseval%27s_theorem">Parseval’s Theorem</a></strong> (Energy Conservation)<br />
-$<span class="math notranslate nohighlight">\(
-\int_{-\infty}^{\infty} |x(t)|^2 \,dt = \frac{1}{2\pi}\int_{-\infty}^{\infty} |X(\omega)|^2 \, d\omega = \int_{-\infty}^{\infty} |X(2 \pi \xi)|^2 \, d \xi.
-\)</span><span class="math notranslate nohighlight">\(
-where \)</span>\omega = 2 \pi \xi<span class="math notranslate nohighlight">\( and \)</span>X(\omega)<span class="math notranslate nohighlight">\( represents the continuous Fourier transform in non-unitary form of \)</span>x(t)$.</p></li>
+<li><p><strong>Differentiation in Time</strong></p>
+<div class="math notranslate nohighlight">
+\[
+   \frac{d^n x(t)}{dt^n} \overset{\mathcal{F}}{\longleftrightarrow}
+   (i \omega)^n \, X(\omega).
+   \]</div>
+</li>
+<li><p><strong>Convolution</strong></p>
+<div class="math notranslate nohighlight">
+\[
+   (x * y)(t) \;\;\overset{\mathcal{F}}{\longleftrightarrow}\;\; X(\omega)\, Y(\omega),
+   \]</div>
+<p>where <span class="math notranslate nohighlight">\(*\)</span> denotes convolution.</p>
+</li>
+<li><p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Parseval%27s_theorem">Parseval’s Theorem</a></strong> (Energy Conservation)</p>
+<div class="math notranslate nohighlight">
+\[
+   \int_{-\infty}^{\infty} |x(t)|^2 \,dt = \frac{1}{2\pi}\int_{-\infty}^{\infty} |X(\omega)|^2 \, d\omega = \int_{-\infty}^{\infty} |X(2 \pi \xi)|^2 \, d \xi.
+   \]</div>
+<p>where <span class="math notranslate nohighlight">\(\omega = 2 \pi \xi\)</span> and <span class="math notranslate nohighlight">\(X(\omega)\)</span> represents the continuous Fourier transform in non-unitary form of <span class="math notranslate nohighlight">\(x(t)\)</span>.</p>
+</li>
 </ol>
 </section>
 <hr class="docutils" />
