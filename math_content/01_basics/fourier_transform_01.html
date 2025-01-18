@@ -438,8 +438,10 @@ In linear time-invariant (LTI) systems, understanding the behavior of a system c
 Any reasonably well-behaved function can be thought of as a combination (superposition) of infinitely many sinusoids of different frequencies, phases, and amplitudes.</p></li>
 </ol>
 <p>These observations motivate the definition of the <strong>Fourier transform</strong>, which maps a function <span class="math notranslate nohighlight">\(x(t)\)</span> (often real- or complex-valued) into a representation <span class="math notranslate nohighlight">\(X(\omega)\)</span> (or <span class="math notranslate nohighlight">\(X(f)\)</span>), capturing how energy (or power) is distributed among different frequencies.</p>
-</section>
 <hr class="docutils" />
+<div class="math notranslate nohighlight" id="equation-my-label">
+<span class="eqno">(1)<a class="headerlink" href="#equation-my-label" title="Link to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+</section>
 <section id="continuous-time-fourier-transform-ctft">
 <h2>2. Continuous-Time Fourier Transform (CTFT)<a class="headerlink" href="#continuous-time-fourier-transform-ctft" title="Link to this heading">#</a></h2>
 <section id="definition">
@@ -460,12 +462,11 @@ X(\omega)
 <section id="inverse-fourier-transform">
 <h3>2.2 Inverse Fourier Transform<a class="headerlink" href="#inverse-fourier-transform" title="Link to this heading">#</a></h3>
 <p>To recover <span class="math notranslate nohighlight">\(x(t)\)</span> from its Fourier transform <span class="math notranslate nohighlight">\(X(\omega)\)</span>, the <strong>inverse Fourier transform</strong> is used:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>\begin{equation}
 x(t)
-= \mathcal{F}^{-1}\{X(\omega)\}
-= \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega)\, e^{i \omega t} \, d\omega.
-\]</div>
+= \mathcal{F}^{-1}{X(\omega)}
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega), e^{i \omega t} , d\omega.
+\end{equation}</p>
 <p>This pair of equations is often called the <strong>Fourier transform pair</strong>:</p>
 <div class="math notranslate nohighlight">
 \[ x(t) \;\;\overset{\text{Fourier}}{\underset{\text{Inverse}}{\longleftrightarrow}} \;\; X(\omega) \]</div>
