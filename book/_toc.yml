@@ -13,6 +13,7 @@ parts:
       - file: math_content/01_basics/gradient_operator
       - file: math_content/01_basics/gradient_directional_derivative
       - file: math_content/01_basics/divergence
+      - file: math_content/01_basics/fourier_transform_01
 
   - caption: PHYSICS
     chapters:
