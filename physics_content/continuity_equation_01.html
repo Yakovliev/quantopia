@@ -60,6 +60,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'physics_content/continuity_equation_01';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -412,20 +414,21 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="the-continuity-equation">
+  <section class="tex2jax_ignore mathjax_ignore" id="the-continuity-equation">
 <h1>The Continuity Equation<a class="headerlink" href="#the-continuity-equation" title="Link to this heading">#</a></h1>
 <p>The continuity equation is a fundamental principle in physics that describes the conservation of a physical quantity—such as mass, charge, or energy—as it moves through space and time. It mathematically expresses how the density of this conserved quantity changes within a region due to the flow of the quantity into or out of that region.</p>
 <hr class="docutils" />
 <p><strong>General Form of the Continuity Equation</strong></p>
 <p>In its most general form, the continuity equation is written as:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-$$</p>
+\]</div>
 <ul class="simple">
-<li><p><strong>$\rho$</strong> (rho) is the <strong>density</strong> of the conserved quantity (e.g., mass density, charge density).</p></li>
-<li><p><strong>$\mathbf{J}$</strong> is the <strong>flux density vector</strong> (e.g., mass flux, current density), representing the rate at which the quantity moves through space.</p></li>
-<li><p><strong>$\frac{\partial \rho}{\partial t}$</strong> is the <strong>partial derivative of density with respect to time</strong>, indicating how the density changes over time.</p></li>
-<li><p><strong>$\nabla \cdot \mathbf{J}$</strong> is the <strong>divergence of the flux</strong>, representing the net outflow of the quantity from an infinitesimal volume.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong> (rho) is the <strong>density</strong> of the conserved quantity (e.g., mass density, charge density).</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{J}\)</span></strong> is the <strong>flux density vector</strong> (e.g., mass flux, current density), representing the rate at which the quantity moves through space.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\frac{\partial \rho}{\partial t}\)</span></strong> is the <strong>partial derivative of density with respect to time</strong>, indicating how the density changes over time.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{J}\)</span></strong> is the <strong>divergence of the flux</strong>, representing the net outflow of the quantity from an infinitesimal volume.</p></li>
 </ul>
 <hr class="docutils" />
 <p><strong>Physical Interpretation</strong></p>
@@ -438,59 +441,68 @@ $$</p>
 <h2>Derivation Overview<a class="headerlink" href="#derivation-overview" title="Link to this heading">#</a></h2>
 <p>The continuity equation can be derived from the fundamental principle of conservation of a physical quantity within an arbitrary volume. Here’s a detailed step-by-step derivation:</p>
 <p><strong>1. Conservation Principle</strong></p>
-<p>Consider an arbitrary fixed control volume $V$ in space with a closed surface $S$. The total amount $Q(t)$ of the conserved quantity within $V$ at time $t$ is given by:</p>
-<p>$$
-Q(t) = \int_V \rho(\mathbf{r}, t) , dV
-$$</p>
+<p>Consider an arbitrary fixed control volume <span class="math notranslate nohighlight">\(V\)</span> in space with a closed surface <span class="math notranslate nohighlight">\(S\)</span>. The total amount <span class="math notranslate nohighlight">\(Q(t)\)</span> of the conserved quantity within <span class="math notranslate nohighlight">\(V\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+Q(t) = \int_V \rho(\mathbf{r}, t) \, dV
+\]</div>
 <ul class="simple">
-<li><p>$ \rho(\mathbf{r}, t) $ is the density of the conserved quantity at position $ \mathbf{r} $ and time $ t $.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \rho(\mathbf{r}, t) \)</span> is the density of the conserved quantity at position <span class="math notranslate nohighlight">\( \mathbf{r} \)</span> and time <span class="math notranslate nohighlight">\( t \)</span>.</p></li>
 </ul>
-<p>The rate of change of $ Q(t) $ with respect to time is:</p>
-<p>$$
-\frac{dQ}{dt} = \int_V \frac{\partial \rho}{\partial t} , dV
-$$</p>
+<p>The rate of change of <span class="math notranslate nohighlight">\( Q(t) \)</span> with respect to time is:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{dQ}{dt} = \int_V \frac{\partial \rho}{\partial t} \, dV
+\]</div>
 <p><strong>2. Net Flow Across the Boundary</strong></p>
-<p>The net flow of the quantity out of the control volume $ V $ through its boundary surface $ S $ is given by:</p>
-<p>$$
-\text{Net outflow} = \oint_S \mathbf{J} \cdot \mathbf{n} , dS
-$$</p>
+<p>The net flow of the quantity out of the control volume <span class="math notranslate nohighlight">\( V \)</span> through its boundary surface <span class="math notranslate nohighlight">\( S \)</span> is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Net outflow} = \oint_S \mathbf{J} \cdot \mathbf{n} \, dS
+\]</div>
 <ul class="simple">
-<li><p>$ \mathbf{J} $ is the flux density vector.</p></li>
-<li><p>$ \mathbf{n} $ is the outward-pointing unit normal vector on the surface $ S $.</p></li>
-<li><p>$ dS $ is an infinitesimal area element on $ S $.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{J} \)</span> is the flux density vector.</p></li>
+<li><p><span class="math notranslate nohighlight">\( \mathbf{n} \)</span> is the outward-pointing unit normal vector on the surface <span class="math notranslate nohighlight">\( S \)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( dS \)</span> is an infinitesimal area element on <span class="math notranslate nohighlight">\( S \)</span>.</p></li>
 </ul>
 <p><strong>3. Conservation Equation</strong></p>
 <p>According to the conservation principle:</p>
-<p>$$
-\frac{dQ}{dt} = -\oint_S \mathbf{J} \cdot \mathbf{n} , dS
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{dQ}{dt} = -\oint_S \mathbf{J} \cdot \mathbf{n} \, dS
+\]</div>
 <ul class="simple">
-<li><p>The negative sign indicates that an outward flux reduces the amount of the quantity within $ V $.</p></li>
+<li><p>The negative sign indicates that an outward flux reduces the amount of the quantity within <span class="math notranslate nohighlight">\( V \)</span>.</p></li>
 </ul>
 <p><strong>4. Applying the Divergence Theorem</strong></p>
-<p>The divergence theorem relates the surface integral over $ S $ to a volume integral over $ V $:</p>
-<p>$$
-\oint_S \mathbf{J} \cdot \mathbf{n} , dS = \int_V \nabla \cdot \mathbf{J} , dV
-$$</p>
+<p>The divergence theorem relates the surface integral over <span class="math notranslate nohighlight">\( S \)</span> to a volume integral over <span class="math notranslate nohighlight">\( V \)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\oint_S \mathbf{J} \cdot \mathbf{n} \, dS = \int_V \nabla \cdot \mathbf{J} \, dV
+\]</div>
 <p>Substituting into the conservation equation:</p>
-<p>$$
-\frac{dQ}{dt} = -\int_V \nabla \cdot \mathbf{J} , dV
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{dQ}{dt} = -\int_V \nabla \cdot \mathbf{J} \, dV
+\]</div>
 <p><strong>5. Combining the Equations</strong></p>
 <p>We have:</p>
-<p>$$
-\int_V \frac{\partial \rho}{\partial t} , dV = -\int_V \nabla \cdot \mathbf{J} , dV
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+\int_V \frac{\partial \rho}{\partial t} \, dV = -\int_V \nabla \cdot \mathbf{J} \, dV
+\]</div>
 <p><strong>6. Bringing Terms Together</strong></p>
 <p>Bring all terms to one side:</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \int_V \left( \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} \right) dV = 0
-$$</p>
+\]</div>
 <p><strong>7. Inferring the Local Continuity Equation</strong></p>
-<p>Since the volume $ V $ is arbitrary, and the integrand is continuous, the only way this equation can hold for all possible volumes is if the integrand itself is zero everywhere within the volume:</p>
-<p>$$
+<p>Since the volume <span class="math notranslate nohighlight">\( V \)</span> is arbitrary, and the integrand is continuous, the only way this equation can hold for all possible volumes is if the integrand itself is zero everywhere within the volume:</p>
+<div class="math notranslate nohighlight">
+\[
 \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-$$</p>
+\]</div>
 <p>This is the local form of the continuity equation.</p>
 <hr class="docutils" />
 <p><strong>APPLICATIONS</strong></p>
@@ -498,18 +510,20 @@ $$</p>
 <p>In fluid dynamics, the continuity equation ensures mass conservation in fluid flow.</p>
 <ul>
 <li><p><strong>General Form</strong>:</p>
-<p>$$
-\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
+  \]</div>
 <ul class="simple">
-<li><p><strong>$\rho$</strong>: Fluid density.</p></li>
-<li><p><strong>$\mathbf{u}$</strong>: Fluid velocity vector.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong>: Fluid density.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{u}\)</span></strong>: Fluid velocity vector.</p></li>
 </ul>
 </li>
-<li><p><strong>Incompressible Flow</strong> ($\rho$ is constant):</p>
-<p>$$
-\nabla \cdot \mathbf{u} = 0
-$$</p>
+<li><p><strong>Incompressible Flow</strong> (<span class="math notranslate nohighlight">\(\rho\)</span> is constant):</p>
+<div class="math notranslate nohighlight">
+\[
+  \nabla \cdot \mathbf{u} = 0
+  \]</div>
 <ul class="simple">
 <li><p>Implies that the divergence of the velocity field is zero; the volume of fluid elements does not change over time.</p></li>
 </ul>
@@ -520,12 +534,13 @@ $$</p>
 <p>In electromagnetism, it expresses the conservation of electric charge.</p>
 <ul>
 <li><p><strong>Equation</strong>:</p>
-<p>$$
-\frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-$$</p>
+<div class="math notranslate nohighlight">
+\[
+  \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
+  \]</div>
 <ul class="simple">
-<li><p><strong>$\rho$</strong>: Electric charge density.</p></li>
-<li><p><strong>$\mathbf{J}$</strong>: Electric current density vector.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong>: Electric charge density.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{J}\)</span></strong>: Electric current density vector.</p></li>
 </ul>
 </li>
 </ul>
@@ -541,8 +556,8 @@ $$</p>
 <p><strong>Visualization</strong></p>
 <p>Imagine a crowd of people (representing the conserved quantity) moving through a hallway (space):</p>
 <ul class="simple">
-<li><p><strong>Density ($\rho$)</strong>: How crowded the hallway is at a point.</p></li>
-<li><p><strong>Flux ($\mathbf{J}$)</strong>: How fast and in what direction people are moving.</p></li>
+<li><p><strong>Density (<span class="math notranslate nohighlight">\(\rho\)</span>)</strong>: How crowded the hallway is at a point.</p></li>
+<li><p><strong>Flux (<span class="math notranslate nohighlight">\(\mathbf{J}\)</span>)</strong>: How fast and in what direction people are moving.</p></li>
 <li><p><strong>Continuity Equation</strong>: Tells us that if more people are entering a section of the hallway than leaving, the crowd density in that section will increase, and vice versa.</p></li>
 </ul>
 <hr class="docutils" />
@@ -552,7 +567,7 @@ $$</p>
 <p><strong>Remember</strong>: At its core, the continuity equation ensures that what goes in must come out unless there’s a change within the system itself.</p>
 <hr class="docutils" />
 <p><strong>Additional Resources</strong></p>
-<p>https://en.wikipedia.org/wiki/Continuity_equation</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Continuity_equation">https://en.wikipedia.org/wiki/Continuity_equation</a></p>
 </section>
 <div class="toctree-wrapper compound">
 </div>
