@@ -60,8 +60,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'math_content/01_basics/fourier_transform_01';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -412,7 +411,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-continuous-time-fourier-transform">3. Properties of the Continuous-Time Fourier Transform</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-fourier-transform-dft">4. Discrete Fourier Transform (DFT)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-fourier-series-to-the-fourier-transform">5. From Fourier Series to the Fourier Transform</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-x-t-from-the-fourier-transform">6. Deriving <span class="math notranslate nohighlight">\( x(t) \)</span> from the Fourier Transform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-x-t-from-the-fourier-transform">6. Deriving $ x(t) $ from the Fourier Transform</a></li>
 </ul>
             </nav>
         </div>
@@ -424,7 +423,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="fourier-transform">
+  <section id="fourier-transform">
 <h1>Fourier Transform<a class="headerlink" href="#fourier-transform" title="Link to this heading">#</a></h1>
 <section id="motivation-and-intuitive-idea">
 <h2>1. Motivation and Intuitive Idea<a class="headerlink" href="#motivation-and-intuitive-idea" title="Link to this heading">#</a></h2>
@@ -437,7 +436,7 @@ In linear time-invariant (LTI) systems, understanding the behavior of a system c
 <li><p><strong>Decomposition into Sinusoidal Components</strong><br />
 Any reasonably well-behaved function can be thought of as a combination (superposition) of infinitely many sinusoids of different frequencies, phases, and amplitudes.</p></li>
 </ol>
-<p>These observations motivate the definition of the <strong>Fourier transform</strong>, which maps a function <span class="math notranslate nohighlight">\(x(t)\)</span> (often real- or complex-valued) into a representation <span class="math notranslate nohighlight">\(X(\omega)\)</span> (or <span class="math notranslate nohighlight">\(X(f)\)</span>), capturing how energy (or power) is distributed among different frequencies.</p>
+<p>These observations motivate the definition of the <strong>Fourier transform</strong>, which maps a function $x(t)$ (often real- or complex-valued) into a representation $X(\omega)$ (or $X(f)$), capturing how energy (or power) is distributed among different frequencies.</p>
 <hr class="docutils" />
 <div class="math notranslate nohighlight" id="equation-my-label">
 <span class="eqno">(1)<a class="headerlink" href="#equation-my-label" title="Link to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
@@ -446,84 +445,74 @@ Any reasonably well-behaved function can be thought of as a combination (superpo
 <h2>2. Continuous-Time Fourier Transform (CTFT)<a class="headerlink" href="#continuous-time-fourier-transform-ctft" title="Link to this heading">#</a></h2>
 <section id="definition">
 <h3>2.1 Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h3>
-<p>Let <span class="math notranslate nohighlight">\(x(t)\)</span> be a function of continuous variable <span class="math notranslate nohighlight">\(t\)</span>. Its <strong>Fourier transform</strong> <span class="math notranslate nohighlight">\(X(\omega)\)</span> is defined (using the angular frequency convention) by</p>
-<div class="math notranslate nohighlight">
-\[
-X(\omega) 
-= \mathcal{F}\{ x(t) \} 
-= \int_{-\infty}^{\infty} x(t)\, e^{-i \omega t} \, dt,
-\]</div>
+<p>Let $x(t)$ be a function of continuous variable $t$. Its <strong>Fourier transform</strong> $X(\omega)$ is defined (using the angular frequency convention) by</p>
+<p>$$
+X(\omega)
+= \mathcal{F}{ x(t) }
+= \int_{-\infty}^{\infty} x(t), e^{-i \omega t} , dt,
+$$</p>
 <p>where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\omega\)</span> is the angular frequency in radians per second (rad/s),</p></li>
-<li><p><span class="math notranslate nohighlight">\(i = \sqrt{-1}\)</span> is the imaginary unit.</p></li>
+<li><p>$\omega$ is the angular frequency in radians per second (rad/s),</p></li>
+<li><p>$i = \sqrt{-1}$ is the imaginary unit.</p></li>
 </ul>
 </section>
 <section id="inverse-fourier-transform">
 <h3>2.2 Inverse Fourier Transform<a class="headerlink" href="#inverse-fourier-transform" title="Link to this heading">#</a></h3>
-<p>To recover <span class="math notranslate nohighlight">\(x(t)\)</span> from its Fourier transform <span class="math notranslate nohighlight">\(X(\omega)\)</span>, the <strong>inverse Fourier transform</strong> is used:</p>
-<p>\begin{equation}
+<p>To recover $x(t)$ from its Fourier transform $X(\omega)$, the <strong>inverse Fourier transform</strong> is used:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-9d06dc07-6e8e-430a-bf0b-a7b84b564ab3">
+<span class="eqno">(2)<a class="headerlink" href="#equation-9d06dc07-6e8e-430a-bf0b-a7b84b564ab3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 x(t)
-= \mathcal{F}^{-1}{X(\omega)}
-= \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega), e^{i \omega t} , d\omega.
-\end{equation}</p>
+= \mathcal{F}^{-1}\{X(\omega)\}
+= \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega)\, e^{i \omega t} \, d\omega.
+\end{equation}\]</div>
 <p>This pair of equations is often called the <strong>Fourier transform pair</strong>:</p>
-<div class="math notranslate nohighlight">
-\[ x(t) \;\;\overset{\text{Fourier}}{\underset{\text{Inverse}}{\longleftrightarrow}} \;\; X(\omega) \]</div>
-<p><strong>Remark</strong>: In some contexts, the Fourier transform is defined with a different normalization constant (e.g., <span class="math notranslate nohighlight">\(\frac{1}{2\pi}\)</span> or <span class="math notranslate nohighlight">\(\frac{1}{\sqrt{2\pi}}\)</span>) or by using <span class="math notranslate nohighlight">\(2\pi \xi\)</span> rather than <span class="math notranslate nohighlight">\(\omega\)</span>, where <span class="math notranslate nohighlight">\(\xi\)</span> is an ordinary frequency (Hz). The exact definition can vary depending on the field of application. We will stick to the most common engineering definition above (with no <span class="math notranslate nohighlight">\(1/2\pi\)</span> factor in front of the integral).</p>
+<p>$$ x(t) ;;\overset{\text{Fourier}}{\underset{\text{Inverse}}{\longleftrightarrow}} ;; X(\omega) $$</p>
+<p><strong>Remark</strong>: In some contexts, the Fourier transform is defined with a different normalization constant (e.g., $\frac{1}{2\pi}$ or $\frac{1}{\sqrt{2\pi}}$) or by using $2\pi \xi$ rather than $\omega$, where $\xi$ is an ordinary frequency (Hz). The exact definition can vary depending on the field of application. We will stick to the most common engineering definition above (with no $1/2\pi$ factor in front of the integral).</p>
 </section>
 <hr class="docutils" />
 <section id="summary-of-popular-forms-of-the-fourier-transform">
 <h3>2.3 Summary of Popular Forms of the Fourier Transform<a class="headerlink" href="#summary-of-popular-forms-of-the-fourier-transform" title="Link to this heading">#</a></h3>
-<p>The Fourier transform can be expressed in various forms, depending on the conventions used for the frequency variable <span class="math notranslate nohighlight">\(\xi\)</span> or <span class="math notranslate nohighlight">\(\omega\)</span> and normalization. Below is a summary of the popular forms of the Fourier transform, adapted from the attached reference.</p>
-<p><strong>Ordinary Frequency <span class="math notranslate nohighlight">\(\xi\)</span> (Hz) – Unitary</strong></p>
-<p>The unitary form of the Fourier transform using ordinary frequency <span class="math notranslate nohighlight">\(\xi\)</span> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
-X_1(\xi) = \int_{-\infty}^\infty x(t) e^{-i 2\pi \xi t} \, dt,
-\]</div>
+<p>The Fourier transform can be expressed in various forms, depending on the conventions used for the frequency variable $\xi$ or $\omega$ and normalization. Below is a summary of the popular forms of the Fourier transform, adapted from the attached reference.</p>
+<p><strong>Ordinary Frequency $\xi$ (Hz) – Unitary</strong></p>
+<p>The unitary form of the Fourier transform using ordinary frequency $\xi$ is defined as:</p>
+<p>$$
+X_1(\xi) = \int_{-\infty}^\infty x(t) e^{-i 2\pi \xi t} , dt,
+$$</p>
 <p>and the inverse transform is:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \int_{-\infty}^\infty X_1(\xi) e^{i 2\pi \xi t} \, d\xi.
-\]</div>
+<p>$$
+x(t) = \int_{-\infty}^\infty X_1(\xi) e^{i 2\pi \xi t} , d\xi.
+$$</p>
 <p>This form relates to other forms as follows:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 X_1(\xi) = \sqrt{2\pi} X_2(2\pi \xi) = X_3(2\pi \xi).
-\]</div>
-<p><strong>Angular Frequency <span class="math notranslate nohighlight">\(\omega\)</span> (rad/s) – Unitary</strong></p>
-<p>The unitary form using angular frequency <span class="math notranslate nohighlight">\(\omega\)</span> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
-X_2(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x(t) e^{-i \omega t} \, dt,
-\]</div>
+$$</p>
+<p><strong>Angular Frequency $\omega$ (rad/s) – Unitary</strong></p>
+<p>The unitary form using angular frequency $\omega$ is defined as:</p>
+<p>$$
+X_2(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x(t) e^{-i \omega t} , dt,
+$$</p>
 <p>and the inverse transform is:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty X_2(\omega) e^{i \omega t} \, d\omega.
-\]</div>
+<p>$$
+x(t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty X_2(\omega) e^{i \omega t} , d\omega.
+$$</p>
 <p>The relationship between this form and others is given by:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 X_2(\omega) = \frac{1}{\sqrt{2\pi}} X_1\left(\frac{\omega}{2\pi}\right) = \frac{1}{\sqrt{2\pi}} X_3(\omega).
-\]</div>
-<p><strong>Angular Frequency <span class="math notranslate nohighlight">\(\omega\)</span> (rad/s) – Non-Unitary</strong></p>
-<p>The non-unitary form using angular frequency <span class="math notranslate nohighlight">\(\omega\)</span> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
-X_3(\omega) = \int_{-\infty}^\infty x(t) e^{-i \omega t} \, dt,
-\]</div>
+$$</p>
+<p><strong>Angular Frequency $\omega$ (rad/s) – Non-Unitary</strong></p>
+<p>The non-unitary form using angular frequency $\omega$ is defined as:</p>
+<p>$$
+X_3(\omega) = \int_{-\infty}^\infty x(t) e^{-i \omega t} , dt,
+$$</p>
 <p>and the inverse transform is:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{2\pi} \int_{-\infty}^\infty X_3(\omega) e^{i \omega t} \, d\omega.
-\]</div>
+<p>$$
+x(t) = \frac{1}{2\pi} \int_{-\infty}^\infty X_3(\omega) e^{i \omega t} , d\omega.
+$$</p>
 <p>This form relates to others as follows:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 X_3(\omega) = X_1\left(\frac{\omega}{2\pi}\right) = \sqrt{2\pi} X_2(\omega).
-\]</div>
+$$</p>
 <p><strong>Summary Table</strong></p>
 <p>The relationships between these forms can be summarized in the following table:</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -535,20 +524,20 @@ X_3(\omega) = X_1\left(\frac{\omega}{2\pi}\right) = \sqrt{2\pi} X_2(\omega).
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Ordinary (<span class="math notranslate nohighlight">\(\xi\)</span>)</p></td>
+<tr class="row-even"><td><p>Ordinary ($\xi$)</p></td>
 <td><p>Unitary</p></td>
-<td><p><span class="math notranslate nohighlight">\(X_1(\xi) = \int_{-\infty}^\infty x(t) e^{-i 2\pi \xi t} \, dt\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(x(t) = \int_{-\infty}^\infty X_1(\xi) e^{i 2\pi \xi t} \, d\xi\)</span></p></td>
+<td><p>$X_1(\xi) = \int_{-\infty}^\infty x(t) e^{-i 2\pi \xi t} , dt$</p></td>
+<td><p>$x(t) = \int_{-\infty}^\infty X_1(\xi) e^{i 2\pi \xi t} , d\xi$</p></td>
 </tr>
-<tr class="row-odd"><td><p>Angular (<span class="math notranslate nohighlight">\(\omega\)</span>)</p></td>
+<tr class="row-odd"><td><p>Angular ($\omega$)</p></td>
 <td><p>Unitary</p></td>
-<td><p><span class="math notranslate nohighlight">\(X_2(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x(t) e^{-i \omega t} \, dt\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(x(t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty X_2(\omega) e^{i \omega t} \, d\omega\)</span></p></td>
+<td><p>$X_2(\omega) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x(t) e^{-i \omega t} , dt$</p></td>
+<td><p>$x(t) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty X_2(\omega) e^{i \omega t} , d\omega$</p></td>
 </tr>
-<tr class="row-even"><td><p>Angular (<span class="math notranslate nohighlight">\(\omega\)</span>)</p></td>
+<tr class="row-even"><td><p>Angular ($\omega$)</p></td>
 <td><p>Non-Unitary</p></td>
-<td><p><span class="math notranslate nohighlight">\(X_3(\omega) = \int_{-\infty}^\infty x(t) e^{-i \omega t} \, dt\)</span></p></td>
-<td><p><span class="math notranslate nohighlight">\(x(t) = \frac{1}{2\pi} \int_{-\infty}^\infty X_3(\omega) e^{i \omega t} \, d\omega\)</span></p></td>
+<td><p>$X_3(\omega) = \int_{-\infty}^\infty x(t) e^{-i \omega t} , dt$</p></td>
+<td><p>$x(t) = \frac{1}{2\pi} \int_{-\infty}^\infty X_3(\omega) e^{i \omega t} , d\omega$</p></td>
 </tr>
 </tbody>
 </table>
@@ -561,76 +550,66 @@ X_3(\omega) = X_1\left(\frac{\omega}{2\pi}\right) = \sqrt{2\pi} X_2(\omega).
 <p>There are numerous properties that make the Fourier transform extremely useful. We list a few common ones here:</p>
 <ol class="arabic">
 <li><p><strong>Linearity</strong></p>
-<div class="math notranslate nohighlight">
-\[
-   \mathcal{F}\{a\,x(t) + b\,y(t)\} = a\,X(\omega) + b\,Y(\omega).
-   \]</div>
+<p>$$
+\mathcal{F}{a,x(t) + b,y(t)} = a,X(\omega) + b,Y(\omega).
+$$</p>
 </li>
 <li><p><strong>Time Shift</strong><br />
-If <span class="math notranslate nohighlight">\(x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega)\)</span>, then</p>
-<div class="math notranslate nohighlight">
-\[
-   x(t - t_0) \overset{\mathcal{F}}{\longleftrightarrow} e^{-i \omega t_0}\, X(\omega).
-   \]</div>
+If $x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega)$, then</p>
+<p>$$
+x(t - t_0) \overset{\mathcal{F}}{\longleftrightarrow} e^{-i \omega t_0}, X(\omega).
+$$</p>
 </li>
 <li><p><strong>Frequency Shift</strong></p>
-<div class="math notranslate nohighlight">
-\[
-   e^{i \omega_0 t}\, x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega - \omega_0).
-   \]</div>
+<p>$$
+e^{i \omega_0 t}, x(t) \overset{\mathcal{F}}{\longleftrightarrow} X(\omega - \omega_0).
+$$</p>
 </li>
 <li><p><strong>Time Scaling</strong></p>
-<div class="math notranslate nohighlight">
-\[
-   x(a t) \overset{\mathcal{F}}{\longleftrightarrow} \frac{1}{|a|} X\!\Bigl(\frac{\omega}{a}\Bigr), 
-   \quad (a \neq 0).
-   \]</div>
-<p>The case <span class="math notranslate nohighlight">\(a = -1\)</span> leads to the time-reversal property:</p>
-<div class="math notranslate nohighlight">
-\[
-   x(- t) \overset{\mathcal{F}}{\longleftrightarrow} X\!\Bigl(-\omega\Bigr).
-   \]</div>
+<p>$$
+x(a t) \overset{\mathcal{F}}{\longleftrightarrow} \frac{1}{|a|} X!\Bigl(\frac{\omega}{a}\Bigr),
+\quad (a \neq 0).
+$$</p>
+<p>The case $a = -1$ leads to the time-reversal property:</p>
+<p>$$
+x(- t) \overset{\mathcal{F}}{\longleftrightarrow} X!\Bigl(-\omega\Bigr).
+$$</p>
 </li>
 <li><p><strong>Differentiation in Time</strong></p>
-<div class="math notranslate nohighlight">
-\[
-   \frac{d^n x(t)}{dt^n} \overset{\mathcal{F}}{\longleftrightarrow}
-   (i \omega)^n \, X(\omega).
-   \]</div>
+<p>$$
+\frac{d^n x(t)}{dt^n} \overset{\mathcal{F}}{\longleftrightarrow}
+(i \omega)^n , X(\omega).
+$$</p>
 </li>
 <li><p><strong>Convolution</strong></p>
-<div class="math notranslate nohighlight">
-\[
-   (x * y)(t) \;\;\overset{\mathcal{F}}{\longleftrightarrow}\;\; X(\omega)\, Y(\omega),
-   \]</div>
-<p>where <span class="math notranslate nohighlight">\(*\)</span> denotes convolution.</p>
+<p>$$
+(x * y)(t) ;;\overset{\mathcal{F}}{\longleftrightarrow};; X(\omega), Y(\omega),
+$$
+where $*$ denotes convolution.</p>
 </li>
 <li><p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Parseval%27s_theorem">Parseval’s Theorem</a></strong> (Energy Conservation)</p>
-<div class="math notranslate nohighlight">
-\[
-   \int_{-\infty}^{\infty} |x(t)|^2 \,dt = \frac{1}{2\pi}\int_{-\infty}^{\infty} |X(\omega)|^2 \, d\omega = \int_{-\infty}^{\infty} |X(2 \pi \xi)|^2 \, d \xi.
-   \]</div>
-<p>where <span class="math notranslate nohighlight">\(\omega = 2 \pi \xi\)</span> and <span class="math notranslate nohighlight">\(X(\omega)\)</span> represents the continuous Fourier transform in non-unitary form of <span class="math notranslate nohighlight">\(x(t)\)</span>.</p>
+<p>$$
+\int_{-\infty}^{\infty} |x(t)|^2 ,dt = \frac{1}{2\pi}\int_{-\infty}^{\infty} |X(\omega)|^2 , d\omega = \int_{-\infty}^{\infty} |X(2 \pi \xi)|^2 , d \xi.
+$$</p>
+<p>where $\omega = 2 \pi \xi$ and $X(\omega)$ represents the continuous Fourier transform in non-unitary form of $x(t)$.</p>
 </li>
 </ol>
 </section>
 <hr class="docutils" />
 <section id="discrete-fourier-transform-dft">
 <h2>4. Discrete Fourier Transform (DFT)<a class="headerlink" href="#discrete-fourier-transform-dft" title="Link to this heading">#</a></h2>
-<p>When you have a <strong>finite-length</strong> discrete signal (or a periodic extension of such a signal), you often use the <strong>Discrete Fourier Transform (DFT)</strong>, defined for <span class="math notranslate nohighlight">\(N\)</span> equally spaced samples in time (or in one period):</p>
-<div class="math notranslate nohighlight">
-\[
-X_k 
-= \sum_{n=0}^{N-1} x_n\, e^{-i \frac{2\pi}{N} k n}, 
+<p>When you have a <strong>finite-length</strong> discrete signal (or a periodic extension of such a signal), you often use the <strong>Discrete Fourier Transform (DFT)</strong>, defined for $N$ equally spaced samples in time (or in one period):</p>
+<p>$$
+X_k
+= \sum_{n=0}^{N-1} x_n, e^{-i \frac{2\pi}{N} k n},
 \quad k = 0, 1, 2, \ldots, N-1.
-\]</div>
+$$</p>
 <p>The inverse DFT is given by</p>
-<div class="math notranslate nohighlight">
-\[
-x_n 
-= \frac{1}{N} \sum_{k=0}^{N-1} X_k\, e^{i \frac{2\pi}{N} k n}, 
+<p>$$
+x_n
+= \frac{1}{N} \sum_{k=0}^{N-1} X_k, e^{i \frac{2\pi}{N} k n},
 \quad n = 0, 1, \ldots, N-1.
-\]</div>
+$$</p>
 <p>The DFT can be viewed as a sampled version of the Fourier transform. In practice, it is very useful because of the <strong>Fast Fourier Transform (FFT)</strong> algorithm, which computes the DFT efficiently.</p>
 </section>
 <hr class="docutils" />
@@ -638,134 +617,107 @@ x_n
 <h2>5. From Fourier Series to the Fourier Transform<a class="headerlink" href="#from-fourier-series-to-the-fourier-transform" title="Link to this heading">#</a></h2>
 <p>Although each Fourier transform definition is often presented as-is, the core idea can be derived or motivated in various ways (e.g., from the Fourier series in the limit of infinite period). Below is a conceptual outline for the <strong>continuous-time</strong> case:</p>
 <p><strong>Fourier Series of Periodic Functions</strong><br />
-Consider a signal <span class="math notranslate nohighlight">\(x_T(t)\)</span> that is periodic with period <span class="math notranslate nohighlight">\(T\)</span>. Its Fourier series representation is:</p>
-<div class="math notranslate nohighlight">
-\[
-x_T(t) = \sum_{k=-\infty}^{\infty} c_k \, e^{i \frac{2\pi}{T} k t},
-\]</div>
+Consider a signal $x_T(t)$ that is periodic with period $T$. Its Fourier series representation is:</p>
+<p>$$
+x_T(t) = \sum_{k=-\infty}^{\infty} c_k , e^{i \frac{2\pi}{T} k t},
+$$</p>
 <p>with the coefficients given by</p>
-<div class="math notranslate nohighlight">
-\[
-c_k = \frac{1}{T} \int_{t_0}^{t_0 + T} x_T(t) \, e^{-i \frac{2\pi}{T} k t} \, dt = \frac{1}{T} \int_{0}^{T} x_T(t) \, e^{-i \frac{2\pi}{T} k t} \, dt = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) \, e^{-i \frac{2\pi}{T} k t} \, dt
-\]</div>
-<p>for any choice of <span class="math notranslate nohighlight">\(t_0\)</span>. Here, <span class="math notranslate nohighlight">\( k \)</span> is an integer (the harmonic index), and <span class="math notranslate nohighlight">\( \frac{2\pi}{T} k = \omega_k\)</span> represents the discrete angular frequencies (harmonics) present in the periodic function.</p>
+<p>$$
+c_k = \frac{1}{T} \int_{t_0}^{t_0 + T} x_T(t) , e^{-i \frac{2\pi}{T} k t} , dt = \frac{1}{T} \int_{0}^{T} x_T(t) , e^{-i \frac{2\pi}{T} k t} , dt = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) , e^{-i \frac{2\pi}{T} k t} , dt
+$$</p>
+<p>for any choice of $t_0$. Here, $ k $ is an integer (the harmonic index), and $ \frac{2\pi}{T} k = \omega_k$ represents the discrete angular frequencies (harmonics) present in the periodic function.</p>
 <blockquote>
-<div><p>NOTE: For a function <span class="math notranslate nohighlight">\( f(t) \)</span> that is periodic with period <span class="math notranslate nohighlight">\( T \)</span> (i.e., <span class="math notranslate nohighlight">\( f(t + T) = f(t) \)</span> for all <span class="math notranslate nohighlight">\( t \)</span>), the integral of <span class="math notranslate nohighlight">\( f(t) \)</span> over any interval of length <span class="math notranslate nohighlight">\( T \)</span> is the same, regardless of the starting point <span class="math notranslate nohighlight">\( a \)</span>. Formally, for any real number <span class="math notranslate nohighlight">\(a\)</span></p>
-<div class="math notranslate nohighlight">
-\[ \int_{a}^{a + T} f(t) \, dt = \int_{0}^{T} f(t) \, dt \]</div>
+<div><p>NOTE: For a function $ f(t) $ that is periodic with period $ T $ (i.e., $ f(t + T) = f(t) $ for all $ t $), the integral of $ f(t) $ over any interval of length $ T $ is the same, regardless of the starting point $ a $. Formally, for any real number $a$</p>
+<p>$$ \int_{a}^{a + T} f(t) , dt = \int_{0}^{T} f(t) , dt $$</p>
 </div></blockquote>
-<p>To derive the <strong>Fourier transform</strong> from the Fourier series, we consider the limit as the period <span class="math notranslate nohighlight">\( T \)</span> becomes infinitely large (<span class="math notranslate nohighlight">\( T \to \infty \)</span>). Intuitively, as <span class="math notranslate nohighlight">\( T \)</span> increases, the function <span class="math notranslate nohighlight">\( x_T(t) \)</span> becomes less “periodic” and more “aperiodic,” effectively spanning the entire real line without repeating. In the Fourier series, frequencies are discrete and separated by <span class="math notranslate nohighlight">\( \Delta \omega = \frac{2\pi}{T} \)</span>. As <span class="math notranslate nohighlight">\( T \to \infty \)</span>, the spacing between adjacent frequencies <span class="math notranslate nohighlight">\( \Delta \omega \)</span> approaches zero:</p>
-<div class="math notranslate nohighlight">
-\[
+<p>To derive the <strong>Fourier transform</strong> from the Fourier series, we consider the limit as the period $ T $ becomes infinitely large ($ T \to \infty $). Intuitively, as $ T $ increases, the function $ x_T(t) $ becomes less “periodic” and more “aperiodic,” effectively spanning the entire real line without repeating. In the Fourier series, frequencies are discrete and separated by $ \Delta \omega = \frac{2\pi}{T} $. As $ T \to \infty $, the spacing between adjacent frequencies $ \Delta \omega $ approaches zero:</p>
+<p>$$
 \Delta \omega = \frac{2\pi}{T} \to 0 \quad \text{as} \quad T \to \infty.
-\]</div>
-<p>This means that the frequency spectrum becomes <strong>continuous</strong> rather than discrete: <span class="math notranslate nohighlight">\(\omega_k \to \omega\)</span>.</p>
-<div class="math notranslate nohighlight">
-\[
-c_k = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) \, e^{-i \frac{2\pi}{T} k t} \, dt
-\]</div>
-<div class="math notranslate nohighlight">
-\[ \omega_k = \frac{2\pi}{T} k \]</div>
-<div class="math notranslate nohighlight">
-\[ \Delta \omega = \frac{2\pi}{T} \]</div>
+$$</p>
+<p>This means that the frequency spectrum becomes <strong>continuous</strong> rather than discrete: $\omega_k \to \omega$.</p>
+<p>$$
+c_k = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) , e^{-i \frac{2\pi}{T} k t} , dt
+$$</p>
+<p>$$ \omega_k = \frac{2\pi}{T} k $$</p>
+<p>$$ \Delta \omega = \frac{2\pi}{T} $$</p>
 <p>Thus,</p>
-<div class="math notranslate nohighlight">
-\[
-c_k = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) \, e^{-i \omega_k t} \, dt
-\]</div>
+<p>$$
+c_k = \frac{1}{T} \int_{-T/2}^{T/2} x_T(t) , e^{-i \omega_k t} , dt
+$$</p>
 <p>Let’s define</p>
-<div class="math notranslate nohighlight">
-\[ X_T \left( \omega \right) = \int_{-T/2}^{T/2} x_T(t) \, e^{-i \omega t} \, dt \]</div>
+<p>$$ X_T \left( \omega \right) = \int_{-T/2}^{T/2} x_T(t) , e^{-i \omega t} , dt $$</p>
 <p>As a result,</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 c_k = \frac{1}{T} X_T \left( \omega_k \right)
-\]</div>
-<div class="math notranslate nohighlight">
-\[
-x_T(t) = \sum_{k=-\infty}^{\infty} c_k \, e^{i \frac{2\pi}{T} k t} = \sum_{k=-\infty}^{\infty} c_k \, e^{i \omega_k t} = \frac{1}{T} \sum_{k=-\infty}^{\infty} X_T \left( \omega_k \right) e^{i \omega_k t},
-\]</div>
-<p><span class="math notranslate nohighlight">\( \Delta \omega = \frac{2\pi}{T} \)</span> so we get <span class="math notranslate nohighlight">\(\frac{1}{T} = \frac{\Delta \omega}{2\pi}\)</span> and</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
+x_T(t) = \sum_{k=-\infty}^{\infty} c_k , e^{i \frac{2\pi}{T} k t} = \sum_{k=-\infty}^{\infty} c_k , e^{i \omega_k t} = \frac{1}{T} \sum_{k=-\infty}^{\infty} X_T \left( \omega_k \right) e^{i \omega_k t},
+$$</p>
+<p>$ \Delta \omega = \frac{2\pi}{T} $ so we get $\frac{1}{T} = \frac{\Delta \omega}{2\pi}$ and</p>
+<p>$$
 x_T(t) = \frac{\Delta \omega}{2\pi} \sum_{k=-\infty}^{\infty} X \left( \omega_k \right) e^{i \omega_k t} = \frac{1}{2\pi} \sum_{k=-\infty}^{\infty} X \left( \omega_k \right) e^{i \omega_k t} \Delta \omega
-\]</div>
-<p>In the limit of the infinite period <span class="math notranslate nohighlight">\( T \to \infty \)</span>, the rigth side of the last equation becomes a <strong>Riemann sum and can be replaced with the intergral</strong>:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>In the limit of the infinite period $ T \to \infty $, the rigth side of the last equation becomes a <strong>Riemann sum and can be replaced with the intergral</strong>:</p>
+<p>$$
 \lim_{T \to \infty} x_T(t) = x(t)
-\]</div>
-<div class="math notranslate nohighlight">
-\[
-\lim_{T \to \infty} X_T\left( \omega \right) = X \left( \omega \right) = \int_{- \infty}^{\infty} x(t) \, e^{-i \omega t} \, dt
-\]</div>
-<p>As <span class="math notranslate nohighlight">\( T \to \infty \)</span>, the frequency spacing <span class="math notranslate nohighlight">\( \Delta \omega \)</span> becomes infinitesimally small:</p>
-<div class="math notranslate nohighlight">
-\[
+$$</p>
+<p>$$
+\lim_{T \to \infty} X_T\left( \omega \right) = X \left( \omega \right) = \int_{- \infty}^{\infty} x(t) , e^{-i \omega t} , dt
+$$</p>
+<p>As $ T \to \infty $, the frequency spacing $ \Delta \omega $ becomes infinitesimally small:</p>
+<p>$$
 \Delta \omega = \frac{2\pi}{T} \to 0
-\]</div>
-<div class="math notranslate nohighlight">
-\[ \omega_k \to \omega \]</div>
-<p>Thus, the summation over <span class="math notranslate nohighlight">\( k \)</span> transforms into an integral over <span class="math notranslate nohighlight">\( \omega \)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-\lim_{T \to \infty} x_T(t) = x(t) = \lim_{T \to \infty} \frac{1}{2\pi} \sum_{k=-\infty}^{\infty} X \left( \omega_k \right) e^{i \omega_k t} \Delta \omega = \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega) e^{i \omega t} \, d\omega
-\]</div>
+$$</p>
+<p>$$ \omega_k \to \omega $$</p>
+<p>Thus, the summation over $ k $ transforms into an integral over $ \omega $:</p>
+<p>$$
+\lim_{T \to \infty} x_T(t) = x(t) = \lim_{T \to \infty} \frac{1}{2\pi} \sum_{k=-\infty}^{\infty} X \left( \omega_k \right) e^{i \omega_k t} \Delta \omega = \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega) e^{i \omega t} , d\omega
+$$</p>
 </section>
 <hr class="docutils" />
 <section id="deriving-x-t-from-the-fourier-transform">
-<h2>6. Deriving <span class="math notranslate nohighlight">\( x(t) \)</span> from the Fourier Transform<a class="headerlink" href="#deriving-x-t-from-the-fourier-transform" title="Link to this heading">#</a></h2>
-<p>The Fourier transform of a function <span class="math notranslate nohighlight">\( x(t) \)</span> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[
-X(\omega) = \int_{-\infty}^{\infty} x(t')\, e^{-i \omega t'} \, dt'
-\]</div>
-<p><em>Note:</em> Here, <span class="math notranslate nohighlight">\( t' \)</span> is used as a dummy variable of integration to distinguish it from the <span class="math notranslate nohighlight">\( t \)</span> in the inverse transform.</p>
+<h2>6. Deriving $ x(t) $ from the Fourier Transform<a class="headerlink" href="#deriving-x-t-from-the-fourier-transform" title="Link to this heading">#</a></h2>
+<p>The Fourier transform of a function $ x(t) $ is defined as:</p>
+<p>$$
+X(\omega) = \int_{-\infty}^{\infty} x(t’), e^{-i \omega t’} , dt’
+$$</p>
+<p><em>Note:</em> Here, $ t’ $ is used as a dummy variable of integration to distinguish it from the $ t $ in the inverse transform.</p>
 <p>The inverse Fourier transform is given by:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega)\, e^{i \omega t} \, d\omega
-\]</div>
-<p>Let’s substitute the expression for <span class="math notranslate nohighlight">\( X(\omega) \)</span> into the inverse Fourier transform:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \left[ \int_{-\infty}^{\infty} x(t')\, e^{-i \omega t'} \, dt' \right] e^{i \omega t} \, d\omega
-\]</div>
+<p>$$
+x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega), e^{i \omega t} , d\omega
+$$</p>
+<p>Let’s substitute the expression for $ X(\omega) $ into the inverse Fourier transform:</p>
+<p>$$
+x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \left[ \int_{-\infty}^{\infty} x(t’), e^{-i \omega t’} , dt’ \right] e^{i \omega t} , d\omega
+$$</p>
 <p>Assuming that the integrals converge and that we can interchange the order of integration (which is generally valid under conditions of absolute convergence), we get:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} x(t') \left[ \int_{-\infty}^{\infty} e^{i \omega (t - t')} \, d\omega \right] dt'
-\]</div>
+<p>$$
+x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} x(t’) \left[ \int_{-\infty}^{\infty} e^{i \omega (t - t’)} , d\omega \right] dt’
+$$</p>
 <p>The inner integral is a well-known integral in Fourier analysis:</p>
-<div class="math notranslate nohighlight">
-\[
-\int_{-\infty}^{\infty} e^{i \omega (t - t')} \, d\omega = 2\pi \delta(t - t')
-\]</div>
-<p>Here, <span class="math notranslate nohighlight">\( \delta(t - t') \)</span> is the Dirac delta function, which has the following properties:</p>
-<div class="math notranslate nohighlight">
-\[
-\delta(t - t') = \delta(t' - t)
-\]</div>
-<div class="math notranslate nohighlight">
-\[
-\int_{-\infty}^{\infty} f(t') \delta(t' - t) \, dt' = f(t)
-\]</div>
-<p>Substituting the result of the inner integral back into the expression for <span class="math notranslate nohighlight">\( x(t) \)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} x(t') \cdot 2\pi \delta(t - t') \, dt' = \int_{-\infty}^{\infty} x(t') \delta(t - t') \, dt' = \int_{-\infty}^{\infty} x(t') \delta(t' - t) \, dt'
-\]</div>
+<p>$$
+\int_{-\infty}^{\infty} e^{i \omega (t - t’)} , d\omega = 2\pi \delta(t - t’)
+$$</p>
+<p>Here, $ \delta(t - t’) $ is the Dirac delta function, which has the following properties:</p>
+<p>$$
+\delta(t - t’) = \delta(t’ - t)
+$$</p>
+<p>$$
+\int_{-\infty}^{\infty} f(t’) \delta(t’ - t) , dt’ = f(t)
+$$</p>
+<p>Substituting the result of the inner integral back into the expression for $ x(t) $:</p>
+<p>$$
+x(t) = \frac{1}{2\pi} \int_{-\infty}^{\infty} x(t’) \cdot 2\pi \delta(t - t’) , dt’ = \int_{-\infty}^{\infty} x(t’) \delta(t - t’) , dt’ = \int_{-\infty}^{\infty} x(t’) \delta(t’ - t) , dt’
+$$</p>
 <p>Using the property of the Dirac delta function, we get</p>
-<div class="math notranslate nohighlight">
-\[
+<p>$$
 x(t) = x(t)
-\]</div>
+$$</p>
 <p>Through this substitution and evaluation, we’ve demonstrated that:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega)\, e^{i \omega t} \, d\omega = x(t)
-\]</div>
-<p>This confirms that applying the inverse Fourier transform to <span class="math notranslate nohighlight">\( X(\omega) \)</span> indeed recovers the original function <span class="math notranslate nohighlight">\( x(t) \)</span>.</p>
+<p>$$
+\frac{1}{2\pi} \int_{-\infty}^{\infty} X(\omega), e^{i \omega t} , d\omega = x(t)
+$$</p>
+<p>This confirms that applying the inverse Fourier transform to $ X(\omega) $ indeed recovers the original function $ x(t) $.</p>
 </section>
 </section>
 
@@ -844,7 +796,7 @@ x(t) = x(t)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-continuous-time-fourier-transform">3. Properties of the Continuous-Time Fourier Transform</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-fourier-transform-dft">4. Discrete Fourier Transform (DFT)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-fourier-series-to-the-fourier-transform">5. From Fourier Series to the Fourier Transform</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-x-t-from-the-fourier-transform">6. Deriving <span class="math notranslate nohighlight">\( x(t) \)</span> from the Fourier Transform</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-x-t-from-the-fourier-transform">6. Deriving $ x(t) $ from the Fourier Transform</a></li>
 </ul>
   </nav></div>
 
