@@ -10,13 +10,13 @@ options:  # Add these options
 parts:
   - caption: MATH
     chapters:
-      - file: math_content/01_basics/gradient_operator
-      - file: math_content/01_basics/gradient_directional_derivative
-      - file: math_content/01_basics/divergence
-      - file: math_content/01_basics/fourier_transform_01
+      - file: math/01_basics/gradient-operator
+      - file: math/01_basics/gradient-directional-derivative
+      - file: math/01_basics/divergence
+      - file: math/01_basics/fourier-transform-01
 
   - caption: PHYSICS
     chapters:
-      - file: physics_content/continuity_equation_01
+      - file: physics/continuity-equation-01
         sections:
-          - file: physics_content/continuity_equation_02
+          - file: physics/continuity-equation-02
