@@ -442,12 +442,16 @@
 <section id="deriving-the-coefficients-for-free-brownian-motion">
 <h2>3. Deriving the Coefficients for Free Brownian Motion<a class="headerlink" href="#deriving-the-coefficients-for-free-brownian-motion" title="Link to this heading">#</a></h2>
 <p>For a free particle undergoing Brownian motion, we make the following assumptions:</p>
-<ul class="simple">
-<li><p><strong>No external forces:</strong> This means there’s no preferred direction of motion, so the average drift of the particle is zero.
-$<span class="math notranslate nohighlight">\(A(x, t) = 0\)</span>$</p></li>
-<li><p><strong>Constant diffusion:</strong> The randomness of the collisions is uniform in space and time. We denote the diffusion coefficient by <span class="math notranslate nohighlight">\(D\)</span>.
-$<span class="math notranslate nohighlight">\(B(x, t) = 2D\)</span><span class="math notranslate nohighlight">\(
-  The factor of 2 is a common convention in the Fokker-Planck equation, often stemming from the Wiener process definition where variance is \)</span>2Dt$.</p></li>
+<ul>
+<li><p><strong>No external forces:</strong> This means there’s no preferred direction of motion, so the average drift of the particle is zero.</p>
+<div class="math notranslate nohighlight">
+\[A(x, t) = 0\]</div>
+</li>
+<li><p><strong>Constant diffusion:</strong> The randomness of the collisions is uniform in space and time. We denote the diffusion coefficient by <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[B(x, t) = 2D\]</div>
+<p>The factor of 2 is a common convention in the Fokker-Planck equation, often stemming from the Wiener process definition where variance is <span class="math notranslate nohighlight">\(2Dt\)</span>.</p>
+</li>
 </ul>
 <p>Substituting these coefficients into the Fokker-Planck equation:</p>
 <div class="math notranslate nohighlight">
@@ -467,9 +471,10 @@ $<span class="math notranslate nohighlight">\(B(x, t) = 2D\)</span><span class="
 <div class="math notranslate nohighlight">
 \[P(x, t) = \frac{1}{\sqrt{4 \pi D t}} \exp\left(-\frac{x^2}{4 D t}\right)\]</div>
 <p>Let’s check this solution:</p>
-<p><strong>Normalization:</strong> The integral of <span class="math notranslate nohighlight">\(P(x, t)\)</span> over all <span class="math notranslate nohighlight">\(x\)</span> should be 1 (total probability).
-$<span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{1}{\sqrt{4 \pi D t}} \exp\left(-\frac{x^2}{4 D t}\right) dx = 1\)</span>$
-This is a standard Gaussian integral, and it does indeed integrate to 1.</p>
+<p><strong>Normalization:</strong> The integral of <span class="math notranslate nohighlight">\(P(x, t)\)</span> over all <span class="math notranslate nohighlight">\(x\)</span> should be 1 (total probability).</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^{\infty} \frac{1}{\sqrt{4 \pi D t}} \exp\left(-\frac{x^2}{4 D t}\right) dx = 1\]</div>
+<p>This is a standard Gaussian integral, and it does indeed integrate to 1.</p>
 <p><strong>At <span class="math notranslate nohighlight">\(t \to 0\)</span>:</strong>
 As <span class="math notranslate nohighlight">\(t \to 0\)</span>, the standard deviation <span class="math notranslate nohighlight">\(\sigma = \sqrt{2Dt}\)</span> goes to zero, and the peak height goes to infinity, approaching a delta function at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
 <p><strong>Taking partial derivatives:</strong>
