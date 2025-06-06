@@ -528,8 +528,13 @@
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
-
-<span class="c1"># --- Example 1: Simple Classification ---</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Example 1: Simple Classification ---</span>
 
 <span class="c1"># Data: Sweetness, Crunchiness, Fruit (0 for Apple, 1 for Orange)</span>
 <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
@@ -552,11 +557,27 @@
 
 <span class="c1"># Make a prediction</span>
 <span class="n">prediction</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">mystery_fruit</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Example 1: Simple Classification ---&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--- Example 1: Simple Classification ---&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mystery Fruit (Sweetness: 4, Crunchiness: 6) is predicted to be: </span><span class="si">{</span><span class="s1">&#39;Orange&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">prediction</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;Apple&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># --- Visualizing the decision boundary (more complex but illustrative) ---</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Example 1: Simple Classification ---
+Mystery Fruit (Sweetness: 4, Crunchiness: 6) is predicted to be: Orange
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Visualizing the decision boundary (more complex but illustrative) ---</span>
 
 <span class="c1"># Create color maps</span>
 <span class="n">cmap_light</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;#FFAAAA&#39;</span><span class="p">,</span> <span class="s1">&#39;#AAFFaa&#39;</span><span class="p">])</span> <span class="c1"># Light red/green</span>
@@ -583,8 +604,18 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap_light</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/7713de0aae604a8dc5a9bb0b7c76f56a367c064991fbfe2c5336c15378b17c0b.png" src="../_images/7713de0aae604a8dc5a9bb0b7c76f56a367c064991fbfe2c5336c15378b17c0b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Example 2: KNN for Regression ---</span>
 
-<span class="c1"># --- Example 2: KNN for Regression ---</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
 
 <span class="c1"># Let&#39;s say we want to predict a house price (target) based on size (feature)</span>
 <span class="c1"># Small dataset for demonstration</span>
@@ -607,11 +638,14 @@
 
 <span class="c1"># New house size to predict price for</span>
 <span class="n">new_house_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">90</span><span class="p">]])</span> <span class="c1"># 90 sq meters</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
-
-<span class="c1"># Create a KNN regressor with k=3</span>
-<span class="n">knn_reg</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a KNN regressor with k=3</span>
+<span class="n">knn_reg</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Train the model</span>
 <span class="n">knn_reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">house_sizes</span><span class="p">,</span> <span class="n">house_prices</span><span class="p">)</span>
@@ -621,8 +655,19 @@
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Example 2: Simple Regression ---&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted price for a </span><span class="si">{</span><span class="n">new_house_size</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> sq meter house: $</span><span class="si">{</span><span class="n">predicted_price</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">,.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Plotting for regression</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Example 2: Simple Regression ---
+Predicted price for a 90 sq meter house: $165,000.00
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting for regression</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">house_sizes</span><span class="p">,</span> <span class="n">house_prices</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Training Data&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">new_house_size</span><span class="p">,</span> <span class="n">predicted_price</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Predicted Point&#39;</span><span class="p">)</span>
@@ -637,16 +682,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Example 1: Simple Classification ---
-Mystery Fruit (Sweetness: 4, Crunchiness: 6) is predicted to be: Orange
-</pre></div>
-</div>
-<img alt="../_images/7713de0aae604a8dc5a9bb0b7c76f56a367c064991fbfe2c5336c15378b17c0b.png" src="../_images/7713de0aae604a8dc5a9bb0b7c76f56a367c064991fbfe2c5336c15378b17c0b.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Example 2: Simple Regression ---
-Predicted price for a 90 sq meter house: $153,333.33
-</pre></div>
-</div>
-<img alt="../_images/fc8203a888ee18bbeaa8923b4f03bb3bc603c3d22edef8d536ff94a639673b19.png" src="../_images/fc8203a888ee18bbeaa8923b4f03bb3bc603c3d22edef8d536ff94a639673b19.png" />
+<img alt="../_images/99ac283594f2d0dc87d280cb074b130d467187fbc90d5d92c71e2a5675e325d7.png" src="../_images/99ac283594f2d0dc87d280cb074b130d467187fbc90d5d92c71e2a5675e325d7.png" />
 </div>
 </div>
 </section>
