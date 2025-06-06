@@ -20,3 +20,10 @@ parts:
       - file: physics/continuity-equation-01
         sections:
           - file: physics/continuity-equation-02
+      - file: physics/fokker-planck-equation-example
+
+  
+  - caption: DATA SCIENCE AND MACHINE LEARNING
+    chapters:
+      - file: data-science/knn-algorithm
+      - file: data-science/naive-bayes
