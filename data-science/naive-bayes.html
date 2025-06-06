@@ -1,0 +1,1277 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Naive Bayes Method (preview) &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data-science/naive-bayes';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Quantopia':' Physics, Python and Pi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/data-science/naive-bayes.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fdata-science/naive-bayes.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/data-science/naive-bayes.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Naive Bayes Method (preview)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-theorem-the-foundation">1. Bayes’ Theorem: The Foundation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-bayes-theorem-to-classification">2. Applying Bayes’ Theorem to Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-assumption-conditional-independence">3. The “Naive” Assumption: Conditional Independence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-bayes-classification-equation">4. The Naive Bayes Classification Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-calculate-the-probabilities">5. How to Calculate the Probabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-zero-probabilities-laplace-smoothing">6. Dealing with Zero Probabilities (Laplace Smoothing)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-naive-bayes">Advantages of Naive Bayes:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disadvantages-of-naive-bayes">Disadvantages of Naive Bayes:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-examples">Simple Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-weather-and-play-tennis">Example 1: Weather and Play Tennis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-spam-or-not-spam-text-classification-bag-of-words">Example 2: Spam or Not Spam (Text Classification - Bag of Words)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification-with-multinomial-naive-bayes">Text Classification with Multinomial Naive Bayes</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="naive-bayes-method-preview">
+<h1>Naive Bayes Method (preview)<a class="headerlink" href="#naive-bayes-method-preview" title="Link to this heading">#</a></h1>
+<p>Naive Bayes is a supervised machine learning algorithm used for classification tasks. It’s based on Bayes’ Theorem with a “naive” assumption of conditional independence between features. Despite its simplicity and the strong assumption, Naive Bayes often performs surprisingly well, especially in text classification and spam filtering.</p>
+<section id="bayes-theorem-the-foundation">
+<h2>1. Bayes’ Theorem: The Foundation<a class="headerlink" href="#bayes-theorem-the-foundation" title="Link to this heading">#</a></h2>
+<p>At the heart of Naive Bayes lies Bayes’ Theorem, which describes the probability of an event, based on prior knowledge of conditions that might be related to the event.</p>
+<p>Let <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> be two events. Bayes’ Theorem states:</p>
+<div class="math notranslate nohighlight">
+\[P(A|B) = P(B|A) * P(A) / P(B)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(A|B)\)</span> is the posterior probability: the probability of event <span class="math notranslate nohighlight">\(A\)</span> occurring given that event <span class="math notranslate nohighlight">\(B\)</span> has occurred.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B|A)\)</span> is the likelihood: the probability of event <span class="math notranslate nohighlight">\(B\)</span> occurring given that event <span class="math notranslate nohighlight">\(A\)</span> has occurred.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(A)\)</span> is the prior probability: the probability of event <span class="math notranslate nohighlight">\(A\)</span> occurring independently.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(B)\)</span> is the evidence: the probability of event <span class="math notranslate nohighlight">\(B\)</span> occurring independently.</p></li>
+</ul>
+</section>
+<section id="applying-bayes-theorem-to-classification">
+<h2>2. Applying Bayes’ Theorem to Classification<a class="headerlink" href="#applying-bayes-theorem-to-classification" title="Link to this heading">#</a></h2>
+<p>In classification, we want to predict the class (<span class="math notranslate nohighlight">\(C\)</span>) of a given data point (<span class="math notranslate nohighlight">\(X\)</span>). Let’s say we have <span class="math notranslate nohighlight">\(k\)</span> classes, <span class="math notranslate nohighlight">\(C_1, C_2, ..., C_k\)</span>, and our data point <span class="math notranslate nohighlight">\(X\)</span> has <span class="math notranslate nohighlight">\(n\)</span> features, <span class="math notranslate nohighlight">\(X = (x_1, x_2, ..., x_n)\)</span>.</p>
+<p>Our goal is to find the class <span class="math notranslate nohighlight">\(C_i\)</span> that maximizes the posterior probability <span class="math notranslate nohighlight">\(P(C_i|X)\)</span>. Using Bayes’ Theorem, we can write:</p>
+<p><span class="math notranslate nohighlight">\(P(C_i|X) = P(X|C_i) * P(C_i) / P(X)\)</span></p>
+<p>To classify a new data point <span class="math notranslate nohighlight">\(X\)</span>, we calculate <span class="math notranslate nohighlight">\(P(C_i|X)\)</span> for each class <span class="math notranslate nohighlight">\(C_i\)</span> and choose the class with the highest probability:</p>
+<p><span class="math notranslate nohighlight">\(Class(X) = argmax_{C_i} P(C_i|X)\)</span></p>
+<p>Since <span class="math notranslate nohighlight">\(P(X)\)</span> is constant for all classes, we can simplify the equation and just focus on the numerator:</p>
+<p><span class="math notranslate nohighlight">\(Class(X) = argmax_{C_i} P(X|C_i) * P(C_i)\)</span></p>
+</section>
+<section id="the-naive-assumption-conditional-independence">
+<h2>3. The “Naive” Assumption: Conditional Independence<a class="headerlink" href="#the-naive-assumption-conditional-independence" title="Link to this heading">#</a></h2>
+<p>Here comes the “naive” part. Calculating <span class="math notranslate nohighlight">\(P(X|C_i) = P(x_1, x_2, ..., x_n|C_i)\)</span> is computationally expensive and requires a huge amount of data to estimate accurately, especially with many features.</p>
+<p>Naive Bayes simplifies this by assuming that all features <span class="math notranslate nohighlight">\(x_j\)</span> are conditionally independent of each other given the class <span class="math notranslate nohighlight">\(C_i\)</span>. This means that the presence or absence of one feature does not affect the presence or absence of any other feature, given the class.</p>
+<p>Under this assumption, we can write:</p>
+<p><span class="math notranslate nohighlight">\(P(X|C_i) = P(x_1|C_i) * P(x_2|C_i) * ... * P(x_n|C_i)\)</span></p>
+<p>Or, using product notation:</p>
+<p><span class="math notranslate nohighlight">\(P(X|C_i) = \prod_{j=1}^{n} P(x_j|C_i)\)</span></p>
+</section>
+<section id="the-naive-bayes-classification-equation">
+<h2>4. The Naive Bayes Classification Equation<a class="headerlink" href="#the-naive-bayes-classification-equation" title="Link to this heading">#</a></h2>
+<p>Substituting this back into our classification equation, we get the final Naive Bayes formula:</p>
+<p><span class="math notranslate nohighlight">\(Class(X) = argmax_{C_i} P(C_i) * \prod_{j=1}^{n} P(x_j|C_i)\)</span></p>
+</section>
+<section id="how-to-calculate-the-probabilities">
+<h2>5. How to Calculate the Probabilities<a class="headerlink" href="#how-to-calculate-the-probabilities" title="Link to this heading">#</a></h2>
+<p>To use this formula, we need to estimate the probabilities from our training data:</p>
+<ul>
+<li><p><strong><span class="math notranslate nohighlight">\(P(C_i)\)</span> (Prior Probability of Class):</strong> This is simply the proportion of training examples belonging to class <span class="math notranslate nohighlight">\(C_i\)</span>.
+<span class="math notranslate nohighlight">\(P(C_i) = (Number of training examples in class C_i) / (Total number of training examples)\)</span></p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(P(x_j|C_i)\)</span> (Likelihood of Feature given Class):</strong> This depends on the type of feature:</p>
+<ul>
+<li><p><strong>For Categorical Features:</strong> This is the proportion of training examples in class <span class="math notranslate nohighlight">\(C_i\)</span> that have feature <span class="math notranslate nohighlight">\(x_j\)</span>.
+<span class="math notranslate nohighlight">\(P(x_j|C_i) = (Number of training examples in class C_i with feature x_j) / (Number of training examples in class C_i)\)</span></p></li>
+<li><p><strong>For Continuous Features (Gaussian Naive Bayes):</strong> If features are continuous, we often assume they follow a Gaussian (Normal) distribution within each class. We then estimate the mean (<span class="math notranslate nohighlight">\(\mu_{C_i, j}\)</span>) and variance (<span class="math notranslate nohighlight">\(\sigma^2_{C_i, j}\)</span>) of feature <span class="math notranslate nohighlight">\(x_j\)</span> for each class <span class="math notranslate nohighlight">\(C_i\)</span>.
+The probability density function for a Gaussian distribution is:
+<span class="math notranslate nohighlight">\(P(x_j|C_i) = 1 / (\sqrt{2\pi\sigma^2_{C_i, j}}) * exp(-(x_j - \mu_{C_i, j})^2 / (2\sigma^2_{C_i, j}))\)</span></p>
+<p>Note: When using continuous features, we are working with probability densities, not probabilities in the strict sense. However, the argmax still works because we are comparing relative likelihoods.</p>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="dealing-with-zero-probabilities-laplace-smoothing">
+<h2>6. Dealing with Zero Probabilities (Laplace Smoothing)<a class="headerlink" href="#dealing-with-zero-probabilities-laplace-smoothing" title="Link to this heading">#</a></h2>
+<p>A common issue in Naive Bayes is when a particular feature value doesn’t appear in the training data for a certain class. This would make <span class="math notranslate nohighlight">\(P(x_j|C_i) = 0\)</span>, and consequently, the entire product <span class="math notranslate nohighlight">\(\prod_{j=1}^{n} P(x_j|C_i)\)</span> would become zero, regardless of other features. This can lead to inaccurate classifications.</p>
+<p>To mitigate this, we use <strong>Laplace Smoothing (or Additive Smoothing)</strong>. We add a small constant (typically 1) to the numerator and adjust the denominator.</p>
+<p>For categorical features:
+<span class="math notranslate nohighlight">\(P(x_j|C_i) = (Number of training examples in class C_i with feature x_j + \alpha) / (Number of training examples in class C_i + \alpha * V_j)\)</span>
+Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is the smoothing parameter (usually 1).</p></li>
+<li><p><span class="math notranslate nohighlight">\(V_j\)</span> is the number of possible values for feature <span class="math notranslate nohighlight">\(x_j\)</span>.</p></li>
+</ul>
+</section>
+<section id="advantages-of-naive-bayes">
+<h2>Advantages of Naive Bayes:<a class="headerlink" href="#advantages-of-naive-bayes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Simple and easy to implement.</strong></p></li>
+<li><p><strong>Fast prediction:</strong> Because it’s based on probability calculations, it’s very fast for classification.</p></li>
+<li><p><strong>Good performance on text classification:</strong> Despite the “naive” assumption, it works surprisingly well for tasks like spam detection and sentiment analysis.</p></li>
+<li><p><strong>Requires less training data:</strong> Compared to more complex models, it can perform reasonably well with smaller datasets.</p></li>
+<li><p><strong>Scales well with large datasets:</strong> Due to its linear complexity.</p></li>
+</ul>
+</section>
+<section id="disadvantages-of-naive-bayes">
+<h2>Disadvantages of Naive Bayes:<a class="headerlink" href="#disadvantages-of-naive-bayes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Strong independence assumption:</strong> The conditional independence assumption rarely holds true in real-world data, which can lead to a loss of accuracy.</p></li>
+<li><p><strong>Zero-frequency problem:</strong> As discussed, this needs to be handled with smoothing techniques.</p></li>
+<li><p><strong>Outputs probabilities, but don’t trust them too much:</strong> While it gives probabilities, these are often not well-calibrated due to the strong independence assumption.</p></li>
+</ul>
+</section>
+<section id="simple-examples">
+<h2>Simple Examples<a class="headerlink" href="#simple-examples" title="Link to this heading">#</a></h2>
+<p>Let’s illustrate Naive Bayes with a couple of simple examples.</p>
+<section id="example-1-weather-and-play-tennis">
+<h3>Example 1: Weather and Play Tennis<a class="headerlink" href="#example-1-weather-and-play-tennis" title="Link to this heading">#</a></h3>
+<p>Imagine we want to predict if someone will play tennis based on weather conditions.</p>
+<p><strong>Training Data:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Outlook</p></th>
+<th class="head text-left"><p>Temperature</p></th>
+<th class="head text-left"><p>Humidity</p></th>
+<th class="head text-left"><p>Wind</p></th>
+<th class="head text-left"><p>Play Tennis</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Sunny</p></td>
+<td class="text-left"><p>Hot</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Sunny</p></td>
+<td class="text-left"><p>Hot</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Overcast</p></td>
+<td class="text-left"><p>Hot</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Rain</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Rain</p></td>
+<td class="text-left"><p>Cool</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Rain</p></td>
+<td class="text-left"><p>Cool</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Overcast</p></td>
+<td class="text-left"><p>Cool</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Sunny</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Sunny</p></td>
+<td class="text-left"><p>Cool</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Rain</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Sunny</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Overcast</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Overcast</p></td>
+<td class="text-left"><p>Hot</p></td>
+<td class="text-left"><p>Normal</p></td>
+<td class="text-left"><p>Weak</p></td>
+<td class="text-left"><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Rain</p></td>
+<td class="text-left"><p>Mild</p></td>
+<td class="text-left"><p>High</p></td>
+<td class="text-left"><p>Strong</p></td>
+<td class="text-left"><p>No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Problem:</strong> Predict “Play Tennis” for the new day: <code class="docutils literal notranslate"><span class="pre">Outlook</span> <span class="pre">=</span> <span class="pre">Sunny</span></code>, <code class="docutils literal notranslate"><span class="pre">Temperature</span> <span class="pre">=</span> <span class="pre">Cool</span></code>, <code class="docutils literal notranslate"><span class="pre">Humidity</span> <span class="pre">=</span> <span class="pre">High</span></code>, <code class="docutils literal notranslate"><span class="pre">Wind</span> <span class="pre">=</span> <span class="pre">Strong</span></code>.</p>
+<p><strong>Step 1: Calculate Prior Probabilities P(Play Tennis) and P(No Play Tennis)</strong></p>
+<p>Total training examples = 14
+Number of ‘Yes’ = 9
+Number of ‘No’ = 5</p>
+<p><span class="math notranslate nohighlight">\(P(Yes) = 9/14 \approx 0.643\)</span>
+<span class="math notranslate nohighlight">\(P(No) = 5/14 \approx 0.357\)</span></p>
+<p><strong>Step 2: Calculate Likelihoods P(Feature | Class)</strong></p>
+<p>Let’s calculate for each feature given ‘Yes’ and ‘No’.</p>
+<p><strong>Outlook:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(Sunny | Yes) = 2/9\)</span> (2 ‘Sunny’ days out of 9 ‘Yes’ days)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Overcast | Yes) = 4/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Rain | Yes) = 3/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Sunny | No) = 3/5\)</span> (3 ‘Sunny’ days out of 5 ‘No’ days)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Overcast | No) = 0/5\)</span> (This is a problem! We’ll address it with smoothing.)</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Rain | No) = 2/5\)</span></p></li>
+</ul>
+<p><strong>Temperature:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(Hot | Yes) = 2/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Mild | Yes) = 4/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Cool | Yes) = 3/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Hot | No) = 2/5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Mild | No) = 2/5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Cool | No) = 1/5\)</span></p></li>
+</ul>
+<p><strong>Humidity:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(High | Yes) = 3/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Normal | Yes) = 6/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(High | No) = 4/5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Normal | No) = 1/5\)</span></p></li>
+</ul>
+<p><strong>Wind:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(Weak | Yes) = 6/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Strong | Yes) = 3/9\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Weak | No) = 2/5\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(Strong | No) = 3/5\)</span></p></li>
+</ul>
+<p><strong>Addressing Zero Probability (P(Overcast | No) = 0/5)</strong></p>
+<p>Using Laplace Smoothing (add 1 to numerator, add number of unique values for Outlook (3) to denominator):</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(Overcast | No) = (0 + 1) / (5 + 3) = 1/8\)</span>
+(For consistency, we should apply smoothing to all likelihood calculations, but for this simple example, we’ll just fix the zero-frequency problem here to demonstrate.)</p></li>
+</ul>
+<p><strong>Step 3: Calculate Posterior Probabilities for the New Day</strong></p>
+<p>New Day: <code class="docutils literal notranslate"><span class="pre">Outlook</span> <span class="pre">=</span> <span class="pre">Sunny</span></code>, <code class="docutils literal notranslate"><span class="pre">Temperature</span> <span class="pre">=</span> <span class="pre">Cool</span></code>, <code class="docutils literal notranslate"><span class="pre">Humidity</span> <span class="pre">=</span> <span class="pre">High</span></code>, <code class="docutils literal notranslate"><span class="pre">Wind</span> <span class="pre">=</span> <span class="pre">Strong</span></code>.</p>
+<p><strong>For Class ‘Yes’:</strong>
+<span class="math notranslate nohighlight">\(P(Yes | X) \propto P(Yes) * P(Sunny | Yes) * P(Cool | Yes) * P(High | Yes) * P(Strong | Yes)\)</span>
+<span class="math notranslate nohighlight">\(P(Yes | X) \propto (9/14) * (2/9) * (3/9) * (3/9) * (3/9)\)</span>
+<span class="math notranslate nohighlight">\(P(Yes | X) \propto 0.643 * 0.222 * 0.333 * 0.333 * 0.333 \approx 0.0047\)</span></p>
+<p><strong>For Class ‘No’:</strong>
+<span class="math notranslate nohighlight">\(P(No | X) \propto P(No) * P(Sunny | No) * P(Cool | No) * P(High | No) * P(Strong | No)\)</span>
+<span class="math notranslate nohighlight">\(P(No | X) \propto (5/14) * (3/5) * (1/5) * (4/5) * (3/5)\)</span>
+<span class="math notranslate nohighlight">\(P(No | X) \propto 0.357 * 0.6 * 0.2 * 0.8 * 0.6 \approx 0.0205\)</span></p>
+<p><strong>Step 4: Compare and Classify</strong></p>
+<p>Since <span class="math notranslate nohighlight">\(0.0205 &gt; 0.0047\)</span>, the Naive Bayes classifier predicts <strong>“No”</strong> for playing tennis on the new day.</p>
+</section>
+<section id="example-2-spam-or-not-spam-text-classification-bag-of-words">
+<h3>Example 2: Spam or Not Spam (Text Classification - Bag of Words)<a class="headerlink" href="#example-2-spam-or-not-spam-text-classification-bag-of-words" title="Link to this heading">#</a></h3>
+<p>Let’s simplify and consider two words: “free” and “money”.</p>
+<p><strong>Training Data:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Message</p></th>
+<th class="head text-left"><p>Class (Spam/Not Spam)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>“Get free money”</p></td>
+<td class="text-left"><p>Spam</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>“Earn money now”</p></td>
+<td class="text-left"><p>Spam</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>“Learn for free”</p></td>
+<td class="text-left"><p>Not Spam</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>“Work hard”</p></td>
+<td class="text-left"><p>Not Spam</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>“Free course”</p></td>
+<td class="text-left"><p>Not Spam</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Problem:</strong> Classify “free money” as Spam or Not Spam.</p>
+<p><strong>Step 1: Calculate Prior Probabilities</strong></p>
+<p>Total messages = 5
+Number of Spam = 2
+Number of Not Spam = 3</p>
+<p><span class="math notranslate nohighlight">\(P(Spam) = 2/5 = 0.4\)</span>
+<span class="math notranslate nohighlight">\(P(Not Spam) = 3/5 = 0.6\)</span></p>
+<p><strong>Step 2: Calculate Likelihoods (P(word | Class))</strong></p>
+<p>We’ll count word occurrences. Let’s apply Laplace Smoothing with <span class="math notranslate nohighlight">\(\alpha=1\)</span> and vocabulary size <span class="math notranslate nohighlight">\(V=2\)</span> (words “free”, “money”).</p>
+<p><strong>For Class ‘Spam’:</strong></p>
+<ul class="simple">
+<li><p>Total words in Spam messages = “free”, “money”, “earn”, “money”, “now” = 5 words.</p></li>
+<li><p>Count(“free” in Spam) = 1</p></li>
+<li><p>Count(“money” in Spam) = 2</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(free | Spam) = (1 + 1) / (5 + 2) = 2/7\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(money | Spam) = (2 + 1) / (5 + 2) = 3/7\)</span></p></li>
+</ul>
+<p><strong>For Class ‘Not Spam’:</strong></p>
+<ul class="simple">
+<li><p>Total words in Not Spam messages = “learn”, “for”, “free”, “work”, “hard”, “free”, “course” = 7 words.</p></li>
+<li><p>Count(“free” in Not Spam) = 2</p></li>
+<li><p>Count(“money” in Not Spam) = 0</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(free | Not Spam) = (2 + 1) / (7 + 2) = 3/9 = 1/3\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(money | Not Spam) = (0 + 1) / (7 + 2) = 1/9\)</span></p></li>
+</ul>
+<p><strong>Step 3: Calculate Posterior Probabilities for the New Message</strong></p>
+<p>New Message: “free money”</p>
+<p><strong>For Class ‘Spam’:</strong>
+<span class="math notranslate nohighlight">\(P(Spam | &quot;free money&quot;) \propto P(Spam) * P(free | Spam) * P(money | Spam)\)</span>
+<span class="math notranslate nohighlight">\(P(Spam | &quot;free money&quot;) \propto (0.4) * (2/7) * (3/7)\)</span>
+<span class="math notranslate nohighlight">\(P(Spam | &quot;free money&quot;) \propto 0.4 * 0.286 * 0.429 \approx 0.049\)</span></p>
+<p><strong>For Class ‘Not Spam’:</strong>
+<span class="math notranslate nohighlight">\(P(Not Spam | &quot;free money&quot;) \propto P(Not Spam) * P(free | Not Spam) * P(money | Not Spam)\)</span>
+<span class="math notranslate nohighlight">\(P(Not Spam | &quot;free money&quot;) \propto (0.6) * (1/3) * (1/9)\)</span>
+<span class="math notranslate nohighlight">\(P(Not Spam | &quot;free money&quot;) \propto 0.6 * 0.333 * 0.111 \approx 0.022\)</span></p>
+<p><strong>Step 4: Compare and Classify</strong></p>
+<p>Since <span class="math notranslate nohighlight">\(0.049 &gt; 0.022\)</span>, the Naive Bayes classifier predicts <strong>“Spam”</strong> for the message “free money”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span> <span class="c1"># To visualize Gaussian distributions</span>
+
+<span class="c1"># 1. Generate Synthetic Data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="c1"># for reproducibility</span>
+
+<span class="c1"># Class 0: Blobs around (2, 2)</span>
+<span class="n">X_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">y_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Class 1: Blobs around (8, 8)</span>
+<span class="n">X_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">y_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Combine data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X_0</span><span class="p">,</span> <span class="n">X_1</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y_0</span><span class="p">,</span> <span class="n">y_1</span><span class="p">))</span>
+
+<span class="c1"># Split data into training and testing sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 2. Visualize the Data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 0&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Synthetic Data for Classification&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 3. Create and Train the Gaussian Naive Bayes Model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 4. Make Predictions</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test data:&quot;</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification Report on test data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="c1"># Example prediction for a new data point</span>
+<span class="n">new_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+<span class="n">predicted_class</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span>
+<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">new_point</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Predicted class for new point </span><span class="si">{</span><span class="n">new_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">predicted_class</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probabilities (Class 0, Class 1): </span><span class="si">{</span><span class="n">predicted_proba</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 5. Inspect Learned Parameters (Mean and Variance for each feature, per class)</span>
+<span class="c1"># These are the mu and sigma^2 values from the Gaussian PDF</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Learned Parameters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class 0:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mean (Feature 1, Feature 2): </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Variance (Feature 1, Feature 2): </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class 1:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Mean (Feature 1, Feature 2): </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Variance (Feature 1, Feature 2): </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># You can also get the prior probabilities of each class</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Class Prior Probabilities:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P(Class 0): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">class_prior_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P(Class 1): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">class_prior_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Visualize the Gaussian distributions for each feature and class</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Feature 1</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 0 - Feature 1 PDF&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 1 - Feature 1 PDF&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Gaussian Distributions for Feature 1&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Feature 1 Value&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Feature 2</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 0 - Feature 2 PDF&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Class 1 - Feature 2 PDF&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Gaussian Distributions for Feature 2&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Feature 2 Value&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a0d6140e6b1c05a4720909aff3599edc23c9696f5bcae97675a618bdecdc001e.png" src="../_images/a0d6140e6b1c05a4720909aff3599edc23c9696f5bcae97675a618bdecdc001e.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on test data: 1.0
+Classification Report on test data:
+               precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00        17
+         1.0       1.00      1.00      1.00        13
+
+    accuracy                           1.00        30
+   macro avg       1.00      1.00      1.00        30
+weighted avg       1.00      1.00      1.00        30
+
+
+Predicted class for new point [5 5]: 1.0
+Probabilities (Class 0, Class 1): [0.43705757 0.56294243]
+
+Learned Parameters:
+Class 0:
+  Mean (Feature 1, Feature 2): [1.94321047 1.9439175 ]
+  Variance (Feature 1, Feature 2): [1.75549969 1.98448777]
+Class 1:
+  Mean (Feature 1, Feature 2): [7.79254769 8.23371526]
+  Variance (Feature 1, Feature 2): [1.5822861  2.15940779]
+
+Class Prior Probabilities:
+P(Class 0): 1.6023
+P(Class 1): 1.6965
+</pre></div>
+</div>
+<img alt="../_images/e7ced73ac682767e70137a8af8ee257b96152140c4f978fd60e23ffa45b202ec.png" src="../_images/e7ced73ac682767e70137a8af8ee257b96152140c4f978fd60e23ffa45b202ec.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="text-classification-with-multinomial-naive-bayes">
+<h2>Text Classification with Multinomial Naive Bayes<a class="headerlink" href="#text-classification-with-multinomial-naive-bayes" title="Link to this heading">#</a></h2>
+<p><strong>Text Classification with Multinomial Naive Bayes:</strong> Using the <strong>20 Newsgroups dataset</strong>. This is a perfect fit for <code class="docutils literal notranslate"><span class="pre">MultinomialNB</span></code> as it deals with word counts (or frequencies), a common scenario in text classification</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">MultinomialNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Multinomial Naive Bayes (Text Classification) ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># 1. Load the Dataset</span>
+<span class="c1"># We&#39;ll load a subset of categories to keep it manageable for a quick example.</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;alt.atheism&#39;</span><span class="p">,</span> <span class="s1">&#39;soc.religion.christian&#39;</span><span class="p">,</span> <span class="s1">&#39;comp.graphics&#39;</span><span class="p">,</span> <span class="s1">&#39;sci.med&#39;</span><span class="p">]</span>
+<span class="n">newsgroups_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">newsgroups_test</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training data size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> documents&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test data size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> documents&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Categories: </span><span class="si">{</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># print(&quot;\nFirst training document example:&quot;)</span>
+<span class="c1"># print(newsgroups_train.data[0])</span>
+
+<span class="c1"># 2. Feature Extraction (Convert text to numerical features - Word Counts)</span>
+<span class="c1"># CountVectorizer converts a collection of text documents to a matrix of token counts.</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X_train_counts</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">X_test_counts</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="c1"># Use the same vocabulary learned from training</span>
+
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">newsgroups_test</span><span class="o">.</span><span class="n">target</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Shape of X_train_counts (documents, vocabulary_size): </span><span class="si">{</span><span class="n">X_train_counts</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of X_test_counts (documents, vocabulary_size): </span><span class="si">{</span><span class="n">X_test_counts</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Create and Train the Multinomial Naive Bayes Model</span>
+<span class="c1"># alpha=1.0 is the default for Laplace smoothing (additive smoothing)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">MultinomialNB</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_counts</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 4. Make Predictions</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_counts</span><span class="p">)</span>
+<span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_counts</span><span class="p">)</span>
+
+<span class="c1"># 5. Evaluate the Model</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification Report:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">newsgroups_test</span><span class="o">.</span><span class="n">target_names</span><span class="p">))</span>
+
+<span class="c1"># Example prediction for a single document</span>
+<span class="n">new_doc</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;God and science are often debated topics. Computer graphics can visualize complex medical data.&quot;</span><span class="p">]</span>
+<span class="n">new_doc_counts</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_doc</span><span class="p">)</span>
+<span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_doc_counts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">new_doc_counts</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">New document: &#39;</span><span class="si">{</span><span class="n">new_doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted category: </span><span class="si">{</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probabilities (for </span><span class="si">{</span><span class="n">newsgroups_train</span><span class="o">.</span><span class="n">target_names</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># You can also inspect the learned log-probabilities (log-prior and feature log probabilities)</span>
+<span class="c1"># print(&quot;\nLearned Log Class Priors:&quot;, clf.class_log_prior_)</span>
+<span class="c1"># print(&quot;Learned Log Feature Probabilities Shape:&quot;, clf.feature_log_prob_.shape)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Multinomial Naive Bayes (Text Classification) ---
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training data size: 2257 documents
+Test data size: 1502 documents
+Categories: [&#39;alt.atheism&#39;, &#39;comp.graphics&#39;, &#39;sci.med&#39;, &#39;soc.religion.christian&#39;]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of X_train_counts (documents, vocabulary_size): (2257, 35788)
+Shape of X_test_counts (documents, vocabulary_size): (1502, 35788)
+
+Accuracy: 0.9341
+Classification Report:
+
+                        precision    recall  f1-score   support
+
+           alt.atheism       0.92      0.90      0.91       319
+         comp.graphics       0.95      0.95      0.95       389
+               sci.med       0.96      0.91      0.93       396
+soc.religion.christian       0.91      0.97      0.94       398
+
+              accuracy                           0.93      1502
+             macro avg       0.93      0.93      0.93      1502
+          weighted avg       0.93      0.93      0.93      1502
+
+
+New document: &#39;God and science are often debated topics. Computer graphics can visualize complex medical data.&#39;
+Predicted category: comp.graphics
+Probabilities (for [&#39;alt.atheism&#39;, &#39;comp.graphics&#39;, &#39;sci.med&#39;, &#39;soc.religion.christian&#39;]): [0.000e+00 9.957e-01 3.500e-03 8.000e-04]
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Explanation:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Load Data:</strong> <code class="docutils literal notranslate"><span class="pre">fetch_20newsgroups</span></code> downloads the dataset. We select a few categories to keep the example concise.</p></li>
+<li><p><strong>Feature Extraction (<code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code>):</strong> Text data needs to be converted into numerical features. <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> does this by:</p>
+<ul class="simple">
+<li><p>Tokenizing the text (breaking it into words).</p></li>
+<li><p>Building a vocabulary of all unique words in the training set.</p></li>
+<li><p>For each document, it counts the occurrences of each word from the vocabulary, creating a sparse matrix where rows are documents and columns are words.</p></li>
+</ul>
+</li>
+<li><p><strong>Train Model:</strong> <code class="docutils literal notranslate"><span class="pre">MultinomialNB()</span></code> is instantiated and trained using <code class="docutils literal notranslate"><span class="pre">fit()</span></code>. It learns the likelihood of each word appearing in each category and the prior probability of each category.</p></li>
+<li><p><strong>Prediction:</strong> <code class="docutils literal notranslate"><span class="pre">predict()</span></code> assigns the most probable category, and <code class="docutils literal notranslate"><span class="pre">predict_proba()</span></code> provides the probability distribution over all categories for each test document.</p></li>
+<li><p><strong>Evaluation:</strong> We use <code class="docutils literal notranslate"><span class="pre">accuracy_score</span></code> and <code class="docutils literal notranslate"><span class="pre">classification_report</span></code> to assess the model’s performance on the test set.</p></li>
+</ol>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span> <span class="c1"># To visualize Gaussian distributions</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Gaussian Naive Bayes (Numerical Classification) ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># 1. Load the Dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feature names: </span><span class="si">{</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Target names: </span><span class="si">{</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of X: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of y: </span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Split Data into Training and Testing Sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Training set size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test set size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Create and Train the Gaussian Naive Bayes Model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 4. Make Predictions</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># 5. Evaluate the Model</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Classification Report:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">))</span>
+
+<span class="c1"># Example prediction for a single new data point</span>
+<span class="c1"># Let&#39;s say a new flower has these measurements:</span>
+<span class="c1"># sepal length (cm), sepal width (cm), petal length (cm), petal width (cm)</span>
+<span class="n">new_flower_measurements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">5.1</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]])</span> <span class="c1"># Looks like a Setosa</span>
+<span class="n">predicted_class_idx</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_flower_measurements</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">predicted_proba</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">new_flower_measurements</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">New flower measurements: </span><span class="si">{</span><span class="n">new_flower_measurements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted species: </span><span class="si">{</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">[</span><span class="n">predicted_class_idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Probabilities (for </span><span class="si">{</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predicted_proba</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 6. Inspect Learned Parameters (Mean and Variance for each feature, per class)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Learned Parameters (Mean and Variance per feature per class):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Class: </span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">):</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">feature_name</span><span class="si">}</span><span class="s2">: Mean = </span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Variance = </span><span class="si">{</span><span class="n">variance</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># You can also get the prior probabilities of each class</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Class Prior Probabilities:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">):</span>
+    <span class="n">prior_prob</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">class_prior_</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  P(</span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">prior_prob</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Visualize the Gaussian distributions for one feature (e.g., &#39;sepal length (cm)&#39;) for each class</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">feature_idx_to_plot</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># &#39;sepal length (cm)&#39;</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">feature_idx_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">feature_idx_to_plot</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">theta_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">feature_idx_to_plot</span><span class="p">]</span>
+    <span class="n">std_dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">var_</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">feature_idx_to_plot</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std_dev</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_name</span><span class="si">}</span><span class="s1"> PDF&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gaussian Distributions for </span><span class="si">{</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">feature_idx_to_plot</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">[</span><span class="n">feature_idx_to_plot</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability Density&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Gaussian Naive Bayes (Numerical Classification) ---
+Feature names: [&#39;sepal length (cm)&#39;, &#39;sepal width (cm)&#39;, &#39;petal length (cm)&#39;, &#39;petal width (cm)&#39;]
+Target names: [&#39;setosa&#39; &#39;versicolor&#39; &#39;virginica&#39;]
+Shape of X: (150, 4)
+Shape of y: (150,)
+
+Training set size: 105 samples
+Test set size: 45 samples
+
+Accuracy: 0.9778
+Classification Report:
+
+              precision    recall  f1-score   support
+
+      setosa       1.00      1.00      1.00        19
+  versicolor       1.00      0.92      0.96        13
+   virginica       0.93      1.00      0.96        13
+
+    accuracy                           0.98        45
+   macro avg       0.98      0.97      0.97        45
+weighted avg       0.98      0.98      0.98        45
+
+
+New flower measurements: [5.1 3.5 1.4 0.2]
+Predicted species: setosa
+Probabilities (for [&#39;setosa&#39; &#39;versicolor&#39; &#39;virginica&#39;]): [1. 0. 0.]
+
+Learned Parameters (Mean and Variance per feature per class):
+
+Class: setosa
+  sepal length (cm): Mean = 4.9645, Variance = 0.1120
+  sepal width (cm): Mean = 3.3774, Variance = 0.1366
+  petal length (cm): Mean = 1.4645, Variance = 0.0333
+  petal width (cm): Mean = 0.2484, Variance = 0.0115
+
+Class: versicolor
+  sepal length (cm): Mean = 5.8622, Variance = 0.2753
+  sepal width (cm): Mean = 2.7243, Variance = 0.0872
+  petal length (cm): Mean = 4.2108, Variance = 0.2393
+  petal width (cm): Mean = 1.3027, Variance = 0.0413
+
+Class: virginica
+  sepal length (cm): Mean = 6.5595, Variance = 0.4224
+  sepal width (cm): Mean = 2.9865, Variance = 0.0963
+  petal length (cm): Mean = 5.5459, Variance = 0.2884
+  petal width (cm): Mean = 2.0054, Variance = 0.0859
+
+Class Prior Probabilities:
+  P(setosa): 1.3434
+  P(versicolor): 1.4225
+  P(virginica): 1.4225
+</pre></div>
+</div>
+<img alt="../_images/6d1f4d75b22144ff5ef05b10aacbcca8f8e3d022de68f314937a55c6fd159b33.png" src="../_images/6d1f4d75b22144ff5ef05b10aacbcca8f8e3d022de68f314937a55c6fd159b33.png" />
+</div>
+</div>
+<p><strong>Explanation:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Load Data:</strong> <code class="docutils literal notranslate"><span class="pre">load_iris()</span></code> loads the famous Iris flower dataset, which contains measurements of sepal length, sepal width, petal length, and petal width for three species of Iris flowers.</p></li>
+<li><p><strong>Train/Test Split:</strong> It’s good practice to split your data into training and testing sets to evaluate how well your model generalizes to unseen data.</p></li>
+<li><p><strong>Train Model:</strong> <code class="docutils literal notranslate"><span class="pre">GaussianNB()</span></code> is instantiated and trained. It calculates the mean and variance of each feature for each class from the training data.</p></li>
+<li><p><strong>Prediction:</strong> Similar to the previous example, <code class="docutils literal notranslate"><span class="pre">predict()</span></code> gives the class, and <code class="docutils literal notranslate"><span class="pre">predict_proba()</span></code> provides the probability distribution.</p></li>
+<li><p><strong>Evaluation:</strong> Accuracy and classification report are used to assess performance.</p></li>
+<li><p><strong>Learned Parameters &amp; Visualization:</strong> We print the estimated means and variances (<code class="docutils literal notranslate"><span class="pre">model.theta_</span></code> and <code class="docutils literal notranslate"><span class="pre">model.var_</span></code>) for each feature and class, which are the parameters of the Gaussian distributions. The plot visualizes these distributions for a chosen feature, helping to understand how the model differentiates between classes based on feature values.</p></li>
+</ol>
+<p>These examples clearly demonstrate how to leverage <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>’s built-in datasets and Naive Bayes implementations for different types of data, making your learning process more efficient and practical.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./data-science"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayes-theorem-the-foundation">1. Bayes’ Theorem: The Foundation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-bayes-theorem-to-classification">2. Applying Bayes’ Theorem to Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-assumption-conditional-independence">3. The “Naive” Assumption: Conditional Independence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-bayes-classification-equation">4. The Naive Bayes Classification Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-calculate-the-probabilities">5. How to Calculate the Probabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-zero-probabilities-laplace-smoothing">6. Dealing with Zero Probabilities (Laplace Smoothing)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-naive-bayes">Advantages of Naive Bayes:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disadvantages-of-naive-bayes">Disadvantages of Naive Bayes:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-examples">Simple Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-weather-and-play-tennis">Example 1: Weather and Play Tennis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-spam-or-not-spam-text-classification-bag-of-words">Example 2: Spam or Not Spam (Text Classification - Bag of Words)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-classification-with-multinomial-naive-bayes">Text Classification with Multinomial Naive Bayes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev and Anna Savchenko
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
