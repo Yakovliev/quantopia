@@ -27,3 +27,4 @@ parts:
     chapters:
       - file: data-science/knn-algorithm
       - file: data-science/naive-bayes
+      - file: data-science/logistic-regression
