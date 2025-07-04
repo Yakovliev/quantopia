@@ -18,8 +18,8 @@ parts:
   - caption: PHYSICS
     chapters:
       - file: physics/continuity-equation-01
-        sections:
-          - file: physics/continuity-equation-02
+      - file: physics/continuity-equation-02
+      - file: physics/ensemble
       - file: physics/fokker-planck-equation-example
 
   
