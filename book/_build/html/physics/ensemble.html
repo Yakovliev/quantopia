@@ -1,0 +1,814 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Statistical Ensembles and Liouville’s Theorem &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/ensemble';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fokker-Planck Equation - Example Analysis (preview)" href="fokker-planck-equation-example.html" />
+    <link rel="prev" title="The Continuity Equation: One-Dimensional Advection of a Density Profile" href="continuity-equation-02.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/ensemble.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/ensemble.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/physics/ensemble.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Statistical Ensembles and Liouville’s Theorem</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-ensemble">What is an Ensemble?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-ensembles">Types of Ensembles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#liouville-s-theorem">Liouville’s theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#liouville-s-theorem-and-equilibrium-statistical-mechanics">Liouville’s theorem and equilibrium statistical mechanics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-average">Ensemble Average</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-examples-to-illustrate-theoretical-material">Simple Examples to Illustrate Theoretical Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-liouville-s-theorem-simple-harmonic-oscillator">Example 1: Liouville’s Theorem - Simple Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-ensemble-average-a-system-of-two-state-particles">Example 2: Ensemble Average - A System of Two-State Particles</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="statistical-ensembles-and-liouville-s-theorem">
+<h1>Statistical Ensembles and Liouville’s Theorem<a class="headerlink" href="#statistical-ensembles-and-liouville-s-theorem" title="Link to this heading">#</a></h1>
+<section id="what-is-an-ensemble">
+<h2>What is an Ensemble?<a class="headerlink" href="#what-is-an-ensemble" title="Link to this heading">#</a></h2>
+<p>In <strong>classical mechanics</strong>, we describe the state of a system (like a single particle) by its position and momentum. For a system with many particles, say <span class="math notranslate nohighlight">\(N\)</span> particles, the state would be given by <span class="math notranslate nohighlight">\(3N\)</span> position coordinates and <span class="math notranslate nohighlight">\(3N\)</span> momentum coordinates. This <span class="math notranslate nohighlight">\(6N\)</span>-dimensional space is called <strong>phase space</strong>. Each point in phase space represents a unique microscopic state of the system.</p>
+<p>However, when we deal with macroscopic systems (like a gas in a room), we have an enormous number of particles (on the order of Avogadro’s number, <span class="math notranslate nohighlight">\(10^{23}\)</span>). It’s practically impossible to know the exact microscopic state of such a system at any given time. Even if we could, solving the equations of motion for all those particles would be computationally intractable.</p>
+<p>This is where the concept of an <strong>ensemble</strong> comes in. An ensemble is a <strong>collection of a large number of identical systems</strong>, all prepared in the same macroscopic way, but each in a different possible microscopic state consistent with the macroscopic conditions.</p>
+<p>Imagine you have a box of gas. You know its volume, temperature, and the number of particles. An ensemble would be a vast collection of identical boxes, each with the same volume, temperature, and number of particles, but the individual gas molecules within each box would be in different positions and have different momenta.</p>
+<p>The idea is that if we observe a single macroscopic system over a very long time, it will, on average, visit all the microscopic states consistent with its macroscopic properties. This is called the <strong>ergodic hypothesis</strong>. For practical purposes, instead of waiting for one system to explore all its possible states, we consider a large number of identical systems at a single instant in time. The average over this ensemble is then equivalent to the time average of a single system.</p>
+<blockquote>
+<div><p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Ergodic_hypothesis">Ergodic hypothesis</a></strong>. The ergodic hypothesis, in physics and thermodynamics, essentially states that for a system in thermal equilibrium, the time a system spends in a particular region of its phase space is proportional to the volume of that region. In simpler terms, over a long period, the system will visit all accessible states with equal probability. This allows us to calculate the average behavior of a system by averaging over its states, rather than over time.</p>
+</div></blockquote>
+<section id="types-of-ensembles">
+<h3>Types of Ensembles<a class="headerlink" href="#types-of-ensembles" title="Link to this heading">#</a></h3>
+<p>The type of ensemble used depends on which macroscopic quantities are kept constant:</p>
+<ul class="simple">
+<li><p><strong>Microcanonical Ensemble (NVE):</strong> This ensemble represents an isolated system where the <strong>number of particles (<span class="math notranslate nohighlight">\(N\)</span>), volume (<span class="math notranslate nohighlight">\(V\)</span>), and total energy (<span class="math notranslate nohighlight">\(E\)</span>) are fixed</strong>. All systems in this ensemble have exactly the same energy.</p></li>
+<li><p><strong>Canonical Ensemble (NVT):</strong> This ensemble represents a closed system in thermal contact with a heat reservoir. Here, the <strong>number of particles (<span class="math notranslate nohighlight">\(N\)</span>), volume (<span class="math notranslate nohighlight">\(V\)</span>), and temperature (<span class="math notranslate nohighlight">\(T\)</span>) are fixed</strong>. Energy can fluctuate between the system and the reservoir.</p></li>
+<li><p><strong>Grand Canonical Ensemble (<span class="math notranslate nohighlight">\(\mu\)</span>VT):</strong> This ensemble represents an open system that can exchange both energy and particles with a reservoir. Here, the <strong>chemical potential <span class="math notranslate nohighlight">\(\mu\)</span>, volume <span class="math notranslate nohighlight">\(V\)</span>, and temperature <span class="math notranslate nohighlight">\(T\)</span> are fixed</strong>. Both energy and particle number can fluctuate.</p></li>
+</ul>
+<p>We will review all these different ensembles in detail a bit later.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="liouville-s-theorem">
+<h2>Liouville’s theorem<a class="headerlink" href="#liouville-s-theorem" title="Link to this heading">#</a></h2>
+<p>Liouville’s theorem in statistical mechanics states that the density of system points in phase space remains constant along the trajectories of a Hamiltonian system. In simpler terms, it means that the “volume” occupied by a group of particles in phase space remains unchanged as they move through time. This theorem is a cornerstone of statistical mechanics, particularly when dealing with conservative systems.</p>
+<p>Liouville’s theorem is a cornerstone of statistical mechanics, providing a fundamental insight into how systems evolve in <strong>phase space</strong>. It essentially states that the <strong>density of points in phase space remains constant along the trajectories of the system</strong>. This is analogous to an <strong>incompressible fluid</strong> flow in phase space.</p>
+<p><strong>Phase space</strong> is a <span class="math notranslate nohighlight">\(6N\)</span>-dimensional mathematical space where each point represents a unique <strong>microstate</strong> of the system, defined by all its position and momentum coordinates. As the system evolves over time, this point traces a path, or <strong>trajectory</strong>, in phase space.</p>
+<p>Liouville’s theorem has two equivalent interpretations:</p>
+<ol class="arabic simple">
+<li><p><strong>Conservation of Phase Space Volume:</strong> If you take a collection of initial microstates that occupy a certain volume in phase space, as these microstates evolve according to Hamilton’s equations, the <em>volume</em> of the region they occupy in phase space remains constant. The shape of this region might distort significantly, but its total volume does not change.</p></li>
+<li><p><strong>Conservation of Phase Space Density:</strong> Consider a “fluid” of representative points in phase space, where the density of this fluid, <span class="math notranslate nohighlight">\(\rho(q, p, t)\)</span>, represents the probability of finding the system in a particular microstate at a given time <span class="math notranslate nohighlight">\(t\)</span>. Liouville’s theorem states that if you follow any specific point in this fluid (i.e., a specific system’s trajectory), the density of points <em>around that specific point</em> remains constant. In other words, the fluid is incompressible.</p></li>
+</ol>
+<p>This theorem applies to <strong>conservative Hamiltonian systems</strong>, meaning systems where the total energy is conserved and there are no external dissipative forces like friction.</p>
+<p>The mathematical statement of Liouville’s theorem is often expressed through the <strong>Liouville equation</strong>, which describes the time evolution of the phase space distribution function <span class="math notranslate nohighlight">\(\rho(q, p, t)\)</span>.</p>
+<p>We start by considering the conservation of “probability” (or the number of representative points) in phase space. Imagine a small, fixed volume <span class="math notranslate nohighlight">\(dV\)</span> in phase space. The change in the number of points within this volume over time must be due to the net flow of points across its boundaries. This is analogous to the continuity equation in fluid dynamics.</p>
+<p>The <strong>continuity equation</strong> in phase space is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0\]</div>
+<p>Here:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\rho(q, p, t)\)</span> is the phase space probability density.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{v}\)</span> is the “velocity” vector in phase space, whose components are the time derivatives of the generalized coordinates and momenta: <span class="math notranslate nohighlight">\(\mathbf{v} = (\dot{q}_1, \ldots, \dot{q}_{3N}, \dot{p}_1, \ldots, \dot{p}_{3N})\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\nabla \cdot\)</span> is the divergence operator in phase space, defined as:</p>
+<div class="math notranslate nohighlight">
+\[\nabla \cdot = \sum_{i=1}^{3N} \left( \frac{\partial}{\partial q_i} + \frac{\partial}{\partial p_i} \right)\]</div>
+</li>
+</ul>
+<p>Expanding the divergence term:</p>
+<div class="math notranslate nohighlight">
+\[\nabla \cdot (\rho \mathbf{v}) = \sum_{i=1}^{3N} \left( \frac{\partial (\rho \dot{q}_i)}{\partial q_i} + \frac{\partial (\rho \dot{p}_i)}{\partial p_i} \right)\]</div>
+<p>Using the product rule:</p>
+<div class="math notranslate nohighlight">
+\[\nabla \cdot (\rho \mathbf{v}) = \sum_{i=1}^{3N} \left( \frac{\partial \rho}{\partial q_i} \dot{q}_i + \rho \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \rho}{\partial p_i} \dot{p}_i + \rho \frac{\partial \dot{p}_i}{\partial p_i} \right)\]</div>
+<p>Rearranging terms:</p>
+<div class="math notranslate nohighlight">
+\[\nabla \cdot (\rho \mathbf{v}) = \sum_{i=1}^{3N} \left( \dot{q}_i \frac{\partial \rho}{\partial q_i} + \dot{p}_i \frac{\partial \rho}{\partial p_i} \right) + \rho \sum_{i=1}^{3N} \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right)\]</div>
+<p>Now, we introduce <strong>Hamilton’s equations of motion</strong> for a conservative system, which describe how the generalized coordinates and momenta evolve over time:</p>
+<div class="math notranslate nohighlight">
+\[\dot{q}_i = \frac{\partial H}{\partial p_i}\]</div>
+<div class="math notranslate nohighlight">
+\[\dot{p}_i = -\frac{\partial H}{\partial q_i}\]</div>
+<p>where <span class="math notranslate nohighlight">\(H(q, p)\)</span> is the Hamiltonian (the total energy) of the system.</p>
+<p>Let’s look at the second sum in the expanded divergence term:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{3N} \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right) = \sum_{i=1}^{3N} \left( \frac{\partial}{\partial q_i} \left( \frac{\partial H}{\partial p_i} \right) + \frac{\partial}{\partial p_i} \left( -\frac{\partial H}{\partial q_i} \right) \right)\]</div>
+<p>Since the order of differentiation for mixed partial derivatives of a well-behaved function like the Hamiltonian doesn’t matter (assuming <span class="math notranslate nohighlight">\(H\)</span> is sufficiently smooth), we have:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial^2 H}{\partial q_i \partial p_i} = \frac{\partial^2 H}{\partial p_i \partial q_i}\]</div>
+<p>Therefore, the terms in the sum cancel out:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{3N} \left( \frac{\partial^2 H}{\partial q_i \partial p_i} - \frac{\partial^2 H}{\partial p_i \partial q_i} \right) = 0\]</div>
+<p>This means the second term in the expanded divergence, <span class="math notranslate nohighlight">\(\rho \sum (\ldots)\)</span>, is zero. This is a crucial result, implying that the phase space “fluid” is <strong>incompressible</strong>. Let’s review this statement in more details.</p>
+<p>We can conclude that the phase space “fluid” is incompressible because the term <span class="math notranslate nohighlight">\(\sum_{i=1}^{3N} \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right) = \nabla \cdot \mathbf{v}\)</span> represents the <strong>divergence of the phase space velocity field</strong>, and for Hamiltonian systems, this divergence is identically zero.</p>
+<p>Here’s why that implies incompressibility:</p>
+<p>In fluid dynamics, the <strong>divergence of a velocity field</strong> (<span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{v}\)</span>) at a point tells you about the net outflow of fluid from an infinitesimally small volume around that point.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{v} &gt; 0\)</span>, there’s a net outflow, meaning the fluid is expanding.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{v} &lt; 0\)</span>, there’s a net inflow, meaning the fluid is compressing at that point.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{v} = 0\)</span>, there is no net outflow or inflow; the fluid density at that point is conserved as it moves. This is the definition of <strong>incompressibility</strong>.</p></li>
+</ul>
+<p>In the context of phase space, our “velocity” vector <span class="math notranslate nohighlight">\(\mathbf{v}\)</span> has components <span class="math notranslate nohighlight">\((\dot{q}_1, \ldots, \dot{q}_{3N}, \dot{p}_1, \ldots, \dot{p}_{3N})\)</span>. The sum <span class="math notranslate nohighlight">\(\sum_{i=1}^{3N} \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right)\)</span> is precisely the <strong>divergence of this phase space velocity field</strong>.</p>
+<p>As derived using Hamilton’s equations:
+$<span class="math notranslate nohighlight">\(\sum_{i=1}^{3N} \left( \frac{\partial \dot{q}_i}{\partial q_i} + \frac{\partial \dot{p}_i}{\partial p_i} \right) = \sum_{i=1}^{3N} \left( \frac{\partial}{\partial q_i} \left( \frac{\partial H}{\partial p_i} \right) + \frac{\partial}{\partial p_i} \left( -\frac{\partial H}{\partial q_i} \right) \right) = \sum_{i=1}^{3N} \left( \frac{\partial^2 H}{\partial q_i \partial p_i} - \frac{\partial^2 H}{\partial p_i \partial q_i} \right) = 0\)</span>$</p>
+<p>Since this divergence is zero for Hamiltonian systems, it means that the phase space velocity field has no net sources or sinks. Therefore, if you consider a small “parcel” of phase space points, as it moves along the trajectories defined by Hamilton’s equations, its volume in phase space will not change. This is the hallmark of an <strong>incompressible flow</strong>. The phase space “fluid” can stretch and deform, but its volume remains constant, just like an incompressible physical fluid might change shape while its total volume stays the same.</p>
+<p>Substituting this back into the continuity equation:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \rho}{\partial t} + \sum_{i=1}^{3N} \left( \dot{q}_i \frac{\partial \rho}{\partial q_i} + \dot{p}_i \frac{\partial \rho}{\partial p_i} \right) = 0\]</div>
+<p>The sum on the left is precisely the <strong>convective derivative</strong> (or total time derivative) of <span class="math notranslate nohighlight">\(\rho\)</span> with respect to time, assuming <span class="math notranslate nohighlight">\(\rho\)</span> depends explicitly on <span class="math notranslate nohighlight">\(t\)</span> as well as implicitly through <span class="math notranslate nohighlight">\(q(t)\)</span> and <span class="math notranslate nohighlight">\(p(t)\)</span>. This is denoted as <span class="math notranslate nohighlight">\(d\rho/dt\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\rho}{dt} = \frac{\partial \rho}{\partial t} + \sum_{i=1}^{3N} \left( \frac{\partial \rho}{\partial q_i} \frac{dq_i}{dt} + \frac{\partial \rho}{\partial p_i} \frac{dp_i}{dt} \right)\]</div>
+<p>So, the Liouville equation can be compactly written as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\rho}{dt} = 0\]</div>
+<p>This equation implies that the <strong>phase space probability density <span class="math notranslate nohighlight">\(\rho\)</span> is constant along the trajectories of the system</strong>. An observer “riding along” with a phase space point would always measure the same density of other points around them. <span class="math notranslate nohighlight">\(\frac{d\rho}{dt} = 0\)</span> equation means that if you <strong>follow a specific trajectory in phase space</strong> (i.e., you are “riding along” with a specific phase space point), the density <span class="math notranslate nohighlight">\(\rho\)</span> that you observe <em>at that specific point</em> will <strong>not change with time</strong>.</p>
+<p>Imagine a fluid with dye markers. If you are standing still in the fluid, you might see the dye concentration change as different parts of the fluid flow past you (<span class="math notranslate nohighlight">\(\frac{\partial \rho}{\partial t} \neq 0\)</span>). However, if you attach yourself to one of the dye markers and move with it, you will always be within the same “parcel” of fluid, and the concentration of dye <em>within that parcel</em> (and thus around you) would remain constant, assuming the fluid is incompressible (<span class="math notranslate nohighlight">\(\frac{d\rho}{dt} = 0\)</span>).</p>
+<p>In the context of Liouville’s theorem, the phase space “fluid” is incompressible. Therefore, an observer moving with a specific system’s trajectory in phase space will always perceive the local density of other nearby system trajectories (or representative points) to be constant.</p>
+<p>Liouville’s theorem is crucial for understanding statistical ensembles, particularly the microcanonical ensemble where all accessible microstates on a given energy hypersurface are equally probable.</p>
+</section>
+<section id="liouville-s-theorem-and-equilibrium-statistical-mechanics">
+<h2>Liouville’s theorem and equilibrium statistical mechanics<a class="headerlink" href="#liouville-s-theorem-and-equilibrium-statistical-mechanics" title="Link to this heading">#</a></h2>
+<p>Liouville’s theorem states that the <strong>total time derivative</strong> of the probability density function in phase space, <span class="math notranslate nohighlight">\(\frac{d\rho}{dt}\)</span>, is zero. This is a general result that holds for any Hamiltonian system, whether it’s in equilibrium or not. This also means, that <span class="math notranslate nohighlight">\(\rho\)</span> is a constant of motion because the total time derivative is equal to zero.</p>
+<p>In statistical mechanics, a system is said to be in <strong>equilibrium</strong> when its macroscopic properties (like temperature, pressure, energy, volume, etc.) are <strong>time-independent</strong>. This doesn’t mean that the individual particles have stopped moving; quite the opposite, they are in constant, dynamic motion. Instead, it means that the <em>average</em> behavior of the system, when observed over time, remains constant.</p>
+<p>For this macroscopic constancy to hold, the <strong>probability distribution</strong> of the system’s microstates must also be time-independent.</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\rho}{dt} = \frac{\partial \rho}{\partial t} + \sum_{i=1}^{3N} \left( \dot{q}_i \frac{\partial \rho}{\partial q_i} + \dot{p}_i \frac{\partial \rho}{\partial p_i} \right) = 0\]</div>
+<p>This equation, as we’ve established, tells us that the phase space density <span class="math notranslate nohighlight">\(\rho\)</span> is constant along the trajectories of the system.</p>
+<p>Now, for a system to be in <strong>statistical equilibrium</strong>, we require that the probability density function <span class="math notranslate nohighlight">\(\rho\)</span> is <strong>stationary</strong>. Stationary means that the density does not explicitly depend on time. In mathematical terms, this means:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \rho}{\partial t} = 0\]</div>
+<p>If <span class="math notranslate nohighlight">\(\frac{\partial \rho}{\partial t} = 0\)</span>, then the Liouville equation simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{3N} \left( \dot{q}_i \frac{\partial \rho}{\partial q_i} + \dot{p}_i \frac{\partial \rho}{\partial p_i} \right) = 0\]</div>
+<p>This sum can also be written using the <strong>Poisson bracket</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\{\rho, H\} = \sum_{i=1}^{3N} \left( \frac{\partial \rho}{\partial q_i} \frac{\partial H}{\partial p_i} - \frac{\partial \rho}{\partial p_i} \frac{\partial H}{\partial q_i} \right)\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\dot{q}_i = \frac{\partial H}{\partial p_i}\)</span> and <span class="math notranslate nohighlight">\(\dot{p}_i = -\frac{\partial H}{\partial q_i}\)</span>, the condition for equilibrium (<span class="math notranslate nohighlight">\(\frac{\partial \rho}{\partial t} = 0\)</span>) translates to:</p>
+<div class="math notranslate nohighlight">
+\[\{\rho, H\} = 0\]</div>
+<p>This condition, <span class="math notranslate nohighlight">\(\{\rho, H\} = 0\)</span>, means that the probability density function <span class="math notranslate nohighlight">\(\rho\)</span> must be a <strong>constant of motion</strong>. In simpler terms, <span class="math notranslate nohighlight">\(\rho\)</span> must be a function of only those quantities that are conserved during the system’s evolution, such as the total energy <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>Liouville’s theorem describes the evolution of the phase space density of an ensemble over time.</p>
+<p>Consider a large number of identical systems, each represented by a point in phase space. As time evolves, these points move through phase space according to Hamilton’s equations of motion. Liouville’s theorem states that the <strong>density of points in phase space remains constant along any trajectory</strong>. In simpler terms, if you take a small “blob” of phase space points, as these points evolve in time, the volume of that blob remains constant, even though its shape might distort.</p>
+<p>Let <span class="math notranslate nohighlight">\(\rho(\mathbf{q}, \mathbf{p}, t)\)</span> be the <strong>phase space density function</strong>, where <span class="math notranslate nohighlight">\(\mathbf{q} = (q_1, ..., q_{3N})\)</span> are the generalized coordinates and <span class="math notranslate nohighlight">\(\mathbf{p} = (p_1, ..., p_{3N})\)</span> are the generalized momenta. The density <span class="math notranslate nohighlight">\(\rho\)</span> is defined such that <span class="math notranslate nohighlight">\(\rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p}\)</span> gives the number of systems in the ensemble whose state lies within the infinitesimal phase space volume <span class="math notranslate nohighlight">\(d\mathbf{q}d\mathbf{p}\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The total number of systems in the ensemble, <span class="math notranslate nohighlight">\(\mathcal{N}\)</span>, is constant:
+$<span class="math notranslate nohighlight">\(\mathcal{N} = \int \rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p} = \text{constant}\)</span>$</p>
+<p>For the density to be conserved along the flow, the substantial derivative (or material derivative) of <span class="math notranslate nohighlight">\(\rho\)</span> must be zero:</p>
+<div class="math notranslate nohighlight">
+\[\frac{D\rho}{Dt} = \frac{\partial\rho}{\partial t} + \sum_{i=1}^{3N} \left( \frac{\partial\rho}{\partial q_i}\dot{q}_i + \frac{\partial\rho}{\partial p_i}\dot{p}_i \right) = 0\]</div>
+<p>This equation is a statement of conservation of “probability fluid” in phase space.</p>
+<p>Now, let’s use Hamilton’s equations of motion:
+$<span class="math notranslate nohighlight">\(\dot{q}_i = \frac{\partial H}{\partial p_i}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\dot{p}_i = -\frac{\partial H}{\partial q_i}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>H(\mathbf{q}, \mathbf{p})$ is the Hamiltonian of the system.</p>
+<p>Substitute these into the substantial derivative equation:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\rho}{\partial t} + \sum_{i=1}^{3N} \left( \frac{\partial\rho}{\partial q_i}\frac{\partial H}{\partial p_i} - \frac{\partial\rho}{\partial p_i}\frac{\partial H}{\partial q_i} \right) = 0\]</div>
+<p>The summation term is the <strong>Poisson bracket</strong> of <span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(H\)</span>, denoted as <span class="math notranslate nohighlight">\(\{\rho, H\}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\rho}{\partial t} + \{\rho, H\} = 0\]</div>
+<p>This is <strong>Liouville’s equation</strong>.</p>
+<p><strong>Derivation of Liouville’s Theorem (Alternative Perspective):</strong></p>
+<p>Consider a small volume element <span class="math notranslate nohighlight">\(d\Gamma = d\mathbf{q}d\mathbf{p}\)</span> in phase space. The number of points in this volume at time <span class="math notranslate nohighlight">\(t\)</span> is <span class="math notranslate nohighlight">\(\rho(\mathbf{q}, \mathbf{p}, t) d\Gamma\)</span>. As the system evolves, the points that were in <span class="math notranslate nohighlight">\(d\Gamma\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> will move to a new volume element <span class="math notranslate nohighlight">\(d\Gamma'\)</span> at time <span class="math notranslate nohighlight">\(t + \Delta t\)</span>.</p>
+<p>For the number of points to be conserved, we must have:
+$<span class="math notranslate nohighlight">\(\rho(\mathbf{q}, \mathbf{p}, t) d\Gamma = \rho(\mathbf{q} + \dot{\mathbf{q}}\Delta t, \mathbf{p} + \dot{\mathbf{p}}\Delta t, t + \Delta t) d\Gamma'\)</span>$</p>
+<p>The change in volume element <span class="math notranslate nohighlight">\(d\Gamma'\)</span> can be related to <span class="math notranslate nohighlight">\(d\Gamma\)</span> using the Jacobian of the transformation from <span class="math notranslate nohighlight">\((\mathbf{q}, \mathbf{p})\)</span> to <span class="math notranslate nohighlight">\((\mathbf{q}', \mathbf{p}')\)</span>.
+For a Hamiltonian system, the Jacobian of the transformation from <span class="math notranslate nohighlight">\((\mathbf{q}, \mathbf{p})\)</span> to <span class="math notranslate nohighlight">\((\mathbf{q}(t+\Delta t), \mathbf{p}(t+\Delta t))\)</span> is 1. This means that the phase space volume is conserved. This property is also known as <strong>Poincaré’s recurrence theorem</strong>.</p>
+<p>Let’s illustrate with a simpler analogue: imagine an incompressible fluid flowing. The density of the fluid at any point might change if you’re looking at a fixed point in space, but if you follow a “particle” of fluid, its density remains constant.</p>
+<p><strong>Consequence of Liouville’s Theorem:</strong></p>
+<p>For a system in thermal equilibrium, the phase space density <span class="math notranslate nohighlight">\(\rho\)</span> must be time-independent, i.e., <span class="math notranslate nohighlight">\(\partial\rho/\partial t = 0\)</span>.
+In this case, Liouville’s equation simplifies to:</p>
+<div class="math notranslate nohighlight">
+\[\{\rho, H\} = 0\]</div>
+<p>This implies that <span class="math notranslate nohighlight">\(\rho\)</span> must be a function of conserved quantities (integrals of motion), and in particular, it must be a function of the Hamiltonian <span class="math notranslate nohighlight">\(H\)</span>. This is a crucial result for defining the equilibrium distributions for different ensembles. For instance, in the canonical ensemble, <span class="math notranslate nohighlight">\(\rho \propto e^{-\beta H}\)</span>.</p>
+</section>
+<hr class="docutils" />
+<section id="ensemble-average">
+<h2>Ensemble Average<a class="headerlink" href="#ensemble-average" title="Link to this heading">#</a></h2>
+<p>Since we cannot know the exact microscopic state of a macroscopic system, we are interested in the average values of macroscopic observables. The <strong>ensemble average</strong> of a physical quantity is the average of that quantity over all the systems in the ensemble, weighted by their phase space density.</p>
+<p>Let <span class="math notranslate nohighlight">\(A(\mathbf{q}, \mathbf{p})\)</span> be a physical observable (a function of the phase space coordinates). The ensemble average of <span class="math notranslate nohighlight">\(A\)</span>, denoted by <span class="math notranslate nohighlight">\(\langle A \rangle\)</span>, is given by:</p>
+<div class="math notranslate nohighlight">
+\[\langle A \rangle = \frac{\int A(\mathbf{q}, \mathbf{p}) \rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p}}{\int \rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p}}\]</div>
+<p>If <span class="math notranslate nohighlight">\(\rho\)</span> is normalized such that <span class="math notranslate nohighlight">\(\int \rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p} = 1\)</span>, then:</p>
+<div class="math notranslate nohighlight">
+\[\langle A \rangle = \int A(\mathbf{q}, \mathbf{p}) \rho(\mathbf{q}, \mathbf{p}, t) d\mathbf{q}d\mathbf{p}\]</div>
+<p>In statistical mechanics, we typically deal with equilibrium ensembles, where <span class="math notranslate nohighlight">\(\rho\)</span> is time-independent.</p>
+<p><strong>Example: Ensemble Average of Energy in the Canonical Ensemble</strong></p>
+<p>In the canonical ensemble, the probability density function is given by:
+$<span class="math notranslate nohighlight">\(\rho(\mathbf{q}, \mathbf{p}) = \frac{1}{Z} e^{-\beta H(\mathbf{q}, \mathbf{p})}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>Z<span class="math notranslate nohighlight">\( is the **canonical partition function** (a normalization constant) and \)</span>\beta = 1/(k_B T)<span class="math notranslate nohighlight">\( (\)</span>k_B<span class="math notranslate nohighlight">\( is Boltzmann's constant, \)</span>T$ is temperature).</p>
+<p>The average energy <span class="math notranslate nohighlight">\(\langle E \rangle\)</span> is then:
+$<span class="math notranslate nohighlight">\(\langle E \rangle = \frac{\int H(\mathbf{q}, \mathbf{p}) e^{-\beta H(\mathbf{q}, \mathbf{p})} d\mathbf{q}d\mathbf{p}}{\int e^{-\beta H(\mathbf{q}, \mathbf{p})} d\mathbf{q}d\mathbf{p}}\)</span>$</p>
+<p>We can also express this in terms of the partition function:
+$<span class="math notranslate nohighlight">\(Z = \int e^{-\beta H(\mathbf{q}, \mathbf{p})} d\mathbf{q}d\mathbf{p}\)</span><span class="math notranslate nohighlight">\(
+Notice that:
+\)</span><span class="math notranslate nohighlight">\(\frac{\partial Z}{\partial \beta} = \int (-H) e^{-\beta H} d\mathbf{q}d\mathbf{p} = - \int H e^{-\beta H} d\mathbf{q}d\mathbf{p}\)</span><span class="math notranslate nohighlight">\(
+So,
+\)</span><span class="math notranslate nohighlight">\(\langle E \rangle = - \frac{1}{Z} \frac{\partial Z}{\partial \beta} = - \frac{\partial \ln Z}{\partial \beta}\)</span>$
+This is a fundamental relationship in statistical mechanics, connecting the macroscopic observable (average energy) to the partition function, which encapsulates all the microscopic information.</p>
+</section>
+<hr class="docutils" />
+<section id="simple-examples-to-illustrate-theoretical-material">
+<h2>Simple Examples to Illustrate Theoretical Material<a class="headerlink" href="#simple-examples-to-illustrate-theoretical-material" title="Link to this heading">#</a></h2>
+<section id="example-1-liouville-s-theorem-simple-harmonic-oscillator">
+<h3>Example 1: Liouville’s Theorem - Simple Harmonic Oscillator<a class="headerlink" href="#example-1-liouville-s-theorem-simple-harmonic-oscillator" title="Link to this heading">#</a></h3>
+<p>Consider a 1D simple harmonic oscillator with Hamiltonian:
+$<span class="math notranslate nohighlight">\(H(q, p) = \frac{p^2}{2m} + \frac{1}{2}kq^2\)</span><span class="math notranslate nohighlight">\(
+The phase space is 2-dimensional (\)</span>q, p$).</p>
+<p>Hamilton’s equations are:
+$<span class="math notranslate nohighlight">\(\dot{q} = \frac{\partial H}{\partial p} = \frac{p}{m}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\dot{p} = -\frac{\partial H}{\partial q} = -kq\)</span>$
+The trajectories in phase space are ellipses.</p>
+<p>Let’s assume an initial distribution <span class="math notranslate nohighlight">\(\rho(q, p, 0)\)</span>. According to Liouville’s theorem, the density <span class="math notranslate nohighlight">\(\rho\)</span> will remain constant along these elliptical trajectories.
+Suppose you have a cluster of points in phase space representing an ensemble of oscillators. As they evolve, this cluster will deform (stretch and rotate along the ellipses), but its area (volume in 2D phase space) will remain constant.</p>
+<p><strong>Visualizing Liouville’s Theorem:</strong>
+Imagine drawing a small circle in the <span class="math notranslate nohighlight">\((q,p)\)</span> phase space at <span class="math notranslate nohighlight">\(t=0\)</span>. As time progresses, each point on that circle follows its own elliptical trajectory. The circle will deform into an ellipse, then a more elongated ellipse, and so on. However, the <strong>area</strong> enclosed by this evolving shape will remain precisely the same. This is the essence of Liouville’s theorem for Hamiltonian systems.</p>
+</section>
+<section id="example-2-ensemble-average-a-system-of-two-state-particles">
+<h3>Example 2: Ensemble Average - A System of Two-State Particles<a class="headerlink" href="#example-2-ensemble-average-a-system-of-two-state-particles" title="Link to this heading">#</a></h3>
+<p>Consider a system of <span class="math notranslate nohighlight">\(N\)</span> identical, non-interacting particles. Each particle can be in one of two energy states:</p>
+<ul class="simple">
+<li><p>State 0: Energy <span class="math notranslate nohighlight">\(E_0 = 0\)</span></p></li>
+<li><p>State 1: Energy <span class="math notranslate nohighlight">\(E_1 = \epsilon\)</span> (where <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span>)</p></li>
+</ul>
+<p>This is a simplified system, so we won’t use continuous phase space integrals. Instead, we’ll use a discrete sum over possible microstates.</p>
+<p><strong>Canonical Ensemble:</strong>
+Let the system be in thermal contact with a reservoir at temperature <span class="math notranslate nohighlight">\(T\)</span>. We are in the canonical ensemble.
+The probability of a single particle being in a state with energy <span class="math notranslate nohighlight">\(E_i\)</span> is proportional to <span class="math notranslate nohighlight">\(e^{-\beta E_i}\)</span>.</p>
+<p>For a single particle:</p>
+<ul class="simple">
+<li><p>Probability of being in State 0 (<span class="math notranslate nohighlight">\(P_0\)</span>): <span class="math notranslate nohighlight">\(P_0 = \frac{e^{-\beta E_0}}{e^{-\beta E_0} + e^{-\beta E_1}} = \frac{e^0}{e^0 + e^{-\beta\epsilon}} = \frac{1}{1 + e^{-\beta\epsilon}}\)</span></p></li>
+<li><p>Probability of being in State 1 (<span class="math notranslate nohighlight">\(P_1\)</span>): <span class="math notranslate nohighlight">\(P_1 = \frac{e^{-\beta E_1}}{e^{-\beta E_0} + e^{-\beta E_1}} = \frac{e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}}\)</span></p></li>
+</ul>
+<p>The <strong>partition function for a single particle</strong> is <span class="math notranslate nohighlight">\(Z_1 = e^{-\beta E_0} + e^{-\beta E_1} = 1 + e^{-\beta\epsilon}\)</span>.</p>
+<p>The <strong>ensemble average energy for a single particle</strong> <span class="math notranslate nohighlight">\(\langle E \rangle_1\)</span>:
+$<span class="math notranslate nohighlight">\(\langle E \rangle_1 = E_0 P_0 + E_1 P_1\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\langle E \rangle_1 = (0) \frac{1}{1 + e^{-\beta\epsilon}} + (\epsilon) \frac{e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}} = \frac{\epsilon e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}}\)</span>$</p>
+<p>Alternatively, using the partition function method:
+$<span class="math notranslate nohighlight">\(\langle E \rangle_1 = - \frac{\partial \ln Z_1}{\partial \beta}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\ln Z_1 = \ln(1 + e^{-\beta\epsilon})\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\frac{\partial \ln Z_1}{\partial \beta} = \frac{1}{1 + e^{-\beta\epsilon}} \cdot (-\epsilon e^{-\beta\epsilon}) = -\frac{\epsilon e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}}\)</span><span class="math notranslate nohighlight">\(
+So,
+\)</span><span class="math notranslate nohighlight">\(\langle E \rangle_1 = - \left( -\frac{\epsilon e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}} \right) = \frac{\epsilon e^{-\beta\epsilon}}{1 + e^{-\beta\epsilon}}\)</span>$
+The results match, illustrating the power of the partition function approach.</p>
+<p>For a system of <span class="math notranslate nohighlight">\(N\)</span> non-interacting particles, the total partition function <span class="math notranslate nohighlight">\(Z_N = (Z_1)^N\)</span>. The total average energy is then <span class="math notranslate nohighlight">\(\langle E \rangle_N = N \langle E \rangle_1\)</span>.</p>
+<p>Ensembles provide a powerful framework for connecting the microscopic properties of a system to its macroscopic thermodynamic behavior. Liouville’s theorem ensures the consistency of this approach by describing the conservation of phase space density, and ensemble averages allow us to calculate measurable quantities from the microscopic probability distributions.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./physics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="continuity-equation-02.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">The Continuity Equation: One-Dimensional Advection of a Density Profile</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fokker-planck-equation-example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fokker-Planck Equation - Example Analysis (preview)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-an-ensemble">What is an Ensemble?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-ensembles">Types of Ensembles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#liouville-s-theorem">Liouville’s theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#liouville-s-theorem-and-equilibrium-statistical-mechanics">Liouville’s theorem and equilibrium statistical mechanics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-average">Ensemble Average</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-examples-to-illustrate-theoretical-material">Simple Examples to Illustrate Theoretical Material</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-liouville-s-theorem-simple-harmonic-oscillator">Example 1: Liouville’s Theorem - Simple Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-ensemble-average-a-system-of-two-state-particles">Example 2: Ensemble Average - A System of Two-State Particles</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev and Anna Savchenko
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
