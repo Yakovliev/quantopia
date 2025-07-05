@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Microcanonical ensemble &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/microcanonical-ensemble';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fokker-Planck Equation - Example Analysis (preview)" href="fokker-planck-equation-example.html" />
+    <link rel="prev" title="Statistical Ensembles and Liouville’s Theorem" href="ensemble.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Quantopia':' Physics, Python and Pi - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Microcanonical ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/microcanonical-ensemble.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/microcanonical-ensemble.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/physics/microcanonical-ensemble.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Microcanonical ensemble</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy">Entropy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additivity-property-gibbs-paradox">Additivity property; Gibbs paradox</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-definition-compatibility">Temperature definition compatibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#second-law-of-thermodynamics-compatibility">Second law of thermodynamics compatibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#energy-shell-thickness-considerations">Energy shell thickness considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#microcanonical-ensemble-calculations">Microcanonical ensemble calculations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hypersphere-geometry">Hypersphere geometry</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="microcanonical-ensemble">
+<h1>Microcanonical ensemble<a class="headerlink" href="#microcanonical-ensemble" title="Link to this heading">#</a></h1>
+<section id="definition">
+<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h2>
+<p>Consider a completely <strong>isolated</strong> physical system containing <span class="math notranslate nohighlight">\(N\)</span> particles with total energy <span class="math notranslate nohighlight">\(E\)</span> confined within volume <span class="math notranslate nohighlight">\(V\)</span>. Such a system operates under strict isolation conditions, meaning it cannot exchange either matter or energy with its environment.</p>
+<p>The fundamental assumption underlying thermal equilibrium states that the probability distribution function <span class="math notranslate nohighlight">\(\rho(q, p)\)</span> describing the system depends solely on its total energy:</p>
+<div class="math notranslate nohighlight">
+\[\rho(q, p) = \rho(H(q, p)), \quad \frac{d \rho(q, p)}{dt} = 0\]</div>
+<p>This relationship yields a time-independent <span class="math notranslate nohighlight">\(\rho(q, p)\)</span>, which aligns perfectly with ergodic theory principles and the fundamental postulate that all accessible microstates possess equal a priori probabilities</p>
+<p><strong>Energy boundary layer.</strong></p>
+<p>Consider a narrow but measurable energy interval <span class="math notranslate nohighlight">\([E, E + \Delta E]\)</span> situated near the constant energy surface. The <strong>microcanonical ensemble</strong> can be mathematically expressed as:</p>
+<div class="math notranslate nohighlight" id="equation-my-first-label">
+<span class="eqno">(1)<a class="headerlink" href="#equation-my-first-label" title="Link to this equation">#</a></span>\[\begin{split}
+\rho(q, p) = \begin{cases}
+\frac{1}{\Gamma(E, V, N)} &amp; E &lt; H(q, p) &lt; E + \Delta E \\
+0 &amp; \text{elsewhere}
+\end{cases}
+\end{split}\]</div>
+<p>The normalization factor in this equation is given by:</p>
+<div class="math notranslate nohighlight" id="equation-my-other-label">
+<span class="eqno">(2)<a class="headerlink" href="#equation-my-other-label" title="Link to this equation">#</a></span>\[
+\Gamma(E, V, N) = \int \int_{E&lt;H(q,p)&lt;E+\Delta E} d^{3N}q \, d^{3N}p
+\]</div>
+<p>From <a class="reference internal" href="#equation-my-first-label">(1)</a> and from <a class="reference internal" href="#equation-my-other-label">(2)</a> we can get:</p>
+<p>This represents the phase space volume encompassed by the microcanonical ensemble, specifically the region between two energy surfaces separated by <span class="math notranslate nohighlight">\(\Delta E\)</span>.</p>
+<p>The spatial volume <span class="math notranslate nohighlight">\(V\)</span> influences equation (8.2) through the integration boundaries for the coordinate differentials <span class="math notranslate nohighlight">\(dq\)</span>.</p>
+<p><strong>Infinitesimally thin energy layer.</strong> Define <span class="math notranslate nohighlight">\(\Phi(E, V)\)</span> as the complete phase space volume contained within the energy surface at level <span class="math notranslate nohighlight">\(E\)</span>. This leads to:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(E) = \Phi(E + \Delta E) - \Phi(E)\]</div>
+<p>When we take the mathematical limit <span class="math notranslate nohighlight">\(\Delta E \to 0\)</span> for an infinitesimally narrow shell, we obtain:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(E) \equiv \frac{\partial \Phi(E)}{\partial E} \Delta E \equiv \Omega(E) \Delta E, \quad \Delta E \ll E \quad (8.3)\]</div>
+<p><strong>State density function.</strong> The fundamental quantity <span class="math notranslate nohighlight">\(\Omega(E)\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\Omega(E) = \frac{\partial \Phi(E)}{\partial E} = \int d^{3N}q \int d^{3N}p \, \Delta E(E - H(q, p)) \quad (8.4)\]</div>
+<p>This represents the <strong>density of states</strong> at energy level <span class="math notranslate nohighlight">\(E\)</span>. Consequently, the microstate distribution <span class="math notranslate nohighlight">\(\rho\)</span> can be written in terms of <span class="math notranslate nohighlight">\(\Omega(E)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\rho(q, p) = \begin{cases}
+\frac{1}{\Omega(E)\Delta E} &amp; E &lt; H(q, p) &lt; E + \Delta E \\
+0 &amp; \text{elsewhere}
+\end{cases}\end{split}\]</div>
+<p>Notice the apparent mathematical singularity in <span class="math notranslate nohighlight">\(\rho(q, p)\)</span> proportional to <span class="math notranslate nohighlight">\(1/\Delta E\)</span>. Section 8.2.4 will demonstrate that the specific value of <span class="math notranslate nohighlight">\(\Delta E\)</span> proves to be physically irrelevant.</p>
+</section>
+<section id="entropy">
+<h2>Entropy<a class="headerlink" href="#entropy" title="Link to this heading">#</a></h2>
+<p>Computing expectation values for classical observables <span class="math notranslate nohighlight">\(O(q, p)\)</span> requires averaging over the probability distribution <span class="math notranslate nohighlight">\(\rho(q, p)\)</span> characteristic of the microcanonical ensemble:</p>
+<div class="math notranslate nohighlight">
+\[\langle O \rangle = \int d^{3N}q \, d^{3N}p \, \rho(q, p) O(q, p) = \frac{1}{\Gamma(E, V, N)} \int \int_{E&lt;H(q,p)&lt;E+\Delta E} d^{3N}q \, d^{3N}p \, O(q, p)\]</div>
+<p>However, <strong>entropy</strong> cannot be derived as a simple average of classical observables. Instead, it emerges as a function characterizing the total count of accessible quantum states.</p>
+<blockquote>
+<div><p><strong>FUNDAMENTAL PRINCIPLE</strong> Following Boltzmann’s insight, entropy is proportional to the natural logarithm of accessible state configurations, quantified through phase space volume <span class="math notranslate nohighlight">\(\Gamma\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S = k_B \ln \left(\frac{\Gamma(E, V, N)}{\Gamma_0(N)}\right) \quad (8.5)\]</div>
+</div></blockquote>
+<p>Let us now examine the implications of this fundamental definition.</p>
+<p><strong>Dimensional normalization.</strong> The normalization constant <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> in equation (8.5) serves dual purposes:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> eliminates the physical dimensions of <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span>, ensuring the logarithmic argument remains dimensionless.</p></li>
+<li><p>Since particle number <span class="math notranslate nohighlight">\(N\)</span> constitutes a fundamental thermodynamic variable, the functional relationship between <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> and <span class="math notranslate nohighlight">\(N\)</span> carries significant physical importance.</p></li>
+</ul>
+<p><strong>Classical mechanics limitations.</strong> Classical statistical mechanics alone cannot uniquely determine <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span>. Subsequent analysis reveals that <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> assumes the value:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma_0(N) = h^{3N} N! \quad (8.6)\]</div>
+<p>within quantum statistical frameworks, where <span class="math notranslate nohighlight">\(h = 6.63 \times 10^{-34} \text{m}^2\text{kg/s}\)</span> represents Planck’s constant. This quantum result is adopted for classical calculations as well.</p>
+<ul class="simple">
+<li><p>The factor <span class="math notranslate nohighlight">\(h^{3N}\)</span> establishes the fundamental phase space measure with dimensions <span class="math notranslate nohighlight">\([q]^{3N}[p]^{3N}\)</span>. Note the dimensional consistency: <span class="math notranslate nohighlight">\([h] = \text{m (kg m/s)} = [q][p]\)</span>.</p></li>
+<li><p>The factorial term <span class="math notranslate nohighlight">\(N!\)</span> accounts for quantum state counting when particles undergo permutation.</p></li>
+</ul>
+<p>The appearance of <span class="math notranslate nohighlight">\(N!\)</span> reflects the fundamental <strong>indistinguishability</strong> of identical particles.</p>
+<p>Even when molecular motion can be accurately described using classical mechanics within certain temperature and density regimes, the essential quantum principle of particle indistinguishability cannot be ignored. Individual atomic particles cannot be tracked and labeled like distinguishable macroscopic objects.</p>
+<p>Section 8.2.1 will explore the <strong>Gibbs paradox</strong>, which emerges when treating constituent particles as distinguishable entities. Under such incorrect assumptions, the factor <span class="math notranslate nohighlight">\(N!\)</span> would be absent from <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span>.</p>
+<p><strong>Entropy expressed as statistical average.</strong> The entropy definition (8.5) can be reformulated as:</p>
+<div class="math notranslate nohighlight">
+\[S = -k_B \ln \left(\frac{\Gamma_0(N)}{\Gamma(E, V, N)}\right) = -k_B \int \int d^{3N}q \, d^{3N}p \, \rho(q, p) \ln \left[\Gamma_0(N)\rho(q, p)\right] \quad (8.7)\]</div>
+<p>This uses the fact that <span class="math notranslate nohighlight">\(\rho(q, p) = 1/\Gamma(E, V, N)\)</span> throughout the energy shell, combined with the normalization condition:</p>
+<div class="math notranslate nohighlight">
+\[\int \int d^{3N}q \, d^{3N}p \, \rho(q, p) = \int_{E&lt;H&lt;E+\Delta E} d^{3N}q \, d^{3N}p/\Gamma(E, V, N) = 1\]</div>
+<p>Therefore:</p>
+<div class="math notranslate nohighlight">
+\[S = -k_B \langle \ln[\Gamma_0(N)\rho(q, p)] \rangle\]</div>
+<p>This formulation demonstrates that entropy aligns with Shannon’s information-theoretic entropy definition, differing only by the multiplicative factors <span class="math notranslate nohighlight">\(k_B\)</span> and <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span>, as discussed in Section 5.5.3.</p>
+<p><strong>Thermodynamic validity requirements.</strong> Since this entropy definition was introduced through physical reasoning rather than rigorous derivation, we must verify its consistency with established thermodynamic principles. Specifically, the entropy must satisfy:</p>
+<p>(1) additivity property;</p>
+<p>(2) compatibility with temperature definition;</p>
+<p>(3) agreement with the second law of thermodynamics;</p>
+<p>(4) adiabatic invariance principle.</p>
+<section id="additivity-property-gibbs-paradox">
+<h3>Additivity property; Gibbs paradox<a class="headerlink" href="#additivity-property-gibbs-paradox" title="Link to this heading">#</a></h3>
+<p>Classical Hamiltonians decompose as <span class="math notranslate nohighlight">\(H(q, p) = H_{\text{kin}}(p) + H_{\text{int}}(q)\)</span>, representing kinetic energy <span class="math notranslate nohighlight">\(H_{\text{kin}}(p)\)</span> plus inter-particle interactions <span class="math notranslate nohighlight">\(H_{\text{int}}(q)\)</span>. The constraint:</p>
+<div class="math notranslate nohighlight">
+\[E &lt; H(q, p) &lt; E + \Delta E \quad E &lt; H_{\text{kin}}(p) + H_{\text{int}}(q) &lt; E + \Delta E\]</div>
+<p>which restricts the accessible phase space volume <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span> within the energy shell (equation 8.2), can be satisfied through various combinations of <span class="math notranslate nohighlight">\(H_{\text{kin}}(p)\)</span> and <span class="math notranslate nohighlight">\(H_{\text{int}}(q)\)</span> values.</p>
+<p>However, the law of large numbers (discussed in Section 8.6) ensures that both kinetic and interaction energy components assume well-defined values when dealing with large particle populations <span class="math notranslate nohighlight">\(N\)</span>.</p>
+<p><strong>Phase space volume scaling behavior.</strong> Inter-particle interactions typically involve only particle pairs, while the remaining <span class="math notranslate nohighlight">\(N - 2 \approx N\)</span> particles move relatively freely within volume <span class="math notranslate nohighlight">\(V\)</span>. This physical picture, combined with analogous reasoning for kinetic contributions, suggests that the energy shell volume scales according to:</p>
+<div class="math notranslate nohighlight">
+\[\int \int_{E&lt;H(q,p)&lt;E+\Delta E} d^{3N}q \, d^{3N}p = \Gamma(E, V, N) \sim V^N \gamma^N(E/N, V/N) \quad (8.8)\]</div>
+<p>Section 8.4 will verify this scaling relationship for classical ideal gas systems.</p>
+<p><strong>Extensive entropy behavior.</strong> Applying scaling relation (8.8) to the energy shell volume and utilizing <span class="math notranslate nohighlight">\(\Gamma_0(N) = h^{3N} N!\)</span>, the entropy from equation (8.5) becomes extensive:</p>
+<div class="math notranslate nohighlight">
+\[S = k_B \ln \left(\frac{\Gamma(E, V, N)}{\Gamma_0(N)}\right) = k_B \ln \left(\frac{V^N \gamma^N(E/N, V/N)}{h^{3N} N!}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[= k_B N \left[\ln \left(\frac{V \gamma}{N h^3}\right) + 1\right] \equiv k_B N s(E/N, V/N) \quad (8.9)\]</div>
+<p>Here we employed Stirling’s approximation <span class="math notranslate nohighlight">\(N! \approx \sqrt{2\pi N}(N/e)^N\)</span>, specifically <span class="math notranslate nohighlight">\(\ln(N!) \approx N(\ln(N) - 1)\)</span>.</p>
+<p><strong>Gibbs paradox resolution.</strong> Entropy extensivity in equation (8.9) emerges from the relationship <span class="math notranslate nohighlight">\(V^N/N! \approx (V/N)^N\)</span>. Removing the factorial factor <span class="math notranslate nohighlight">\(N!\)</span> from <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> would destroy extensivity, creating the <strong>Gibbs paradox</strong>. Classical mechanics alone cannot justify this crucial factor.</p>
+<p><strong>Additivity for thermodynamically identical systems.</strong> Two systems possess identical thermodynamic characteristics when their intensive variables match: temperature <span class="math notranslate nohighlight">\(T\)</span>, pressure <span class="math notranslate nohighlight">\(P\)</span>, particle density <span class="math notranslate nohighlight">\(N/V\)</span>, and energy density <span class="math notranslate nohighlight">\(E/N\)</span>. Equation (8.9) immediately yields:</p>
+<div class="math notranslate nohighlight">
+\[S(E, V, N) = k_B (N_1 + N_2) s(E/N, V/N) = S(E_1, V_1, N_1) + S(E_2, V_2, N_2)\]</div>
+<p>where <span class="math notranslate nohighlight">\(N = N_1 + N_2\)</span>.</p>
+<p><strong>Additivity for thermally coupled systems.</strong> Consider two systems characterized by <span class="math notranslate nohighlight">\(E_1, V_1, N_1\)</span> and <span class="math notranslate nohighlight">\(E_2, V_2, N_2\)</span> respectively, connected thermally to permit energy exchange while maintaining constant total energy <span class="math notranslate nohighlight">\(E = E_1 + E_2\)</span>. The entropy argument becomes:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Gamma(E, V, N)}{\Gamma_0(N)} = \sum_{E_1} \frac{\Gamma(E_1, V_1, N_1)}{\Gamma_0(N_1)} \frac{\Gamma(E - E_1, V_2, N_2)}{\Gamma_0(N_2)} \quad (8.10)\]</div>
+<p>The law of large numbers ensures the right-hand side exhibits sharp peaking at maximum value <span class="math notranslate nohighlight">\(E_1 = E_{\max}\)</span> with peak width scaling as <span class="math notranslate nohighlight">\(\sqrt{E_{\max}}\)</span>. Consequently:</p>
+<div class="math notranslate nohighlight">
+\[S(E_{\max}) &lt; S(E, N, V) &lt; k_B \ln \left(\sqrt{E_{\max}}\right) + S(E_{\max}) \quad (8.11)\]</div>
+<p>The first inequality reflects that individual terms are smaller than positive sums. The second inequality in (8.11) results from replacing the sum in equation (8.10) with the product of peak width <span class="math notranslate nohighlight">\(\sqrt{E_{\max}}\)</span> and height. Equation (8.11) defines:</p>
+<div class="math notranslate nohighlight">
+\[S(E_{\max}) = k_B \ln \left(\frac{\Gamma(E_{\max}, V_1, N_1) \Gamma(E - E_{\max}, V_2, N_2)}{\Gamma_0(N_1) \Gamma_0(N_2)}\right)\]</div>
+<p>This establishes <span class="math notranslate nohighlight">\(S(E, V, N) = S(E_1, V_1, N_1) + S(E_2, V_2, N_2)\)</span>. Note that <span class="math notranslate nohighlight">\(S(E_{\max})\)</span> exhibits extensivity while the <span class="math notranslate nohighlight">\(\ln(E_{\max})\)</span> term in (8.11) becomes negligible in the thermodynamic limit <span class="math notranslate nohighlight">\(N \to \infty\)</span>.</p>
+</section>
+<section id="temperature-definition-compatibility">
+<h3>Temperature definition compatibility<a class="headerlink" href="#temperature-definition-compatibility" title="Link to this heading">#</a></h3>
+<p>Consider two systems with entropies <span class="math notranslate nohighlight">\(S_1 = S(E_1, V_1, N_1)\)</span> and <span class="math notranslate nohighlight">\(S_2 = S(E_2, V_2, N_2)\)</span> in thermal contact, allowing heat exchange. At equilibrium, total entropy becomes stationary:</p>
+<div class="math notranslate nohighlight">
+\[0 = dS = \frac{\partial S_1}{\partial E_1} dE_1 + \frac{\partial S_2}{\partial E_2} dE_2, \quad dE_1 = -dE_2 \quad (8.12)\]</div>
+<p>Since total energy <span class="math notranslate nohighlight">\(E_1 + E_2\)</span> remains constant, equilibrium condition (8.12) implies the existence of a quantity <span class="math notranslate nohighlight">\(T\)</span> called <strong>temperature</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S_1}{\partial E_1} = \frac{1}{T} = \frac{\partial S_2}{\partial E_2} \quad (8.13)\]</div>
+<p>Temperature definition emerges directly from energy conservation. The microcanonical entropy formulation requires only that entropy depends exclusively on internal energy through the energy shell volume <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span>, independent of underlying microscopic dynamics.</p>
+</section>
+<section id="second-law-of-thermodynamics-compatibility">
+<h3>Second law of thermodynamics compatibility<a class="headerlink" href="#second-law-of-thermodynamics-compatibility" title="Link to this heading">#</a></h3>
+<p>We must confirm that statistical entropy defined by (8.5) satisfies the <strong>second law of thermodynamics</strong>:</p>
+<blockquote>
+<div><p><strong>“When an isolated system undergoes any process connecting two equilibrium states, the final state entropy cannot be less than the initial state entropy.”</strong></p>
+</div></blockquote>
+<p><strong>Free expansion process.</strong> During free expansion, both energy <span class="math notranslate nohighlight">\(E\)</span> and particle number remain constant due to the absence of external heat transfer:</p>
+<div class="math notranslate nohighlight">
+\[\Delta E Q = 0\]</div>
+<p>The energy shell volume <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span> increases with expanding volume <span class="math notranslate nohighlight">\(V\)</span>. Therefore:</p>
+<div class="math notranslate nohighlight">
+\[S(E, V_2, N) &gt; S(E, V_1, N), \quad S = k_B \ln \left(\frac{\Gamma(E, V, N)}{\Gamma_0(N)}\right), \quad V_2 &gt; V_1\]</div>
+<p>This uses the fact that normalization factor <span class="math notranslate nohighlight">\(\Gamma_0(N)\)</span> stays constant.</p>
+<p><strong>Dynamic constraint removal.</strong> Physical constraints (such as wall interactions) diminish when volume increases.</p>
+<blockquote>
+<div><p><strong>EQUIVALENCE PRINCIPLE</strong> The second law is equivalent to stating that entropy increases when dynamic constraints are eliminated.</p>
+</div></blockquote>
+</section>
+<section id="energy-shell-thickness-considerations">
+<h3>Energy shell thickness considerations<a class="headerlink" href="#energy-shell-thickness-considerations" title="Link to this heading">#</a></h3>
+<p>Section 8.5’s entropy definition involves phase space volume <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span> of a shell with width <span class="math notranslate nohighlight">\(\Delta E\)</span> centered at energy <span class="math notranslate nohighlight">\(E\)</span>. This suggests that entropy <span class="math notranslate nohighlight">\(S = S_\Delta E(E, V, N)\)</span> depends on the unspecified parameter <span class="math notranslate nohighlight">\(\Delta E\)</span>. Does this compromise entropy’s uniqueness?</p>
+<p><strong>Reference energy scale.</strong> For small <span class="math notranslate nohighlight">\(\Delta E\)</span>, the approximation becomes:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(E, V, N) \approx \Omega(E) \Delta E, \quad \Omega(E) = \frac{\partial \Phi(E)}{\partial E} \quad (8.14)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Omega(E)\)</span> represents state density from equation (8.3). Determining whether <span class="math notranslate nohighlight">\(\Delta E\)</span> is small or large requires a reference energy <span class="math notranslate nohighlight">\(\Delta E_0\)</span>. A natural choice is <span class="math notranslate nohighlight">\(\Delta E_0 \sim k_B T\)</span>, corresponding to typical thermal energy per particle (Section 3.4.1).</p>
+<p><strong>Thermodynamic limit behavior.</strong> Entropy involves the logarithm of <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ln \left(\frac{\Gamma(E, V, N)}{\Gamma_0}\right) = \ln \left(\frac{\Omega(E)\Delta E \Delta E_0}{\Gamma_0 \Delta E_0}\right) = \ln \left(\frac{\Omega(E)\Delta E_0}{\Gamma_0}\right) + \ln(\Delta E/\Delta E_0)\]</div>
+<p>ensuring dimensionless logarithmic arguments. The crucial insight is that exact values of both <span class="math notranslate nohighlight">\(\Delta E\)</span> and <span class="math notranslate nohighlight">\(\Delta E_0\)</span> become irrelevant in the thermodynamic limit <span class="math notranslate nohighlight">\(N \to \infty\)</span> provided:</p>
+<div class="math notranslate nohighlight">
+\[|\ln(\Delta E/\Delta E_0)| \ll N\]</div>
+<p>Quantum energy discretization guarantees this condition in quantum statistics.</p>
+<p><strong>Shell versus sphere approximation.</strong> For large <span class="math notranslate nohighlight">\(\Delta E\)</span>, we can substitute total volume <span class="math notranslate nohighlight">\(\Phi(E)\)</span> for the energy shell volume <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ln (\Gamma(E, V, N)) \approx \ln (\Phi(E)) \quad (8.15)\]</div>
+<p>neglecting normalization factor <span class="math notranslate nohighlight">\(\Gamma_0\)</span>. This approximation works because hypersphere volume and surface in <span class="math notranslate nohighlight">\(3N\)</span> dimensions scale as <span class="math notranslate nohighlight">\(R^{3N}\)</span> and <span class="math notranslate nohighlight">\(R^{3N-1}\)</span> respectively (Section 8.3.1):</p>
+<div class="math notranslate nohighlight">
+\[\ln (\Phi(E)) \sim \ln (R^{3N}) = 3N \ln(R)\]</div>
+<div class="math notranslate nohighlight">
+\[\ln (\Gamma(E, V, N)) \sim \ln (R^{3N-1} \Delta E) = (3N - 1) \ln(R) + \ln(\Delta E)\]</div>
+<p>confirming equation (8.15). This analysis omits detailed dimensional considerations, particularly reference energy <span class="math notranslate nohighlight">\(\Delta E_0\)</span>.</p>
+</section>
+</section>
+<section id="microcanonical-ensemble-calculations">
+<h2>Microcanonical ensemble calculations<a class="headerlink" href="#microcanonical-ensemble-calculations" title="Link to this heading">#</a></h2>
+<p>Statistical physics calculations follow this systematic procedure:</p>
+<ol class="arabic simple">
+<li><p><strong>Hamiltonian formulation</strong></p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[H(q, p) = H(q_1, \ldots, q_{3N}, p_1, \ldots, p_{3N}, z)\]</div>
+<p>where <span class="math notranslate nohighlight">\(z\)</span> represents external parameters (e.g., volume <span class="math notranslate nohighlight">\(V\)</span>). Function <span class="math notranslate nohighlight">\(H(q, p)\)</span> encodes microscopic interaction details.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Phase space determination and state density calculation</strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\Omega(E, V, N) = \int d^{3N}q \int d^{3N}p \, \Delta E(E - H(q, p))\]</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Entropy calculation from energy sphere volume <span class="math notranslate nohighlight">\(\Phi(E)\)</span></strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[S(E, V, N) = k_B \ln \left(\frac{\Phi(E)}{\Gamma_0}\right)\]</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Thermodynamic variable determination</strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\frac{1}{T} = \left(\frac{\partial S}{\partial E}\right)_{V,N}, \quad -\frac{\mu}{T} = \left(\frac{\partial S}{\partial N}\right)_{E,V}, \quad \frac{P}{T} = \left(\frac{\partial S}{\partial V}\right)_{E,N}\]</div>
+<ol class="arabic simple" start="5">
+<li><p><strong>Internal energy evaluation</strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[U = \langle H \rangle = E(S, V, N)\]</div>
+<ol class="arabic simple" start="6">
+<li><p><strong>Thermodynamic potential calculation via Legendre transformations</strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[F(T, V, N) = U - TS\]</div>
+<div class="math notranslate nohighlight">
+\[H(S, P, N) = U + PV\]</div>
+<div class="math notranslate nohighlight">
+\[G(T, P, N) = U + PV - TS\]</div>
+<ol class="arabic simple" start="7">
+<li><p><strong>Additional physical quantities</strong> beyond thermodynamic potentials can be computed, including probability distributions for system properties like momentum/velocity distributions. For an <span class="math notranslate nohighlight">\(N\)</span>-particle system with phase space density:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\rho(q, p) = \rho(\vec{q}_1, \ldots, \vec{q}_N, \vec{p}_1, \ldots, \vec{p}_N)\]</div>
+<p>the probability of finding particle <span class="math notranslate nohighlight">\(i\)</span> with momentum <span class="math notranslate nohighlight">\(\vec{p}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\rho_i(\vec{p}) = \langle \Delta E(\vec{p} - \vec{p}_i) \rangle\]</div>
+<div class="math notranslate nohighlight">
+\[= \int d^3q_1 \ldots d^3q_N \int d^3p_1 \ldots d^3p_N \, \rho(\vec{q}_1, \ldots, \vec{q}_N, \vec{p}_1, \ldots, \vec{p}_i, \ldots, \vec{p}_N) \Delta E(\vec{p} - \vec{p}_i)\]</div>
+<section id="hypersphere-geometry">
+<h3>Hypersphere geometry<a class="headerlink" href="#hypersphere-geometry" title="Link to this heading">#</a></h3>
+<p>For future applications, we calculate the volume:</p>
+<div class="math notranslate nohighlight">
+\[\Omega_n(R) = \int_{\sum_{i=1}^n x_i^2 &lt; R^2} d^n x = R^n \Omega_n(1) \quad (8.16)\]</div>
+<p>of an <span class="math notranslate nohighlight">\(n\)</span>-dimensional hypersphere with radius <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p><strong>Spherical coordinate transformation.</strong> The unit sphere volume <span class="math notranslate nohighlight">\(\Omega_n(1)\)</span> appears in the Jacobian determinant when converting via:</p>
+<div class="math notranslate nohighlight">
+\[d^n x = dx_1 \ldots dx_n = \Omega_n(1) nR^{n-1} dR \quad (8.17)\]</div>
+<p>from Euclidean to spherical coordinates. This transformation applies when integrands depend only on radius <span class="math notranslate nohighlight">\(R\)</span>.</p>
+<p><strong>Gaussian integration techniques.</strong> To evaluate (8.16), we utilize the Gaussian integral identity:</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^{+\infty} dx e^{-x^2} = \sqrt{\pi}, \quad \int_{-\infty}^{+\infty} dx_1 \ldots \int_{-\infty}^{+\infty} dx_n e^{-(x_1^2+\ldots+x_n^2)} = \pi^{n/2}\]</div>
+<p>This gives:</p>
+<div class="math notranslate nohighlight">
+\[\pi^{n/2} = \int_0^{\infty} e^{-R^2} \Omega_n(1) nR^{n-1} dR = n\Omega_n(1) \int_0^{\infty} e^{-y} y^{(n-1)/2} \frac{dy}{2\sqrt{y}}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n}{2}\Omega_n(1) \int_0^{\infty} e^{-y} y^{\frac{n}{2}-1} dy \quad (8.18)\]</div>
+<p>using equation (8.17), the substitution <span class="math notranslate nohighlight">\(\sum_i x_i^2 = R^2 \equiv y\)</span>, and <span class="math notranslate nohighlight">\(2RdR = dy\)</span>.</p>
+<p><strong>Gamma function application.</strong> With the definition:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(z) = \int_0^{\infty} dx x^{z-1} e^{-x}\]</div>
+<p>equation (8.18) yields:</p>
+<div class="math notranslate nohighlight">
+\[\pi^{n/2} = \frac{n}{2}\Omega_n(1)\Gamma(n/2), \quad \Omega_n(1) = \frac{\pi^{n/2}}{(n/2) \Gamma(n/2)} \quad (8.19)\]</div>
+<p>Note that this evaluates hypersphere volume using formally dimensionless variables <span class="math notranslate nohighlight">\(x_i\)</span>. For subsequent applications:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma(N) = (N - 1)\Gamma(N - 1), \quad \Gamma(N) = (N - 1)! \quad (8.20)\]</div>
+<p>when the Gamma function argument is an integer.</p>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://itp.uni-frankfurt.de/~gros/Vorlesungen/TD/8_Microcanonical_ensemble.pdf">https://itp.uni-frankfurt.de/~gros/Vorlesungen/TD/8_Microcanonical_ensemble.pdf</a></p>
+<p><a class="reference external" href="https://itp.uni-frankfurt.de/~gros/Vorlesungen/TD/">https://itp.uni-frankfurt.de/~gros/Vorlesungen/TD/</a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./physics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ensemble.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Statistical Ensembles and Liouville’s Theorem</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="fokker-planck-equation-example.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Fokker-Planck Equation - Example Analysis (preview)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy">Entropy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#additivity-property-gibbs-paradox">Additivity property; Gibbs paradox</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-definition-compatibility">Temperature definition compatibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#second-law-of-thermodynamics-compatibility">Second law of thermodynamics compatibility</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#energy-shell-thickness-considerations">Energy shell thickness considerations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#microcanonical-ensemble-calculations">Microcanonical ensemble calculations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hypersphere-geometry">Hypersphere geometry</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev and Anna Savchenko
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
