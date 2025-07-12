@@ -53,5 +53,8 @@ Dive into the lessons, run the code, and let curiosity guide your journey. Toget
 
 Happy learning!
 
+```{nb-exec-table}
+```
+
 ```{tableofcontents}
 ```

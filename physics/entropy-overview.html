@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Entropy Overivew &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/entropy-overview';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/entropy-overview.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/entropy-overview.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/physics/entropy-overview.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Entropy Overivew</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-a-bridge-between-macro-and-micro">Entropy: A Bridge Between Macro and Micro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thermodynamic-entropy-clausius-entropy">1. Thermodynamic Entropy (Clausius Entropy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-entropy-boltzmann-and-gibbs">2. Statistical Entropy (Boltzmann and Gibbs)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-boltzmann-entropy-for-microcanonical-ensemble">A. Boltzmann Entropy (for Microcanonical Ensemble)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-gibbs-entropy-for-canonical-and-grand-canonical-ensembles">B. Gibbs Entropy (for Canonical and Grand Canonical Ensembles)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#i-canonical-ensemble">i. Canonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-grand-canonical-ensemble">ii. Grand Canonical Ensemble</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-are-they-connected">How are they connected?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-pillars-thermodynamic-and-statistical-entropy">The Two Pillars: Thermodynamic and Statistical Entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-in-different-ensembles">Entropy in Different Ensembles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#microcanonical-ensemble">Microcanonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#canonical-ensemble">Canonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#grand-canonical-ensemble">Grand Canonical Ensemble</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-entropy-a-state-function-yes-for-all-ensembles">Is Entropy a State Function? Yes, for All Ensembles!</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-entropy">What is Entropy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-entropy-usually-explained-after-the-microcanonical-ensemble">Why is Entropy Usually Explained After the Microcanonical Ensemble? 🧠</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-microcanonical-ensemble">What is the Microcanonical Ensemble?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-to-entropy">The Connection to Entropy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Microcanonical Ensemble</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Canonical Ensemble</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Grand Canonical Ensemble</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-gibbs-form-is-more-general">Why the Gibbs Form is More General</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-between-omega-and-partition-functions">Relationship Between <span class="math notranslate nohighlight">\(\Omega\)</span> and Partition Functions 🔗</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="entropy-overivew">
+<h1>Entropy Overivew<a class="headerlink" href="#entropy-overivew" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Entropy is a very complex concept. To avoid any further confusion while learning statistical physics, here we will review various definitions &amp; formulas of entropy in thermodynamics and statistical physics. The purpose of this page is not to explain you each and every formula (we will learn that later). The purpose is to provide you with the general picture of what’s going on.</p>
+<p>If you do not understand some formulas, skip them. If you do not know what is canonical ensemble, partition function or whatever, just skip it. For now, just try to understand the general picture, general concepts. All the details and each and every definition and formula, you will have a chance to review later.</p>
+</div>
+<p>You’re hitting on a fundamental point of confusion for many students of physics! The different definitions of entropy arise from two distinct but ultimately connected perspectives: <strong>classical thermodynamics</strong> (macroscopic) and <strong>statistical mechanics</strong> (microscopic). Let’s break it down.</p>
+<section id="entropy-a-bridge-between-macro-and-micro">
+<h2>Entropy: A Bridge Between Macro and Micro<a class="headerlink" href="#entropy-a-bridge-between-macro-and-micro" title="Link to this heading">#</a></h2>
+<p>At its core, <strong>entropy</strong> (<span class="math notranslate nohighlight">\(S\)</span>) is a measure of the <strong>disorder</strong> or <strong>randomness</strong> of a system, or more precisely, the <strong>number of accessible microstates</strong> consistent with a given macroscopic state. The beauty of entropy lies in its ability to bridge the gap between how we perceive systems macroscopically (temperature, pressure, volume) and the underlying microscopic behavior of their constituent particles (atoms, molecules).</p>
+</section>
+<hr class="docutils" />
+<section id="thermodynamic-entropy-clausius-entropy">
+<h2>1. Thermodynamic Entropy (Clausius Entropy)<a class="headerlink" href="#thermodynamic-entropy-clausius-entropy" title="Link to this heading">#</a></h2>
+<p>This is where the concept of entropy was first introduced. In classical thermodynamics, entropy is defined macroscopically based on reversible heat transfer:</p>
+<p><span class="math notranslate nohighlight">\(dS = \frac{\delta Q_{rev}}{T}\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(dS\)</span> is the infinitesimal change in entropy.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\delta Q_{rev}\)</span> is the infinitesimal amount of heat transferred reversibly to the system.</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> is the absolute temperature of the system.</p></li>
+</ul>
+<p>This definition is crucial for understanding the <strong>Second Law of Thermodynamics</strong>, which states that for any spontaneous process in an isolated system, the entropy never decreases (<span class="math notranslate nohighlight">\(\Delta S_{total} \ge 0\)</span>). At equilibrium, the entropy of an isolated system is at its maximum.</p>
+<p><strong>Key Point:</strong> This definition is operational and measurable, focusing on heat exchange during idealized reversible processes. It doesn’t directly tell you <em>why</em> entropy increases, just <em>that</em> it does.</p>
+</section>
+<hr class="docutils" />
+<section id="statistical-entropy-boltzmann-and-gibbs">
+<h2>2. Statistical Entropy (Boltzmann and Gibbs)<a class="headerlink" href="#statistical-entropy-boltzmann-and-gibbs" title="Link to this heading">#</a></h2>
+<p>Statistical mechanics provides the microscopic foundation for thermodynamics. It connects macroscopic properties to the behavior of a vast number of particles. Here, entropy is defined in terms of the number of possible microscopic arrangements (microstates) of a system.</p>
+<section id="a-boltzmann-entropy-for-microcanonical-ensemble">
+<h3>A. Boltzmann Entropy (for Microcanonical Ensemble)<a class="headerlink" href="#a-boltzmann-entropy-for-microcanonical-ensemble" title="Link to this heading">#</a></h3>
+<p>For a <strong>microcanonical ensemble</strong>, which describes an <strong>isolated system</strong> with fixed <strong>number of particles (<span class="math notranslate nohighlight">\(N\)</span>)</strong>, <strong>volume (<span class="math notranslate nohighlight">\(V\)</span>)</strong>, and <strong>total energy (<span class="math notranslate nohighlight">\(E\)</span>)</strong>, all accessible microstates are considered <strong>equally probable</strong>. This is where Boltzmann’s famous formula comes in:</p>
+<p><span class="math notranslate nohighlight">\(S = k_B \ln(\Omega)\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k_B\)</span> is the <strong>Boltzmann constant</strong> (<span class="math notranslate nohighlight">\(1.380649 \times 10^{-23}\)</span> J/K), which acts as a conversion factor between microscopic probability and macroscopic temperature scales.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Omega\)</span> (Omega) is the <strong>multiplicity</strong>, representing the <strong>number of accessible microstates</strong> consistent with the given macrostate (N, V, E).</p></li>
+</ul>
+<p><strong>Why it makes sense:</strong> A higher <span class="math notranslate nohighlight">\(\Omega\)</span> means there are more ways to arrange the particles while maintaining the same macroscopic properties, indicating greater disorder or randomness, and thus higher entropy. This formula is even inscribed on Boltzmann’s gravestone!</p>
+<p><strong>Key Point:</strong> This definition is specifically for isolated systems where all microstates satisfying the constraints are equally likely. In such a system, entropy is indeed a <strong>state function</strong>, meaning its value depends only on the current state (N, V, E) and not on the path taken to reach that state.</p>
+</section>
+<section id="b-gibbs-entropy-for-canonical-and-grand-canonical-ensembles">
+<h3>B. Gibbs Entropy (for Canonical and Grand Canonical Ensembles)<a class="headerlink" href="#b-gibbs-entropy-for-canonical-and-grand-canonical-ensembles" title="Link to this heading">#</a></h3>
+<p>The <strong>Gibbs entropy formula</strong> is a more general definition that applies to systems where microstates are <em>not</em> necessarily equally probable. This is especially relevant for ensembles that exchange energy or particles with a reservoir.</p>
+<p><span class="math notranslate nohighlight">\(S = -k_B \sum_i P_i \ln(P_i)\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P_i\)</span> is the <strong>probability</strong> of the system being in a particular microstate <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>The summation is over all possible microstates.</p></li>
+</ul>
+<p>This formula is mathematically equivalent to <strong>Shannon entropy</strong> from information theory, highlighting the deep connection between entropy and information.</p>
+<section id="i-canonical-ensemble">
+<h4>i. Canonical Ensemble<a class="headerlink" href="#i-canonical-ensemble" title="Link to this heading">#</a></h4>
+<p>A <strong>canonical ensemble</strong> describes a <strong>closed system</strong> (fixed <span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(V\)</span>) that is in <strong>thermal equilibrium with a heat bath</strong> at a constant <strong>temperature (<span class="math notranslate nohighlight">\(T\)</span>)</strong>. Here, energy can be exchanged between the system and the bath, so microstates with different energies are not equally probable. The probability of a microstate <span class="math notranslate nohighlight">\(i\)</span> with energy <span class="math notranslate nohighlight">\(E_i\)</span> is given by the <strong>Boltzmann distribution</strong>:</p>
+<p><span class="math notranslate nohighlight">\(P_i = \frac{e^{-\beta E_i}}{Z}\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta = \frac{1}{k_B T}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Z = \sum_i e^{-\beta E_i}\)</span> is the <strong>canonical partition function</strong>, which normalizes the probabilities.</p></li>
+</ul>
+<p>For the canonical ensemble, the entropy can be derived from the <strong>Helmholtz free energy</strong> (<span class="math notranslate nohighlight">\(A = U - TS\)</span>), where <span class="math notranslate nohighlight">\(U\)</span> is the internal energy:</p>
+<p><span class="math notranslate nohighlight">\(S = -\left(\frac{\partial A}{\partial T}\right)_{N,V}\)</span></p>
+<p>And <span class="math notranslate nohighlight">\(A\)</span> is related to the partition function by:</p>
+<p><span class="math notranslate nohighlight">\(A = -k_B T \ln Z\)</span></p>
+<p>So, substituting <span class="math notranslate nohighlight">\(A\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(S = k_B \ln Z + \frac{U}{T}\)</span></p>
+<p><strong>Is entropy a state function in the canonical ensemble?</strong> Yes, absolutely. While the system’s energy fluctuates, the temperature (<span class="math notranslate nohighlight">\(T\)</span>), number of particles (<span class="math notranslate nohighlight">\(N\)</span>), and volume (<span class="math notranslate nohighlight">\(V\)</span>) are fixed parameters that define its macroscopic state. The entropy derived from these parameters is unique.</p>
+</section>
+<section id="ii-grand-canonical-ensemble">
+<h4>ii. Grand Canonical Ensemble<a class="headerlink" href="#ii-grand-canonical-ensemble" title="Link to this heading">#</a></h4>
+<p>A <strong>grand canonical ensemble</strong> describes an <strong>open system</strong> that can exchange both <strong>energy and particles</strong> with a reservoir. It’s characterized by fixed <strong>volume (<span class="math notranslate nohighlight">\(V\)</span>)</strong>, <strong>temperature (<span class="math notranslate nohighlight">\(T\)</span>)</strong>, and <strong>chemical potential (<span class="math notranslate nohighlight">\(\mu\)</span>)</strong>. The probability of a microstate <span class="math notranslate nohighlight">\(i\)</span> with energy <span class="math notranslate nohighlight">\(E_i\)</span> and number of particles <span class="math notranslate nohighlight">\(N_i\)</span> is given by:</p>
+<p><span class="math notranslate nohighlight">\(P_i = \frac{e^{-\beta(E_i - \mu N_i)}}{\Xi}\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Xi = \sum_{N,i} e^{-\beta(E_i - \mu N_i)}\)</span> is the <strong>grand canonical partition function</strong>.</p></li>
+</ul>
+<p>For the grand canonical ensemble, entropy can be derived from the <strong>grand potential</strong> (<span class="math notranslate nohighlight">\(\Omega_{GC} = U - TS - \mu N\)</span>):</p>
+<p><span class="math notranslate nohighlight">\(S = -\left(\frac{\partial \Omega_{GC}}{\partial T}\right)_{V,\mu}\)</span></p>
+<p>And <span class="math notranslate nohighlight">\(\Omega_{GC}\)</span> is related to the grand canonical partition function by:</p>
+<p><span class="math notranslate nohighlight">\(\Omega_{GC} = -k_B T \ln \Xi\)</span></p>
+<p>Substituting <span class="math notranslate nohighlight">\(\Omega_{GC}\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(S = k_B \ln \Xi + \frac{U}{T} - \frac{\mu \langle N \rangle}{T}\)</span></p>
+<p><strong>Is entropy a state function in the grand canonical ensemble?</strong> Yes, just like in the microcanonical and canonical ensembles, the entropy here is a unique function of the fixed macroscopic parameters (<span class="math notranslate nohighlight">\(V\)</span>, <span class="math notranslate nohighlight">\(T\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span>).</p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="how-are-they-connected">
+<h2>How are they connected?<a class="headerlink" href="#how-are-they-connected" title="Link to this heading">#</a></h2>
+<p>The different entropy formulas are not contradictory but rather <strong>different expressions of the same fundamental concept</strong>, tailored to specific thermodynamic conditions (ensembles).</p>
+<ol class="arabic simple">
+<li><p><strong>Statistical Mechanics as the Foundation:</strong> The statistical definitions (Boltzmann and Gibbs) provide the microscopic basis for the macroscopic thermodynamic entropy. The thermodynamic definition (<span class="math notranslate nohighlight">\(dS = \frac{\delta Q_{rev}}{T}\)</span>) can be derived from the statistical definitions in the <strong>thermodynamic limit</strong> (i.e., for very large systems). In this limit, the fluctuations in macroscopic quantities (like energy in the canonical ensemble) become negligible, and the ensemble averages effectively become the measured thermodynamic values.</p></li>
+<li><p><strong>Equivalence at Equilibrium:</strong> For a system at thermodynamic equilibrium, the Gibbs entropy formula reduces to the Boltzmann formula for the microcanonical ensemble if all accessible microstates are indeed equally probable. The canonical and grand canonical ensembles, while allowing for fluctuations, are designed to describe systems in equilibrium with their surroundings. In the thermodynamic limit, these ensembles become equivalent in terms of their macroscopic properties, including entropy.</p></li>
+<li><p><strong>Maximum Entropy Principle:</strong> A common thread is the <strong>principle of maximum entropy</strong>. For an isolated system, the equilibrium state is the macrostate that corresponds to the largest number of microstates (maximum Boltzmann entropy). For systems in contact with reservoirs, the equilibrium state is also characterized by maximizing entropy, but subject to different constraints (e.g., fixed temperature for the canonical ensemble, which is equivalent to minimizing Helmholtz free energy, a quantity related to entropy).</p></li>
+</ol>
+<p>In essence, <strong>thermodynamic entropy</strong> describes <em>what</em> happens (e.g., heat flows from hot to cold, increasing overall entropy), while <strong>statistical entropy</strong> explains <em>why</em> it happens (e.g., there are vastly more ways for energy to be distributed evenly than concentrated in one place). All definitions ultimately refer to the same physical property, often just called “entropy.”</p>
+<section id="the-two-pillars-thermodynamic-and-statistical-entropy">
+<h3>The Two Pillars: Thermodynamic and Statistical Entropy<a class="headerlink" href="#the-two-pillars-thermodynamic-and-statistical-entropy" title="Link to this heading">#</a></h3>
+<p>At its core, entropy can be understood from two primary perspectives:</p>
+<ul>
+<li><p><strong>Thermodynamic Entropy:</strong> This is the classical definition, arising from the study of heat engines and the second law of thermodynamics. It’s defined by the change in entropy, <span class="math notranslate nohighlight">\(dS\)</span>, for a reversible process as:</p>
+<div class="math notranslate nohighlight">
+\[dS = \frac{\delta Q_{rev}}{T}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\delta Q_{rev}\)</span> is the infinitesimal amount of heat added to the system reversibly, and <span class="math notranslate nohighlight">\(T\)</span> is the absolute temperature. This definition is macroscopic and doesn’t delve into the microscopic details of the system.</p>
+</li>
+<li><p><strong>Statistical Entropy:</strong> This perspective, pioneered by Ludwig Boltzmann and J. Willard Gibbs, defines entropy in terms of the number of microscopic states (microstates) a system can occupy. The most general formula for statistical entropy, known as the <strong>Gibbs entropy</strong>, is:</p>
+<div class="math notranslate nohighlight">
+\[S = -k_B \sum_i p_i \ln(p_i)\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_B\)</span> is the Boltzmann constant and <span class="math notranslate nohighlight">\(p_i\)</span> is the probability of the system being in the <span class="math notranslate nohighlight">\(i\)</span>-th microstate. This formula is incredibly powerful because it applies to any statistical ensemble.</p>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="entropy-in-different-ensembles">
+<h3>Entropy in Different Ensembles<a class="headerlink" href="#entropy-in-different-ensembles" title="Link to this heading">#</a></h3>
+<p>The specific formula for entropy you use depends on the <strong>statistical ensemble</strong>, which is a collection of all possible systems that share certain macroscopic properties.</p>
+<section id="microcanonical-ensemble">
+<h4>Microcanonical Ensemble<a class="headerlink" href="#microcanonical-ensemble" title="Link to this heading">#</a></h4>
+<p>This ensemble describes an <strong>isolated system</strong> with a fixed number of particles (<span class="math notranslate nohighlight">\(N\)</span>), a fixed volume (<span class="math notranslate nohighlight">\(V\)</span>), and a fixed energy (<span class="math notranslate nohighlight">\(E\)</span>). The fundamental assumption here is that <strong>all accessible microstates are equally probable</strong>.</p>
+<p>If the total number of accessible microstates is <span class="math notranslate nohighlight">\(\Omega\)</span>, then the probability of being in any one of these states is <span class="math notranslate nohighlight">\(p_i = 1/\Omega\)</span>. Plugging this into the Gibbs entropy formula gives us the famous <strong>Boltzmann entropy formula</strong>:</p>
+<div class="math notranslate nohighlight">
+\[S = -k_B \sum_{i=1}^{\Omega} \frac{1}{\Omega} \ln\left(\frac{1}{\Omega}\right) = -k_B \left(\Omega \cdot \frac{1}{\Omega} \ln\left(\frac{1}{\Omega}\right)\right) = k_B \ln(\Omega)\]</div>
+<p>So, the formula <span class="math notranslate nohighlight">\(S = k_B \ln(\Omega)\)</span> is a special case of the more general Gibbs formula, applicable only to the microcanonical ensemble where all microstates are equally likely.</p>
+</section>
+<hr class="docutils" />
+<section id="canonical-ensemble">
+<h4>Canonical Ensemble<a class="headerlink" href="#canonical-ensemble" title="Link to this heading">#</a></h4>
+<p>This ensemble describes a system with a fixed number of particles (<span class="math notranslate nohighlight">\(N\)</span>) and a fixed volume (<span class="math notranslate nohighlight">\(V\)</span>), but it’s in <strong>thermal equilibrium with a large heat bath</strong> at a constant temperature (<span class="math notranslate nohighlight">\(T\)</span>). This means the system’s energy can fluctuate.</p>
+<p>In the canonical ensemble, the probability of a microstate with energy <span class="math notranslate nohighlight">\(E_i\)</span> is not uniform. It’s given by the <strong>Boltzmann distribution</strong>:</p>
+<div class="math notranslate nohighlight">
+\[p_i = \frac{e^{-E_i/k_B T}}{Z}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z\)</span> is the <strong>canonical partition function</strong>, defined as <span class="math notranslate nohighlight">\(Z = \sum_i e^{-E_i/k_B T}\)</span>. The partition function acts as a normalization constant.</p>
+<p>To find the entropy for the canonical ensemble, we again use the Gibbs entropy formula and substitute this probability distribution. After some mathematical manipulation, the entropy for the canonical ensemble can be expressed in a few useful ways:</p>
+<ul class="simple">
+<li><p>In terms of the partition function and average energy <span class="math notranslate nohighlight">\(\langle E \rangle\)</span>:
+$<span class="math notranslate nohighlight">\(S = k_B \ln(Z) + \frac{\langle E \rangle}{T}\)</span>$</p></li>
+<li><p>In terms of the Helmholtz free energy, <span class="math notranslate nohighlight">\(A = -k_B T \ln(Z)\)</span>:
+$<span class="math notranslate nohighlight">\(S = -\left(\frac{\partial A}{\partial T}\right)_{V,N}\)</span>$</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="grand-canonical-ensemble">
+<h4>Grand Canonical Ensemble<a class="headerlink" href="#grand-canonical-ensemble" title="Link to this heading">#</a></h4>
+<p>This ensemble is even more general. It describes a system with a fixed volume (<span class="math notranslate nohighlight">\(V\)</span>) in thermal and <strong>chemical equilibrium with a large reservoir</strong>. This means both the energy (<span class="math notranslate nohighlight">\(E\)</span>) and the number of particles (<span class="math notranslate nohighlight">\(N\)</span>) can fluctuate.</p>
+<p>The probability of a microstate with energy <span class="math notranslate nohighlight">\(E_i\)</span> and particle number <span class="math notranslate nohighlight">\(N_i\)</span> is given by the <strong>Gibbs distribution</strong>:</p>
+<div class="math notranslate nohighlight">
+\[p_i = \frac{e^{-(E_i - \mu N_i)/k_B T}}{\mathcal{Z}}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\mu\)</span> is the chemical potential, and <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> is the <strong>grand canonical partition function</strong>, <span class="math notranslate nohighlight">\(\mathcal{Z} = \sum_i e^{-(E_i - \mu N_i)/k_B T}\)</span>.</p>
+<p>Plugging this into the Gibbs entropy formula, we can derive the entropy for the grand canonical ensemble. It’s often expressed in terms of the grand potential, <span class="math notranslate nohighlight">\(\Phi = -k_B T \ln(\mathcal{Z})\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S = -\left(\frac{\partial \Phi}{\partial T}\right)_{V,\mu}\]</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="is-entropy-a-state-function-yes-for-all-ensembles">
+<h3>Is Entropy a State Function? Yes, for All Ensembles!<a class="headerlink" href="#is-entropy-a-state-function-yes-for-all-ensembles" title="Link to this heading">#</a></h3>
+<p>You are correct that entropy is a <strong>state function</strong>. This is a crucial concept. It means the entropy of a system depends only on its current macroscopic state (defined by variables like <span class="math notranslate nohighlight">\(T, V, N, E, \mu\)</span>, depending on the ensemble) and not on the path taken to reach that state.</p>
+<p>This property holds true for <strong>all three ensembles</strong>:</p>
+<ul class="simple">
+<li><p><strong>Microcanonical:</strong> The entropy <span class="math notranslate nohighlight">\(S(E, V, N)\)</span> is a function of the system’s energy, volume, and particle number.</p></li>
+<li><p><strong>Canonical:</strong> The entropy <span class="math notranslate nohighlight">\(S(T, V, N)\)</span> is a function of the system’s temperature, volume, and particle number.</p></li>
+<li><p><strong>Grand Canonical:</strong> The entropy <span class="math notranslate nohighlight">\(S(T, V, \mu)\)</span> is a function of the system’s temperature, volume, and chemical potential.</p></li>
+</ul>
+<p>The fact that entropy is a state function is fundamental to its usefulness in thermodynamics and statistical mechanics. It allows us to calculate entropy changes between different equilibrium states without needing to know the details of the process connecting them.</p>
+<p>In summary, the different formulas for entropy are all connected through the Gibbs entropy formula, which is the most general statistical definition. The specific formula you use is determined by the constraints of the physical system you are modeling, as represented by the appropriate statistical ensemble. And importantly, entropy remains a well-defined state function in all of these frameworks.</p>
+</section>
+</section>
+<section id="what-is-entropy">
+<h2>What is Entropy?<a class="headerlink" href="#what-is-entropy" title="Link to this heading">#</a></h2>
+<p>At its core, <strong>entropy</strong> is a measure of the <strong>disorder, randomness, or uncertainty</strong> within a system. Think of it this way:</p>
+<ul class="simple">
+<li><p><strong>Low entropy (ordered system):</strong> Imagine a stack of neatly folded clothes in your wardrobe. There’s only one, or very few, ways to arrange them in that perfectly ordered state. You know exactly where everything is.</p></li>
+<li><p><strong>High entropy (disordered system):</strong> Now imagine those clothes thrown haphazardly on the floor. There are countless ways for them to be scattered in a “disordered” fashion. You’re much less certain about the exact position of any given item.</p></li>
+</ul>
+<p>In physics, particularly in <strong>thermodynamics</strong> and <strong>statistical mechanics</strong>, entropy has a more precise meaning:</p>
+<ol class="arabic">
+<li><p><strong>Thermodynamic Entropy (Classical View):</strong> Historically, entropy (<span class="math notranslate nohighlight">\(S\)</span>) was introduced by Rudolf Clausius in the context of heat engines. He defined the change in entropy (<span class="math notranslate nohighlight">\(\Delta S\)</span>) for a reversible process as the heat transferred (<span class="math notranslate nohighlight">\(Q_{rev}\)</span>) divided by the absolute temperature (<span class="math notranslate nohighlight">\(T\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\Delta S = \frac{Q_{rev}}{T}\]</div>
+<p>This classical definition highlights that entropy is related to how energy spreads out or disperses within a system. The <strong>Second Law of Thermodynamics</strong> states that the entropy of an isolated system never decreases; it either stays the same (for reversible processes) or increases (for irreversible, spontaneous processes). This is why ice melts, hot coffee cools, and things generally tend towards a more “mixed-up” state – these processes increase the total entropy of the universe.</p>
+</li>
+<li><p><strong>Statistical Entropy (Microscopic View):</strong> The more profound understanding of entropy comes from Ludwig Boltzmann, who connected it to the microscopic states of a system. Boltzmann’s famous formula defines entropy as:</p>
+<div class="math notranslate nohighlight">
+\[S = k_B \ln \Omega\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S\)</span> is the entropy.</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_B\)</span> is the <strong>Boltzmann constant</strong>, a fundamental constant that links microscopic energy to macroscopic temperature (<span class="math notranslate nohighlight">\(1.38 \times 10^{-23} \text{ J/K}\)</span>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\ln\)</span> is the natural logarithm.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Omega\)</span> (Omega) is the <strong>number of accessible microstates</strong> corresponding to a given macroscopic state (or macrostate).</p></li>
+</ul>
+<p>A <strong>microstate</strong> refers to a specific, detailed configuration of all the individual particles (atoms, molecules, etc.) within a system, including their positions and momenta. A <strong>macrostate</strong> describes the overall, observable properties of the system, like its temperature, pressure, volume, and total energy.</p>
+<p><strong>The key idea here is that a macrostate with a larger number of possible microstates is more probable and, therefore, has higher entropy.</strong> For example, there are many more ways for gas molecules to be evenly distributed throughout a room (high entropy macrostate) than for them all to spontaneously gather in one corner (low entropy macrostate).</p>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="why-is-entropy-usually-explained-after-the-microcanonical-ensemble">
+<h2>Why is Entropy Usually Explained After the Microcanonical Ensemble? 🧠<a class="headerlink" href="#why-is-entropy-usually-explained-after-the-microcanonical-ensemble" title="Link to this heading">#</a></h2>
+<p>The <strong>microcanonical ensemble</strong> is a foundational concept in statistical mechanics, and it provides the perfect stepping stone to understanding Boltzmann’s statistical definition of entropy.</p>
+<section id="what-is-the-microcanonical-ensemble">
+<h3>What is the Microcanonical Ensemble?<a class="headerlink" href="#what-is-the-microcanonical-ensemble" title="Link to this heading">#</a></h3>
+<p>The <strong>microcanonical ensemble</strong> is a theoretical construct used to describe an <strong>isolated system</strong> with a fixed:</p>
+<ul class="simple">
+<li><p><strong>Number of particles (<span class="math notranslate nohighlight">\(N\)</span>)</strong></p></li>
+<li><p><strong>Volume (<span class="math notranslate nohighlight">\(V\)</span>)</strong></p></li>
+<li><p><strong>Total Energy (<span class="math notranslate nohighlight">\(E\)</span>)</strong></p></li>
+</ul>
+<p>Crucially, in a microcanonical ensemble, the system is assumed to be isolated, meaning it <strong>cannot exchange energy or particles with its surroundings</strong>. Due to the conservation of energy, the total energy <span class="math notranslate nohighlight">\(E\)</span> remains constant.</p>
+<p>The fundamental postulate of statistical mechanics, known as the <strong>postulate of equal <em>a priori</em> probabilities</strong>, states that for an isolated system in equilibrium, <strong>all accessible microstates corresponding to the given macroscopic constraints (N, V, E) are equally probable</strong>.</p>
+</section>
+<section id="the-connection-to-entropy">
+<h3>The Connection to Entropy<a class="headerlink" href="#the-connection-to-entropy" title="Link to this heading">#</a></h3>
+<p>Here’s why the microcanonical ensemble is explained <em>before</em> entropy:</p>
+<ol class="arabic">
+<li><p><strong>Direct Calculation of Microstates (<span class="math notranslate nohighlight">\(\Omega\)</span>):</strong> The microcanonical ensemble is defined by fixed <span class="math notranslate nohighlight">\(N\)</span>, <span class="math notranslate nohighlight">\(V\)</span>, and <span class="math notranslate nohighlight">\(E\)</span>. These are precisely the parameters needed to count the number of accessible microstates, <span class="math notranslate nohighlight">\(\Omega\)</span>. By fixing these macroscopic properties, we can theoretically (though often mathematically challenging) enumerate or calculate how many distinct microscopic arrangements of particles satisfy those conditions.</p></li>
+<li><p><strong>Foundation for Statistical Entropy:</strong> Once we have the concept of the microcanonical ensemble and the ability to define and, in principle, count <span class="math notranslate nohighlight">\(\Omega\)</span> for a given <span class="math notranslate nohighlight">\((N, V, E)\)</span> system, Boltzmann’s definition of entropy (<span class="math notranslate nohighlight">\(S = k_B \ln \Omega\)</span>) becomes intuitive and directly applicable. The microcanonical ensemble provides the context for what <span class="math notranslate nohighlight">\(\Omega\)</span> refers to – the number of microstates for a system with precisely defined macroscopic constraints.</p></li>
+<li><p><strong>From Microscopic to Macroscopic:</strong> Statistical mechanics aims to bridge the gap between the microscopic behavior of particles and the macroscopic, observable properties of a system. The microcanonical ensemble, by clearly defining a set of microscopic possibilities for a given macrostate, allows us to directly relate a fundamental macroscopic property like entropy to the underlying microscopic configurations. Without understanding how to define and count <span class="math notranslate nohighlight">\(\Omega\)</span> for a system, the statistical definition of entropy would lack its fundamental basis.</p></li>
+<li><p><strong>Derivation of Other Thermodynamic Quantities:</strong> Once entropy is defined using the microcanonical ensemble, other thermodynamic quantities like temperature (<span class="math notranslate nohighlight">\(T\)</span>) and pressure (<span class="math notranslate nohighlight">\(P\)</span>) can be derived from it. For example, temperature in the microcanonical ensemble is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{T} = \left( \frac{\partial S}{\partial E} \right)_{N,V}\]</div>
+<p>This shows how the energy dependence of the number of microstates (and thus entropy) directly gives rise to the concept of temperature.</p>
+</li>
+</ol>
+<p>In essence, the microcanonical ensemble provides the concrete framework for defining and calculating the <span class="math notranslate nohighlight">\(\Omega\)</span> term in Boltzmann’s entropy formula, making the statistical interpretation of entropy clear and providing the starting point for deriving the entire landscape of thermodynamic relationships from microscopic principles.</p>
+<p>While the <strong>fundamental concept of entropy</strong> as a measure of disorder or the number of accessible microstates remains the same, how we <em>calculate</em> or <em>express</em> it changes depending on the statistical ensemble we’re working with. This is because each ensemble describes a system under different macroscopic constraints, which affects how we count or average over the microstates.</p>
+<p>Here’s a breakdown:</p>
+</section>
+</section>
+<section id="id1">
+<h2>Microcanonical Ensemble<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Constraints:</strong> Fixed Number of particles (<span class="math notranslate nohighlight">\(N\)</span>), Fixed Volume (<span class="math notranslate nohighlight">\(V\)</span>), Fixed Total Energy (<span class="math notranslate nohighlight">\(E\)</span>).</p></li>
+<li><p><strong>Definition of Entropy:</strong> This is the most direct and fundamental definition, derived from Boltzmann’s formula.
+$<span class="math notranslate nohighlight">\(S = k_B \ln \Omega(N, V, E)\)</span><span class="math notranslate nohighlight">\(
+  Where \)</span>\Omega(N, V, E)<span class="math notranslate nohighlight">\( is the **number of accessible microstates** consistent with the fixed \)</span>N, V, E$. All these microstates are considered equally probable. This ensemble directly embodies the idea of entropy as a measure of the “size” of the accessible phase space.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>Canonical Ensemble<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Constraints:</strong> Fixed Number of particles (<span class="math notranslate nohighlight">\(N\)</span>), Fixed Volume (<span class="math notranslate nohighlight">\(V\)</span>), Fixed Temperature (<span class="math notranslate nohighlight">\(T\)</span>). The system is in thermal equilibrium with a large heat reservoir, allowing energy exchange.</p></li>
+<li><p><strong>Definition of Entropy:</strong> In this ensemble, the energy of the system can fluctuate. Instead of counting microstates with a precise energy, we deal with probabilities of the system being in different microstates. The probability of a microstate <span class="math notranslate nohighlight">\(i\)</span> with energy <span class="math notranslate nohighlight">\(E_i\)</span> is given by the <strong>Boltzmann distribution</strong>:
+$<span class="math notranslate nohighlight">\(P_i = \frac{e^{-\beta E_i}}{Z}\)</span><span class="math notranslate nohighlight">\(
+  Where \)</span>\beta = 1/(k_B T)<span class="math notranslate nohighlight">\( and \)</span>Z<span class="math notranslate nohighlight">\( is the **canonical partition function**, which sums over all possible microstates \)</span>i<span class="math notranslate nohighlight">\(:
+  \)</span><span class="math notranslate nohighlight">\(Z(N, V, T) = \sum_i e^{-\beta E_i}\)</span><span class="math notranslate nohighlight">\(
+  The entropy is then expressed using the **Gibbs entropy formula**:
+  \)</span><span class="math notranslate nohighlight">\(S = -k_B \sum_i P_i \ln P_i\)</span><span class="math notranslate nohighlight">\(
+  This form effectively averages the &quot;uncertainty&quot; or &quot;disorder&quot; over the probability distribution of microstates. It can be shown that this definition is consistent with the thermodynamic relationship:
+  \)</span><span class="math notranslate nohighlight">\(S = \frac{U}{T} + k_B \ln Z\)</span><span class="math notranslate nohighlight">\(
+  where \)</span>U$ is the average internal energy. While the form looks different from the microcanonical definition, it is derived from it and yields the same thermodynamic entropy in the thermodynamic limit (for large systems).</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>Grand Canonical Ensemble<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Constraints:</strong> Fixed Volume (<span class="math notranslate nohighlight">\(V\)</span>), Fixed Temperature (<span class="math notranslate nohighlight">\(T\)</span>), Fixed Chemical Potential (<span class="math notranslate nohighlight">\(\mu\)</span>). The system is open, allowing exchange of both energy and particles with a large reservoir.</p></li>
+<li><p><strong>Definition of Entropy:</strong> In this ensemble, both energy and particle number can fluctuate. The probability of a microstate <span class="math notranslate nohighlight">\(i\)</span> with energy <span class="math notranslate nohighlight">\(E_i\)</span> and number of particles <span class="math notranslate nohighlight">\(N_i\)</span> is given by:
+$<span class="math notranslate nohighlight">\(P_i = \frac{e^{-\beta (E_i - \mu N_i)}}{\mathcal{Z}}\)</span><span class="math notranslate nohighlight">\(
+  Where \)</span>\mathcal{Z}<span class="math notranslate nohighlight">\( is the **grand canonical partition function**:
+  \)</span><span class="math notranslate nohighlight">\(\mathcal{Z}(V, T, \mu) = \sum_{N=0}^{\infty} \sum_{i(N)} e^{-\beta (E_i(N) - \mu N)}\)</span><span class="math notranslate nohighlight">\(
+  (The sum over \)</span>i(N)<span class="math notranslate nohighlight">\( means summing over all microstates for a given \)</span>N<span class="math notranslate nohighlight">\(.)
+  Again, the entropy is given by the Gibbs entropy formula:
+  \)</span><span class="math notranslate nohighlight">\(S = -k_B \sum_i P_i \ln P_i\)</span><span class="math notranslate nohighlight">\(
+  And it can also be related to the grand canonical potential \)</span>\Omega_{GC} = -k_B T \ln \mathcal{Z}<span class="math notranslate nohighlight">\( and average energy and particle number:
+  \)</span><span class="math notranslate nohighlight">\(S = \frac{U - \mu N}{T} + k_B \ln \mathcal{Z}\)</span>$</p></li>
+</ul>
+<hr class="docutils" />
+<p>In summary, the core meaning of entropy as a measure of the number of accessible microscopic configurations (or the information uncertainty about the microscopic state) remains constant. However, the specific mathematical expression or calculation method for entropy adapts to the macroscopic constraints of each ensemble because these constraints dictate which microstates are possible and with what probability they occur. Ultimately, in the thermodynamic limit, all these ensemble-specific definitions of entropy are consistent with each other and with the macroscopic thermodynamic entropy.</p>
+<p><br />
+While <span class="math notranslate nohighlight">\(S = k_B \ln \Omega\)</span> (Boltzmann entropy) is the most intuitive and fundamental definition of entropy as related to the number of microstates, it’s primarily used in the <strong>microcanonical ensemble</strong> where energy is fixed, allowing for a direct counting of states at that specific energy.</p>
+<p>For the other ensembles (canonical and grand canonical), where energy and/or particle number can fluctuate, the more general and widely applicable form of entropy is the <strong>Gibbs entropy formula</strong>:</p>
+<div class="math notranslate nohighlight">
+\[S = -k_B \sum_i P_i \ln P_i\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P_i\)</span> is the <strong>probability</strong> of the system being in microstate <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+<section id="why-the-gibbs-form-is-more-general">
+<h3>Why the Gibbs Form is More General<a class="headerlink" href="#why-the-gibbs-form-is-more-general" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Probability Distribution:</strong> The key difference is that the Gibbs entropy takes into account the <em>probability distribution</em> over all possible microstates, not just a simple count of equally likely states. In the canonical and grand canonical ensembles, microstates are <em>not</em> equally probable; their probabilities are determined by the Boltzmann factor (<span class="math notranslate nohighlight">\(e^{-\beta E_i}\)</span>) and generalized Boltzmann factors (<span class="math notranslate nohighlight">\(e^{-\beta (E_i - \mu N_i)}\)</span>), respectively.</p></li>
+<li><p><strong>Connection to Information Theory (Shannon Entropy):</strong> The Gibbs entropy formula is mathematically identical to the <strong>Shannon entropy</strong> from information theory, which quantifies the uncertainty or information content of a probability distribution. This connection is profound, as it suggests that entropy is fundamentally about the amount of information needed to specify the microscopic state of a system given its macroscopic properties.</p></li>
+<li><p><strong>Consistency Across Ensembles:</strong></p>
+<ul class="simple">
+<li><p><strong>Microcanonical Ensemble:</strong> If you apply the Gibbs entropy formula to the microcanonical ensemble, where all <span class="math notranslate nohighlight">\(\Omega\)</span> accessible microstates are equally probable (<span class="math notranslate nohighlight">\(P_i = 1/\Omega\)</span> for those <span class="math notranslate nohighlight">\(\Omega\)</span> states, and <span class="math notranslate nohighlight">\(P_i = 0\)</span> for others), you recover Boltzmann’s formula:
+$<span class="math notranslate nohighlight">\(S = -k_B \sum_{i=1}^{\Omega} \left(\frac{1}{\Omega}\right) \ln \left(\frac{1}{\Omega}\right) = -k_B \sum_{i=1}^{\Omega} \left(-\frac{\ln \Omega}{\Omega}\right) = k_B \Omega \left(\frac{\ln \Omega}{\Omega}\right) = k_B \ln \Omega\)</span>$</p></li>
+<li><p><strong>Canonical and Grand Canonical Ensembles:</strong> For these ensembles, the <span class="math notranslate nohighlight">\(P_i\)</span> are given by the Boltzmann distribution (or grand canonical distribution). Plugging these probabilities into the Gibbs formula, you get an expression for entropy that can be shown to be equivalent to the thermodynamic definition of entropy for those ensembles (e.g., <span class="math notranslate nohighlight">\(S = U/T + k_B \ln Z\)</span> for the canonical ensemble, where <span class="math notranslate nohighlight">\(Z\)</span> is the partition function).</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="relationship-between-omega-and-partition-functions">
+<h3>Relationship Between <span class="math notranslate nohighlight">\(\Omega\)</span> and Partition Functions 🔗<a class="headerlink" href="#relationship-between-omega-and-partition-functions" title="Link to this heading">#</a></h3>
+<p>Yes, <span class="math notranslate nohighlight">\(\Omega\)</span> (the number of microstates) is intimately related to the <strong>partition function</strong> in other ensembles.</p>
+<p>The partition function (e.g., <span class="math notranslate nohighlight">\(Z\)</span> for canonical, <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> for grand canonical) essentially “counts” the thermally accessible microstates, weighted by their Boltzmann factors. In the thermodynamic limit (for very large systems), there’s a strong connection:</p>
+<ul class="simple">
+<li><p>For a canonical ensemble, the canonical partition function <span class="math notranslate nohighlight">\(Z\)</span> can be approximated (in the classical limit, or for very large systems) as an integral over the density of states <span class="math notranslate nohighlight">\(\Omega(E)\)</span>:
+$<span class="math notranslate nohighlight">\(Z(T) = \int \Omega(E) e^{-E/k_B T} dE\)</span><span class="math notranslate nohighlight">\(
+  This integral is often dominated by the energy \)</span>E<span class="math notranslate nohighlight">\( at which the product \)</span>\Omega(E) e^{-E/k_B T}<span class="math notranslate nohighlight">\( is maximized. This peak corresponds to the average energy of the system at temperature \)</span>T<span class="math notranslate nohighlight">\(. From this, you can indeed show that \)</span>k_B \ln Z$ is directly related to the entropy.</p></li>
+<li><p>Similarly, for the grand canonical ensemble, the grand canonical partition function <span class="math notranslate nohighlight">\(\mathcal{Z}\)</span> sums over all possible particle numbers <span class="math notranslate nohighlight">\(N\)</span> and then for each <span class="math notranslate nohighlight">\(N\)</span>, sums over the canonical partition functions <span class="math notranslate nohighlight">\(Z_N\)</span>:
+$<span class="math notranslate nohighlight">\(\mathcal{Z}(T, \mu) = \sum_N e^{\mu N / k_B T} Z_N(N, V, T)\)</span>$</p></li>
+</ul>
+<p>In essence, the <strong>Gibbs entropy formula</strong> (<span class="math notranslate nohighlight">\(S = -k_B \sum_i P_i \ln P_i\)</span>) provides the most general, uniform definition of entropy across all statistical ensembles. The Boltzmann entropy (<span class="math notranslate nohighlight">\(S = k_B \ln \Omega\)</span>) is a specific case of the Gibbs entropy when all accessible microstates are equally probable, which is the defining characteristic of the microcanonical ensemble. The partition functions, in turn, are the central tools for calculating these probabilities (<span class="math notranslate nohighlight">\(P_i\)</span>) in the canonical and grand canonical ensembles.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">https://en.wikipedia.org/wiki/Entropy_(information_theory)</a></p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Entropy">https://en.wikipedia.org/wiki/Entropy</a></p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./physics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-a-bridge-between-macro-and-micro">Entropy: A Bridge Between Macro and Micro</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#thermodynamic-entropy-clausius-entropy">1. Thermodynamic Entropy (Clausius Entropy)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-entropy-boltzmann-and-gibbs">2. Statistical Entropy (Boltzmann and Gibbs)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-boltzmann-entropy-for-microcanonical-ensemble">A. Boltzmann Entropy (for Microcanonical Ensemble)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-gibbs-entropy-for-canonical-and-grand-canonical-ensembles">B. Gibbs Entropy (for Canonical and Grand Canonical Ensembles)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#i-canonical-ensemble">i. Canonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ii-grand-canonical-ensemble">ii. Grand Canonical Ensemble</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-are-they-connected">How are they connected?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-pillars-thermodynamic-and-statistical-entropy">The Two Pillars: Thermodynamic and Statistical Entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-in-different-ensembles">Entropy in Different Ensembles</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#microcanonical-ensemble">Microcanonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#canonical-ensemble">Canonical Ensemble</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#grand-canonical-ensemble">Grand Canonical Ensemble</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-entropy-a-state-function-yes-for-all-ensembles">Is Entropy a State Function? Yes, for All Ensembles!</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-entropy">What is Entropy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-is-entropy-usually-explained-after-the-microcanonical-ensemble">Why is Entropy Usually Explained After the Microcanonical Ensemble? 🧠</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-microcanonical-ensemble">What is the Microcanonical Ensemble?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-to-entropy">The Connection to Entropy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Microcanonical Ensemble</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Canonical Ensemble</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Grand Canonical Ensemble</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-gibbs-form-is-more-general">Why the Gibbs Form is More General</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-between-omega-and-partition-functions">Relationship Between <span class="math notranslate nohighlight">\(\Omega\)</span> and Partition Functions 🔗</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
