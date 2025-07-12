@@ -1,0 +1,1209 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Microcanonical Ensemble - Code Examples &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/microcanonical-ensemble-code';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/microcanonical-ensemble-code.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/microcanonical-ensemble-code.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/physics/microcanonical-ensemble-code.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Microcanonical Ensemble - Code Examples</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation-of-the-code-and-analogy-to-microcanonical-ensemble">Explanation of the Code and Analogy to Microcanonical Ensemble</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-microstates-function"><code class="docutils literal notranslate"><span class="pre">find_microstates</span></code> Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analogy-to-microcanonical-ensemble-theory">Analogy to Microcanonical Ensemble Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-2-omega-e-vs-e">Visualization 2: <span class="math notranslate nohighlight">\(\Omega(E)\)</span> vs. <span class="math notranslate nohighlight">\(E\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-modifications-and-improvements">Possible Modifications and Improvements</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="microcanonical-ensemble-code-examples">
+<h1>Microcanonical Ensemble - Code Examples<a class="headerlink" href="#microcanonical-ensemble-code-examples" title="Link to this heading">#</a></h1>
+<section id="explanation-of-the-code-and-analogy-to-microcanonical-ensemble">
+<h2>Explanation of the Code and Analogy to Microcanonical Ensemble<a class="headerlink" href="#explanation-of-the-code-and-analogy-to-microcanonical-ensemble" title="Link to this heading">#</a></h2>
+<p>This Python program simulates a simplified system of particles to illustrate the fundamental principles of the <strong>microcanonical ensemble</strong> in statistical mechanics. The core idea of the microcanonical ensemble is to consider an <strong>isolated system</strong> where the total number of particles <span class="math notranslate nohighlight">\(N\)</span>, the volume <span class="math notranslate nohighlight">\(V\)</span>, and the total energy <span class="math notranslate nohighlight">\(E\)</span> are fixed and constant. In such a system, all accessible microstates are equally probable.</p>
+<p>The program models a system of particles where each particle can possess discrete units of energy. While the particles are distinguishable by their labels (e.g., Particle 1, Particle 2), their internal states (energy values) are integers, reflecting a simplified quantum-like behavior rather than continuous classical energies.</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">num_particles</span></code> (N):</strong> Represents the fixed number of particles in our isolated system.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">total_energy</span></code> (E):</strong> Represents the fixed total energy distributed among all particles in the system.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code>:</strong> This parameter acts as a constraint, limiting the maximum energy a single particle can hold. It’s crucial for keeping the number of possible microstates finite and manageable for demonstration. In a real physical system, there might be such limits due to potential wells or other physical boundaries.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="find-microstates-function">
+<h3><code class="docutils literal notranslate"><span class="pre">find_microstates</span></code> Function<a class="headerlink" href="#find-microstates-function" title="Link to this heading">#</a></h3>
+<p>This function is the heart of the simulation. It systematically determines all possible ways (microstates) in which the <code class="docutils literal notranslate"><span class="pre">total_energy</span></code> can be distributed among <code class="docutils literal notranslate"><span class="pre">num_particles</span></code>, given the <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code> constraint.</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">possible_energies</span> <span class="pre">=</span> <span class="pre">range(1,</span> <span class="pre">max_particle_energy</span> <span class="pre">+</span> <span class="pre">1)</span></code>:</strong> This creates a list of all possible energy values that a single particle can have. The minimum energy for a particle is set to 1, implying a quantized nature of energy.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">all_combinations</span> <span class="pre">=</span> <span class="pre">product(possible_energies,</span> <span class="pre">repeat=num_particles)</span></code>:</strong> This uses <code class="docutils literal notranslate"><span class="pre">itertools.product</span></code> to generate every conceivable combination of energy assignments to the <code class="docutils literal notranslate"><span class="pre">num_particles</span></code>. For example, if <code class="docutils literal notranslate"><span class="pre">num_particles</span></code> is 3 and <code class="docutils literal notranslate"><span class="pre">possible_energies</span></code> is <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code>, this would generate combinations like <code class="docutils literal notranslate"><span class="pre">(1,1,1)</span></code>, <code class="docutils literal notranslate"><span class="pre">(1,1,2)</span></code>, <code class="docutils literal notranslate"><span class="pre">(1,1,3)</span></code>, <code class="docutils literal notranslate"><span class="pre">(1,2,1)</span></code>, and so on. This step explores the entire <strong>state space</strong> of the system without initial energy constraints.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">microstates</span> <span class="pre">=</span> <span class="pre">[combo</span> <span class="pre">for</span> <span class="pre">combo</span> <span class="pre">in</span> <span class="pre">all_combinations</span> <span class="pre">if</span> <span class="pre">sum(combo)</span> <span class="pre">==</span> <span class="pre">total_energy]</span></code>:</strong> This is the <strong>filtration step</strong>. It selects only those combinations where the sum of energies of all particles equals the <code class="docutils literal notranslate"><span class="pre">total_energy</span></code>. These selected combinations are the <strong>accessible microstates</strong> for the given fixed total energy.</p></li>
+</ol>
+</section>
+<section id="analogy-to-microcanonical-ensemble-theory">
+<h3>Analogy to Microcanonical Ensemble Theory<a class="headerlink" href="#analogy-to-microcanonical-ensemble-theory" title="Link to this heading">#</a></h3>
+<p>The program directly demonstrates several key aspects of the microcanonical ensemble:</p>
+<ul class="simple">
+<li><p><strong>Fixed N, V, E:</strong> The parameters <code class="docutils literal notranslate"><span class="pre">num_particles</span></code>, implicitly a fixed “volume” by not having particles move in space (they just have energy states), and <code class="docutils literal notranslate"><span class="pre">total_energy</span></code> are set at the beginning and remain constant throughout the calculation of microstates for a given scenario. This directly mimics the definition of an isolated system in the microcanonical ensemble.</p></li>
+<li><p><strong>Microstates:</strong> Each tuple returned by <code class="docutils literal notranslate"><span class="pre">find_microstates</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">(10,</span> <span class="pre">10,</span> <span class="pre">10)</span></code> for <code class="docutils literal notranslate"><span class="pre">num_particles=3,</span> <span class="pre">total_energy=30</span></code>) represents a unique microscopic configuration of the system that is consistent with the macroscopic constraints (<span class="math notranslate nohighlight">\(N, E\)</span>). These are the individual <strong>microstates</strong>.</p></li>
+<li><p><strong>Fundamental Postulate of Equal <em>A Priori</em> Probabilities:</strong> The code implicitly embodies this postulate. By simply counting all valid microstates (<code class="docutils literal notranslate"><span class="pre">num_microstates</span> <span class="pre">=</span> <span class="pre">len(microstates_at_e9)</span></code>), it acknowledges that in the microcanonical ensemble, each of these microstates is equally probable. The program doesn’t assign probabilities, but the very act of identifying and counting them under fixed macroscopic conditions is based on this postulate.</p></li>
+<li><p><strong>Number of Accessible Microstates (<span class="math notranslate nohighlight">\(\Omega(E)\)</span>):</strong> The variable <code class="docutils literal notranslate"><span class="pre">num_microstates</span></code> directly corresponds to <span class="math notranslate nohighlight">\(\Omega(E)\)</span>, also known as the <strong>density of states</strong> or the <strong>multiplicity</strong> for a given energy <span class="math notranslate nohighlight">\(E\)</span>. This is the central quantity in the microcanonical ensemble from which all other thermodynamic properties can be derived.</p></li>
+<li><p><strong>Constant Energy Surface:</strong> The “Visualization 1” (3D plot) powerfully illustrates this concept. Each point on the plot represents a valid microstate. Because the sum of the particle energies for each point is fixed at <code class="docutils literal notranslate"><span class="pre">total_energy</span></code>, all these points lie on a plane (or a higher-dimensional hyperplane for more particles). This plane is the “constant energy surface” in the phase space (or state space in this discrete model), representing all accessible microstates for that specific total energy.</p></li>
+</ul>
+</section>
+<section id="visualization-2-omega-e-vs-e">
+<h3>Visualization 2: <span class="math notranslate nohighlight">\(\Omega(E)\)</span> vs. <span class="math notranslate nohighlight">\(E\)</span><a class="headerlink" href="#visualization-2-omega-e-vs-e" title="Link to this heading">#</a></h3>
+<p>This visualization demonstrates how the number of accessible microstates (<span class="math notranslate nohighlight">\(\Omega\)</span>) changes as the total energy (<span class="math notranslate nohighlight">\(E\)</span>) of the system varies.</p>
+<ul class="simple">
+<li><p><strong>Density of States:</strong> The plot of <span class="math notranslate nohighlight">\(\Omega(E)\)</span> versus <span class="math notranslate nohighlight">\(E\)</span> is directly analogous to the <strong>density of states</strong> concept. In more complex systems, the density of states typically increases very rapidly with energy, reflecting the exponentially larger number of ways energy can be distributed among more particles as the total energy increases. This simple model captures that general trend, showing how <span class="math notranslate nohighlight">\(\Omega(E)\)</span> is not constant but a function of <span class="math notranslate nohighlight">\(E\)</span>.</p></li>
+<li><p><strong>Thermodynamic Connection:</strong> In statistical mechanics, the entropy (<span class="math notranslate nohighlight">\(S\)</span>) of a system in the microcanonical ensemble is directly related to the number of microstates by Boltzmann’s formula: <span class="math notranslate nohighlight">\(S = k_B \ln \Omega(E)\)</span>, where <span class="math notranslate nohighlight">\(k_B\)</span> is the Boltzmann constant. While not explicitly calculated, the visualization of <span class="math notranslate nohighlight">\(\Omega(E)\)</span> is a precursor to understanding entropy in this context. A higher <span class="math notranslate nohighlight">\(\Omega(E)\)</span> implies higher entropy.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="possible-modifications-and-improvements">
+<h2>Possible Modifications and Improvements<a class="headerlink" href="#possible-modifications-and-improvements" title="Link to this heading">#</a></h2>
+<p>The current program is excellent for its intended purpose as a demonstration. Here are a few minor suggestions for potential modifications or extensions, depending on the desired depth and complexity:</p>
+<ol class="arabic simple">
+<li><p><strong>Varying <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code>:</strong> Currently, <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code> is set relative to <code class="docutils literal notranslate"><span class="pre">total_energy</span></code> and <code class="docutils literal notranslate"><span class="pre">num_particles</span></code>. Exploring the effect of an independent <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code> on <span class="math notranslate nohighlight">\(\Omega(E)\)</span> could be insightful. For instance, if <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code> is very small, it might significantly restrict the number of microstates.</p></li>
+<li><p><strong>Larger Systems &amp; Computational Limits:</strong> For larger <code class="docutils literal notranslate"><span class="pre">num_particles</span></code> and <code class="docutils literal notranslate"><span class="pre">total_energy</span></code>, the <code class="docutils literal notranslate"><span class="pre">product</span></code> function can generate an astronomically large number of combinations, leading to very long computation times and memory issues. You could add a note about this limitation, explaining why the chosen parameters are small. For genuinely large systems, different computational methods (e.g., Monte Carlo simulations) are required, which don’t explicitly enumerate all microstates.</p></li>
+<li><p><strong>Introduction of Degeneracy (Optional):</strong> If particle energy levels had intrinsic degeneracies (multiple states corresponding to the same energy), the <code class="docutils literal notranslate"><span class="pre">find_microstates</span></code> function would need to be modified to account for these, increasing <span class="math notranslate nohighlight">\(\Omega(E)\)</span>. This adds complexity but makes it more realistic for certain physical systems.</p></li>
+<li><p><strong>Connecting to Temperature/Entropy (Advanced):</strong> While outside the immediate scope of just <em>finding</em> microstates, one could extend the demonstration to calculate a rudimentary “temperature” from the slope of <span class="math notranslate nohighlight">\(\ln \Omega(E)\)</span> vs. <span class="math notranslate nohighlight">\(E\)</span>, demonstrating <span class="math notranslate nohighlight">\(1/T = \partial (\ln \Omega) / \partial E\)</span>. This would require a more continuous or finely sampled energy range.</p></li>
+<li><p><strong>Clearer Variable Naming for Particle Energies:</strong> While <code class="docutils literal notranslate"><span class="pre">e1,</span> <span class="pre">e2,</span> <span class="pre">e3</span></code> are clear in the 3-particle case, for a more general <code class="docutils literal notranslate"><span class="pre">num_particles</span></code>, it might be good to emphasize that these are simply the individual particle energies within a microstate.</p></li>
+<li><p><strong>Edge Cases for <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span></code>:</strong> The calculation of <code class="docutils literal notranslate"><span class="pre">max_particle_energy</span> <span class="pre">=</span> <span class="pre">total_energy</span> <span class="pre">-</span> <span class="pre">(num_particles</span> <span class="pre">-</span> <span class="pre">1)</span></code> assumes a minimum energy of 1 for each particle. This is a reasonable assumption given <code class="docutils literal notranslate"><span class="pre">range(1,</span> <span class="pre">...)</span></code>.</p></li>
+</ol>
+<p>In summary, your program provides a clear, effective, and visually appealing demonstration of the microcanonical ensemble’s core concepts. The code is well-structured and the explanations provided within the comments are helpful.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_microstates</span><span class="p">(</span><span class="n">num_particles</span><span class="p">,</span> <span class="n">total_energy</span><span class="p">,</span> <span class="n">max_particle_energy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds all possible microstates for a system of N particles with a fixed total energy E.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num_particles (int): The number of particles in the system (N).</span>
+<span class="sd">        total_energy (int): The total energy of the system (E).</span>
+<span class="sd">        max_particle_energy (int): The maximum possible energy for a single particle.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: A list of tuples, where each tuple represents a microstate</span>
+<span class="sd">              (the energy of each particle).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate all possible energy combinations for the particles</span>
+    <span class="c1"># Each particle can have an energy from 1 to max_particle_energy</span>
+    <span class="n">possible_energies</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_particle_energy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># &#39;product&#39; gives the cartesian product, creating all possible combinations</span>
+    <span class="c1"># of energy states for the N particles.</span>
+    <span class="n">all_combinations</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="n">possible_energies</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_particles</span><span class="p">)</span>
+
+    <span class="c1"># Filter the combinations to find those that sum to the total energy</span>
+    <span class="n">microstates</span> <span class="o">=</span> <span class="p">[</span><span class="n">combo</span> <span class="k">for</span> <span class="n">combo</span> <span class="ow">in</span> <span class="n">all_combinations</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span> <span class="o">==</span> <span class="n">total_energy</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">microstates</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Main function to run the simulation and generate visualizations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># --- System Parameters ---</span>
+<span class="c1"># We&#39;ll use a simple system of 3 particles.</span>
+<span class="n">num_particles</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c1"># Let&#39;s fix the total energy for our primary example.</span>
+<span class="n">total_energy</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="c1"># Assume the maximum energy a single particle can have is 7.</span>
+<span class="c1"># This is to keep the state space manageable for demonstration.</span>
+<span class="n">max_particle_energy</span> <span class="o">=</span> <span class="n">total_energy</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_particles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Each particle must have at least 1 energy unit</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Microcanonical Ensemble Example ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;System Parameters:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Number of particles (N): </span><span class="si">{</span><span class="n">num_particles</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Total energy (E): </span><span class="si">{</span><span class="n">total_energy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - Max energy per particle: </span><span class="si">{</span><span class="n">max_particle_energy</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Find and Display Microstates for a Fixed Energy ---</span>
+<span class="c1"># According to the fundamental postulate, in an isolated system (fixed N, V, E),</span>
+<span class="c1"># all accessible microstates are equally probable.</span>
+<span class="n">microstates_at_e9</span> <span class="o">=</span> <span class="n">find_microstates</span><span class="p">(</span><span class="n">num_particles</span><span class="p">,</span> <span class="n">total_energy</span><span class="p">,</span> <span class="n">max_particle_energy</span><span class="p">)</span>
+<span class="n">num_microstates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">microstates_at_e9</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;For a total energy E = </span><span class="si">{</span><span class="n">total_energy</span><span class="si">}</span><span class="s2">, we found </span><span class="si">{</span><span class="n">num_microstates</span><span class="si">}</span><span class="s2"> possible microstates.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This number is Ω(E), the number of states at energy E.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Each of these microstates is equally likely to occur.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;List of microstates (E_particle1, E_particle2, E_particle3):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">microstates_at_e9</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+
+<span class="c1"># --- Visualization 1: 3D Plot of Microstates on the Constant Energy Surface ---</span>
+<span class="c1"># This plot shows that all our calculated microstates lie on a plane defined by</span>
+<span class="c1"># E1 + E2 + E3 = total_energy. This is the &quot;constant energy surface&quot; in the state space.</span>
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">num_microstates</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># Unzip the microstates into separate lists for plotting</span>
+    <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">e3</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">microstates_at_e9</span><span class="p">)</span>
+    
+    <span class="n">fig1</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">e1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">e2</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">e3</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">&#39;royalblue&#39;</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+            <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;diamond&#39;</span>
+        <span class="p">),</span>
+        <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Microstates for E=</span><span class="si">{</span><span class="n">total_energy</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="p">))</span>
+
+<span class="n">fig1</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;&lt;b&gt;Visualization of Microstates for N=3, E=</span><span class="si">{</span><span class="n">total_energy</span><span class="si">}</span><span class="s1">&lt;/b&gt;&lt;br&gt;Each point is an accessible microstate&#39;</span><span class="p">,</span>
+    <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;Energy of Particle 1 (E1)&#39;</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Energy of Particle 2 (E2)&#39;</span><span class="p">,</span>
+        <span class="n">zaxis_title</span><span class="o">=</span><span class="s1">&#39;Energy of Particle 3 (E3)&#39;</span><span class="p">,</span>
+        <span class="n">aspectratio</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Microcanonical Ensemble Example ---
+System Parameters:
+  - Number of particles (N): 3
+  - Total energy (E): 30
+  - Max energy per particle: 28
+
+For a total energy E = 30, we found 406 possible microstates.
+This number is Ω(E), the number of states at energy E.
+Each of these microstates is equally likely to occur.
+List of microstates (E_particle1, E_particle2, E_particle3):
+  (1, 1, 28)
+  (1, 2, 27)
+  (1, 3, 26)
+  (1, 4, 25)
+  (1, 5, 24)
+  (1, 6, 23)
+  (1, 7, 22)
+  (1, 8, 21)
+  (1, 9, 20)
+  (1, 10, 19)
+  (1, 11, 18)
+  (1, 12, 17)
+  (1, 13, 16)
+  (1, 14, 15)
+  (1, 15, 14)
+  (1, 16, 13)
+  (1, 17, 12)
+  (1, 18, 11)
+  (1, 19, 10)
+  (1, 20, 9)
+  (1, 21, 8)
+  (1, 22, 7)
+  (1, 23, 6)
+  (1, 24, 5)
+  (1, 25, 4)
+  (1, 26, 3)
+  (1, 27, 2)
+  (1, 28, 1)
+  (2, 1, 27)
+  (2, 2, 26)
+  (2, 3, 25)
+  (2, 4, 24)
+  (2, 5, 23)
+  (2, 6, 22)
+  (2, 7, 21)
+  (2, 8, 20)
+  (2, 9, 19)
+  (2, 10, 18)
+  (2, 11, 17)
+  (2, 12, 16)
+  (2, 13, 15)
+  (2, 14, 14)
+  (2, 15, 13)
+  (2, 16, 12)
+  (2, 17, 11)
+  (2, 18, 10)
+  (2, 19, 9)
+  (2, 20, 8)
+  (2, 21, 7)
+  (2, 22, 6)
+  (2, 23, 5)
+  (2, 24, 4)
+  (2, 25, 3)
+  (2, 26, 2)
+  (2, 27, 1)
+  (3, 1, 26)
+  (3, 2, 25)
+  (3, 3, 24)
+  (3, 4, 23)
+  (3, 5, 22)
+  (3, 6, 21)
+  (3, 7, 20)
+  (3, 8, 19)
+  (3, 9, 18)
+  (3, 10, 17)
+  (3, 11, 16)
+  (3, 12, 15)
+  (3, 13, 14)
+  (3, 14, 13)
+  (3, 15, 12)
+  (3, 16, 11)
+  (3, 17, 10)
+  (3, 18, 9)
+  (3, 19, 8)
+  (3, 20, 7)
+  (3, 21, 6)
+  (3, 22, 5)
+  (3, 23, 4)
+  (3, 24, 3)
+  (3, 25, 2)
+  (3, 26, 1)
+  (4, 1, 25)
+  (4, 2, 24)
+  (4, 3, 23)
+  (4, 4, 22)
+  (4, 5, 21)
+  (4, 6, 20)
+  (4, 7, 19)
+  (4, 8, 18)
+  (4, 9, 17)
+  (4, 10, 16)
+  (4, 11, 15)
+  (4, 12, 14)
+  (4, 13, 13)
+  (4, 14, 12)
+  (4, 15, 11)
+  (4, 16, 10)
+  (4, 17, 9)
+  (4, 18, 8)
+  (4, 19, 7)
+  (4, 20, 6)
+  (4, 21, 5)
+  (4, 22, 4)
+  (4, 23, 3)
+  (4, 24, 2)
+  (4, 25, 1)
+  (5, 1, 24)
+  (5, 2, 23)
+  (5, 3, 22)
+  (5, 4, 21)
+  (5, 5, 20)
+  (5, 6, 19)
+  (5, 7, 18)
+  (5, 8, 17)
+  (5, 9, 16)
+  (5, 10, 15)
+  (5, 11, 14)
+  (5, 12, 13)
+  (5, 13, 12)
+  (5, 14, 11)
+  (5, 15, 10)
+  (5, 16, 9)
+  (5, 17, 8)
+  (5, 18, 7)
+  (5, 19, 6)
+  (5, 20, 5)
+  (5, 21, 4)
+  (5, 22, 3)
+  (5, 23, 2)
+  (5, 24, 1)
+  (6, 1, 23)
+  (6, 2, 22)
+  (6, 3, 21)
+  (6, 4, 20)
+  (6, 5, 19)
+  (6, 6, 18)
+  (6, 7, 17)
+  (6, 8, 16)
+  (6, 9, 15)
+  (6, 10, 14)
+  (6, 11, 13)
+  (6, 12, 12)
+  (6, 13, 11)
+  (6, 14, 10)
+  (6, 15, 9)
+  (6, 16, 8)
+  (6, 17, 7)
+  (6, 18, 6)
+  (6, 19, 5)
+  (6, 20, 4)
+  (6, 21, 3)
+  (6, 22, 2)
+  (6, 23, 1)
+  (7, 1, 22)
+  (7, 2, 21)
+  (7, 3, 20)
+  (7, 4, 19)
+  (7, 5, 18)
+  (7, 6, 17)
+  (7, 7, 16)
+  (7, 8, 15)
+  (7, 9, 14)
+  (7, 10, 13)
+  (7, 11, 12)
+  (7, 12, 11)
+  (7, 13, 10)
+  (7, 14, 9)
+  (7, 15, 8)
+  (7, 16, 7)
+  (7, 17, 6)
+  (7, 18, 5)
+  (7, 19, 4)
+  (7, 20, 3)
+  (7, 21, 2)
+  (7, 22, 1)
+  (8, 1, 21)
+  (8, 2, 20)
+  (8, 3, 19)
+  (8, 4, 18)
+  (8, 5, 17)
+  (8, 6, 16)
+  (8, 7, 15)
+  (8, 8, 14)
+  (8, 9, 13)
+  (8, 10, 12)
+  (8, 11, 11)
+  (8, 12, 10)
+  (8, 13, 9)
+  (8, 14, 8)
+  (8, 15, 7)
+  (8, 16, 6)
+  (8, 17, 5)
+  (8, 18, 4)
+  (8, 19, 3)
+  (8, 20, 2)
+  (8, 21, 1)
+  (9, 1, 20)
+  (9, 2, 19)
+  (9, 3, 18)
+  (9, 4, 17)
+  (9, 5, 16)
+  (9, 6, 15)
+  (9, 7, 14)
+  (9, 8, 13)
+  (9, 9, 12)
+  (9, 10, 11)
+  (9, 11, 10)
+  (9, 12, 9)
+  (9, 13, 8)
+  (9, 14, 7)
+  (9, 15, 6)
+  (9, 16, 5)
+  (9, 17, 4)
+  (9, 18, 3)
+  (9, 19, 2)
+  (9, 20, 1)
+  (10, 1, 19)
+  (10, 2, 18)
+  (10, 3, 17)
+  (10, 4, 16)
+  (10, 5, 15)
+  (10, 6, 14)
+  (10, 7, 13)
+  (10, 8, 12)
+  (10, 9, 11)
+  (10, 10, 10)
+  (10, 11, 9)
+  (10, 12, 8)
+  (10, 13, 7)
+  (10, 14, 6)
+  (10, 15, 5)
+  (10, 16, 4)
+  (10, 17, 3)
+  (10, 18, 2)
+  (10, 19, 1)
+  (11, 1, 18)
+  (11, 2, 17)
+  (11, 3, 16)
+  (11, 4, 15)
+  (11, 5, 14)
+  (11, 6, 13)
+  (11, 7, 12)
+  (11, 8, 11)
+  (11, 9, 10)
+  (11, 10, 9)
+  (11, 11, 8)
+  (11, 12, 7)
+  (11, 13, 6)
+  (11, 14, 5)
+  (11, 15, 4)
+  (11, 16, 3)
+  (11, 17, 2)
+  (11, 18, 1)
+  (12, 1, 17)
+  (12, 2, 16)
+  (12, 3, 15)
+  (12, 4, 14)
+  (12, 5, 13)
+  (12, 6, 12)
+  (12, 7, 11)
+  (12, 8, 10)
+  (12, 9, 9)
+  (12, 10, 8)
+  (12, 11, 7)
+  (12, 12, 6)
+  (12, 13, 5)
+  (12, 14, 4)
+  (12, 15, 3)
+  (12, 16, 2)
+  (12, 17, 1)
+  (13, 1, 16)
+  (13, 2, 15)
+  (13, 3, 14)
+  (13, 4, 13)
+  (13, 5, 12)
+  (13, 6, 11)
+  (13, 7, 10)
+  (13, 8, 9)
+  (13, 9, 8)
+  (13, 10, 7)
+  (13, 11, 6)
+  (13, 12, 5)
+  (13, 13, 4)
+  (13, 14, 3)
+  (13, 15, 2)
+  (13, 16, 1)
+  (14, 1, 15)
+  (14, 2, 14)
+  (14, 3, 13)
+  (14, 4, 12)
+  (14, 5, 11)
+  (14, 6, 10)
+  (14, 7, 9)
+  (14, 8, 8)
+  (14, 9, 7)
+  (14, 10, 6)
+  (14, 11, 5)
+  (14, 12, 4)
+  (14, 13, 3)
+  (14, 14, 2)
+  (14, 15, 1)
+  (15, 1, 14)
+  (15, 2, 13)
+  (15, 3, 12)
+  (15, 4, 11)
+  (15, 5, 10)
+  (15, 6, 9)
+  (15, 7, 8)
+  (15, 8, 7)
+  (15, 9, 6)
+  (15, 10, 5)
+  (15, 11, 4)
+  (15, 12, 3)
+  (15, 13, 2)
+  (15, 14, 1)
+  (16, 1, 13)
+  (16, 2, 12)
+  (16, 3, 11)
+  (16, 4, 10)
+  (16, 5, 9)
+  (16, 6, 8)
+  (16, 7, 7)
+  (16, 8, 6)
+  (16, 9, 5)
+  (16, 10, 4)
+  (16, 11, 3)
+  (16, 12, 2)
+  (16, 13, 1)
+  (17, 1, 12)
+  (17, 2, 11)
+  (17, 3, 10)
+  (17, 4, 9)
+  (17, 5, 8)
+  (17, 6, 7)
+  (17, 7, 6)
+  (17, 8, 5)
+  (17, 9, 4)
+  (17, 10, 3)
+  (17, 11, 2)
+  (17, 12, 1)
+  (18, 1, 11)
+  (18, 2, 10)
+  (18, 3, 9)
+  (18, 4, 8)
+  (18, 5, 7)
+  (18, 6, 6)
+  (18, 7, 5)
+  (18, 8, 4)
+  (18, 9, 3)
+  (18, 10, 2)
+  (18, 11, 1)
+  (19, 1, 10)
+  (19, 2, 9)
+  (19, 3, 8)
+  (19, 4, 7)
+  (19, 5, 6)
+  (19, 6, 5)
+  (19, 7, 4)
+  (19, 8, 3)
+  (19, 9, 2)
+  (19, 10, 1)
+  (20, 1, 9)
+  (20, 2, 8)
+  (20, 3, 7)
+  (20, 4, 6)
+  (20, 5, 5)
+  (20, 6, 4)
+  (20, 7, 3)
+  (20, 8, 2)
+  (20, 9, 1)
+  (21, 1, 8)
+  (21, 2, 7)
+  (21, 3, 6)
+  (21, 4, 5)
+  (21, 5, 4)
+  (21, 6, 3)
+  (21, 7, 2)
+  (21, 8, 1)
+  (22, 1, 7)
+  (22, 2, 6)
+  (22, 3, 5)
+  (22, 4, 4)
+  (22, 5, 3)
+  (22, 6, 2)
+  (22, 7, 1)
+  (23, 1, 6)
+  (23, 2, 5)
+  (23, 3, 4)
+  (23, 4, 3)
+  (23, 5, 2)
+  (23, 6, 1)
+  (24, 1, 5)
+  (24, 2, 4)
+  (24, 3, 3)
+  (24, 4, 2)
+  (24, 5, 1)
+  (25, 1, 4)
+  (25, 2, 3)
+  (25, 3, 2)
+  (25, 4, 1)
+  (26, 1, 3)
+  (26, 2, 2)
+  (26, 3, 1)
+  (27, 1, 2)
+  (27, 2, 1)
+  (28, 1, 1)
+-----------------------------------
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Calculation &amp; Visualization 2: Number of States Ω(E) vs. Energy E ---</span>
+<span class="c1"># Now, let&#39;s see how the number of microstates (Ω) changes as we vary the total energy E.</span>
+<span class="c1"># This is analogous to the concept of &quot;density of states&quot;.</span>
+
+<span class="n">num_particles</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">max_particle_energy</span> <span class="o">=</span> <span class="n">total_energy</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_particles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Each particle must have at least 1 energy unit</span>
+
+<span class="n">min_energy</span> <span class="o">=</span> <span class="n">num_particles</span>  <span class="c1"># Each particle must have at least 1 unit of energy</span>
+<span class="n">max_energy</span> <span class="o">=</span> <span class="n">num_particles</span> <span class="o">*</span> <span class="n">max_particle_energy</span>
+
+<span class="n">energy_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_energy</span><span class="p">,</span> <span class="n">max_energy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Calculate the number of microstates for each possible total energy</span>
+<span class="n">omega_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">find_microstates</span><span class="p">(</span><span class="n">num_particles</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">max_particle_energy</span><span class="p">))</span> <span class="k">for</span> <span class="n">E</span> <span class="ow">in</span> <span class="n">energy_range</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Calculating Ω(E) for a range of energies ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy (E) | Number of Microstates Ω(E)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----------|-----------------------------&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">E</span><span class="p">,</span> <span class="n">omega</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">energy_range</span><span class="p">,</span> <span class="n">omega_values</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">E</span><span class="si">:</span><span class="s2">^11</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">omega</span><span class="si">:</span><span class="s2">^29</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">35</span><span class="p">)</span>
+
+<span class="c1"># Create the bar chart</span>
+<span class="n">fig2</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig2</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">energy_range</span><span class="p">),</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">omega_values</span><span class="p">,</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="s1">&#39;crimson&#39;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Ω(E)&#39;</span>
+<span class="p">))</span>
+
+<span class="n">fig2</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&lt;b&gt;Number of Microstates Ω(E) vs. Total Energy (E)&lt;/b&gt;&lt;br&gt;Analogous to the Density of States&#39;</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">&#39;Total System Energy (E)&#39;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">&#39;Number of Accessible Microstates Ω(E)&#39;</span><span class="p">,</span>
+    <span class="n">bargap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">14</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">energy_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_energy</span><span class="p">,</span> <span class="n">max_energy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="c1"># Calculate the number of microstates for each possible total energy</span>
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">omega_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">find_microstates</span><span class="p">(</span><span class="n">num_particles</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">max_particle_energy</span><span class="p">))</span> <span class="k">for</span> <span class="n">E</span> <span class="ow">in</span> <span class="n">energy_range</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Calculating Ω(E) for a range of energies ---&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy (E) | Number of Microstates Ω(E)&quot;</span><span class="p">)</span>
+
+<span class="nn">Cell In[2], line 22,</span> in <span class="ni">find_microstates</span><span class="nt">(num_particles, total_energy, max_particle_energy)</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">all_combinations</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="n">possible_energies</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_particles</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># Filter the combinations to find those that sum to the total energy</span>
+<span class="ne">---&gt; </span><span class="mi">22</span> <span class="n">microstates</span> <span class="o">=</span> <span class="p">[</span><span class="n">combo</span> <span class="k">for</span> <span class="n">combo</span> <span class="ow">in</span> <span class="n">all_combinations</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span> <span class="o">==</span> <span class="n">total_energy</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="k">return</span> <span class="n">microstates</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./physics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation-of-the-code-and-analogy-to-microcanonical-ensemble">Explanation of the Code and Analogy to Microcanonical Ensemble</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#find-microstates-function"><code class="docutils literal notranslate"><span class="pre">find_microstates</span></code> Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analogy-to-microcanonical-ensemble-theory">Analogy to Microcanonical Ensemble Theory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-2-omega-e-vs-e">Visualization 2: <span class="math notranslate nohighlight">\(\Omega(E)\)</span> vs. <span class="math notranslate nohighlight">\(E\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-modifications-and-improvements">Possible Modifications and Improvements</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

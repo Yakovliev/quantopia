@@ -55,3 +55,6 @@ Happy learning!
 
 ```{tableofcontents}
 ```
+
+```{nb-exec-table}
+```
