@@ -1075,26 +1075,6 @@ List of microstates (E_particle1, E_particle2, E_particle3):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">14</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">energy_range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_energy</span><span class="p">,</span> <span class="n">max_energy</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="c1"># Calculate the number of microstates for each possible total energy</span>
-<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">omega_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">find_microstates</span><span class="p">(</span><span class="n">num_particles</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">max_particle_energy</span><span class="p">))</span> <span class="k">for</span> <span class="n">E</span> <span class="ow">in</span> <span class="n">energy_range</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Calculating Ω(E) for a range of energies ---&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy (E) | Number of Microstates Ω(E)&quot;</span><span class="p">)</span>
-
-<span class="nn">Cell In[2], line 22,</span> in <span class="ni">find_microstates</span><span class="nt">(num_particles, total_energy, max_particle_energy)</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="n">all_combinations</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span><span class="n">possible_energies</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_particles</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># Filter the combinations to find those that sum to the total energy</span>
-<span class="ne">---&gt; </span><span class="mi">22</span> <span class="n">microstates</span> <span class="o">=</span> <span class="p">[</span><span class="n">combo</span> <span class="k">for</span> <span class="n">combo</span> <span class="ow">in</span> <span class="n">all_combinations</span> <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">combo</span><span class="p">)</span> <span class="o">==</span> <span class="n">total_energy</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="k">return</span> <span class="n">microstates</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 </section>
