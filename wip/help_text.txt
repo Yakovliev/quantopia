@@ -19,5 +19,12 @@ plt.tight_layout()
 plt.show()
 
 
+FOR PLOTLY DISPLAY:
+
+from IPython.display import HTML
+
+html_fig = fig.to_html(full_html=False, include_plotlyjs='cdn')
+HTML(html_fig)
+
 
 
