@@ -189,6 +189,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../math/01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../math/01_basics/divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../math/01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/01_basics/ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="current nav bd-sidenav">
@@ -468,7 +470,7 @@ document.write(`
 <p>In reality, precisely fixing the energy to a single value (<span class="math notranslate nohighlight">\(E\)</span>) is often impossible or impractical. Instead, we consider a very narrow range of energies, from <span class="math notranslate nohighlight">\(E\)</span> to <span class="math notranslate nohighlight">\(E + \Delta E\)</span>. Think of <span class="math notranslate nohighlight">\(\Delta E\)</span> as a tiny “fuzziness” around the exact energy <span class="math notranslate nohighlight">\(E\)</span>.</p>
 <p>Consider a narrow but measurable energy interval <span class="math notranslate nohighlight">\([E, E + \Delta E]\)</span> situated near the constant energy surface <span class="math notranslate nohighlight">\(E\)</span>. The <strong>microcanonical ensemble</strong> can be mathematically expressed as:</p>
 <div class="math notranslate nohighlight" id="equation-ensemble-1">
-<span class="eqno">(1)<a class="headerlink" href="#equation-ensemble-1" title="Link to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(3)<a class="headerlink" href="#equation-ensemble-1" title="Link to this equation">#</a></span>\[\begin{split}
 \rho(q, p) = \begin{cases}
 \frac{1}{\Gamma(E, V, N)} &amp; E &lt; H(q, p) &lt; E + \Delta E \\
 0 &amp; \text{elsewhere}
@@ -481,10 +483,10 @@ document.write(`
 </ul>
 <p>The term <span class="math notranslate nohighlight">\(\Gamma(E, V, N)\)</span> is a <strong>normalization factor</strong>. It’s the “volume” in <strong>phase space</strong> that these allowed microstates occupy. Phase space is an abstract mathematical space where each point represents a unique microstate of the system (defined by the positions ‘q’ and momenta ‘p’ of all particles).</p>
 <div class="math notranslate nohighlight" id="equation-ensemble-2">
-<span class="eqno">(2)<a class="headerlink" href="#equation-ensemble-2" title="Link to this equation">#</a></span>\[
+<span class="eqno">(4)<a class="headerlink" href="#equation-ensemble-2" title="Link to this equation">#</a></span>\[
 \Gamma(E, V, N) = \int \int_{E&lt;H(q,p)&lt;E+\Delta E} d^{3N}q \, d^{3N}p
 \]</div>
-<p>This integral essentially sums up all the tiny “volumes” in phase space that correspond to microstates with energies between <span class="math notranslate nohighlight">\(E\)</span> and <span class="math notranslate nohighlight">\(E + \Delta E\)</span>. The “volume” <span class="math notranslate nohighlight">\(V\)</span> of the physical system influences this integral because the particles are confined within that spatial volume. The spatial volume <span class="math notranslate nohighlight">\(V\)</span> influences equation <a class="reference internal" href="#equation-ensemble-2">(2)</a> through the integration boundaries for the coordinate differentials <span class="math notranslate nohighlight">\(dq\)</span>.</p>
+<p>This integral essentially sums up all the tiny “volumes” in phase space that correspond to microstates with energies between <span class="math notranslate nohighlight">\(E\)</span> and <span class="math notranslate nohighlight">\(E + \Delta E\)</span>. The “volume” <span class="math notranslate nohighlight">\(V\)</span> of the physical system influences this integral because the particles are confined within that spatial volume. The spatial volume <span class="math notranslate nohighlight">\(V\)</span> influences equation <a class="reference internal" href="#equation-ensemble-2">(4)</a> through the integration boundaries for the coordinate differentials <span class="math notranslate nohighlight">\(dq\)</span>.</p>
 </section>
 <section id="infinitesimally-thin-energy-layer-approaching-the-limit">
 <h2>Infinitesimally Thin Energy Layer: Approaching the Limit<a class="headerlink" href="#infinitesimally-thin-energy-layer-approaching-the-limit" title="Link to this heading">#</a></h2>

@@ -1,0 +1,869 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ordinary Least Squares (OLS) Regression &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/01_basics/ordinary-least-squares';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="The Continuity Equation" href="../../physics/continuity-equation-01.html" />
+    <link rel="prev" title="Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)" href="least-squares-regression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ordinary Least Squares (OLS) Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/01_basics/ordinary-least-squares.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/01_basics/ordinary-least-squares.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/math/01_basics/ordinary-least-squares.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ordinary Least Squares (OLS) Regression</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-linear-regression">The Concept of Linear Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-least-squares-principle">The “Least Squares” Principle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-formulas-for-simple-linear-regression-one-independent-variable">Deriving the Formulas for Simple Linear Regression (One Independent Variable)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-derivative-with-respect-to-hat-beta-0">1. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-derivative-with-respect-to-hat-beta-1">2. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-linear-regression-matrix-form">Multiple Linear Regression (Matrix Form)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-ols">Assumptions of OLS</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ordinary-least-squares-ols-regression">
+<h1>Ordinary Least Squares (OLS) Regression<a class="headerlink" href="#ordinary-least-squares-ols-regression" title="Link to this heading">#</a></h1>
+<p>Ordinary Least Squares (OLS) Regression is a foundational statistical method used to model the linear relationship between a dependent variable and one or more independent variables. The goal of OLS is to find the “best-fitting” line (or hyperplane in higher dimensions) through a set of data points by minimizing the sum of the squared differences between the observed values and the values predicted by the model.</p>
+<section id="the-concept-of-linear-regression">
+<h2>The Concept of Linear Regression<a class="headerlink" href="#the-concept-of-linear-regression" title="Link to this heading">#</a></h2>
+<p>Imagine you have a set of data points, and you suspect there’s a linear relationship between two variables, say, X and Y. For example, you might want to see if the number of hours studied (X) affects exam scores (Y).</p>
+<p>The general idea of a linear relationship can be expressed as:</p>
+<div class="math notranslate nohighlight">
+\[Y = \beta_0 + \beta_1 X + \epsilon\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y\)</span>: The dependent variable (the one you’re trying to predict, e.g., exam score).</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span>: The independent variable (the one you’re using to predict Y, e.g., hours studied).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span>: The y-intercept (the expected value of Y when X is 0).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span>: The slope (the change in Y for a one-unit change in X).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span>: The error term (or residual), representing the difference between the actual observed value of Y and the value predicted by the linear model. It accounts for all other factors influencing Y that are not captured by X, and also for random noise.</p></li>
+</ul>
+<p>Our goal in OLS is to find the best estimates for <span class="math notranslate nohighlight">\(\beta_0\)</span> and <span class="math notranslate nohighlight">\(\beta_1\)</span>, which we’ll denote as <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> (beta-naught-hat) and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> (beta-one-hat). These “hats” indicate that they are <em>estimates</em> derived from our sample data, not the true (and usually unknown) population parameters.</p>
+<p>Once we have these estimates, our estimated regression line will be:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y_i} = \hat{\beta_0} + \hat{\beta_1} X_i\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\hat{Y_i}\)</span> is the predicted value of the dependent variable for a given <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
+</section>
+<section id="the-least-squares-principle">
+<h2>The “Least Squares” Principle<a class="headerlink" href="#the-least-squares-principle" title="Link to this heading">#</a></h2>
+<p>For each observed data point <span class="math notranslate nohighlight">\((X_i, Y_i)\)</span>, there will be a difference between the actual observed value <span class="math notranslate nohighlight">\(Y_i\)</span> and the predicted value <span class="math notranslate nohighlight">\(\hat{Y_i}\)</span>. This difference is called the <strong>residual</strong>, denoted as <span class="math notranslate nohighlight">\(e_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[e_i = Y_i - \hat{Y_i}\]</div>
+<div class="math notranslate nohighlight">
+\[e_i = Y_i - (\hat{\beta_0} + \hat{\beta_1} X_i)\]</div>
+<p>The core idea of Ordinary Least Squares is to find the values of <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> that <strong>minimize the sum of the squared residuals (errors)</strong>. Why squared errors?</p>
+<ul class="simple">
+<li><p><strong>To avoid cancellation:</strong> If we just summed the errors, positive and negative errors could cancel each other out, leading to a sum close to zero even if individual errors are large. Squaring ensures all errors contribute positively to the total.</p></li>
+<li><p><strong>To penalize larger errors more:</strong> Squaring gives more weight to larger errors, meaning the model tries harder to fit points that are far away from the line.</p></li>
+</ul>
+<p>So, the objective function we want to minimize is the Sum of Squared Errors (SSE), often denoted as <span class="math notranslate nohighlight">\(S\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} e_i^2 = \sum_{i=1}^{n} (Y_i - \hat{Y_i})^2 = \sum_{i=1}^{n} (Y_i - (\hat{\beta_0} + \hat{\beta_1} X_i))^2\]</div>
+<p>Our task is to find <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> that minimize <span class="math notranslate nohighlight">\(S\)</span>.</p>
+</section>
+<section id="deriving-the-formulas-for-simple-linear-regression-one-independent-variable">
+<h2>Deriving the Formulas for Simple Linear Regression (One Independent Variable)<a class="headerlink" href="#deriving-the-formulas-for-simple-linear-regression-one-independent-variable" title="Link to this heading">#</a></h2>
+<p>To find the values of <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> that minimize <span class="math notranslate nohighlight">\(S\)</span>, we use calculus. We take the partial derivatives of <span class="math notranslate nohighlight">\(S\)</span> with respect to <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>, set them equal to zero, and solve the resulting system of equations. These equations are known as the <strong>Normal Equations</strong>.</p>
+<p>Let’s start with <span class="math notranslate nohighlight">\(S\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)^2\]</div>
+<section id="partial-derivative-with-respect-to-hat-beta-0">
+<h3>1. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span><a class="headerlink" href="#partial-derivative-with-respect-to-hat-beta-0" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \hat{\beta_0}} = \frac{\partial}{\partial \hat{\beta_0}} \sum_{i=1}^{n} (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)^2\]</div>
+<p>Using the chain rule, <span class="math notranslate nohighlight">\(\frac{\partial}{\partial x} (f(x))^2 = 2f(x) \cdot f'(x)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \hat{\beta_0}} = \sum_{i=1}^{n} 2(Y_i - \hat{\beta_0} - \hat{\beta_1} X_i) \cdot (-1)\]</div>
+<p>Set the derivative to zero (to minimize):</p>
+<div class="math notranslate nohighlight">
+\[0 = -2 \sum_{i=1}^{n} (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)\]</div>
+<p>Divide by -2:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} Y_i - \sum_{i=1}^{n} \hat{\beta_0} - \sum_{i=1}^{n} \hat{\beta_1} X_i\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> are constants with respect to the summation:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} Y_i - n\hat{\beta_0} - \hat{\beta_1} \sum_{i=1}^{n} X_i\]</div>
+<p>Rearrange to solve for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[n\hat{\beta_0} = \sum_{i=1}^{n} Y_i - \hat{\beta_1} \sum_{i=1}^{n} X_i\]</div>
+<p>Divide by <span class="math notranslate nohighlight">\(n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_0} = \frac{\sum_{i=1}^{n} Y_i}{n} - \hat{\beta_1} \frac{\sum_{i=1}^{n} X_i}{n}\]</div>
+<p>We know that <span class="math notranslate nohighlight">\(\frac{\sum Y_i}{n} = \bar{Y}\)</span> (mean of Y) and <span class="math notranslate nohighlight">\(\frac{\sum X_i}{n} = \bar{X}\)</span> (mean of X).
+So, the formula for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> is:</p>
+<div class="math notranslate nohighlight" id="equation-equation-1">
+<span class="eqno">(1)<a class="headerlink" href="#equation-equation-1" title="Link to this equation">#</a></span>\[$$\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}$$ \]</div>
+<p>This equation tells us that the regression line passes through the point <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span>. Let’s prove this statement.</p>
+<p>The equation we derived for the intercept <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> in simple linear regression is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\]</div>
+<p>And the estimated regression line equation is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y_i} = \hat{\beta_0} + \hat{\beta_1} X_i\]</div>
+<p>Let’s take the estimated regression line equation and substitute the formula for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> into it:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y_i} = (\bar{Y} - \hat{\beta_1} \bar{X}) + \hat{\beta_1} X_i\]</div>
+<p>Now, let’s consider what happens if we plug in the mean of <span class="math notranslate nohighlight">\(X\)</span> (which is <span class="math notranslate nohighlight">\(\bar{X}\)</span>) into this equation for <span class="math notranslate nohighlight">\(X_i\)</span>. What would the predicted value of <span class="math notranslate nohighlight">\(Y\)</span> (<span class="math notranslate nohighlight">\(\hat{Y}\)</span>) be at that point?</p>
+<p>Let <span class="math notranslate nohighlight">\(X_i = \bar{X}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y}_{at\, \bar{X}} = \bar{Y} - \hat{\beta_1} \bar{X} + \hat{\beta_1} \bar{X}\]</div>
+<p>Notice that the terms <span class="math notranslate nohighlight">\(-\hat{\beta_1} \bar{X}\)</span> and <span class="math notranslate nohighlight">\(+\hat{\beta_1} \bar{X}\)</span> cancel each other out:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y}_{at\, \bar{X}} = \bar{Y}\]</div>
+<p>This result means that when you input the average value of the independent variable (<span class="math notranslate nohighlight">\(\bar{X}\)</span>) into your OLS regression equation, the predicted value of the dependent variable (<span class="math notranslate nohighlight">\(\hat{Y}\)</span>) will be exactly the average value of the dependent variable (<span class="math notranslate nohighlight">\(\bar{Y}\)</span>).</p>
+<p>In other words, the point <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span> <em>always</em> lies on the OLS regression line.</p>
+<p>What Does This Mean?</p>
+<ol class="arabic simple">
+<li><p><strong>The “Center of Gravity” of the Data:</strong> You can think of <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span> as the “center of gravity” or the average point of your entire dataset. The OLS regression line is forced to pivot around this central point. No matter what the slope (<span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>) is, the line will always go through <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span>.</p></li>
+<li><p><strong>Intuition for the Intercept:</strong> The formula for the intercept, <span class="math notranslate nohighlight">\(\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\)</span>, makes intuitive sense in this light. It effectively calculates what the Y-intercept needs to be so that, when combined with the calculated slope (<span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>), the line <em>must</em> pass through the point <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span>.</p></li>
+<li><p><strong>No Extrapolation Needed for the Mean:</strong> If you want to predict the value of Y for an average X, you don’t even need the slope and intercept explicitly; you just know it will be the average Y. While this is a simplification, it highlights the line’s central tendency.</p></li>
+</ol>
+</section>
+<section id="partial-derivative-with-respect-to-hat-beta-1">
+<h3>2. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span><a class="headerlink" href="#partial-derivative-with-respect-to-hat-beta-1" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \hat{\beta_1}} = \frac{\partial}{\partial \hat{\beta_1}} \sum_{i=1}^{n} (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)^2\]</div>
+<p>Using the chain rule:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \hat{\beta_1}} = \sum_{i=1}^{n} 2(Y_i - \hat{\beta_0} - \hat{\beta_1} X_i) \cdot (-X_i)\]</div>
+<p>Set the derivative to zero (to minimize):</p>
+<div class="math notranslate nohighlight">
+\[0 = -2 \sum_{i=1}^{n} X_i (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)\]</div>
+<p>Divide by -2:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} X_i (Y_i - \hat{\beta_0} - \hat{\beta_1} X_i)\]</div>
+<p>Distribute <span class="math notranslate nohighlight">\(X_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} (X_i Y_i - \hat{\beta_0} X_i - \hat{\beta_1} X_i^2)\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight" id="equation-equation-2">
+<span class="eqno">(2)<a class="headerlink" href="#equation-equation-2" title="Link to this equation">#</a></span>\[0 = \sum_{i=1}^{n} X_i Y_i - \hat{\beta_0} \sum_{i=1}^{n} X_i - \hat{\beta_1} \sum_{i=1}^{n} X_i^2\]</div>
+<p>Now we have a system of two linear equations (<a class="reference internal" href="#equation-equation-1">(1)</a> and <a class="reference internal" href="#equation-equation-2">(2)</a>) with two unknowns (<span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>). We can substitute <a class="reference internal" href="#equation-equation-1">(1)</a> into <a class="reference internal" href="#equation-equation-2">(2)</a>.</p>
+<p>Substitute <span class="math notranslate nohighlight">\(\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\)</span> into <a class="reference internal" href="#equation-equation-2">(2)</a>:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} X_i Y_i - (\bar{Y} - \hat{\beta_1} \bar{X}) \sum_{i=1}^{n} X_i - \hat{\beta_1} \sum_{i=1}^{n} X_i^2\]</div>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{n} X_i Y_i - \bar{Y} \sum_{i=1}^{n} X_i + \hat{\beta_1} \bar{X} \sum_{i=1}^{n} X_i - \hat{\beta_1} \sum_{i=1}^{n} X_i^2\]</div>
+<p>Rearrange to isolate terms with <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} \sum_{i=1}^{n} X_i^2 - \hat{\beta_1} \bar{X} \sum_{i=1}^{n} X_i = \sum_{i=1}^{n} X_i Y_i - \bar{Y} \sum_{i=1}^{n} X_i\]</div>
+<p>Factor out <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> on the left side:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} \left( \sum_{i=1}^{n} X_i^2 - \bar{X} \sum_{i=1}^{n} X_i \right) = \sum_{i=1}^{n} X_i Y_i - \bar{Y} \sum_{i=1}^{n} X_i\]</div>
+<p>We know that <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} X_i = n\bar{X}\)</span>. Substitute this into the equation:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} \left( \sum_{i=1}^{n} X_i^2 - \bar{X} (n\bar{X}) \right) = \sum_{i=1}^{n} X_i Y_i - \bar{Y} (n\bar{X})\]</div>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} \left( \sum_{i=1}^{n} X_i^2 - n\bar{X}^2 \right) = \sum_{i=1}^{n} X_i Y_i - n\bar{X}\bar{Y}\]</div>
+<p>Finally, solve for <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} = \frac{\sum_{i=1}^{n} X_i Y_i - n\bar{X}\bar{Y}}{\sum_{i=1}^{n} X_i^2 - n\bar{X}^2}\]</div>
+<p>This is one common form of the formula for <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>. It can also be expressed in terms of covariance and variance, which often provides more intuition:</p>
+<p>Recall the definitions:</p>
+<ul class="simple">
+<li><p>Sample Covariance: <span class="math notranslate nohighlight">\(Cov(X, Y) = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})\)</span></p></li>
+<li><p>Sample Variance: <span class="math notranslate nohighlight">\(Var(X) = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2\)</span></p></li>
+</ul>
+<p>Let’s expand the numerator and denominator of the <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> formula:</p>
+<p><strong>Numerator:</strong></p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y}) = \sum_{i=1}^{n} (X_i Y_i - X_i \bar{Y} - \bar{X} Y_i + \bar{X}\bar{Y})\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i Y_i - \bar{Y} \sum_{i=1}^{n} X_i - \bar{X} \sum_{i=1}^{n} Y_i + \sum_{i=1}^{n} \bar{X}\bar{Y}\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i Y_i - \bar{Y} (n\bar{X}) - \bar{X} (n\bar{Y}) + n\bar{X}\bar{Y}\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i Y_i - n\bar{X}\bar{Y} - n\bar{X}\bar{Y} + n\bar{X}\bar{Y}\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i Y_i - n\bar{X}\bar{Y}\]</div>
+<p>This shows that the numerator of our <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> formula is indeed <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})\)</span>.</p>
+<p><strong>Denominator:</strong></p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (X_i - \bar{X})^2 = \sum_{i=1}^{n} (X_i^2 - 2X_i\bar{X} + \bar{X}^2)\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i^2 - 2\bar{X} \sum_{i=1}^{n} X_i + \sum_{i=1}^{n} \bar{X}^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i^2 - 2\bar{X} (n\bar{X}) + n\bar{X}^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i^2 - 2n\bar{X}^2 + n\bar{X}^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^{n} X_i^2 - n\bar{X}^2\]</div>
+<p>This shows that the denominator of our <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> formula is indeed <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (X_i - \bar{X})^2\)</span>.</p>
+<p>Therefore, the formula for <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span> can be elegantly written as:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2}\]</div>
+<p>Or, in terms of covariance and variance:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} = \frac{(n-1)Cov(X, Y)}{(n-1)Var(X)} = \frac{Cov(X, Y)}{Var(X)}\]</div>
+<p>So, for simple linear regression, the OLS estimators are:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_1} = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2} = \frac{Cov(X, Y)}{Var(X)}\]</div>
+<div class="math notranslate nohighlight">
+\[\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\]</div>
+</section>
+</section>
+<section id="multiple-linear-regression-matrix-form">
+<h2>Multiple Linear Regression (Matrix Form)<a class="headerlink" href="#multiple-linear-regression-matrix-form" title="Link to this heading">#</a></h2>
+<p>When you have more than one independent variable (multiple linear regression), the derivations become more complex using summation notation. This is where matrix algebra simplifies things significantly.</p>
+<p>The multiple linear regression model can be written as:</p>
+<p><span class="math notranslate nohighlight">\(Y = X\beta + \epsilon\)</span></p>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y\)</span>: An <span class="math notranslate nohighlight">\(n \times 1\)</span> column vector of observed dependent variable values.
+<span class="math notranslate nohighlight">\(Y = \begin{pmatrix} Y_1 \\ Y_2 \\ \vdots \\ Y_n \end{pmatrix}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span>: An <span class="math notranslate nohighlight">\(n \times (k+1)\)</span> design matrix of independent variables. The first column is typically a column of ones (for the intercept term), and the subsequent <span class="math notranslate nohighlight">\(k\)</span> columns are the values of the <span class="math notranslate nohighlight">\(k\)</span> independent variables.
+<span class="math notranslate nohighlight">\(X = \begin{pmatrix} 1 &amp; X_{11} &amp; X_{12} &amp; \dots &amp; X_{1k} \\ 1 &amp; X_{21} &amp; X_{22} &amp; \dots &amp; X_{2k} \\ \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 1 &amp; X_{n1} &amp; X_{n2} &amp; \dots &amp; X_{nk} \end{pmatrix}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta\)</span>: A <span class="math notranslate nohighlight">\((k+1) \times 1\)</span> column vector of unknown regression coefficients (<span class="math notranslate nohighlight">\(\beta_0, \beta_1, \dots, \beta_k\)</span>).
+<span class="math notranslate nohighlight">\(\beta = \begin{pmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k \end{pmatrix}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span>: An <span class="math notranslate nohighlight">\(n \times 1\)</span> column vector of error terms.
+<span class="math notranslate nohighlight">\(\epsilon = \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{pmatrix}\)</span></p></li>
+</ul>
+<p>The estimated regression equation in matrix form is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{Y} = X\hat{\beta}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\hat{Y}\)</span> is the <span class="math notranslate nohighlight">\(n \times 1\)</span> vector of predicted values, and <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> is the <span class="math notranslate nohighlight">\((k+1) \times 1\)</span> vector of estimated coefficients.</p>
+<p>The residuals vector is:</p>
+<div class="math notranslate nohighlight">
+\[e = Y - \hat{Y} = Y - X\hat{\beta}\]</div>
+<p>Our objective is to minimize the sum of squared residuals, which in matrix form is:</p>
+<div class="math notranslate nohighlight">
+\[S = e^T e = (Y - X\hat{\beta})^T (Y - X\hat{\beta})\]</div>
+<p>Expanding this expression:</p>
+<div class="math notranslate nohighlight">
+\[S = (Y^T - (X\hat{\beta})^T) (Y - X\hat{\beta})\]</div>
+<div class="math notranslate nohighlight">
+\[S = (Y^T - \hat{\beta}^T X^T) (Y - X\hat{\beta})\]</div>
+<div class="math notranslate nohighlight">
+\[S = Y^T Y - Y^T X\hat{\beta} - \hat{\beta}^T X^T Y + \hat{\beta}^T X^T X\hat{\beta}\]</div>
+<p>Since <span class="math notranslate nohighlight">\(Y^T X\hat{\beta}\)</span> is a scalar (a single number), its transpose is itself. Also, the transpose of a scalar is itself. Therefore, <span class="math notranslate nohighlight">\(\hat{\beta}^T X^T Y = (Y^T X\hat{\beta})^T = Y^T X\hat{\beta}\)</span>.
+So, we can combine the middle two terms:</p>
+<div class="math notranslate nohighlight">
+\[S = Y^T Y - 2 Y^T X\hat{\beta} + \hat{\beta}^T X^T X\hat{\beta}\]</div>
+<p>To find the <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> that minimizes <span class="math notranslate nohighlight">\(S\)</span>, we take the derivative of <span class="math notranslate nohighlight">\(S\)</span> with respect to the vector <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> and set it to zero.</p>
+<p><strong>Derivative rules for matrices (denominator layout convention):</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial (A\mathbf{x})}{\partial \mathbf{x}} = A^T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial (\mathbf{x}^T A \mathbf{x})}{\partial \mathbf{x}} = (A + A^T)\mathbf{x}\)</span></p></li>
+<li><p>Consequently, if A is symmetric, <span class="math notranslate nohighlight">\(\frac{\partial (\mathbf{x}^T A \mathbf{x})}{\partial \mathbf{x}} = 2A\mathbf{x}\)</span></p></li>
+<li><p>NOTE: <span class="math notranslate nohighlight">\(A\)</span> is matric, <span class="math notranslate nohighlight">\(\mathbf{x}\)</span> is a column vector.</p></li>
+</ul>
+<p>In our case, <span class="math notranslate nohighlight">\(X^T X\)</span> is a symmetric matrix.</p>
+<p><span class="math notranslate nohighlight">\(\frac{\partial S}{\partial \hat{\beta}} = \frac{\partial}{\partial \hat{\beta}} (Y^T Y - 2 Y^T X\hat{\beta} + \hat{\beta}^T X^T X\hat{\beta}) =\)</span></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y^T Y\)</span> is a scalar constant with respect to <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> (it does not contain <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>). The derivative of a constant is <span class="math notranslate nohighlight">\(0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{\partial}{\partial \hat{\beta}} (-2 Y^T X\hat{\beta})\)</span>: we use the constant multiple rule: <span class="math notranslate nohighlight">\(-2 \frac{\partial}{\partial \hat{\beta}} (Y^T X\hat{\beta})\)</span>.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(\mathbf{c}^T = Y^T X\)</span>. This is a <span class="math notranslate nohighlight">\(1 \times k\)</span> row vector of constants. So, we are differentiating <span class="math notranslate nohighlight">\(\mathbf{c}^T \hat{\beta}\)</span>.</p></li>
+<li><p>Recall the derivative rule: <span class="math notranslate nohighlight">\(\frac{\partial (\mathbf{c}^T \mathbf{v})}{\partial \mathbf{v}} = \mathbf{c}\)</span> (if <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> is a column vector and using denominator layout for gradient) or <span class="math notranslate nohighlight">\(\frac{\partial (\mathbf{c}^T \mathbf{v})}{\partial \mathbf{v}} = \mathbf{c}^T\)</span> (if <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> is a row vector and using numerator layout for gradient).</p></li>
+<li><p><strong>Crucially, since we established the denominator layout for scalar-by-vector derivatives earlier (resulting in a column vector), we need the column vector equivalent.</strong></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(f(\mathbf{v}) = \mathbf{c}^T \mathbf{v}\)</span>, then <span class="math notranslate nohighlight">\(\frac{\partial f}{\partial \mathbf{v}} = \mathbf{c}\)</span> (where <span class="math notranslate nohighlight">\(\mathbf{c}\)</span> is a column vector).</p></li>
+<li><p>In our case, <span class="math notranslate nohighlight">\(\mathbf{c}^T = Y^T X\)</span>. So, the equivalent column vector is <span class="math notranslate nohighlight">\((Y^T X)^T = X^T Y\)</span>.</p></li>
+<li><p>Therefore, <span class="math notranslate nohighlight">\(\frac{\partial}{\partial \hat{\beta}} (Y^T X\hat{\beta}) = X^T Y\)</span>.</p></li>
+<li><p>So, the second term becomes <span class="math notranslate nohighlight">\(-2 X^T Y\)</span>.</p></li>
+</ul>
+<p>Now, let’s consider the third term <span class="math notranslate nohighlight">\(\frac{\partial}{\partial \hat{\beta}} (\hat{\beta}^T X^T X\hat{\beta})\)</span>:</p>
+<ul class="simple">
+<li><p>This is a quadratic form of the type <span class="math notranslate nohighlight">\(\hat{\beta}^T A \hat{\beta}\)</span>, where <span class="math notranslate nohighlight">\(A = X^T X\)</span>.</p></li>
+<li><p>We’ve already established that <span class="math notranslate nohighlight">\(X^T X\)</span> is symmetric.</p></li>
+<li><p>Recall the derivative rule for quadratic forms, using denominator layout for the gradient: <span class="math notranslate nohighlight">\(\frac{\partial (\mathbf{v}^T A \mathbf{v})}{\partial \mathbf{v}} = (A + A^T)\mathbf{v}\)</span>.</p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(A = X^T X\)</span> is symmetric, <span class="math notranslate nohighlight">\(A^T = A\)</span>.</p></li>
+<li><p>So, <span class="math notranslate nohighlight">\(\frac{\partial (\hat{\beta}^T X^T X\hat{\beta})}{\partial \hat{\beta}} = (X^T X + (X^T X)^T)\hat{\beta} = (X^T X + X^T X)\hat{\beta} = 2 X^T X \hat{\beta}\)</span>.</p></li>
+<li><p>This term becomes <span class="math notranslate nohighlight">\(2 X^T X \hat{\beta}\)</span>.</p></li>
+</ul>
+<p>Here is the result:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \hat{\beta}} = 0 - 2 X^T Y + 2 X^T X \hat{\beta}\]</div>
+<p>Set the derivative to zero:</p>
+<div class="math notranslate nohighlight">
+\[0 = -2 X^T Y + 2 X^T X \hat{\beta}\]</div>
+<p>Rearrange the terms:</p>
+<div class="math notranslate nohighlight">
+\[2 X^T X \hat{\beta} = 2 X^T Y\]</div>
+<p>Divide by 2:</p>
+<div class="math notranslate nohighlight">
+\[X^T X \hat{\beta} = X^T Y\]</div>
+<p>This is the matrix form of the <strong>Normal Equations</strong>.</p>
+<p>To solve for <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>, we need to multiply both sides by the inverse of <span class="math notranslate nohighlight">\((X^T X)\)</span>. Note that <span class="math notranslate nohighlight">\((X^T X)^{-1}\)</span> exists if <span class="math notranslate nohighlight">\(X^T X\)</span> is invertible (which generally means there is no perfect multicollinearity among the independent variables).</p>
+<div class="math notranslate nohighlight">
+\[(X^T X)^{-1} (X^T X) \hat{\beta} = (X^T X)^{-1} X^T Y\]</div>
+<div class="math notranslate nohighlight">
+\[I \hat{\beta} = (X^T X)^{-1} X^T Y\]</div>
+<div class="math notranslate nohighlight">
+\[\hat{\beta} = (X^T X)^{-1} X^T Y\]</div>
+<p>This is the famous OLS estimator formula in matrix form for multiple linear regression. It directly gives you the vector of all estimated coefficients, including the intercept.</p>
+</section>
+<section id="assumptions-of-ols">
+<h2>Assumptions of OLS<a class="headerlink" href="#assumptions-of-ols" title="Link to this heading">#</a></h2>
+<p>For the OLS estimators to be the Best Linear Unbiased Estimators (BLUE), a set of assumptions must hold (known as the Gauss-Markov assumptions):</p>
+<ol class="arabic simple">
+<li><p><strong>Linearity:</strong> The relationship between the dependent variable and the independent variables is linear in the parameters.</p></li>
+<li><p><strong>Random Sampling:</strong> The data is a random sample from the population.</p></li>
+<li><p><strong>No Perfect Multicollinearity:</strong> There is no perfect linear relationship between the independent variables. (This ensures <span class="math notranslate nohighlight">\((X^T X)^{-1}\)</span> exists).</p></li>
+<li><p><strong>Zero Conditional Mean of Errors:</strong> The expected value of the error term is zero for any given values of the independent variables (<span class="math notranslate nohighlight">\(E[\epsilon_i | X_i] = 0\)</span>). This means that the independent variables are not correlated with the error term.</p></li>
+<li><p><strong>Homoscedasticity:</strong> The variance of the error term is constant across all levels of the independent variables (<span class="math notranslate nohighlight">\(Var(\epsilon_i | X_i) = \sigma^2\)</span>).</p></li>
+<li><p><strong>No Autocorrelation:</strong> The error terms are uncorrelated with each other (<span class="math notranslate nohighlight">\(Cov(\epsilon_i, \epsilon_j | X_i, X_j) = 0\)</span> for <span class="math notranslate nohighlight">\(i \neq j\)</span>). This is particularly important for time-series data.</p></li>
+<li><p><strong>Normality of Errors (optional for BLUE, but important for inference):</strong> The error terms are normally distributed (<span class="math notranslate nohighlight">\(\epsilon_i \sim N(0, \sigma^2)\)</span>). This assumption is crucial for performing exact hypothesis tests and constructing confidence intervals with correct coverage properties in finite samples. If the sample size is large enough, the Central Limit Theorem ensures that the OLS estimators are approximately normally distributed even if the errors are not, allowing for asymptotically valid inference.</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math\01_basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="least-squares-regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../physics/continuity-equation-01.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Continuity Equation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-concept-of-linear-regression">The Concept of Linear Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-least-squares-principle">The “Least Squares” Principle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-formulas-for-simple-linear-regression-one-independent-variable">Deriving the Formulas for Simple Linear Regression (One Independent Variable)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-derivative-with-respect-to-hat-beta-0">1. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partial-derivative-with-respect-to-hat-beta-1">2. Partial Derivative with respect to <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-linear-regression-matrix-form">Multiple Linear Regression (Matrix Form)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-ols">Assumptions of OLS</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
