@@ -525,7 +525,7 @@ document.write(`
 <p>We know that <span class="math notranslate nohighlight">\(\frac{\sum Y_i}{n} = \bar{Y}\)</span> (mean of Y) and <span class="math notranslate nohighlight">\(\frac{\sum X_i}{n} = \bar{X}\)</span> (mean of X).
 So, the formula for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> is:</p>
 <div class="math notranslate nohighlight" id="equation-equation-1">
-<span class="eqno">(1)<a class="headerlink" href="#equation-equation-1" title="Link to this equation">#</a></span>\[$$\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}$$ \]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-equation-1" title="Link to this equation">#</a></span>\[\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\]</div>
 <p>This equation tells us that the regression line passes through the point <span class="math notranslate nohighlight">\((\bar{X}, \bar{Y})\)</span>. Let’s prove this statement.</p>
 <p>The equation we derived for the intercept <span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> in simple linear regression is:</p>
 <div class="math notranslate nohighlight">
@@ -571,7 +571,7 @@ So, the formula for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)
 <p>Distribute the summation:</p>
 <div class="math notranslate nohighlight" id="equation-equation-2">
 <span class="eqno">(2)<a class="headerlink" href="#equation-equation-2" title="Link to this equation">#</a></span>\[0 = \sum_{i=1}^{n} X_i Y_i - \hat{\beta_0} \sum_{i=1}^{n} X_i - \hat{\beta_1} \sum_{i=1}^{n} X_i^2\]</div>
-<p>Now we have a system of two linear equations (<a class="reference internal" href="#equation-equation-1">(1)</a> and <a class="reference internal" href="#equation-equation-2">(2)</a>) with two unknowns (<span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>). We can substitute <a class="reference internal" href="#equation-equation-1">(1)</a> into <a class="reference internal" href="#equation-equation-2">(2)</a>.</p>
+<p>Now we have a system of two linear equations <a class="reference internal" href="#equation-equation-1">(1)</a> and <a class="reference internal" href="#equation-equation-2">(2)</a> with two unknowns (<span class="math notranslate nohighlight">\(\hat{\beta_0}\)</span> and <span class="math notranslate nohighlight">\(\hat{\beta_1}\)</span>). We can substitute <a class="reference internal" href="#equation-equation-1">(1)</a> into <a class="reference internal" href="#equation-equation-2">(2)</a>.</p>
 <p>Substitute <span class="math notranslate nohighlight">\(\hat{\beta_0} = \bar{Y} - \hat{\beta_1} \bar{X}\)</span> into <a class="reference internal" href="#equation-equation-2">(2)</a>:</p>
 <div class="math notranslate nohighlight">
 \[0 = \sum_{i=1}^{n} X_i Y_i - (\bar{Y} - \hat{\beta_1} \bar{X}) \sum_{i=1}^{n} X_i - \hat{\beta_1} \sum_{i=1}^{n} X_i^2\]</div>
@@ -639,7 +639,8 @@ So, the formula for <span class="math notranslate nohighlight">\(\hat{\beta_0}\)
 <h2>Multiple Linear Regression (Matrix Form)<a class="headerlink" href="#multiple-linear-regression-matrix-form" title="Link to this heading">#</a></h2>
 <p>When you have more than one independent variable (multiple linear regression), the derivations become more complex using summation notation. This is where matrix algebra simplifies things significantly.</p>
 <p>The multiple linear regression model can be written as:</p>
-<p><span class="math notranslate nohighlight">\(Y = X\beta + \epsilon\)</span></p>
+<div class="math notranslate nohighlight">
+\[Y = X\beta + \epsilon\]</div>
 <p>Where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(Y\)</span>: An <span class="math notranslate nohighlight">\(n \times 1\)</span> column vector of observed dependent variable values.
