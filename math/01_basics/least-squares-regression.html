@@ -190,7 +190,10 @@
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -523,10 +526,10 @@ document.write(`
 <p>R-squared is a very popular metric because it provides a standardized measure of how well your model explains the variability in the dependent variable <span class="math notranslate nohighlight">\(y\)</span>.</p>
 <p>First, let’s re-state the key sums of squares:</p>
 <ol class="arabic">
-<li><p><strong>Total Sum of Squares (SST):</strong> This measures the total variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values around their mean <span class="math notranslate nohighlight">\(\bar{y}\)</span>. It represents how much the <span class="math notranslate nohighlight">\(y\)</span> values vary in total, without considering any model.</p>
+<li><p><strong>Total Sum of Squares (TSS):</strong> This measures the total variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values around their mean <span class="math notranslate nohighlight">\(\bar{y}\)</span>. It represents how much the <span class="math notranslate nohighlight">\(y\)</span> values vary in total, without considering any model.</p>
 <div class="math notranslate nohighlight">
-\[SST = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
-<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the observed data points and <span class="math notranslate nohighlight">\(\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\)</span> is the mean of the observed <span class="math notranslate nohighlight">\(y\)</span> values. SST represents the total variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values around their mean. It’s the sum of squared differences if you were to approximate all <span class="math notranslate nohighlight">\(y_i\)</span> with their mean <span class="math notranslate nohighlight">\(\bar{y}\)</span> (which is essentially a horizontal line).</p>
+\[TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the observed data points and <span class="math notranslate nohighlight">\(\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\)</span> is the mean of the observed <span class="math notranslate nohighlight">\(y\)</span> values. TSS represents the total variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values around their mean. It’s the sum of squared differences if you were to approximate all <span class="math notranslate nohighlight">\(y_i\)</span> with their mean <span class="math notranslate nohighlight">\(\bar{y}\)</span> (which is essentially a horizontal line).</p>
 </li>
 <li><p><strong>Sum of Squared Residuals (SSR) / Sum of Squares Error (SSE) / Redisual Sum of Squares (RSS):</strong> This measures the variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values that is <em>not</em> explained by the regression model. It’s the sum of the squared differences between the observed <span class="math notranslate nohighlight">\(y_i\)</span> and the predicted <span class="math notranslate nohighlight">\(f(x_i)\)</span> (often denoted as <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>).</p>
 <div class="math notranslate nohighlight">
@@ -536,12 +539,12 @@ document.write(`
 <li><p><strong>Sum of Squares due to Regression (SSR) / Explained Sum of Squares (ESS):</strong> This measures the variability in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>) that <em>is</em> explained by the regression model. It’s the sum of the squared differences between the predicted values <span class="math notranslate nohighlight">\(f(x_i)\)</span> and the mean of the observed <span class="math notranslate nohighlight">\(y\)</span> values <span class="math notranslate nohighlight">\(\bar{y}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[ESS = \sum_{i=1}^{n} (f(x_i) - \bar{y})^2\]</div>
-<p><em>Note:</em> There can be some confusion with the acronym “SSR”. In many statistical texts, “SSR” refers to “Sum of Squares due to Regression” (what we’ve called ESS here), and “SSE” refers to “Sum of Squared Errors” (what we’ve called SSR here). However, in the context of R-squared’s formula (<span class="math notranslate nohighlight">\(1 - \frac{SSR}{SST}\)</span>), the “SSR” in the numerator <em>always</em> refers to the <strong>Sum of Squared Residuals/Errors</strong>. To avoid confusion, we’ll stick to <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> for <strong>Sum of Squared Residuals/Errors</strong> and <span class="math notranslate nohighlight">\(ESS\)</span> for the explained sum of squares.</p>
+<p><em>Note:</em> There can be some confusion with the acronym “SSR”. In many statistical texts, “SSR” refers to “Sum of Squares due to Regression” (what we’ve called ESS here), and “SSE” refers to “Sum of Squared Errors” (what we’ve called SSR here). However, in the context of R-squared’s formula (<span class="math notranslate nohighlight">\(1 - \frac{SSR}{TSS}\)</span>), the “SSR” in the numerator <em>always</em> refers to the <strong>Sum of Squared Residuals/Errors</strong>. To avoid confusion, we’ll stick to <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> for <strong>Sum of Squared Residuals/Errors</strong> and <span class="math notranslate nohighlight">\(ESS\)</span> for the explained sum of squares.</p>
 </li>
 </ol>
 <p>R-squared is defined as:</p>
 <div class="math notranslate nohighlight">
-\[R^2 = 1 - \frac{SSR_{\text{res}}}{SST}\]</div>
+\[R^2 = 1 - \frac{SSR_{\text{res}}}{TSS}\]</div>
 <p><strong>Meaning:</strong> R-squared tells you the proportion of the variance in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>) that is predictable from the independent variable (<span class="math notranslate nohighlight">\(x\)</span>) using your regression model. In simpler terms, it indicates how much of the variation in <span class="math notranslate nohighlight">\(y\)</span> can be explained by your chosen function.</p>
 <p><strong>Understanding:</strong></p>
 <ul class="simple">
