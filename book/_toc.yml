@@ -15,7 +15,11 @@ parts:
       - file: math/01_basics/divergence
       - file: math/01_basics/fourier-transform-01
       - file: math/01_basics/least-squares-regression
+        sections:
+          - file: math/01_basics/least-squares-regression-code
       - file: math/01_basics/ordinary-least-squares
+        sections:
+          - file: math/01_basics/ordinary-least-squares-code
 
   - caption: PHYSICS
     chapters:
