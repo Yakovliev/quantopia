@@ -20,6 +20,7 @@ parts:
       - file: math/01_basics/ordinary-least-squares
         sections:
           - file: math/01_basics/ordinary-least-squares-code
+      - file: math/01_basics/variance-covariance
 
   - caption: PHYSICS
     chapters:

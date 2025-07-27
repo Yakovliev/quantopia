@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Variance and Covariance &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/01_basics/variance-covariance';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="The Continuity Equation" href="../../physics/continuity-equation-01.html" />
+    <link rel="prev" title="Ordinary Least Squares (OLS) Regression - Code Example" href="ordinary-least-squares-code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Example - Non-Linear Function</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Variance and Covariance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/01_basics/variance-covariance.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/01_basics/variance-covariance.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/math/01_basics/variance-covariance.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Variance and Covariance</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-covariance-text-cov-x-y-or-sigma-xy">Population Covariance (<span class="math notranslate nohighlight">\(\text{Cov}(X, Y)\)</span> or <span class="math notranslate nohighlight">\(\sigma_{XY}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-covariance-s-xy">Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuitive-explanation">Intuitive Explanation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degrees-of-freedom-explanation">Degrees of Freedom Explanation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-proof-sketch-for-variance">Mathematical Proof Sketch (for Variance)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="variance-and-covariance">
+<h1>Variance and Covariance<a class="headerlink" href="#variance-and-covariance" title="Link to this heading">#</a></h1>
+<section id="mean-average">
+<h2>Mean (Average)<a class="headerlink" href="#mean-average" title="Link to this heading">#</a></h2>
+<p>Before diving into variance and covariance, we need to understand the concept of the mean, also known as the average. The mean is a measure of central tendency, representing the typical value in a dataset.</p>
+<p>For a set of <span class="math notranslate nohighlight">\(N\)</span> data points (observations) <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_N\)</span>:</p>
+<p><strong>Population Mean (<span class="math notranslate nohighlight">\(\mu\)</span>)</strong>: If we have the entire population, the mean is calculated as the sum of all observations divided by the number of observations.</p>
+<div class="math notranslate nohighlight">
+\[\mu = \frac{\sum_{i=1}^{N} x_i}{N}\]</div>
+<p><strong>Sample Mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>)</strong>: If we have a sample from a larger population, the sample mean is calculated similarly.</p>
+<div class="math notranslate nohighlight">
+\[\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the number of observations in the sample.</p>
+</section>
+<section id="variance">
+<h2>Variance<a class="headerlink" href="#variance" title="Link to this heading">#</a></h2>
+<p>Variance is a measure of how spread out a set of data is. It quantifies the average of the squared differences from the mean. A high variance indicates that data points are spread far from the mean and from each other, while a low variance indicates that data points are clustered closely around the mean.</p>
+<p>Why squared differences?</p>
+<ul class="simple">
+<li><p><strong>To avoid cancellation:</strong> If we just summed the deviations <span class="math notranslate nohighlight">\((x_i - \mu)\)</span>, positive and negative deviations would cancel out, potentially leading to a sum of zero even for widely dispersed data.</p></li>
+<li><p><strong>To penalize larger deviations more:</strong> Squaring exaggerates larger differences, giving more weight to data points that are further from the mean.</p></li>
+</ul>
+<section id="population-variance-sigma-2">
+<h3>Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)<a class="headerlink" href="#population-variance-sigma-2" title="Link to this heading">#</a></h3>
+<p>The population variance is the true variance of an entire population. The population variance is the average of the squared differences between each data point and the population mean.</p>
+<p>For a population with <span class="math notranslate nohighlight">\(N\)</span> data points <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_N\)</span> and population mean <span class="math notranslate nohighlight">\(\mu\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate the deviation of each data point from the mean</strong>: <span class="math notranslate nohighlight">\((x_i - \mu)\)</span></p></li>
+<li><p><strong>Square each deviation</strong>: <span class="math notranslate nohighlight">\((x_i - \mu)^2\)</span></p></li>
+<li><p><strong>Sum all the squared deviations</strong>: <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} (x_i - \mu)^2\)</span></p></li>
+<li><p><strong>Divide by the total number of data points (<span class="math notranslate nohighlight">\(N\)</span>) to find the average squared deviation</strong>:</p></li>
+</ol>
+<p>Thus, the formula for population variance is:</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\]</div>
+<p><strong>Alternative Form (Computational Formula)</strong>:</p>
+<p>This form can sometimes simplify calculations.</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\]</div>
+<p>Expand the squared term:</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i^2 - 2x_i\mu + \mu^2)\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \left( \sum_{i=1}^{N} x_i^2 - \sum_{i=1}^{N} 2x_i\mu + \sum_{i=1}^{N} \mu^2 \right)\]</div>
+<p>Pull constants out of the summation:</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \left( \sum_{i=1}^{N} x_i^2 - 2\mu \sum_{i=1}^{N} x_i + N\mu^2 \right)\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\mu = \frac{\sum_{i=1}^{N} x_i}{N}\)</span>, which means <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} x_i = N\mu\)</span>. Substitute this into the equation:</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \left( \sum_{i=1}^{N} x_i^2 - 2\mu (N\mu) + N\mu^2 \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \left( \sum_{i=1}^{N} x_i^2 - 2N\mu^2 + N\mu^2 \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{1}{N} \left( \sum_{i=1}^{N} x_i^2 - N\mu^2 \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{\sum_{i=1}^{N} x_i^2}{N} - \mu^2\]</div>
+<p>This is a convenient form often used for calculation.</p>
+</section>
+<section id="sample-variance-s-2">
+<h3>Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)<a class="headerlink" href="#sample-variance-s-2" title="Link to this heading">#</a></h3>
+<p>When we work with a sample from a larger population, we use sample variance to estimate the population variance.</p>
+<p>The sample variance is an estimate of the population variance, calculated using the squared differences from the sample mean, divided by <span class="math notranslate nohighlight">\(n-1\)</span>.</p>
+<p><strong>Derivation of the Formula</strong>:</p>
+<p>If we were to use <span class="math notranslate nohighlight">\(n\)</span> in the denominator for sample variance, like we did for population variance, our estimate would consistently be <em>underestimated</em>. This is because the sample mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) is calculated from the sample itself, and it will always be closer to the sample data points than the true population mean (<span class="math notranslate nohighlight">\(\mu\)</span>) would be. This makes the sum of squared deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span> smaller than the sum of squared deviations from <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
+<p>To correct for this bias and provide an <strong>unbiased estimator</strong> of the population variance, we divide by <span class="math notranslate nohighlight">\(n-1\)</span>, which is known as <strong>Bessel’s correction</strong>. The term <span class="math notranslate nohighlight">\(n-1\)</span> represents the <strong>degrees of freedom</strong>. We lose one degree of freedom because we used the sample mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) (which is derived from the sample data) in the calculation.</p>
+<p>So, for a sample with <span class="math notranslate nohighlight">\(n\)</span> data points <span class="math notranslate nohighlight">\(x_1, x_2, \ldots, x_n\)</span> and sample mean <span class="math notranslate nohighlight">\(\bar{x}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate the deviation of each data point from the sample mean</strong>: <span class="math notranslate nohighlight">\((x_i - \bar{x})\)</span></p></li>
+<li><p><strong>Square each deviation</strong>: <span class="math notranslate nohighlight">\((x_i - \bar{x})^2\)</span></p></li>
+<li><p><strong>Sum all the squared deviations</strong>: <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (x_i - \bar{x})^2\)</span></p></li>
+<li><p><strong>Divide by <span class="math notranslate nohighlight">\(n-1\)</span></strong>:</p></li>
+</ol>
+<p>Thus, the formula for sample variance is:
+$<span class="math notranslate nohighlight">\(s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}\)</span>$</p>
+<p><strong>Alternative Form (Computational Formula)</strong>:</p>
+<p>Similar to population variance, we can derive an alternative form:</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}\]</div>
+<p>Expand the squared term:</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (x_i^2 - 2x_i\bar{x} + \bar{x}^2)\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - 2\bar{x} \sum_{i=1}^{n} x_i + \sum_{i=1}^{n} \bar{x}^2 \right)\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}\)</span>, which means <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} x_i = n\bar{x}\)</span>. Substitute this into the equation:</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - 2\bar{x} (n\bar{x}) + n\bar{x}^2 \right)\]</div>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - 2n\bar{x}^2 + n\bar{x}^2 \right)\]</div>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - n\bar{x}^2 \right)\]</div>
+<p>This is another common form for calculation.</p>
+</section>
+</section>
+<section id="covariance">
+<h2>Covariance<a class="headerlink" href="#covariance" title="Link to this heading">#</a></h2>
+<p>While variance measures the spread of a single variable, <strong>covariance</strong> measures the <strong>joint variability</strong> of two random variables. In other words, it tells us how two variables change together.</p>
+<ul class="simple">
+<li><p><strong>Positive Covariance</strong>: Indicates that the two variables tend to move in the same direction. If one increases, the other tends to increase; if one decreases, the other tends to decrease.</p></li>
+<li><p><strong>Negative Covariance</strong>: Indicates that the two variables tend to move in opposite directions. If one increases, the other tends to decrease.</p></li>
+<li><p><strong>Covariance close to zero</strong>: Suggests there is no strong linear relationship between the two variables. (Note: Zero covariance does not necessarily mean independence, only that there’s no <em>linear</em> relationship.)</p></li>
+</ul>
+<section id="population-covariance-text-cov-x-y-or-sigma-xy">
+<h3>Population Covariance (<span class="math notranslate nohighlight">\(\text{Cov}(X, Y)\)</span> or <span class="math notranslate nohighlight">\(\sigma_{XY}\)</span>)<a class="headerlink" href="#population-covariance-text-cov-x-y-or-sigma-xy" title="Link to this heading">#</a></h3>
+<p>The population covariance is the true covariance between two variables for an entire population.</p>
+<p>The population covariance is the average of the products of the deviations of each variable from their respective means.</p>
+<p>Let <span class="math notranslate nohighlight">\(X = \{x_1, x_2, \ldots, x_N\}\)</span> and <span class="math notranslate nohighlight">\(Y = \{y_1, y_2, \ldots, y_N\}\)</span> be two sets of data points for a population, with population means <span class="math notranslate nohighlight">\(\mu_X\)</span> and <span class="math notranslate nohighlight">\(\mu_Y\)</span> respectively.</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate the deviation of each <span class="math notranslate nohighlight">\(x\)</span> data point from its mean</strong>: <span class="math notranslate nohighlight">\((x_i - \mu_X)\)</span></p></li>
+<li><p><strong>Calculate the deviation of each <span class="math notranslate nohighlight">\(y\)</span> data point from its mean</strong>: <span class="math notranslate nohighlight">\((y_i - \mu_Y)\)</span></p></li>
+<li><p><strong>Multiply the corresponding deviations</strong>: <span class="math notranslate nohighlight">\((x_i - \mu_X)(y_i - \mu_Y)\)</span></p></li>
+<li><p><strong>Sum all these products</strong>: <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)\)</span></p></li>
+<li><p><strong>Divide by the total number of data points (<span class="math notranslate nohighlight">\(N\)</span>) to find the average product of deviations</strong>:</p></li>
+</ol>
+<p>Thus, the formula for population covariance is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \sigma_{XY} = \frac{\sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)}{N}\]</div>
+<p><strong>Alternative Form (Computational Formula)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)\]</div>
+<p>Expand the product:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \sum_{i=1}^{N} (x_i y_i - x_i \mu_Y - y_i \mu_X + \mu_X \mu_Y)\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - \sum_{i=1}^{N} x_i \mu_Y - \sum_{i=1}^{N} y_i \mu_X + \sum_{i=1}^{N} \mu_X \mu_Y \right)\]</div>
+<p>Pull constants out of the summation:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - \mu_Y \sum_{i=1}^{N} x_i - \mu_X \sum_{i=1}^{N} y_i + N\mu_X \mu_Y \right)\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} x_i = N\mu_X\)</span> and <span class="math notranslate nohighlight">\(\sum_{i=1}^{N} y_i = N\mu_Y\)</span>. Substitute these:</p>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - \mu_Y (N\mu_X) - \mu_X (N\mu_Y) + N\mu_X \mu_Y \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - N\mu_X \mu_Y - N\mu_X \mu_Y + N\mu_X \mu_Y \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - N\mu_X \mu_Y \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Cov}(X, Y) = \frac{\sum_{i=1}^{N} x_i y_i}{N} - \mu_X \mu_Y\]</div>
+</section>
+<section id="sample-covariance-s-xy">
+<h3>Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)<a class="headerlink" href="#sample-covariance-s-xy" title="Link to this heading">#</a></h3>
+<p>When working with a sample from a larger population, we use sample covariance to estimate the population covariance.</p>
+<p>The sample covariance is an estimate of the population covariance, calculated using the products of the deviations from the sample means, divided by <span class="math notranslate nohighlight">\(n-1\)</span>.</p>
+<p>Similar to sample variance, we use <span class="math notranslate nohighlight">\(n-1\)</span> in the denominator to provide an unbiased estimate of the population covariance.</p>
+<p>For a sample with <span class="math notranslate nohighlight">\(n\)</span> pairs of data points <span class="math notranslate nohighlight">\((x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)\)</span>, and sample means <span class="math notranslate nohighlight">\(\bar{x}\)</span> and <span class="math notranslate nohighlight">\(\bar{y}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate the deviation of each <span class="math notranslate nohighlight">\(x\)</span> data point from its sample mean</strong>: <span class="math notranslate nohighlight">\((x_i - \bar{x})\)</span></p></li>
+<li><p><strong>Calculate the deviation of each <span class="math notranslate nohighlight">\(y\)</span> data point from its sample mean</strong>: <span class="math notranslate nohighlight">\((y_i - \bar{y})\)</span></p></li>
+<li><p><strong>Multiply the corresponding deviations</strong>: <span class="math notranslate nohighlight">\((x_i - \bar{x})(y_i - \bar{y})\)</span></p></li>
+<li><p><strong>Sum all these products</strong>: <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})\)</span></p></li>
+<li><p><strong>Divide by <span class="math notranslate nohighlight">\(n-1\)</span></strong>:</p></li>
+</ol>
+<p>Thus, the formula for sample covariance is:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{n-1}\]</div>
+<p><strong>Alternative Form (Computational Formula)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})\]</div>
+<p>Expand the product:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \sum_{i=1}^{n} (x_i y_i - x_i \bar{y} - y_i \bar{x} + \bar{x}\bar{y})\]</div>
+<p>Distribute the summation:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - \sum_{i=1}^{n} x_i \bar{y} - \sum_{i=1}^{n} y_i \bar{x} + \sum_{i=1}^{n} \bar{x}\bar{y} \right)\]</div>
+<p>Pull constants out of the summation:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - \bar{y} \sum_{i=1}^{n} x_i - \bar{x} \sum_{i=1}^{n} y_i + n\bar{x}\bar{y} \right)\]</div>
+<p>Recall that <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} x_i = n\bar{x}\)</span> and <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} y_i = n\bar{y}\)</span>. Substitute these:</p>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - \bar{y} (n\bar{x}) - \bar{x} (n\bar{y}) + n\bar{x}\bar{y} \right)\]</div>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} - n\bar{x}\bar{y} + n\bar{x}\bar{y} \right)\]</div>
+<div class="math notranslate nohighlight">
+\[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} \right)\]</div>
+</section>
+</section>
+<section id="bessel-s-correction">
+<h2>Bessel’s Correction<a class="headerlink" href="#bessel-s-correction" title="Link to this heading">#</a></h2>
+<p>The use of <span class="math notranslate nohighlight">\(n-1\)</span> in the denominator for sample variance (and sample covariance) is not just a convention; it’s a crucial mathematical adjustment known as <strong>Bessel’s Correction</strong>. Its purpose is to ensure that the sample variance is an <strong>unbiased estimator</strong> of the population variance.</p>
+<p>Let’s break down why this correction is necessary, both intuitively and with a conceptual sketch of the mathematical proof.</p>
+<section id="intuitive-explanation">
+<h3>Intuitive Explanation<a class="headerlink" href="#intuitive-explanation" title="Link to this heading">#</a></h3>
+<p>Imagine you want to estimate the average height of all people in a large city. You take a sample of 100 people and calculate their average height (<span class="math notranslate nohighlight">\(\bar{x}\)</span>). You then want to estimate the variance of heights in the entire city (<span class="math notranslate nohighlight">\(\sigma^2\)</span>) using your sample.</p>
+<ol class="arabic">
+<li><p><strong>The problem of using the sample mean:</strong> When you calculate the variance, you’re looking at how much each data point deviates from the “true” mean. If you knew the <em>population mean</em> (<span class="math notranslate nohighlight">\(\mu\)</span>), you would calculate <span class="math notranslate nohighlight">\(\frac{\sum (x_i - \mu)^2}{N}\)</span>. However, you usually don’t know <span class="math notranslate nohighlight">\(\mu\)</span>. So, you use the <em>sample mean</em> (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) as an estimate for <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p><strong>Sample mean is “closer” to the sample data:</strong> The crucial point is that the sample mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) is calculated <em>from</em> the sample data itself. By its very nature, <span class="math notranslate nohighlight">\(\bar{x}\)</span> will always be the value that minimizes the sum of squared deviations for <em>that specific sample</em>. Think of it this way: if you try to fit a line to a set of points, the line you choose will be the one that minimizes the squared distances to <em>those specific points</em>. The sample mean is the “best fit” for your sample data.</p></li>
+<li><p><strong>Underestimation:</strong> Because <span class="math notranslate nohighlight">\(\bar{x}\)</span> is the “best fit” for your sample, the sum of squared deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span> (<span class="math notranslate nohighlight">\(\sum (x_i - \bar{x})^2\)</span>) will always be <em>smaller than or equal to</em> the sum of squared deviations from the true population mean (<span class="math notranslate nohighlight">\(\sum (x_i - \mu)^2\)</span>). It will only be equal if your sample mean happens to perfectly match the population mean, which is highly unlikely in practice.</p>
+<p>Therefore, if you divide by <span class="math notranslate nohighlight">\(n\)</span> (like you would for population variance), your sample variance would systematically <em>underestimate</em> the true population variance. It would be a biased estimator, always tending to be a little too small.</p>
+</li>
+<li><p><strong>The correction (<span class="math notranslate nohighlight">\(n-1\)</span>):</strong> To counteract this downward bias, we divide by a slightly smaller number, <span class="math notranslate nohighlight">\(n-1\)</span>. Dividing by a smaller number makes the overall result larger, thereby “inflating” the sample variance just enough to make it an unbiased estimate of the population variance.</p></li>
+</ol>
+</section>
+<section id="degrees-of-freedom-explanation">
+<h3>Degrees of Freedom Explanation<a class="headerlink" href="#degrees-of-freedom-explanation" title="Link to this heading">#</a></h3>
+<p>Another way to understand <span class="math notranslate nohighlight">\(n-1\)</span> is through the concept of <strong>degrees of freedom</strong>.</p>
+<ul>
+<li><p>When calculating the population variance, you use the population mean (<span class="math notranslate nohighlight">\(\mu\)</span>), which is a fixed, known value. Each of your <span class="math notranslate nohighlight">\(N\)</span> data points <span class="math notranslate nohighlight">\((x_i - \mu)\)</span> provides independent information about the spread. You have <span class="math notranslate nohighlight">\(N\)</span> independent pieces of information, so you divide by <span class="math notranslate nohighlight">\(N\)</span>.</p></li>
+<li><p>When calculating sample variance, you first calculate the sample mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) from your <span class="math notranslate nohighlight">\(n\)</span> data points. Once you know <span class="math notranslate nohighlight">\(\bar{x}\)</span>, you “lose” one degree of freedom. This means that if you know <span class="math notranslate nohighlight">\(n-1\)</span> of the deviations <span class="math notranslate nohighlight">\((x_i - \bar{x})\)</span> and you know <span class="math notranslate nohighlight">\(\bar{x}\)</span>, the last deviation is not independent; it’s determined by the others because <span class="math notranslate nohighlight">\(\sum (x_i - \bar{x}) = 0\)</span>.</p>
+<p>For example, if you have a sample of three numbers and their mean is 5:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(x_1 - \bar{x} = 2\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(x_2 - \bar{x} = -3\)</span></p></li>
+<li><p>Then <span class="math notranslate nohighlight">\(x_3 - \bar{x}\)</span> <em>must be</em> <span class="math notranslate nohighlight">\(1\)</span> (because <span class="math notranslate nohighlight">\(2 + (-3) + 1 = 0\)</span>).</p></li>
+</ul>
+<p>So, you only have <span class="math notranslate nohighlight">\(n-1\)</span> independent pieces of information contributing to the variability around the sample mean. Dividing by <span class="math notranslate nohighlight">\(n-1\)</span> accounts for this loss of a degree of freedom.</p>
+</li>
+</ul>
+<p>However, now we can say:</p>
+<ul class="simple">
+<li><p>We have a formula for the population mean <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p>Thus, the calculation of the population mean should also decrease the number of degrees of freedom. Or not?</p></li>
+</ul>
+<p>The key difference lies in whether the mean we are using in our calculation (<span class="math notranslate nohighlight">\(\bar{x}\)</span> or <span class="math notranslate nohighlight">\(\mu\)</span>) is <strong>estimated from the data itself</strong> or is a <strong>fixed, known value independent of the data</strong>.</p>
+<p>Why <span class="math notranslate nohighlight">\(\bar{x}\)</span> reduces degrees of freedom by one (for sample variance/covariance)?</p>
+<p>When you calculate the <strong>sample variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</strong> using the formula <span class="math notranslate nohighlight">\(s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>You first calculate <span class="math notranslate nohighlight">\(\bar{x}\)</span> from the <span class="math notranslate nohighlight">\(n\)</span> data points in our sample.</strong></p></li>
+<li><p><strong>This act of calculating <span class="math notranslate nohighlight">\(\bar{x}\)</span> imposes a constraint on the data points.</strong> Specifically, the sum of the deviations from the mean must always be zero: <span class="math notranslate nohighlight">\(\sum_{i=1}^{n} (x_i - \bar{x}) = 0\)</span>.</p></li>
+<li><p>Because of this constraint, if you know <span class="math notranslate nohighlight">\(n-1\)</span> of the deviations <span class="math notranslate nohighlight">\((x_i - \bar{x})\)</span>, the <em>last</em> deviation is automatically determined. It’s not free to vary independently.</p>
+<ul class="simple">
+<li><p>For example, if you have three numbers, <span class="math notranslate nohighlight">\(x_1, x_2, x_3\)</span>, and their mean <span class="math notranslate nohighlight">\(\bar{x}\)</span>.</p></li>
+<li><p>You calculate <span class="math notranslate nohighlight">\((x_1 - \bar{x})\)</span> and <span class="math notranslate nohighlight">\((x_2 - \bar{x})\)</span>.</p></li>
+<li><p>Then, <span class="math notranslate nohighlight">\((x_3 - \bar{x})\)</span> <em>must be</em> equal to <span class="math notranslate nohighlight">\(-[(x_1 - \bar{x}) + (x_2 - \bar{x})]\)</span>.</p></li>
+<li><p>So, only <span class="math notranslate nohighlight">\(n-1\)</span> of these deviations are truly independent pieces of information contributing to the variability around <span class="math notranslate nohighlight">\(\bar{x}\)</span>.</p></li>
+</ul>
+</li>
+</ol>
+<p>This “loss” of one piece of independent information is precisely why we say you lose one degree of freedom. You’ve used one piece of information from the sample (the sample mean) to define the center point around which you’re measuring variability.</p>
+<p>Why <span class="math notranslate nohighlight">\(\mu\)</span> does NOT reduce degrees of freedom (for population variance/covariance)</p>
+<p>When you calculate the <strong>population variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</strong> using the formula <span class="math notranslate nohighlight">\(\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>The population mean (<span class="math notranslate nohighlight">\(\mu\)</span>) is a constant, a fixed parameter of the entire population.</strong></p></li>
+<li><p><strong>You assume <span class="math notranslate nohighlight">\(\mu\)</span> is known.</strong> In theoretical scenarios where you are calculating population variance, you <em>hypothetically</em> have access to the true <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p><strong>No constraint is imposed on the deviations from <span class="math notranslate nohighlight">\(\mu\)</span> by the calculation of <span class="math notranslate nohighlight">\(\mu\)</span>.</strong> Each deviation <span class="math notranslate nohighlight">\((x_i - \mu)\)</span> is an independent piece of information about the spread from this <em>pre-defined</em> center point. You haven’t used any of the <span class="math notranslate nohighlight">\(x_i\)</span> values to determine <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+</ol>
+<blockquote>
+<div><p>Think of it like this: if you have a target (<span class="math notranslate nohighlight">\(\mu\)</span>) and you’re shooting arrows (<span class="math notranslate nohighlight">\(x_i\)</span>), and you want to know how spread out our shots are from the true center of the target, you just measure the distance of each shot from the target’s center. Each shot provides independent information.</p>
+</div></blockquote>
+<blockquote>
+<div><p>However, if you don’t know the true target center, you fire 10 arrows, estimate the center of the target based on where our 10 arrows landed (<span class="math notranslate nohighlight">\(\bar{x}\)</span>), and then measure the spread from <em>that estimated center</em>. In this second scenario, our estimated center is influenced by the arrows themselves, meaning one of the arrow’s positions isn’t truly “free” if you know the other 9 and our estimated center.</p>
+</div></blockquote>
+<p>To find <span class="math notranslate nohighlight">\(\mu\)</span>, you perform a calculation as well as you perform a calculation to find <span class="math notranslate nohighlight">\(\bar{x}\)</span>. The distinction regarding degrees of freedom comes down to <em>when</em> that mean is known or estimated relative to the variance calculation.</p>
+<p>When we discuss the <strong>population variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</strong> and its formula <span class="math notranslate nohighlight">\(\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Hypothetical Knowledge or Definitive Calculation</strong>: In the context of population variance, we <em>assume</em> we either already know the true population mean (<span class="math notranslate nohighlight">\(\mu\)</span>) or we are in a theoretical scenario where we <em>have</em> access to the <em>entire population data</em> (<span class="math notranslate nohighlight">\(N\)</span> observations) to definitively calculate <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
+<ul class="simple">
+<li><p>If you have the <em>entire population</em> of <span class="math notranslate nohighlight">\(N\)</span> data points, then calculating <span class="math notranslate nohighlight">\(\mu = \frac{\sum_{i=1}^{N} x_i}{N}\)</span> gives you the <em>true, definitive</em> population mean. It’s not an estimate; it’s the exact value for that population.</p></li>
+<li><p>Once you have this definitive <span class="math notranslate nohighlight">\(\mu\)</span>, when you then calculate the variance, you are measuring the spread of each <span class="math notranslate nohighlight">\(x_i\)</span> from this <strong>fixed, true center</strong> (!!!).</p></li>
+</ul>
+</li>
+<li><p><strong>No Estimation from a Subset</strong>: The crucial part is that when you calculate <span class="math notranslate nohighlight">\(\sigma^2\)</span>, you are <strong>not estimating <span class="math notranslate nohighlight">\(\mu\)</span> from a <em>subset</em> of the data that you’re simultaneously using to calculate the variance.</strong></p>
+<ul class="simple">
+<li><p>Each of the <span class="math notranslate nohighlight">\(N\)</span> deviations <span class="math notranslate nohighlight">\((x_i - \mu)\)</span> is indeed an independent piece of information about the spread around that fixed <span class="math notranslate nohighlight">\(\mu\)</span>. There’s no “loss” of information or constraint imposed on these deviations because the <span class="math notranslate nohighlight">\(\mu\)</span> is taken as the true center of the entire data set you’re working with.</p></li>
+</ul>
+</li>
+</ol>
+<p>Contrast with Sample Variance:</p>
+<p>For <strong>sample variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</strong>, when you use <span class="math notranslate nohighlight">\(\bar{x}\)</span> calculated from a <em>sample</em> of <span class="math notranslate nohighlight">\(n\)</span> observations:</p>
+<ol class="arabic simple">
+<li><p><strong>Estimation from a Subset</strong>: You are taking a <em>subset</em> (the sample) of the larger population. You don’t know the true population mean <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p><strong>Using <span class="math notranslate nohighlight">\(\bar{x}\)</span> as an Estimator</strong>: You calculate <span class="math notranslate nohighlight">\(\bar{x}\)</span> from <em>this very sample</em> of <span class="math notranslate nohighlight">\(n\)</span> data points to serve as an estimate of <span class="math notranslate nohighlight">\(\mu\)</span>.</p></li>
+<li><p><strong>Self-Fulfilling Constraint</strong>: Because <span class="math notranslate nohighlight">\(\bar{x}\)</span> is derived <em>from</em> the <span class="math notranslate nohighlight">\(n\)</span> sample points, it automatically minimizes the sum of squared deviations for <em>that specific sample</em>. This introduces a statistical dependency: if you know <span class="math notranslate nohighlight">\(n-1\)</span> deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span>, the last one is fixed. This is why you lose a degree of freedom.</p></li>
+</ol>
+<p>Another analogy:</p>
+<ul class="simple">
+<li><p><strong>Population Variance</strong>: You have a perfectly calibrated ruler (your true <span class="math notranslate nohighlight">\(\mu\)</span>) and you measure <span class="math notranslate nohighlight">\(N\)</span> items. Each measurement is independent with respect to the fixed ruler.</p></li>
+<li><p><strong>Sample Variance</strong>: You have <span class="math notranslate nohighlight">\(n\)</span> items, and you first try to estimate the “average size” using these <span class="math notranslate nohighlight">\(n\)</span> items (your <span class="math notranslate nohighlight">\(\bar{x}\)</span>). Then you measure how much each item deviates from <em>your own estimate</em>. Because your estimate (<span class="math notranslate nohighlight">\(\bar{x}\)</span>) was influenced by the items themselves, there’s a slight dependency. One item’s deviation isn’t completely “free” once you’ve fixed the average from those <span class="math notranslate nohighlight">\(n\)</span> items.</p></li>
+</ul>
+<p>So, while you <em>do</em> calculate <span class="math notranslate nohighlight">\(\mu\)</span> for the population variance, that calculation uses the <em>entire</em> population data. This <span class="math notranslate nohighlight">\(\mu\)</span> then serves as the definitive, non-estimated center point from which deviations are measured, allowing all <span class="math notranslate nohighlight">\(N\)</span> deviations to contribute independently. For sample variance, <span class="math notranslate nohighlight">\(\bar{x}\)</span> is an estimate derived from a subset, which inherently “ties” one degree of freedom.</p>
+<p>In summary:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-left"><p>Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</p></th>
+<th class="head text-left"><p>Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Mean Used</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\bar{x}\)</span> (Sample Mean)</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\mu\)</span> (Population Mean)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Source of Mean</p></td>
+<td class="text-left"><p>Calculated <em>from</em> the <span class="math notranslate nohighlight">\(n\)</span> data points in the sample.</p></td>
+<td class="text-left"><p>A fixed, known constant; <em>not</em> calculated from the data being used.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Constraint</p></td>
+<td class="text-left"><p>The sum of deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span> is constrained to zero.</p></td>
+<td class="text-left"><p>No such constraint on deviations from <span class="math notranslate nohighlight">\(\mu\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Degrees of Freedom</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(n-1\)</span> (one degree lost because <span class="math notranslate nohighlight">\(\bar{x}\)</span> was estimated).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(N\)</span> (all <span class="math notranslate nohighlight">\(N\)</span> deviations are independent).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Purpose</p></td>
+<td class="text-left"><p>Unbiased estimate of <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p></td>
+<td class="text-left"><p>True variance of the population (if <span class="math notranslate nohighlight">\(\mu\)</span> is known).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This distinction is fundamental in statistics, as it addresses the bias that arises when using sample statistics to infer properties of a larger population. The <span class="math notranslate nohighlight">\(n-1\)</span> in the denominator is Bessel’s correction, explicitly designed to create an unbiased estimator for population variance when only a sample is available.</p>
+</section>
+<section id="mathematical-proof-sketch-for-variance">
+<h3>Mathematical Proof Sketch (for Variance)<a class="headerlink" href="#mathematical-proof-sketch-for-variance" title="Link to this heading">#</a></h3>
+<p>The formal proof involves using the concept of <strong>expected value</strong>. An estimator <span class="math notranslate nohighlight">\(\hat{\theta}\)</span> for a parameter <span class="math notranslate nohighlight">\(\theta\)</span> is unbiased if <span class="math notranslate nohighlight">\(E[\hat{\theta}] = \theta\)</span>. We want <span class="math notranslate nohighlight">\(E[s^2] = \sigma^2\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> be independent and identically distributed (i.i.d.) random variables from a population with mean <span class="math notranslate nohighlight">\(\mu\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<p>We know:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(E[X_i] = \mu\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Var(X_i) = E[(X_i - \mu)^2] = \sigma^2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(E[\bar{X}] = \mu\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Var(\bar{X}) = E[(\bar{X} - \mu)^2] = \frac{\sigma^2}{n}\)</span></p></li>
+</ul>
+<p>Let’s derive this last equation.</p>
+<p>We start with the definition of the variance of <span class="math notranslate nohighlight">\(\bar{X}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = E[(\bar{X} - E[\bar{X}])^2]\]</div>
+<p>First, let’s find the expected value of the sample mean, <span class="math notranslate nohighlight">\(E[\bar{X}]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = E\left[ \frac{1}{n} \sum_{i=1}^{n} X_i \right]\]</div>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = \frac{1}{n} E\left[ \sum_{i=1}^{n} X_i \right]\]</div>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = \frac{1}{n} \sum_{i=1}^{n} E[X_i]\]</div>
+<p>Since each <span class="math notranslate nohighlight">\(X_i\)</span> comes from the same population, <span class="math notranslate nohighlight">\(E[X_i] = \mu\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = \frac{1}{n} \sum_{i=1}^{n} \mu\]</div>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = \frac{1}{n} (n\mu)\]</div>
+<div class="math notranslate nohighlight">
+\[E[\bar{X}] = \mu\]</div>
+<p>So, the expected value of the sample mean is the population mean. This is why <span class="math notranslate nohighlight">\(\bar{X}\)</span> is an unbiased estimator of <span class="math notranslate nohighlight">\(\mu\)</span>.</p>
+<p>Now, substitute <span class="math notranslate nohighlight">\(E[\bar{X}] = \mu\)</span> back into the variance definition:</p>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = E[(\bar{X} - \mu)^2]\]</div>
+<p>Next, substitute the definition of <span class="math notranslate nohighlight">\(\bar{X}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = Var\left( \frac{1}{n} \sum_{i=1}^{n} X_i \right)\]</div>
+<p>Using the property <span class="math notranslate nohighlight">\(Var(c Y) = c^2 Var(Y)\)</span>, where <span class="math notranslate nohighlight">\(c = \frac{1}{n}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = \left( \frac{1}{n} \right)^2 Var\left( \sum_{i=1}^{n} X_i \right)\]</div>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = \frac{1}{n^2} Var\left( \sum_{i=1}^{n} X_i \right)\]</div>
+<p>Since <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> are independent (a key assumption for simple random sampling), the variance of their sum is the sum of their variances:</p>
+<div class="math notranslate nohighlight">
+\[Var\left( \sum_{i=1}^{n} X_i \right) = \sum_{i=1}^{n} Var(X_i)\]</div>
+<p>Since each <span class="math notranslate nohighlight">\(X_i\)</span> comes from the same population, <span class="math notranslate nohighlight">\(Var(X_i) = \sigma^2\)</span> for all <span class="math notranslate nohighlight">\(i\)</span>:
+$<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=1}^{n} \sigma^2 = n\sigma^2\)</span>$</p>
+<p>Now, substitute this back into our expression for <span class="math notranslate nohighlight">\(Var(\bar{X})\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = \frac{1}{n^2} (n\sigma^2)\]</div>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = \frac{n\sigma^2}{n^2}\]</div>
+<div class="math notranslate nohighlight">
+\[Var(\bar{X}) = \frac{\sigma^2}{n}\]</div>
+<p>This result is incredibly important because it quantifies how the precision of our estimate of the mean improves as we increase our sample size. A larger sample size (<span class="math notranslate nohighlight">\(n\)</span>) leads to a smaller variance for the sample mean, meaning <span class="math notranslate nohighlight">\(\bar{X}\)</span> is more likely to be closer to the true population mean <span class="math notranslate nohighlight">\(\mu\)</span>. This is the mathematical basis for why larger samples give more reliable estimates.</p>
+<p>Now, let’s consider the “biased” sample variance, <span class="math notranslate nohighlight">\(s^2_{\text{biased}} = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2\)</span>. We want to find its expected value:</p>
+<div class="math notranslate nohighlight">
+\[E[s^2_{\text{biased}}] = E\left[ \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2 \right] = \frac{1}{n} E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right]\]</div>
+<p>Let’s work with the sum of squares in the numerator: <span class="math notranslate nohighlight">\(\sum_{i=1}^n (X_i - \bar{X})^2\)</span>.</p>
+<p>We can rewrite <span class="math notranslate nohighlight">\((X_i - \bar{X})\)</span> as <span class="math notranslate nohighlight">\((X_i - \mu) - (\bar{X} - \mu)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (X_i - \bar{X})^2 = \sum_{i=1}^n [(X_i - \mu) - (\bar{X} - \mu)]^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^n [(X_i - \mu)^2 - 2(X_i - \mu)(\bar{X} - \mu) + (\bar{X} - \mu)^2]\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^n (X_i - \mu)^2 - 2(\bar{X} - \mu) \sum_{i=1}^n (X_i - \mu) + \sum_{i=1}^n (\bar{X} - \mu)^2\]</div>
+<p>Note that</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (X_i - \mu) = \sum X_i - n\mu = n\bar{X} - n\mu = n(\bar{X} - \mu)\]</div>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (\bar{X} - \mu)^2 = n(\bar{X} - \mu)^2\]</div>
+<p>Substitute these back:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (X_i - \bar{X})^2 = \sum_{i=1}^n (X_i - \mu)^2 - 2(\bar{X} - \mu) [n(\bar{X} - \mu)] + n(\bar{X} - \mu)^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^n (X_i - \mu)^2 - 2n(\bar{X} - \mu)^2 + n(\bar{X} - \mu)^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^n (X_i - \mu)^2 - n(\bar{X} - \mu)^2\]</div>
+<p>Now, take the expectation of this expression:</p>
+<div class="math notranslate nohighlight">
+\[E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right] = E\left[ \sum_{i=1}^n (X_i - \mu)^2 - n(\bar{X} - \mu)^2 \right]\]</div>
+<p>By linearity of expectation:</p>
+<div class="math notranslate nohighlight">
+\[= \sum_{i=1}^n E[(X_i - \mu)^2] - n E[(\bar{X} - \mu)^2]\]</div>
+<p>We know <span class="math notranslate nohighlight">\(E[(X_i - \mu)^2] = \sigma^2\)</span> (by definition of population variance) and <span class="math notranslate nohighlight">\(E[(\bar{X} - \mu)^2] = Var(\bar{X}) = \frac{\sigma^2}{n}\)</span>. Thus</p>
+<div class="math notranslate nohighlight">
+\[E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right] = \sum_{i=1}^n \sigma^2 - n \frac{\sigma^2}{n}\]</div>
+<div class="math notranslate nohighlight">
+\[= n\sigma^2 - \sigma^2 = (n-1)\sigma^2\]</div>
+<p>Therefore, the expected value of the numerator of the sample variance is <span class="math notranslate nohighlight">\((n-1)\sigma^2\)</span>. Therefore,</p>
+<div class="math notranslate nohighlight">
+\[E[s^2_{\text{biased}}] = \frac{1}{n} E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right] = \frac{n-1}{n} \sigma^2\]</div>
+<p>So, the expected value <span class="math notranslate nohighlight">\(E[s^2_{\text{biased}}]\)</span> is not equal to the population variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<p>Remember that we want <span class="math notranslate nohighlight">\(E[s^2] = \sigma^2\)</span>. Therefore, we will have for</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{n-1}\]</div>
+<div class="math notranslate nohighlight">
+\[E[s^2] = E\left[ \frac{\sum_{i=1}^n (X_i - \bar{X})^2}{n-1} \right] = \frac{1}{n-1} E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right]\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{1}{n-1} (n-1)\sigma^2 = \sigma^2\]</div>
+<p>This mathematical derivation shows that by dividing by <span class="math notranslate nohighlight">\(n-1\)</span>, the sample variance (<span class="math notranslate nohighlight">\(s^2\)</span>) indeed becomes an unbiased estimator of the population variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>). If we had divided by <span class="math notranslate nohighlight">\(n\)</span>, the expected value would have been <span class="math notranslate nohighlight">\(\frac{n-1}{n}\sigma^2\)</span>, confirming the downward bias.</p>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.ncl.ac.uk/webtemplate/ask-assets/external/maths-resources/statistics/descriptive-statistics/variance-and-standard-deviation.html">https://www.ncl.ac.uk/webtemplate/ask-assets/external/maths-resources/statistics/descriptive-statistics/variance-and-standard-deviation.html</a></p></li>
+<li><p><a class="reference external" href="https://mathsathome.com/variance/">https://mathsathome.com/variance/</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Covariance">https://en.wikipedia.org/wiki/Covariance</a></p></li>
+<li><p><a class="reference external" href="https://online.stat.psu.edu/stat505/book/export/html/643">https://online.stat.psu.edu/stat505/book/export/html/643</a></p></li>
+<li><p><a class="reference external" href="https://online.stat.psu.edu/stat505/book/export/html/653">https://online.stat.psu.edu/stat505/book/export/html/653</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math\01_basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ordinary-least-squares-code.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Ordinary Least Squares (OLS) Regression - Code Example</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../physics/continuity-equation-01.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Continuity Equation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-covariance-text-cov-x-y-or-sigma-xy">Population Covariance (<span class="math notranslate nohighlight">\(\text{Cov}(X, Y)\)</span> or <span class="math notranslate nohighlight">\(\sigma_{XY}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-covariance-s-xy">Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intuitive-explanation">Intuitive Explanation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#degrees-of-freedom-explanation">Degrees of Freedom Explanation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-proof-sketch-for-variance">Mathematical Proof Sketch (for Variance)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
