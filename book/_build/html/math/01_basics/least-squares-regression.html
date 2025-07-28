@@ -64,7 +64,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Least Squares Regression - Code Example - Non-Linear Function" href="least-squares-regression-code.html" />
+    <link rel="next" title="Least Squares Regression - Code Examples" href="least-squares-regression-code.html" />
     <link rel="prev" title="Fourier Transform" href="fourier-transform-01.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -190,7 +190,7 @@
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Example - Non-Linear Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -447,7 +447,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions">Can Adjusted R-squared be Used for Linear vs. Non-Linear Functions?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-the-process-no-errors-on-x-and-y-axis-case">Summary of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case">General Description of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-levenberg-marquardt-algorithm-lma">What is the Levenberg-Marquardt Algorithm (LMA)?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-it-related-to-least-squares-regression">How is it related to Least Squares Regression?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scipy-optimize-curve-fit"><code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -638,8 +643,8 @@ document.write(`
 <p>Therefore, when you are comparing different non-linear models, or trying to decide if adding another parameter to your non-linear function is truly beneficial, adjusted R-squared is a more appropriate metric than the standard R-squared. However, the general recommendation is to use adjusted R-squared with caution for non-linear models.</p>
 </section>
 </section>
-<section id="summary-of-the-process-no-errors-on-x-and-y-axis-case">
-<h2>Summary of the Process (No Errors on X- and Y-axis Case):<a class="headerlink" href="#summary-of-the-process-no-errors-on-x-and-y-axis-case" title="Link to this heading">#</a></h2>
+<section id="general-description-of-the-process-no-errors-on-x-and-y-axis-case">
+<h2>General Description of the Process (No Errors on X- and Y-axis Case):<a class="headerlink" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p><strong>Visualize your data:</strong> Plot your <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> points to get an initial sense of the trend. This helps in choosing an appropriate functional form.</p></li>
 <li><p><strong>Choose a functional form:</strong> Based on your knowledge of the underlying process or by observing the data, select a mathematical function (like <span class="math notranslate nohighlight">\(A \cdot (e^{-B \cdot x} - 1) + 100\)</span>) that you believe can describe the relationship.</p></li>
@@ -648,6 +653,61 @@ document.write(`
 <li><p><strong>Evaluate the fit:</strong> Calculate SSR, RMSE, and R-squared to quantify how well your chosen function with the optimized parameters fits your data.</p></li>
 <li><p><strong>Interpret the results:</strong> Understand what the values of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, SSR, RMSE, and R-squared tell you about the relationship between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> and the quality of your approximation.</p></li>
 </ol>
+</section>
+<section id="what-is-the-levenberg-marquardt-algorithm-lma">
+<h2>What is the Levenberg-Marquardt Algorithm (LMA)?<a class="headerlink" href="#what-is-the-levenberg-marquardt-algorithm-lma" title="Link to this heading">#</a></h2>
+<p>The Levenberg-Marquardt Algorithm (LMA), also known as the damped least-squares (DLS) method, is a powerful and widely used iterative algorithm for solving <strong>non-linear least squares problems</strong>.</p>
+<p>Imagine you have a set of data points and you want to fit a mathematical model to them. If the model is non-linear with respect to its parameters, finding the best parameters to minimize the difference between the model’s predictions and the actual data can be challenging. That’s where LMA comes in.</p>
+<p>LMA is a hybrid optimization algorithm that cleverly combines two other optimization methods:</p>
+<ol class="arabic simple">
+<li><p><strong>Gradient Descent (or Steepest Descent):</strong> This method takes steps in the direction opposite to the gradient of the objective function. It’s good at finding a solution when you are far from the minimum but can be slow to converge as you get closer.</p></li>
+<li><p><strong>Gauss-Newton Algorithm (GNA):</strong> This method uses the Jacobian matrix (first derivatives) to approximate the objective function as a quadratic and then finds the minimum of that quadratic approximation. It converges very fast when you are close to the minimum, but it can struggle or even diverge if the initial guess is far from the solution or if the Jacobian matrix is singular (not invertible).</p></li>
+</ol>
+<p><strong>How LMA combines them:</strong></p>
+<p>The LMA introduces a “damping factor” (<span class="math notranslate nohighlight">\(\lambda\)</span>) that controls the blend between these two methods:</p>
+<ul class="simple">
+<li><p><strong>When <span class="math notranslate nohighlight">\(\lambda\)</span> is large:</strong> The algorithm behaves more like <strong>gradient descent</strong>. This makes it more robust when the current parameters are far from the optimal solution, as it ensures a decrease in the error, even if it’s a small step. This helps it avoid getting stuck or diverging in difficult regions of the parameter space.</p></li>
+<li><p><strong>When <span class="math notranslate nohighlight">\(\lambda\)</span> is small:</strong> The algorithm behaves more like the <strong>Gauss-Newton method</strong>. As the algorithm approaches the minimum, <span class="math notranslate nohighlight">\(\lambda\)</span> is decreased, allowing for faster convergence.</p></li>
+</ul>
+<p>The LMA adaptively adjusts this damping factor at each iteration. If a step leads to a significant reduction in the sum of squares, <span class="math notranslate nohighlight">\(\lambda\)</span> is decreased, moving towards the faster Gauss-Newton method. If a step increases the sum of squares (meaning it overshot or moved in the wrong direction), <span class="math notranslate nohighlight">\(\lambda\)</span> is increased, making it more like gradient descent to take smaller, more cautious steps.</p>
+<p>This adaptive nature makes LMA very robust and efficient for a wide range of non-linear problems.</p>
+<section id="how-is-it-related-to-least-squares-regression">
+<h3>How is it related to Least Squares Regression?<a class="headerlink" href="#how-is-it-related-to-least-squares-regression" title="Link to this heading">#</a></h3>
+<p>Least squares regression, in its essence, is about finding the parameters of a model that minimize the sum of the squared differences (residuals) between the observed data and the values predicted by the model.</p>
+<ul class="simple">
+<li><p><strong>Linear Least Squares:</strong> When the model is linear in its parameters (e.g., <span class="math notranslate nohighlight">\(y = ax + b\)</span>), the problem can be solved directly using linear algebra (e.g., normal equations). However, LMA can also resolve this problem but it will not be so resource efficient. If the performance is not so important, then you can use either of algorithms. The next subpage contains code examples for non-linear problem and comparison of various methods for the same linear problem. You can review to see what other options we have to resolve linear problems.</p></li>
+<li><p><strong>Non-linear Least Squares:</strong> When the model is non-linear in its parameters (e.g., <span class="math notranslate nohighlight">\(y = A \cdot e^{-Bx} + C\)</span>), there’s no direct analytical solution. This is where iterative optimization algorithms like the Levenberg-Marquardt algorithm come into play.</p></li>
+</ul>
+<p><strong>The LMA is specifically designed to solve non-linear least squares problems.</strong> It iteratively refines the model parameters by minimizing the sum of squared residuals, which is the core objective of least squares regression.</p>
+<p>The objective function that LMA minimizes is typically of the form:</p>
+<div class="math notranslate nohighlight">
+\[S(\beta) = \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> are the observed data points.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the model function that predicts the dependent variable based on the independent variable <span class="math notranslate nohighlight">\(x_i\)</span> and the parameter vector <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of data points.</p></li>
+</ul>
+<p>The LMA tries to find the <span class="math notranslate nohighlight">\(\beta\)</span> that minimizes <span class="math notranslate nohighlight">\(S(\beta)\)</span>.</p>
+</section>
+<section id="scipy-optimize-curve-fit">
+<h3><code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code><a class="headerlink" href="#scipy-optimize-curve-fit" title="Link to this heading">#</a></h3>
+<p>The Levenberg-Marquardt algorithm <strong>is the default method for <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> for unconstrained problems.</strong></p>
+<p>NOTE: In the context of optimization, an <strong>unconstrained problem</strong> is an optimization problem where there are <strong>no restrictions or limitations on the values that the parameters (or variables) can take.</strong> The goal is to find the minimum (or maximum) of an objective function over the entire domain of the variables, which is typically the set of all real numbers (<span class="math notranslate nohighlight">\(R^n\)</span> for <span class="math notranslate nohighlight">\(n\)</span> parameters).</p>
+<p><strong>Examples of unconstrained problems:</strong></p>
+<ul class="simple">
+<li><p>Minimizing <span class="math notranslate nohighlight">\(f(x) = x^2 - 4x + 5\)</span>. Here, <span class="math notranslate nohighlight">\(x\)</span> can be any real number.</p></li>
+<li><p>Fitting a non-linear curve to data where the parameters of the curve can take any real value (e.g., an amplitude, decay rate, or phase that isn’t physically limited to a specific range).</p></li>
+</ul>
+<p><strong>In contrast, a constrained problem</strong> has limitations or bounds on the parameter values. These constraints can be:</p>
+<ul class="simple">
+<li><p><strong>Box constraints (bounds):</strong> Parameters must lie within a specific range (e.g., <span class="math notranslate nohighlight">\(0 \le x \le 10\)</span>, or <span class="math notranslate nohighlight">\(-5 \le y \le 5\)</span>).</p></li>
+<li><p><strong>Equality constraints:</strong> Parameters must satisfy certain equations (e.g., <span class="math notranslate nohighlight">\(x + y = 1\)</span>).</p></li>
+<li><p><strong>Inequality constraints:</strong> Parameters must satisfy certain inequalities (e.g., <span class="math notranslate nohighlight">\(x^2 + y^2 \le 1\)</span>).</p></li>
+</ul>
+<p>The Levenberg-Marquardt algorithm, in its original formulation, is designed for unconstrained optimization. When bounds or other constraints are introduced, other algorithms like Trust Region Reflective (<code class="docutils literal notranslate"><span class="pre">trf</span></code>) or Dogbox (<code class="docutils literal notranslate"><span class="pre">dogbox</span></code>) are typically employed, as they are specifically designed to handle such constraints efficiently. This is why <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> switches to <code class="docutils literal notranslate"><span class="pre">trf</span></code> when bounds are provided.</p>
+<p>Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.optimize.curve_fit.html</a></p>
+</section>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -697,7 +757,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Least Squares Regression - Code Example - Non-Linear Function</p>
+        <p class="prev-next-title">Least Squares Regression - Code Examples</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -726,7 +786,12 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions">Can Adjusted R-squared be Used for Linear vs. Non-Linear Functions?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-the-process-no-errors-on-x-and-y-axis-case">Summary of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case">General Description of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-levenberg-marquardt-algorithm-lma">What is the Levenberg-Marquardt Algorithm (LMA)?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-it-related-to-least-squares-regression">How is it related to Least Squares Regression?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scipy-optimize-curve-fit"><code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

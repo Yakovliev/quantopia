@@ -1,0 +1,849 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Levenberg-Marquardt Algorithm &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/02/levenberg-marquardt-algorithm';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../01_basics/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_basics/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_basics/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_basics/fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_basics/least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_basics/least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../01_basics/ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../01_basics/ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../01_basics/variance-covariance.html">Variance and Covariance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/02/levenberg-marquardt-algorithm.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/02/levenberg-marquardt-algorithm.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/math/02/levenberg-marquardt-algorithm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Levenberg-Marquardt Algorithm</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-problem-non-linear-least-squares">Understanding the Problem: Non-Linear Least Squares</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-parents-of-levenberg-marquardt">The Two Parents of Levenberg-Marquardt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-steepest-descent-method">Gradient Descent (Steepest Descent) Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-newton-method">Gauss-Newton Method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-levenberg-marquardt-algorithm-the-best-of-both-worlds">The Levenberg-Marquardt Algorithm: The Best of Both Worlds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-levenberg-marquardt-equation">Derivation of the Levenberg-Marquardt Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm-steps">The Algorithm Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-can-it-be-used-applications">When can it be used? (Applications)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-levenberg-marquardt">Advantages of Levenberg-Marquardt:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="levenberg-marquardt-algorithm">
+<h1>Levenberg-Marquardt Algorithm<a class="headerlink" href="#levenberg-marquardt-algorithm" title="Link to this heading">#</a></h1>
+<p>The Levenberg-Marquardt (LM) algorithm is a powerful and widely used optimization technique for solving non-linear least squares problems. It cleverly combines the strengths of two other popular optimization methods: the <strong>Gradient Descent (or Steepest Descent) method</strong> and the <strong>Gauss-Newton method</strong>. This hybrid approach gives LM its robustness and efficient convergence properties.</p>
+<section id="understanding-the-problem-non-linear-least-squares">
+<h2>Understanding the Problem: Non-Linear Least Squares<a class="headerlink" href="#understanding-the-problem-non-linear-least-squares" title="Link to this heading">#</a></h2>
+<p>Imagine you have a set of observed data points <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and you want to fit a model function <span class="math notranslate nohighlight">\(f(x, \mathbf{\beta})\)</span> to this data, where <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> is a vector of unknown parameters. The function <span class="math notranslate nohighlight">\(f\)</span> is <em>non-linear</em> with respect to these parameters. Our goal is to find the values of <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> that minimize the difference between the observed <span class="math notranslate nohighlight">\(y_i\)</span> values and the predicted <span class="math notranslate nohighlight">\(f(x_i, \mathbf{\beta})\)</span> values.</p>
+<p>The “least squares” part means we want to minimize the sum of the squares of the residuals (errors). A residual for a single data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> is defined as:
+<span class="math notranslate nohighlight">\(r_i(\mathbf{\beta}) = y_i - f(x_i, \mathbf{\beta})\)</span></p>
+<p>We want to minimize the objective function <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span>, which is the sum of squared residuals:
+$<span class="math notranslate nohighlight">\(S(\mathbf{\beta}) = \sum_{i=1}^m [y_i - f(x_i, \mathbf{\beta})]^2 = \sum_{i=1}^m r_i(\mathbf{\beta})^2\)</span><span class="math notranslate nohighlight">\(
+where \)</span>m$ is the number of data points.</p>
+<p>In vector notation, if <span class="math notranslate nohighlight">\(\mathbf{r}(\mathbf{\beta})\)</span> is a vector of all residuals <span class="math notranslate nohighlight">\(r_i(\mathbf{\beta})\)</span>, then:
+$<span class="math notranslate nohighlight">\(S(\mathbf{\beta}) = \mathbf{r}(\mathbf{\beta})^T \mathbf{r}(\mathbf{\beta}) = ||\mathbf{r}(\mathbf{\beta})||^2\)</span>$</p>
+</section>
+<section id="the-two-parents-of-levenberg-marquardt">
+<h2>The Two Parents of Levenberg-Marquardt<a class="headerlink" href="#the-two-parents-of-levenberg-marquardt" title="Link to this heading">#</a></h2>
+<p>To understand LM, let’s briefly look at its “parents”:</p>
+<section id="gradient-descent-steepest-descent-method">
+<h3>Gradient Descent (Steepest Descent) Method<a class="headerlink" href="#gradient-descent-steepest-descent-method" title="Link to this heading">#</a></h3>
+<p>Gradient Descent is a first-order optimization algorithm. It works by iteratively taking steps in the direction opposite to the gradient of the objective function. The idea is that the negative gradient points in the direction of the steepest decrease of the function.</p>
+<p>To minimize <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span>, we update <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> as:
+$<span class="math notranslate nohighlight">\(\mathbf{\beta}_{k+1} = \mathbf{\beta}_k - \alpha \nabla S(\mathbf{\beta}_k)\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\alpha<span class="math notranslate nohighlight">\( is the learning rate (step size), and \)</span>\nabla S(\mathbf{\beta}_k)<span class="math notranslate nohighlight">\( is the gradient of \)</span>S(\mathbf{\beta})<span class="math notranslate nohighlight">\( at \)</span>\mathbf{\beta}_k$.</p>
+<p>Let’s derive the gradient <span class="math notranslate nohighlight">\(\nabla S(\mathbf{\beta})\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[S(\mathbf{\beta}) = \sum_{i=1}^m r_i(\mathbf{\beta})^2\]</div>
+<p>The partial derivative with respect to a parameter <span class="math notranslate nohighlight">\(\beta_j\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \beta_j} = \sum_{i=1}^m 2 r_i(\mathbf{\beta}) \frac{\partial r_i}{\partial \beta_j}\]</div>
+<p>Recall <span class="math notranslate nohighlight">\(r_i(\mathbf{\beta}) = y_i - f(x_i, \mathbf{\beta})\)</span>, so <span class="math notranslate nohighlight">\(\frac{\partial r_i}{\partial \beta_j} = - \frac{\partial f(x_i, \mathbf{\beta})}{\partial \beta_j}\)</span>.</p>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial S}{\partial \beta_j} = \sum_{i=1}^m -2 r_i(\mathbf{\beta}) \frac{\partial f(x_i, \mathbf{\beta})}{\partial \beta_j}\]</div>
+<p>In vector form, the gradient <span class="math notranslate nohighlight">\(\nabla S(\mathbf{\beta})\)</span> can be written as:$<span class="math notranslate nohighlight">\(\nabla S(\mathbf{\beta}) = -2 \mathbf{J}(\mathbf{\beta})^T \mathbf{r}(\mathbf{\beta})\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}(\mathbf{\beta})\)</span> is the Jacobian matrix of the residual vector <span class="math notranslate nohighlight">\(\mathbf{r}(\mathbf{\beta})\)</span> with respect to <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>.</p>
+<p>The element <span class="math notranslate nohighlight">\(J_{ij}\)</span> of the Jacobian matrix is given by:</p>
+<div class="math notranslate nohighlight">
+\[J_{ij}(\mathbf{\beta}) = \frac{\partial r_i(\mathbf{\beta})}{\partial \beta_j} = - \frac{\partial f(x_i, \mathbf{\beta})}{\partial \beta_j}\]</div>
+<p>So, the Gradient Descent update rule is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{\beta}_{k+1} = \mathbf{\beta}_k + 2\alpha \mathbf{J}(\mathbf{\beta}_k)^T \mathbf{r}(\mathbf{\beta}_k)\]</div>
+<p><strong>Strengths:</strong> Simple to implement, guaranteed to converge (eventually) to a local minimum if <span class="math notranslate nohighlight">\(\alpha\)</span> is small enough.
+<strong>Weaknesses:</strong> Can be very slow to converge, especially in narrow valleys or when far from the minimum.</p>
+</section>
+<section id="gauss-newton-method">
+<h3>Gauss-Newton Method<a class="headerlink" href="#gauss-newton-method" title="Link to this heading">#</a></h3>
+<p>The Gauss-Newton method is a second-order optimization algorithm (though it doesn’t explicitly compute the full Hessian). It approximates the objective function locally with a quadratic model and then finds the minimum of that quadratic. It’s particularly well-suited for least squares problems because it exploits the structure of the sum of squares.</p>
+<p>We want to find a step <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{\beta}_{k+1} = \mathbf{\beta}_k + \mathbf{\delta}\)</span> minimizes <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k + \mathbf{\delta})\)</span>.
+Let’s approximate <span class="math notranslate nohighlight">\(f(x_i, \mathbf{\beta}_k + \mathbf{\delta})\)</span> using a first-order Taylor expansion around <span class="math notranslate nohighlight">\(\mathbf{\beta}_k\)</span>:
+$<span class="math notranslate nohighlight">\(f(x_i, \mathbf{\beta}_k + \mathbf{\delta}) \approx f(x_i, \mathbf{\beta}_k) + \sum_{j=1}^n \frac{\partial f(x_i, \mathbf{\beta}_k)}{\partial \beta_j} \delta_j\)</span><span class="math notranslate nohighlight">\(
+where \)</span>n<span class="math notranslate nohighlight">\( is the number of parameters in \)</span>\mathbf{\beta}$.</p>
+<p>This can be written in vector form as:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{f}(\mathbf{\beta}_k + \mathbf{\delta}) \approx \mathbf{f}(\mathbf{\beta}_k) + \mathbf{J}_f(\mathbf{\beta}_k) \mathbf{\delta}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_f(\mathbf{\beta}_k)\)</span> is the Jacobian of the model function <span class="math notranslate nohighlight">\(\mathbf{f}\)</span> (not the residuals).</p>
+<p>So, the residual vector becomes:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{r}(\mathbf{\beta}_k + \mathbf{\delta}) = \mathbf{y} - \mathbf{f}(\mathbf{\beta}_k + \mathbf{\delta}) \approx \mathbf{y} - (\mathbf{f}(\mathbf{\beta}_k) + \mathbf{J}_f(\mathbf{\beta}_k) \mathbf{\delta})\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{r}_k = \mathbf{y} - \mathbf{f}(\mathbf{\beta}_k)\)</span>. Then:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{r}(\mathbf{\beta}_k + \mathbf{\delta}) \approx \mathbf{r}_k - \mathbf{J}_f(\mathbf{\beta}_k) \mathbf{\delta}\]</div>
+<p>The objective function to minimize with respect to <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> is now:</p>
+<div class="math notranslate nohighlight">
+\[S(\mathbf{\beta}_k + \mathbf{\delta}) \approx ||\mathbf{r}_k - \mathbf{J}_f(\mathbf{\beta}_k) \mathbf{\delta}||^2\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{J} = \mathbf{J}_f(\mathbf{\beta}_k)\)</span>. We want to minimize <span class="math notranslate nohighlight">\(||\mathbf{r}_k - \mathbf{J}\mathbf{\delta}||^2\)</span>.</p>
+<p>This is a linear least squares problem in terms of <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span>.</p>
+<p>To find the minimum, we take the derivative with respect to <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> and set it to zero.</p>
+<div class="math notranslate nohighlight">
+\[||\mathbf{r}_k - \mathbf{J}\mathbf{\delta}||^2 = (\mathbf{r}_k - \mathbf{J}\mathbf{\delta})^T (\mathbf{r}_k - \mathbf{J}\mathbf{\delta})\]</div>
+<div class="math notranslate nohighlight">
+\[= \mathbf{r}_k^T \mathbf{r}_k - \mathbf{r}_k^T \mathbf{J}\mathbf{\delta} - (\mathbf{J}\mathbf{\delta})^T \mathbf{r}_k + (\mathbf{J}\mathbf{\delta})^T (\mathbf{J}\mathbf{\delta})\]</div>
+<div class="math notranslate nohighlight">
+\[= \mathbf{r}_k^T \mathbf{r}_k - 2\mathbf{\delta}^T \mathbf{J}^T \mathbf{r}_k + \mathbf{\delta}^T \mathbf{J}^T \mathbf{J}\mathbf{\delta}\]</div>
+<p>Taking the gradient with respect to <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span>:$<span class="math notranslate nohighlight">\(\nabla_{\mathbf{\delta}} S = -2 \mathbf{J}^T \mathbf{r}_k + 2 \mathbf{J}^T \mathbf{J}\mathbf{\delta}\)</span>$Setting to zero:</p>
+<div class="math notranslate nohighlight">
+\[-2 \mathbf{J}^T \mathbf{r}_k + 2 \mathbf{J}^T \mathbf{J}\mathbf{\delta} = \mathbf{0}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathbf{J}^T \mathbf{J}\mathbf{\delta} = \mathbf{J}^T \mathbf{r}_k\]</div>
+<p>This is the <strong>normal equation</strong> for the linear least squares problem.</p>
+<p>The step <span class="math notranslate nohighlight">\(\mathbf{\delta}_{GN}\)</span> is then:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{\delta}_{GN} = (\mathbf{J}^T \mathbf{J})^{-1} \mathbf{J}^T \mathbf{r}_k\]</div>
+<p>And the update rule is <span class="math notranslate nohighlight">\(\mathbf{\beta}_{k+1} = \mathbf{\beta}_k + \mathbf{\delta}_{GN}\)</span>.</p>
+<p>Note that <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J}\)</span> is an approximation of the Hessian matrix of <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span>. Specifically, the Hessian <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> of <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span> is given by <span class="math notranslate nohighlight">\(\mathbf{H} = 2\mathbf{J}^T \mathbf{J} + 2\sum_{i=1}^m r_i(\mathbf{\beta}) \nabla^2 r_i(\mathbf{\beta})\)</span>. The Gauss-Newton method ignores the second term, which is often small, especially when residuals are small or the model is “nearly linear.”</p>
+<p><strong>Strengths:</strong> Can converge very fast when close to the minimum, as it approximates a second-order method.
+<strong>Weaknesses:</strong> May diverge if the initial guess is far from the minimum, especially if <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J}\)</span> is singular or ill-conditioned (i.e., not invertible).</p>
+</section>
+</section>
+<section id="the-levenberg-marquardt-algorithm-the-best-of-both-worlds">
+<h2>The Levenberg-Marquardt Algorithm: The Best of Both Worlds<a class="headerlink" href="#the-levenberg-marquardt-algorithm-the-best-of-both-worlds" title="Link to this heading">#</a></h2>
+<p>The Levenberg-Marquardt algorithm interpolates between the Gradient Descent and Gauss-Newton methods. It introduces a “damping parameter,” <span class="math notranslate nohighlight">\(\lambda\)</span> (lambda), which controls this interpolation.</p>
+<p>The LM update equation for the step <span class="math notranslate nohighlight">\(\mathbf{\delta}_{LM}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J} + \lambda \mathbf{D}) \mathbf{\delta}_{LM} = \mathbf{J}^T \mathbf{r}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> is a diagonal matrix.</p>
+<p>Historically, <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> was often the identity matrix <span class="math notranslate nohighlight">\(\mathbf{I}\)</span>, leading to the equation:</p>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J} + \lambda \mathbf{I}) \mathbf{\delta}_{LM} = \mathbf{J}^T \mathbf{r}\]</div>
+<p>However, a more common and robust choice for <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> is the diagonal matrix containing the diagonal elements of <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J}\)</span>. This scaling helps to make the problem better conditioned. Let’s denote this by <span class="math notranslate nohighlight">\(\text{diag}(\mathbf{J}^T \mathbf{J})\)</span>.</p>
+<p>So, the LM equation for the step <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J} + \lambda \text{diag}(\mathbf{J}^T \mathbf{J})) \mathbf{\delta} = \mathbf{J}^T \mathbf{r}\]</div>
+<p>Let’s analyze the behavior based on <span class="math notranslate nohighlight">\(\lambda\)</span>:</p>
+<ul>
+<li><p><strong>When <span class="math notranslate nohighlight">\(\lambda\)</span> is small (<span class="math notranslate nohighlight">\(\lambda \to 0\)</span>):</strong> The term <span class="math notranslate nohighlight">\(\lambda \text{diag}(\mathbf{J}^T \mathbf{J})\)</span> becomes negligible. The equation approaches the Gauss-Newton equation:</p>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J}) \mathbf{\delta} \approx \mathbf{J}^T \mathbf{r}\]</div>
+<p>This means LM behaves like Gauss-Newton, offering fast convergence when near the minimum.</p>
+</li>
+<li><p><strong>When <span class="math notranslate nohighlight">\(\lambda\)</span> is large (<span class="math notranslate nohighlight">\(\lambda \to \infty\)</span>):</strong> The term <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J}\)</span> becomes negligible compared to <span class="math notranslate nohighlight">\(\lambda \text{diag}(\mathbf{J}^T \mathbf{J})\)</span>. The equation approaches:</p>
+<div class="math notranslate nohighlight">
+\[\lambda \text{diag}(\mathbf{J}^T \mathbf{J}) \mathbf{\delta} \approx \mathbf{J}^T \mathbf{r}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathbf{\delta} \approx \frac{1}{\lambda} (\text{diag}(\mathbf{J}^T \mathbf{J}))^{-1} \mathbf{J}^T \mathbf{r}\]</div>
+<p>This step is in a similar direction to the steepest descent direction. To see this, recall that the gradient descent direction is proportional to <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{r}\)</span>. The damping term ensures that the step size is small, preventing divergence when far from the minimum. The scaling by <span class="math notranslate nohighlight">\(\text{diag}(\mathbf{J}^T \mathbf{J})\)</span> further aligns it with a scaled steepest descent, addressing potential scaling issues in the parameters.</p>
+</li>
+</ul>
+<p><strong>The key idea of LM is to adaptively adjust <span class="math notranslate nohighlight">\(\lambda\)</span> at each iteration:</strong></p>
+<ul class="simple">
+<li><p>If a step leads to a <em>reduction</em> in the sum of squares <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span>, the step is accepted, and <span class="math notranslate nohighlight">\(\lambda\)</span> is <em>decreased</em> for the next iteration. This makes the algorithm lean more towards Gauss-Newton, aiming for faster convergence.</p></li>
+<li><p>If a step leads to an <em>increase</em> in <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span>, the step is rejected, and <span class="math notranslate nohighlight">\(\lambda\)</span> is <em>increased</em>. This makes the algorithm lean more towards Gradient Descent, taking smaller, more conservative steps to ensure progress.</p></li>
+</ul>
+</section>
+<section id="derivation-of-the-levenberg-marquardt-equation">
+<h2>Derivation of the Levenberg-Marquardt Equation<a class="headerlink" href="#derivation-of-the-levenberg-marquardt-equation" title="Link to this heading">#</a></h2>
+<p>The LM algorithm can be derived from a “trust-region” perspective or by directly combining the ideas of Gauss-Newton and Gradient Descent. Let’s follow a derivation that highlights its connection to both.</p>
+<p>We want to find a step <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> that minimizes <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k + \mathbf{\delta})\)</span>. We use the quadratic approximation of <span class="math notranslate nohighlight">\(S(\mathbf{\beta})\)</span> around <span class="math notranslate nohighlight">\(\mathbf{\beta}_k\)</span>:
+$<span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k + \mathbf{\delta}) \approx S(\mathbf{\beta}_k) + \nabla S(\mathbf{\beta}_k)^T \mathbf{\delta} + \frac{1}{2} \mathbf{\delta}^T \mathbf{H}(\mathbf{\beta}_k) \mathbf{\delta}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\mathbf{H}(\mathbf{\beta}_k)<span class="math notranslate nohighlight">\( is the Hessian matrix of \)</span>S(\mathbf{\beta})$.</p>
+<p>As seen earlier, <span class="math notranslate nohighlight">\(\nabla S(\mathbf{\beta}) = -2 \mathbf{J}(\mathbf{\beta})^T \mathbf{r}(\mathbf{\beta})\)</span>.
+The Hessian <span class="math notranslate nohighlight">\(\mathbf{H}(\mathbf{\beta})\)</span> is given by:
+$<span class="math notranslate nohighlight">\(\mathbf{H}(\mathbf{\beta}) = \frac{\partial^2 S}{\partial \beta_j \partial \beta_k} = 2 \mathbf{J}(\mathbf{\beta})^T \mathbf{J}(\mathbf{\beta}) + 2 \sum_{i=1}^m r_i(\mathbf{\beta}) \frac{\partial^2 r_i(\mathbf{\beta})}{\partial \beta_j \partial \beta_k}\)</span><span class="math notranslate nohighlight">\(
+The Gauss-Newton method approximates the Hessian by ignoring the second term, assuming residuals \)</span>r_i<span class="math notranslate nohighlight">\( are small or the second derivatives \)</span>\frac{\partial^2 r_i}{\partial \beta_j \partial \beta_k}<span class="math notranslate nohighlight">\( are negligible. So, \)</span>\mathbf{H}_{GN} = 2 \mathbf{J}^T \mathbf{J}$.</p>
+<p>Substituting these into the quadratic approximation (and dividing by 2 for convenience in the minimization):
+We want to minimize <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k) - (\mathbf{J}^T \mathbf{r})_k^T \mathbf{\delta} + \frac{1}{2} \mathbf{\delta}^T (\mathbf{J}^T \mathbf{J})_k \mathbf{\delta}\)</span>. (Here, subscripts <span class="math notranslate nohighlight">\(k\)</span> denote evaluation at <span class="math notranslate nohighlight">\(\mathbf{\beta}_k\)</span>).</p>
+<p>Taking the gradient with respect to <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> and setting to zero:</p>
+<div class="math notranslate nohighlight">
+\[-(\mathbf{J}^T \mathbf{r})_k + (\mathbf{J}^T \mathbf{J})_k \mathbf{\delta} = \mathbf{0}\]</div>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J})_k \mathbf{\delta} = (\mathbf{J}^T \mathbf{r})_k\]</div>
+<p>This is the Gauss-Newton step.</p>
+<p>The Levenberg-Marquardt modification adds a damping term to this equation. It can be seen as minimizing the quadratic approximation of <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k + \mathbf{\delta})\)</span> subject to a trust-region constraint, or equivalently, as a regularization technique. The objective becomes:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{\delta}} \left( S(\mathbf{\beta}_k) - (\mathbf{J}^T \mathbf{r})_k^T \mathbf{\delta} + \frac{1}{2} \mathbf{\delta}^T (\mathbf{J}^T \mathbf{J})_k \mathbf{\delta} + \frac{\lambda}{2} ||\mathbf{\delta}||^2 \right)\]</div>
+<p>The term <span class="math notranslate nohighlight">\(\frac{\lambda}{2} ||\mathbf{\delta}||^2\)</span> (or <span class="math notranslate nohighlight">\(\frac{\lambda}{2} \mathbf{\delta}^T \mathbf{D} \mathbf{\delta}\)</span>) is added to penalize large step sizes, making the algorithm more stable.</p>
+<p>Taking the gradient with respect to <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> and setting to zero:</p>
+<div class="math notranslate nohighlight">
+\[-(\mathbf{J}^T \mathbf{r})_k + (\mathbf{J}^T \mathbf{J})_k \mathbf{\delta} + \lambda \mathbf{\delta} = \mathbf{0}\]</div>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J})_k \mathbf{\delta} + \lambda \mathbf{I} \mathbf{\delta} = (\mathbf{J}^T \mathbf{r})_k\]</div>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J} + \lambda \mathbf{I}) \mathbf{\delta} = \mathbf{J}^T \mathbf{r}\]</div>
+<p>This is the original Levenberg-Marquardt equation with <span class="math notranslate nohighlight">\(\mathbf{D} = \mathbf{I}\)</span>.</p>
+<p>If we use <span class="math notranslate nohighlight">\(\mathbf{D} = \text{diag}(\mathbf{J}^T \mathbf{J})\)</span>, the equation becomes:</p>
+<div class="math notranslate nohighlight">
+\[(\mathbf{J}^T \mathbf{J} + \lambda \text{diag}(\mathbf{J}^T \mathbf{J})) \mathbf{\delta} = \mathbf{J}^T \mathbf{r}\]</div>
+<p>This linear system is then solved for <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span> at each iteration.</p>
+</section>
+<section id="the-algorithm-steps">
+<h2>The Algorithm Steps<a class="headerlink" href="#the-algorithm-steps" title="Link to this heading">#</a></h2>
+<ol class="arabic">
+<li><p><strong>Initialize:</strong></p>
+<ul class="simple">
+<li><p>Choose an initial guess for the parameter vector <span class="math notranslate nohighlight">\(\mathbf{\beta}_0\)</span>.</p></li>
+<li><p>Set an initial damping parameter <span class="math notranslate nohighlight">\(\lambda_0\)</span> (e.g., <span class="math notranslate nohighlight">\(0.001\)</span>).</p></li>
+<li><p>Set factors for increasing and decreasing <span class="math notranslate nohighlight">\(\lambda\)</span> (e.g., <span class="math notranslate nohighlight">\(\nu_{inc} = 10\)</span>, <span class="math notranslate nohighlight">\(\nu_{dec} = 2\)</span> or <span class="math notranslate nohighlight">\(3\)</span>).</p></li>
+<li><p>Set convergence criteria (e.g., tolerance for change in <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>, tolerance for change in <span class="math notranslate nohighlight">\(S\)</span>, maximum iterations).</p></li>
+</ul>
+</li>
+<li><p><strong>Iterate (for k = 0, 1, 2, …):</strong>
+a.  <strong>Calculate Residuals and Jacobian:</strong>
+* Evaluate the residual vector <span class="math notranslate nohighlight">\(\mathbf{r}(\mathbf{\beta}_k) = \mathbf{y} - \mathbf{f}(\mathbf{\beta}_k)\)</span>.
+* Calculate the Jacobian matrix <span class="math notranslate nohighlight">\(\mathbf{J}(\mathbf{\beta}_k)\)</span> where <span class="math notranslate nohighlight">\(J_{ij} = -\frac{\partial f(x_i, \mathbf{\beta}_k)}{\partial \beta_j}\)</span>.
+* Compute <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_k) = ||\mathbf{r}(\mathbf{\beta}_k)||^2\)</span>.</p>
+<p>b.  <strong>Construct and Solve the LM System:</strong>
+* Form the matrix <span class="math notranslate nohighlight">\(\mathbf{A} = \mathbf{J}(\mathbf{\beta}_k)^T \mathbf{J}(\mathbf{\beta}_k) + \lambda_k \text{diag}(\mathbf{J}(\mathbf{\beta}_k)^T \mathbf{J}(\mathbf{\beta}_k))\)</span>.
+* Form the vector <span class="math notranslate nohighlight">\(\mathbf{g} = \mathbf{J}(\mathbf{\beta}_k)^T \mathbf{r}(\mathbf{\beta}_k)\)</span>.
+* Solve the linear system <span class="math notranslate nohighlight">\(\mathbf{A} \mathbf{\delta} = \mathbf{g}\)</span> for <span class="math notranslate nohighlight">\(\mathbf{\delta}\)</span>.</p>
+<p>c.  <strong>Evaluate New Parameters and Objective:</strong>
+* Propose new parameters: <span class="math notranslate nohighlight">\(\mathbf{\beta}_{new} = \mathbf{\beta}_k + \mathbf{\delta}\)</span>.
+* Calculate the new sum of squares: <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_{new}) = ||\mathbf{r}(\mathbf{\beta}_{new})||^2\)</span>.</p>
+<p>d.  <strong>Update <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span>:</strong>
+* <strong>If <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_{new}) &lt; S(\mathbf{\beta}_k)\)</span> (improvement):</strong>
+* Accept the new parameters: <span class="math notranslate nohighlight">\(\mathbf{\beta}_{k+1} = \mathbf{\beta}_{new}\)</span>.
+* Decrease <span class="math notranslate nohighlight">\(\lambda\)</span>: <span class="math notranslate nohighlight">\(\lambda_{k+1} = \lambda_k / \nu_{dec}\)</span>.
+* <strong>If <span class="math notranslate nohighlight">\(S(\mathbf{\beta}_{new}) \ge S(\mathbf{\beta}_k)\)</span> (no improvement or worse):</strong>
+* Reject the step: <span class="math notranslate nohighlight">\(\mathbf{\beta}_{k+1} = \mathbf{\beta}_k\)</span>.
+* Increase <span class="math notranslate nohighlight">\(\lambda\)</span>: <span class="math notranslate nohighlight">\(\lambda_{k+1} = \lambda_k \times \nu_{inc}\)</span>.
+* Go back to step 2b (with the increased <span class="math notranslate nohighlight">\(\lambda\)</span> and the same <span class="math notranslate nohighlight">\(\mathbf{\beta}_k\)</span>).</p>
+<p>e.  <strong>Check for Convergence:</strong>
+* If the change in <span class="math notranslate nohighlight">\(\mathbf{\beta}\)</span> or <span class="math notranslate nohighlight">\(S\)</span> is below a predefined tolerance, or max iterations reached, stop.</p>
+</li>
+</ol>
+</section>
+<section id="when-can-it-be-used-applications">
+<h2>When can it be used? (Applications)<a class="headerlink" href="#when-can-it-be-used-applications" title="Link to this heading">#</a></h2>
+<p>The Levenberg-Marquardt algorithm is a go-to method for any problem that can be formulated as a <strong>non-linear least squares minimization</strong>. Its robustness makes it widely applicable in various fields:</p>
+<ul class="simple">
+<li><p><strong>Curve Fitting / Data Fitting:</strong> This is the most common application.</p>
+<ul>
+<li><p>Fitting experimental data to a non-linear model (e.g., exponential decays, sigmoid functions, Gaussian peaks).</p></li>
+<li><p>Determining parameters of physical, chemical, or biological models from observed data.</p></li>
+</ul>
+</li>
+<li><p><strong>Computer Vision:</strong></p>
+<ul>
+<li><p><strong>Camera Calibration:</strong> Estimating intrinsic and extrinsic parameters of a camera from known 3D points and their 2D projections.</p></li>
+<li><p><strong>3D Reconstruction:</strong> Reconstructing 3D scenes or objects from multiple 2D images, including bundle adjustment (jointly optimizing camera poses and 3D point locations).</p></li>
+<li><p><strong>Image Registration:</strong> Aligning different images of the same scene.</p></li>
+</ul>
+</li>
+<li><p><strong>Machine Learning / Neural Networks:</strong></p>
+<ul>
+<li><p><strong>Training Neural Networks:</strong> While Adam or SGD are more common for very large networks, LM can be highly effective for training smaller to medium-sized neural networks, especially when high precision is required, as it combines the speed of Gauss-Newton near the minimum with the stability of gradient descent further away. It’s often faster and more reliable than basic backpropagation.</p></li>
+</ul>
+</li>
+<li><p><strong>Robotics:</strong></p>
+<ul>
+<li><p><strong>Inverse Kinematics:</strong> Finding the joint angles of a robot arm to reach a desired end-effector position.</p></li>
+<li><p><strong>Localization and Mapping (SLAM):</strong> Optimizing robot pose and map features based on sensor readings.</p></li>
+</ul>
+</li>
+<li><p><strong>Signal Processing:</strong></p>
+<ul>
+<li><p><strong>System Identification:</strong> Estimating parameters of a system model from input-output data.</p></li>
+<li><p><strong>Filter Design:</strong> Optimizing filter coefficients to match a desired response.</p></li>
+</ul>
+</li>
+<li><p><strong>Chemistry and Physics:</strong></p>
+<ul>
+<li><p><strong>Spectroscopy:</strong> Analyzing spectral data to determine concentrations of substances or molecular parameters.</p></li>
+<li><p><strong>Crystallography:</strong> Refining crystal structures from diffraction data.</p></li>
+<li><p><strong>Pharmacokinetics:</strong> Modeling drug concentration in the body over time.</p></li>
+</ul>
+</li>
+<li><p><strong>Econometrics:</strong></p>
+<ul>
+<li><p>Estimating parameters in non-linear economic models.</p></li>
+</ul>
+</li>
+</ul>
+<section id="advantages-of-levenberg-marquardt">
+<h3>Advantages of Levenberg-Marquardt:<a class="headerlink" href="#advantages-of-levenberg-marquardt" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Robustness:</strong> Combines the strengths of Gradient Descent (reliable far from minimum) and Gauss-Newton (fast near minimum). It tends to converge even with poor initial guesses.</p></li>
+<li><p><strong>Efficiency:</strong> Often converges faster than first-order methods like Gradient Descent, especially near the minimum.</p></li>
+<li><p><strong>No line search needed:</strong> The damping parameter adaptively controls the step size, often eliminating the need for complex line search procedures.</p></li>
+</ul>
+</section>
+<section id="limitations">
+<h3>Limitations:<a class="headerlink" href="#limitations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Local Minima:</strong> Like most iterative optimization algorithms, LM can only guarantee convergence to a local minimum, not necessarily the global minimum. The quality of the initial guess is still important.</p></li>
+<li><p><strong>Computational Cost:</strong> Requires computing and inverting (or solving a linear system with) the matrix <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J} + \lambda \text{diag}(\mathbf{J}^T \mathbf{J})\)</span> at each iteration. This involves matrix multiplication and inversion, which can be computationally expensive for problems with a very large number of parameters (large <span class="math notranslate nohighlight">\(n\)</span>).</p></li>
+<li><p><strong>Memory Requirement:</strong> Storing the Jacobian matrix can be memory-intensive for problems with many data points and/or many parameters.</p></li>
+</ul>
+<p>In summary, the Levenberg-Marquardt algorithm is a powerful and popular choice for non-linear least squares problems due to its balanced approach that leverages the best features of both gradient descent and Gauss-Newton methods.</p>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Levenberg%E2%80%93Marquardt_algorithm">https://en.wikipedia.org/wiki/Levenberg–Marquardt_algorithm</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math\02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-the-problem-non-linear-least-squares">Understanding the Problem: Non-Linear Least Squares</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-parents-of-levenberg-marquardt">The Two Parents of Levenberg-Marquardt</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent-steepest-descent-method">Gradient Descent (Steepest Descent) Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-newton-method">Gauss-Newton Method</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-levenberg-marquardt-algorithm-the-best-of-both-worlds">The Levenberg-Marquardt Algorithm: The Best of Both Worlds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-levenberg-marquardt-equation">Derivation of the Levenberg-Marquardt Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm-steps">The Algorithm Steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-can-it-be-used-applications">When can it be used? (Applications)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-levenberg-marquardt">Advantages of Levenberg-Marquardt:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
