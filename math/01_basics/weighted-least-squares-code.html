@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Least Squares Regression - Code Examples &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+    <title>Weighted Least Squares - Code Examples &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
   
   
   
@@ -59,13 +59,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'math/01_basics/least-squares-regression-code';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/01_basics/weighted-least-squares-code';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Ordinary Least Squares (OLS) Regression" href="ordinary-least-squares.html" />
-    <link rel="prev" title="Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)" href="least-squares-regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -128,6 +126,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -184,13 +184,13 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -267,7 +267,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/01_basics/least-squares-regression-code.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/01_basics/weighted-least-squares-code.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -315,7 +315,7 @@
       
       
       
-      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/01_basics/least-squares-regression-code.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/01_basics/weighted-least-squares-code.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -345,7 +345,7 @@
       
       
       
-      <li><a href="../../_sources/math/01_basics/least-squares-regression-code.ipynb" target="_blank"
+      <li><a href="../../_sources/math/01_basics/weighted-least-squares-code.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -429,7 +429,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Least Squares Regression - Code Examples</h1>
+    <h1>Weighted Least Squares - Code Examples</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -439,8 +439,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-example">Non-Linear Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-various-algorithm-for-linear-problem">Comparison of various algorithm for linear problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-sigma-and-absolute-sigma-parameters-in-scipy-optimize-curve-fit">What are <code class="docutils literal notranslate"><span class="pre">sigma</span></code> and <code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code> parameters in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-algorithm-is-running-if-we-use-sigma-parameters">What algorithm is running if we use <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameters?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-provided-data">3. Application to Provided Data</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -452,10 +455,47 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="least-squares-regression-code-examples">
-<h1>Least Squares Regression - Code Examples<a class="headerlink" href="#least-squares-regression-code-examples" title="Link to this heading">#</a></h1>
-<section id="non-linear-example">
-<h2>Non-Linear Example<a class="headerlink" href="#non-linear-example" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="weighted-least-squares-code-examples">
+<h1>Weighted Least Squares - Code Examples<a class="headerlink" href="#weighted-least-squares-code-examples" title="Link to this heading">#</a></h1>
+<section id="what-are-sigma-and-absolute-sigma-parameters-in-scipy-optimize-curve-fit">
+<h2>What are <code class="docutils literal notranslate"><span class="pre">sigma</span></code> and <code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code> parameters in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>?<a class="headerlink" href="#what-are-sigma-and-absolute-sigma-parameters-in-scipy-optimize-curve-fit" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sigma</span></code></strong>:</p>
+<ul class="simple">
+<li><p>This parameter takes an <code class="docutils literal notranslate"><span class="pre">M</span></code>-length sequence (where <code class="docutils literal notranslate"><span class="pre">M</span></code> is the number of data points) or an <code class="docutils literal notranslate"><span class="pre">MxM</span></code> array.</p></li>
+<li><p>If it’s an <code class="docutils literal notranslate"><span class="pre">M</span></code>-length sequence (which is what we used), it represents the <strong>standard deviations</strong> of the <code class="docutils literal notranslate"><span class="pre">ydata</span></code> points. So, <code class="docutils literal notranslate"><span class="pre">sigma[i]</span></code> is the estimated standard deviation of <code class="docutils literal notranslate"><span class="pre">ydata[i]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> then uses these standard deviations to perform a weighted least squares minimization. The weights applied are <code class="docutils literal notranslate"><span class="pre">w_i</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">/</span> <span class="pre">sigma[i]**2</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is not provided, <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> assumes uniform errors (homoscedasticity), equivalent to all <code class="docutils literal notranslate"><span class="pre">sigma[i]</span></code> being 1, which defaults to Ordinary Least Squares (OLS).</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code></strong>:</p>
+<ul class="simple">
+<li><p>This is a boolean parameter, defaulting to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">absolute_sigma</span> <span class="pre">=</span> <span class="pre">False</span></code> (Default):</strong> This is the more common scenario for relative weighting. When <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided and <code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> scales the covariance matrix (<code class="docutils literal notranslate"><span class="pre">pcov</span></code>) by <code class="docutils literal notranslate"><span class="pre">chisq</span> <span class="pre">/</span> <span class="pre">(M</span> <span class="pre">-</span> <span class="pre">N)</span></code>, where <code class="docutils literal notranslate"><span class="pre">chisq</span></code> is the reduced chi-squared value (sum of squared weighted residuals), <code class="docutils literal notranslate"><span class="pre">M</span></code> is the number of data points, and <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of parameters. This scaling effectively assumes that the provided <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values are <em>relative</em> estimates of the uncertainties, and the overall scaling factor is determined by the goodness of fit to the data. This means that if your model fits the data very well (small reduced chi-squared), the parameter uncertainties in <code class="docutils literal notranslate"><span class="pre">pcov</span></code> will be smaller, and vice-versa.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">absolute_sigma</span> <span class="pre">=</span> <span class="pre">True</span></code>:</strong> When <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided and <code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> treats the provided <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values as <strong>absolute standard deviations</strong> of the <code class="docutils literal notranslate"><span class="pre">ydata</span></code>. In this case, no scaling of the covariance matrix (<code class="docutils literal notranslate"><span class="pre">pcov</span></code>) is performed based on the goodness of fit. The <code class="docutils literal notranslate"><span class="pre">pcov</span></code> directly reflects the uncertainties implied by the provided <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values. This is appropriate when you have precise knowledge of the absolute errors in your measurements. This is generally what you want when your <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values come from known measurement uncertainties (like your <span class="math notranslate nohighlight">\(\pm 0.5\)</span> error).</p></li>
+</ul>
+</li>
+</ol>
+<p>In your updated code, using <code class="docutils literal notranslate"><span class="pre">sigma=sigma,</span> <span class="pre">absolute_sigma=True</span></code> is the correct approach because you have known, absolute uncertainties for your Y values.</p>
+</section>
+<section id="what-algorithm-is-running-if-we-use-sigma-parameters">
+<h2>What algorithm is running if we use <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameters?<a class="headerlink" href="#what-algorithm-is-running-if-we-use-sigma-parameters" title="Link to this heading">#</a></h2>
+<p>Regardless of whether you provide <code class="docutils literal notranslate"><span class="pre">sigma</span></code> or not, <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> internally uses a <strong>Levenberg-Marquardt algorithm</strong> by default to find the parameters that minimize the sum of squared residuals.</p>
+<p>The key difference when <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided is <em>what</em> the Levenberg-Marquardt algorithm minimizes:</p>
+<ul class="simple">
+<li><p><strong>Without <code class="docutils literal notranslate"><span class="pre">sigma</span></code> (OLS):</strong> It minimizes the ordinary sum of squared residuals: <span class="math notranslate nohighlight">\(\sum (y_i - f(x_i, \beta))^2\)</span>.</p></li>
+<li><p><strong>With <code class="docutils literal notranslate"><span class="pre">sigma</span></code> (WLS):</strong> It minimizes the <strong>weighted sum of squared residuals</strong>: <span class="math notranslate nohighlight">\(\sum w_i (y_i - f(x_i, \beta))^2\)</span>, where <span class="math notranslate nohighlight">\(w_i = 1 / \sigma_i^2\)</span>.</p></li>
+</ul>
+<p>The Levenberg-Marquardt algorithm is an iterative numerical optimization algorithm. It cleverly switches between a steepest descent method (when far from the minimum) and the Gauss-Newton method (when close to the minimum) to efficiently converge to the optimal parameter values. When <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the function being minimized (the objective function) simply changes from the unweighted sum of squares to the weighted sum of squares, but the core optimization algorithm remains Levenberg-Marquardt.</p>
+<p>You can actually specify other optimization algorithms for <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> using the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter (e.g., <code class="docutils literal notranslate"><span class="pre">'trf'</span></code> for Trust Region Reflective, or <code class="docutils literal notranslate"><span class="pre">'dogbox'</span></code> for dogleg algorithm), but Levenberg-Marquardt (<code class="docutils literal notranslate"><span class="pre">'lm'</span></code>) is the default and often a good choice for non-linear least squares problems. The concept of weighting applies similarly regardless of the specific algorithm used for minimization, as long as that algorithm supports minimizing a weighted sum of squares.</p>
+<p>In your specific case, where you defined a <span class="math notranslate nohighlight">\(\pm 0.5\)</span> error for most points and a negligible error for the first point, you are effectively providing <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> with the standard deviations (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) of your measurements. The function then internally squares these to get the variances and uses their inverses as weights. The point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-9</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point.</p>
+<section id="application-to-provided-data">
+<h3>3. Application to Provided Data<a class="headerlink" href="#application-to-provided-data" title="Link to this heading">#</a></h3>
+<p>Given your requirement: “each Y-point now has 0.5 error (<span class="math notranslate nohighlight">\(\pm 0.5\)</span> for Y values) except the first point which is Y = 100.”</p>
+<ul class="simple">
+<li><p><strong>For <span class="math notranslate nohighlight">\(y_i\)</span> where <span class="math notranslate nohighlight">\(i &gt; 0\)</span> (all points except the first):</strong> The stated “<span class="math notranslate nohighlight">\(\pm 0.5\)</span> error” is directly interpreted as the <strong>standard deviation (<span class="math notranslate nohighlight">\(\sigma_i\)</span>)</strong> of that specific measurement. Therefore, for these points, we set <span class="math notranslate nohighlight">\(\sigma_i = 0.5\)</span>. This indicates that the measured <span class="math notranslate nohighlight">\(y_i\)</span> is expected to deviate from its true value with a standard deviation of <span class="math notranslate nohighlight">\(0.5\)</span> units.</p></li>
+<li><p><strong>For <span class="math notranslate nohighlight">\(y_0\)</span> (the first point, <span class="math notranslate nohighlight">\(Y = 100\)</span>):</strong> This point is specified as having “no error.” In the context of WLS, this implies that <span class="math notranslate nohighlight">\(y_0\)</span> is known with exceptionally high precision, effectively acting as a fixed or constrained point. To implement this in a weighted least squares framework, we assign an extremely small standard deviation, such as <span class="math notranslate nohighlight">\(\sigma_0 = 1 \times 10^{-9}\)</span>. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through <span class="math notranslate nohighlight">\((x_0, y_0)\)</span>.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -514,30 +554,32 @@ document.write(`
     <span class="n">x_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
     <span class="n">y_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
 
+    <span class="c1"># Define sigma for Weighted Least Squares</span>
+    <span class="c1"># First point (Y=100) has no error, assign a very small sigma to give it high weight</span>
+    <span class="c1"># Other points have an error of +/- 0.5</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-9</span>  <span class="c1"># Very small error for the first point</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sigma for </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
     <span class="c1"># Initial guess for parameters A and B</span>
-    <span class="c1"># It&#39;s important to provide reasonable initial guesses for non-linear fitting</span>
-    <span class="c1"># Based on the function A * (exp(-B*x) - 1) + 100:</span>
-    <span class="c1"># When x=0, y = A * (exp(0) - 1) + 100 = A * (1 - 1) + 100 = 100.</span>
-    <span class="c1"># This means the function always starts at 100 for x=0, which matches our data.</span>
-    <span class="c1"># For large x, exp(-B*x) approaches 0, so y approaches A * (-1) + 100 = 100 - A.</span>
-    <span class="c1"># If y decreases, A must be positive.</span>
-    <span class="c1"># B determines the decay rate; a small positive B means slow decay.</span>
-    <span class="c1"># Let&#39;s try initial guesses, e.g., A=50, B=0.01</span>
     <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># curve_fit returns:</span>
         <span class="c1"># popt: Optimal values for the parameters so that the sum of the squared residuals is minimized.</span>
         <span class="c1"># pcov: The estimated covariance of popt.</span>
-        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">custom_function</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
+        <span class="c1"># Use sigma for weighted least squares</span>
+        <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">custom_function</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">A_fit</span><span class="p">,</span> <span class="n">B_fit</span> <span class="o">=</span> <span class="n">popt</span>
 
         <span class="c1"># Calculate standard errors from the covariance matrix</span>
-        <span class="c1"># The diagonal elements of pcov are the variances of the parameters</span>
         <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
         <span class="n">A_err</span><span class="p">,</span> <span class="n">B_err</span> <span class="o">=</span> <span class="n">perr</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fitted parameters: A = </span><span class="si">{</span><span class="n">A_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">A_err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, B = </span><span class="si">{</span><span class="n">B_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">B_err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Condition number of the covariance matrix:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>  <span class="c1"># Check condition number of the covariance matrix</span>
 
         <span class="c1"># Generate predicted y values using the fitted function</span>
         <span class="n">y_predicted</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">A_fit</span><span class="p">,</span> <span class="n">B_fit</span><span class="p">)</span>
@@ -557,19 +599,17 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">sst</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># R-squared (Coefficient of Determination)</span>
-        <span class="c1"># Using sklearn&#39;s r2_score for convenience, which calculates 1 - (SSR/TSS)</span>
         <span class="n">r_squared</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">y_predicted</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Adjusted R-squared calculation</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span> <span class="c1"># Number of data points</span>
         <span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span>  <span class="c1"># Number of parameters (A, B)</span>
-        <span class="c1"># Ensure n - k - 1 is not zero or negative to avoid division by zero</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">adjusted_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adjusted R-squared: </span><span class="si">{</span><span class="n">adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">adjusted_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1"># Not applicable if degrees of freedom are insufficient</span>
+            <span class="n">adjusted_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Adjusted R-squared: Not applicable (insufficient degrees of freedom)&quot;</span><span class="p">)</span>
 
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
@@ -579,12 +619,12 @@ document.write(`
             <span class="s2">&quot;y_predicted&quot;</span><span class="p">:</span> <span class="n">y_predicted</span><span class="p">,</span>
             <span class="s2">&quot;A_fit&quot;</span><span class="p">:</span> <span class="n">A_fit</span><span class="p">,</span>
             <span class="s2">&quot;B_fit&quot;</span><span class="p">:</span> <span class="n">B_fit</span><span class="p">,</span>
-            <span class="s2">&quot;A_err&quot;</span><span class="p">:</span> <span class="n">A_err</span><span class="p">,</span> <span class="c1"># Store errors</span>
-            <span class="s2">&quot;B_err&quot;</span><span class="p">:</span> <span class="n">B_err</span><span class="p">,</span> <span class="c1"># Store errors</span>
+            <span class="s2">&quot;A_err&quot;</span><span class="p">:</span> <span class="n">A_err</span><span class="p">,</span>
+            <span class="s2">&quot;B_err&quot;</span><span class="p">:</span> <span class="n">B_err</span><span class="p">,</span>
             <span class="s2">&quot;ssr&quot;</span><span class="p">:</span> <span class="n">ssr</span><span class="p">,</span>
             <span class="s2">&quot;rmse&quot;</span><span class="p">:</span> <span class="n">rmse</span><span class="p">,</span>
             <span class="s2">&quot;r_squared&quot;</span><span class="p">:</span> <span class="n">r_squared</span><span class="p">,</span>
-            <span class="s2">&quot;adjusted_r_squared&quot;</span><span class="p">:</span> <span class="n">adjusted_r_squared</span> <span class="c1"># Store adjusted R-squared</span>
+            <span class="s2">&quot;adjusted_r_squared&quot;</span><span class="p">:</span> <span class="n">adjusted_r_squared</span>
         <span class="p">})</span>
 
     <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -595,49 +635,8 @@ document.write(`
             <span class="s2">&quot;y_data&quot;</span><span class="p">:</span> <span class="n">y_data</span><span class="p">,</span>
             <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="p">})</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitting Dataset 1 ---
-Fitted parameters: A = 93.5355 +/- 7.6189, B = 0.0270 +/- 0.0048
-Sum of Squared Residuals (SSR): 111.1352
-Root Mean Squared Error (RMSE): 3.9845
-Total Sum of Squares (TSS): 5492.6000
-R-squared: 0.9798
-Adjusted R-squared: 0.9696
 
---- Fitting Dataset 2 ---
-Fitted parameters: A = 75.2997 +/- 4.3607, B = 0.0110 +/- 0.0020
-Sum of Squared Residuals (SSR): 134.1877
-Root Mean Squared Error (RMSE): 4.3783
-Total Sum of Squares (TSS): 4934.4171
-R-squared: 0.9728
-Adjusted R-squared: 0.9592
-
---- Fitting Dataset 3 ---
-Fitted parameters: A = 56.6753 +/- 0.5420, B = 0.0099 +/- 0.0003
-Sum of Squared Residuals (SSR): 1.8090
-Root Mean Squared Error (RMSE): 0.5084
-Total Sum of Squares (TSS): 2811.9943
-R-squared: 0.9994
-Adjusted R-squared: 0.9990
-</pre></div>
-</div>
-</div>
-</div>
-<hr class="docutils" />
-<p>While R-squared (coefficient of determination) is most commonly associated with linear regression, it <strong>can be applied to non-linear functions</strong> like the one in our example, and it still provides a useful measure of goodness-of-fit. However, its interpretation requires a bit more nuance.</p>
-<p>Regardless of linearity, <span class="math notranslate nohighlight">\(R^2\)</span> still tells you the proportion of the total variance in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>) that is explained by our model. A higher <span class="math notranslate nohighlight">\(R^2\)</span> still indicates that our non-linear function is doing a better job of capturing the variability in our data compared to simply using the mean of <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p>It remains a valuable tool for comparing different non-linear models fitted to the <em>same dataset</em>. If you tried another non-linear function on the same data, you could compare their R-squared values to see which one provides a better fit. However, in our case we use the same model for different datasets, so that’s not a good idea to compare <span class="math notranslate nohighlight">\(R^2\)</span> values between these datasets.</p>
-<p>For non-linear models that are <em>not</em> fitted using least squares (e.g., some robust regression methods or maximum likelihood estimation where errors are not normally distributed), or if the model does not implicitly include an intercept, <span class="math notranslate nohighlight">\(R^2\)</span> could theoretically be negative (meaning our model is worse than simply predicting the mean), or greater than 1 (though this is rare and usually indicates an issue). However, since <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> uses least squares, this is generally not an issue for our example.</p>
-<p>While a high <span class="math notranslate nohighlight">\(R^2\)</span> is good, it doesn’t guarantee that our non-linear model is the “correct” physical model or that it will extrapolate well. It only indicates how well it fits the <em>observed data</em>. Overfitting can still occur, especially with complex non-linear functions and limited data.</p>
-<p>Just like with linear models, if you are comparing non-linear models with different numbers of parameters, the raw <span class="math notranslate nohighlight">\(R^2\)</span> can be misleading (it tends to increase with more parameters). In such cases, <strong>adjusted R-squared</strong> is a better metric as it penalizes for model complexity.</p>
-<p>In summary, for our non-linear function fitted with <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> (which uses least squares), R-squared is a valid and useful metric. It quantifies how much of the variance in our experimental <span class="math notranslate nohighlight">\(y\)</span> values is explained by our chosen non-linear model. However, use <span class="math notranslate nohighlight">\(R^2\)</span> with caution for those cases where Sum of Squared Residuals (SSR) is not close to zero (in our case this parameter is not close to zero for Dataset 1 and Dataset 2).</p>
-<hr class="docutils" />
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. Plotting the results</span>
+<span class="c1"># 4. Plotting the results</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
@@ -645,11 +644,10 @@ Adjusted R-squared: 0.9990
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;y_predicted&quot;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="c1"># Create a smoother curve for plotting</span>
         <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="mi">500</span><span class="p">)</span>
         <span class="n">y_plot</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;A_fit&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;B_fit&quot;</span><span class="p">])</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">A=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;A_fit&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;A_err&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">B=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;B_fit&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;B_err&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;adjusted_r_squared&#39;</span><span class="p">]):</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Fit</span><span class="se">\n</span><span class="s2">R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Adj. R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;adjusted_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">RMSE=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -669,160 +667,41 @@ Adjusted R-squared: 0.9990
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/80ad37066a27a2f9f26f1ce090cf9bdea011f02253830b958dc36739c9afdde9.png" src="../../_images/80ad37066a27a2f9f26f1ce090cf9bdea011f02253830b958dc36739c9afdde9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitting Dataset 1 ---
+Sigma for Dataset 1: [1.e-09 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01]
+Fitted parameters: A = 93.5355 +/- 0.8080, B = 0.0270 +/- 0.0005
+Condition number of the covariance matrix: 17123879.749667574
+Sum of Squared Residuals (SSR): 111.1352
+Root Mean Squared Error (RMSE): 3.9845
+Total Sum of Squares (TSS): 5492.6000
+R-squared: 0.9798
+Adjusted R-squared: 0.9696
+
+--- Fitting Dataset 2 ---
+Sigma for Dataset 2: [1.e-09 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01]
+Fitted parameters: A = 75.2997 +/- 0.4209, B = 0.0110 +/- 0.0002
+Condition number of the covariance matrix: 11211875.75041076
+Sum of Squared Residuals (SSR): 134.1877
+Root Mean Squared Error (RMSE): 4.3783
+Total Sum of Squares (TSS): 4934.4171
+R-squared: 0.9728
+Adjusted R-squared: 0.9592
+
+--- Fitting Dataset 3 ---
+Sigma for Dataset 3: [1.e-09 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01 5.e-01]
+Fitted parameters: A = 56.6753 +/- 0.4506, B = 0.0099 +/- 0.0002
+Condition number of the covariance matrix: 9732599.467527777
+Sum of Squared Residuals (SSR): 1.8090
+Root Mean Squared Error (RMSE): 0.5084
+Total Sum of Squares (TSS): 2811.9943
+R-squared: 0.9994
+Adjusted R-squared: 0.9990
+</pre></div>
+</div>
+<img alt="../../_images/ab34e3cae916c9187bf85017f1a22fdde8a456ae02d4c2e7afb41bf4c8fe561c.png" src="../../_images/ab34e3cae916c9187bf85017f1a22fdde8a456ae02d4c2e7afb41bf4c8fe561c.png" />
 </div>
 </div>
 </section>
-<section id="comparison-of-various-algorithm-for-linear-problem">
-<h2>Comparison of various algorithm for linear problem<a class="headerlink" href="#comparison-of-various-algorithm-for-linear-problem" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="c1"># Sample data (e.g., y = 2*x + 5 + noise)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># X needs to be 2D for sklearn</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intercept: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">intercept_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Coefficient (slope): </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Coefficient of determination</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept: 5.112619361741471
-Coefficient (slope): 2.0361891065482367
-R-squared: 0.9949303922700998
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> <span class="c1"># often used with statsmodels</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="c1"># Sample data (e.g., y = 2*x + 5 + noise)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># X needs to be 2D for sklearn</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
-
-<span class="c1"># Add a constant to the independent variable for the intercept</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:                      y   R-squared:                       0.995
-Model:                            OLS   Adj. R-squared:                  0.994
-Method:                 Least Squares   F-statistic:                     1178.
-Date:                Sat, 02 Aug 2025   Prob (F-statistic):           4.08e-08
-Time:                        22:44:13   Log-Likelihood:                -2.5554
-No. Observations:                   8   AIC:                             9.111
-Df Residuals:                       6   BIC:                             9.270
-Df Model:                           1                                         
-Covariance Type:            nonrobust                                         
-==============================================================================
-                 coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------
-const          5.1126      0.300     17.062      0.000       4.379       5.846
-x1             2.0362      0.059     34.315      0.000       1.891       2.181
-==============================================================================
-Omnibus:                        0.854   Durbin-Watson:                   2.485
-Prob(Omnibus):                  0.653   Jarque-Bera (JB):                0.559
-Skew:                           0.106   Prob(JB):                        0.756
-Kurtosis:                       1.722   Cond. No.                         11.5
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="c1"># Sample data (e.g., y = 2*x + 5 + noise)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
-
-<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r_value</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">std_err</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slope: </span><span class="si">{</span><span class="n">slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intercept: </span><span class="si">{</span><span class="n">intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">r_value</span><span class="o">**</span><span class="mi">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error of the slope: </span><span class="si">{</span><span class="n">std_err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Slope: 2.0361891065482363
-Intercept: 5.112619361741473
-R-squared: 0.9949303922700999
-P-value: 4.079439162311038e-08
-Standard Error of the slope: 0.059338055969359385
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">linear_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-
-<span class="c1"># Sample data (e.g., y = 2*x + 5 + noise)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
-
-<span class="c1"># p0 is an optional initial guess for the parameters (a, b).</span>
-<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_function</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># popt contains the optimal parameters (a, b)</span>
-<span class="n">slope_curve_fit</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">intercept_curve_fit</span> <span class="o">=</span> <span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
-<span class="n">std_err_slope_curve_fit</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">std_err_intercept_curve_fit</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal Slope (a): </span><span class="si">{</span><span class="n">slope_curve_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_slope_curve_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal Intercept (b): </span><span class="si">{</span><span class="n">intercept_curve_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_intercept_curve_fit</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal Slope (a): 2.0362 +/- 0.0593
-Optimal Intercept (b): 5.1126 +/- 0.2996
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 
@@ -856,24 +735,6 @@ Optimal Intercept (b): 5.1126 +/- 0.2996
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="least-squares-regression.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="ordinary-least-squares.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Ordinary Least Squares (OLS) Regression</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -890,8 +751,11 @@ Optimal Intercept (b): 5.1126 +/- 0.2996
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-example">Non-Linear Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-various-algorithm-for-linear-problem">Comparison of various algorithm for linear problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-sigma-and-absolute-sigma-parameters-in-scipy-optimize-curve-fit">What are <code class="docutils literal notranslate"><span class="pre">sigma</span></code> and <code class="docutils literal notranslate"><span class="pre">absolute_sigma</span></code> parameters in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-algorithm-is-running-if-we-use-sigma-parameters">What algorithm is running if we use <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameters?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-to-provided-data">3. Application to Provided Data</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
