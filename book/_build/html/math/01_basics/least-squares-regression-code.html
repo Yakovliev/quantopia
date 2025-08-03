@@ -198,6 +198,10 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
+</ul>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -480,16 +484,16 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Prepare the datasets from the screenshots</span>
-<span class="c1"># Dataset 1 (from image_2658c8.png)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Prepare the datasets</span>
+<span class="c1"># Dataset 1</span>
 <span class="n">data1_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
 <span class="n">data1_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
 
-<span class="c1"># Dataset 2 (from image_26bd4e.png)</span>
+<span class="c1"># Dataset 2</span>
 <span class="n">data2_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">294</span><span class="p">,</span> <span class="mi">391</span><span class="p">])</span>
 <span class="n">data2_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">80.4</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">50.1</span><span class="p">,</span> <span class="mf">41.2</span><span class="p">,</span> <span class="mf">28.5</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">])</span>
 
-<span class="c1"># Dataset 3 (from image_26bd66.png)</span>
+<span class="c1"># Dataset 3</span>
 <span class="n">data3_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
 <span class="n">data3_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
 
@@ -571,6 +575,10 @@ document.write(`
             <span class="n">adjusted_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1"># Not applicable if degrees of freedom are insufficient</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Adjusted R-squared: Not applicable (insufficient degrees of freedom)&quot;</span><span class="p">)</span>
 
+        <span class="n">Value_for_x_0</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">A_fit</span><span class="p">,</span> <span class="n">B_fit</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Value for x=0 (Expected value is 100): </span><span class="si">{</span><span class="n">Value_for_x_0</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
             <span class="s2">&quot;x_data&quot;</span><span class="p">:</span> <span class="n">x_data</span><span class="p">,</span>
@@ -605,6 +613,7 @@ Root Mean Squared Error (RMSE): 3.9845
 Total Sum of Squares (TSS): 5492.6000
 R-squared: 0.9798
 Adjusted R-squared: 0.9696
+Value for x=0 (Expected value is 100): 100.0000
 
 --- Fitting Dataset 2 ---
 Fitted parameters: A = 75.2997 +/- 4.3607, B = 0.0110 +/- 0.0020
@@ -613,6 +622,7 @@ Root Mean Squared Error (RMSE): 4.3783
 Total Sum of Squares (TSS): 4934.4171
 R-squared: 0.9728
 Adjusted R-squared: 0.9592
+Value for x=0 (Expected value is 100): 100.0000
 
 --- Fitting Dataset 3 ---
 Fitted parameters: A = 56.6753 +/- 0.5420, B = 0.0099 +/- 0.0003
@@ -621,6 +631,7 @@ Root Mean Squared Error (RMSE): 0.5084
 Total Sum of Squares (TSS): 2811.9943
 R-squared: 0.9994
 Adjusted R-squared: 0.9990
+Value for x=0 (Expected value is 100): 100.0000
 </pre></div>
 </div>
 </div>
@@ -730,8 +741,8 @@ R-squared: 0.9949303922700998
 Dep. Variable:                      y   R-squared:                       0.995
 Model:                            OLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1178.
-Date:                Mon, 28 Jul 2025   Prob (F-statistic):           4.08e-08
-Time:                        04:05:34   Log-Likelihood:                -2.5554
+Date:                Sun, 03 Aug 2025   Prob (F-statistic):           4.08e-08
+Time:                        16:45:13   Log-Likelihood:                -2.5554
 No. Observations:                   8   AIC:                             9.111
 Df Residuals:                       6   BIC:                             9.270
 Df Model:                           1                                         

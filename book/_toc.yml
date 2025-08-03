@@ -21,6 +21,10 @@ parts:
         sections:
           - file: math/01_basics/ordinary-least-squares-code
       - file: math/01_basics/variance-covariance
+      - file: math/01_basics/weighted-least-squares
+        sections:
+          - file: math/01_basics/weighted-least-squares-code
+      - file: math/01_basics/orthogonal-distance-regression
 
   - caption: PHYSICS
     chapters:
