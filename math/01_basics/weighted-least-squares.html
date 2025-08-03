@@ -202,6 +202,7 @@
 <li class="toctree-l2"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
 </ul>
 </details></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -461,6 +462,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-goodness-of-fit-is-calculated">How the Goodness of Fit is Calculated</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistic-for-non-linear-regression">Chi-Squared Statistic for Non-Linear Regression</a></li>
 </ul>
             </nav>
         </div>
@@ -642,10 +644,10 @@ The weights are typically inversely proportional to the variance of the errors f
 <ul>
 <li><p><strong>Degrees of Freedom (<span class="math notranslate nohighlight">\(\nu\)</span>):</strong> This is defined as the number of data points minus the number of parameters you are fitting.</p>
 <div class="math notranslate nohighlight">
-\[\nu = N - k\]</div>
+\[\nu = N - P\]</div>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(N\)</span>: Number of data points.</p></li>
-<li><p><span class="math notranslate nohighlight">\(k\)</span>: Number of parameters in your model.
+<li><p><span class="math notranslate nohighlight">\(P\)</span>: Number of parameters in your model.
 The degrees of freedom represent the number of independent pieces of information available to test the goodness of fit after the model parameters have been determined.</p></li>
 </ul>
 </li>
@@ -688,9 +690,9 @@ The degrees of freedom represent the number of independent pieces of information
 <div class="math notranslate nohighlight">
 \[\text{SSR} = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
 </li>
-<li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the SSR by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-k\)</span>):</p>
+<li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the SSR by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-P\)</span>):</p>
 <div class="math notranslate nohighlight">
-\[\hat{\sigma}^2_{unknown} = \frac{\text{SSR}}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-k}\]</div>
+\[\hat{\sigma}^2_{unknown} = \frac{\text{SSR}}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-P}\]</div>
 <p>This value, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{unknown}\)</span>, is a measure of the average scatter of your data points around the fitted curve.</p>
 </li>
 <li><p><strong>The Scaling Factor:</strong> The reduced chi-squared value is conceptually <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span>. When no <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the chi-squared value is technically calculated with <span class="math notranslate nohighlight">\(\sigma_i = 1\)</span> for all points. So, <span class="math notranslate nohighlight">\(\chi^2 = \text{SSR}\)</span>. Therefore, the reduced chi-squared is simply <span class="math notranslate nohighlight">\(\text{SSR}/\nu\)</span>. This value is used as the scaling factor for the covariance matrix. Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
@@ -706,6 +708,22 @@ The degrees of freedom represent the number of independent pieces of information
 </ol>
 <p>This estimate of the uncertainty is then used to calculate the standard errors of your fitted parameters. This is a robust approach when you don’t have prior knowledge of your measurement errors, but it’s not as statistically rigorous as providing a known uncertainty via the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter. The parameter uncertainties you get are a reflection of how well your model explains the observed variation in your data, rather than being based on a known, independent measure of your experimental precision.</p>
 </section>
+</section>
+<section id="chi-squared-statistic-for-non-linear-regression">
+<h2>Chi-Squared Statistic for Non-Linear Regression<a class="headerlink" href="#chi-squared-statistic-for-non-linear-regression" title="Link to this heading">#</a></h2>
+<p>Generally, we can’t use a reduced chi-squared statistic for non-linear models. The key reason is that you can’t accurately determine the <strong>degrees of freedom</strong>, which is a crucial component of the reduced chi-squared calculation.</p>
+<p>The reduced chi-squared (<span class="math notranslate nohighlight">\(\chi^2_v\)</span>) is defined as the chi-squared statistic (<span class="math notranslate nohighlight">\(\chi^2\)</span>) divided by the number of degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\chi^2_v = \frac{\chi^2}{\nu}\]</div>
+<p>The chi-squared statistic itself, a measure of how well a model fits the data, is straightforward to calculate for <strong>both linear and non-linear models</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\chi^2 = \sum_{i=1}^{N} \frac{(O_i - E_i)^2}{\sigma_i^2} = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(O_i\)</span> are the observed data points, <span class="math notranslate nohighlight">\(E_i\)</span> are the expected values from the model, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the measurement uncertainties.</p>
+<p>However, the degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>) is the number of data points (<span class="math notranslate nohighlight">\(N\)</span>) minus the number of parameters (<span class="math notranslate nohighlight">\(P\)</span>) that were fitted to the data (<span class="math notranslate nohighlight">\(\nu = N - P\)</span>).</p>
+<ul class="simple">
+<li><p><strong>For linear models</strong>, the number of fitted parameters (<span class="math notranslate nohighlight">\(P\)</span>) is well-defined and corresponds to the number of parameters in the model (e.g., the slope and intercept in a linear fit). The model is a simple superposition of basis functions. Because the relationship between the parameters and the chi-squared value is a quadratic function, the parameters are independent, and a clear number of degrees of freedom can be calculated.</p></li>
+<li><p><strong>For non-linear models</strong>, the relationship between the parameters and the data is more complex. A small change in one parameter can have a disproportionate effect on the others, making the parameters <strong>non-independent</strong>. As a result, the concept of a fixed number of parameters “removing” degrees of freedom is no longer valid. The number of degrees of freedom becomes unknown and therefore, it’s impossible to reliably compute a reduced chi-squared value.</p></li>
+</ul>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -794,6 +812,7 @@ The degrees of freedom represent the number of independent pieces of information
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-goodness-of-fit-is-calculated">How the Goodness of Fit is Calculated</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistic-for-non-linear-regression">Chi-Squared Statistic for Non-Linear Regression</a></li>
 </ul>
   </nav></div>
 
