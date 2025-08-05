@@ -1,0 +1,823 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/01_basics/aic-and-bic';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/01_basics/aic-and-bic.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/01_basics/aic-and-bic.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/math/01_basics/aic-and-bic.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akaike-information-criterion-aic">Akaike Information Criterion (AIC)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-information-criterion-bic">Bayesian Information Criterion (BIC)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-and-when-to-use-which">Key Differences and When to Use Which</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-log-likelihood-for-least-squares">Derivation of the Log-Likelihood for Least Squares</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-formula">The Final Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correct-assumption-normality-of-errors">The Correct Assumption: Normality of Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-first-option-is-incorrect">Why the First Option is Incorrect</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="akaike-information-criterion-aic-and-bayesian-information-criterion-bic">
+<h1>Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)<a class="headerlink" href="#akaike-information-criterion-aic-and-bayesian-information-criterion-bic" title="Link to this heading">#</a></h1>
+<p>Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) are both statistical tools used for <strong>model selection</strong>. They help you choose the best model from a set of candidate models by balancing two competing goals: <strong>goodness of fit</strong> and <strong>model complexity</strong>.</p>
+<p>Both criteria are particularly useful when comparing models that may have different numbers of parameters, as they penalize models for being more complex to prevent <strong>overfitting</strong>.</p>
+<section id="akaike-information-criterion-aic">
+<h2>Akaike Information Criterion (AIC)<a class="headerlink" href="#akaike-information-criterion-aic" title="Link to this heading">#</a></h2>
+<p>AIC is an estimator of prediction error and is rooted in information theory. It estimates the relative amount of information a model loses when representing the process that generated the data. The model with the lowest AIC value is considered the best among the candidate models.</p>
+<p>The formula is:</p>
+<div class="math notranslate nohighlight">
+\[AIC = -2 \ln(L) + 2k\]</div>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(L)\)</span></strong>: This is the <strong>goodness-of-fit term</strong>. It’s derived from the maximum likelihood (<span class="math notranslate nohighlight">\(L\)</span>) of the model, which measures how well the model fits the data. A higher likelihood (and thus a smaller negative log-likelihood) indicates a better fit.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(2k\)</span></strong>: This is the <strong>penalty term</strong>. It’s a penalty for model complexity, where <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters in the model. A more complex model (one with more parameters) gets a higher penalty.</p></li>
+</ul>
+<p>The AIC’s goal is to find the model that best approximates the unknown data-generating process, even if that process isn’t one of the candidate models. It’s focused on <strong>predictive accuracy</strong>.</p>
+</section>
+<section id="bayesian-information-criterion-bic">
+<h2>Bayesian Information Criterion (BIC)<a class="headerlink" href="#bayesian-information-criterion-bic" title="Link to this heading">#</a></h2>
+<p>BIC, also known as the Schwarz Information Criterion (SIC), is a criterion for model selection derived from a Bayesian perspective. Like AIC, it balances goodness of fit and complexity, but it does so more aggressively. The model with the lowest BIC value is the one preferred.</p>
+<p>The formula is:</p>
+<div class="math notranslate nohighlight">
+\[BIC = -2 \ln(L) + k \ln(n)\]</div>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(L)\)</span></strong>: This is the same goodness-of-fit term as in AIC.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(k \ln(n)\)</span></strong>: This is the <strong>penalty term</strong>. The penalty for complexity is stronger than AIC’s because it includes the natural logarithm of the number of data points (<span class="math notranslate nohighlight">\(n\)</span>).</p></li>
+</ul>
+<p>Because of the <span class="math notranslate nohighlight">\(\ln(n)\)</span> factor, BIC applies a much heavier penalty for additional parameters, especially as the sample size grows. This means BIC tends to favor <strong>simpler models</strong> more strongly than AIC. It assumes that one of the candidate models is the “true” model, and its goal is to find that true model.</p>
+<section id="key-differences-and-when-to-use-which">
+<h3>Key Differences and When to Use Which<a class="headerlink" href="#key-differences-and-when-to-use-which" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-left"><p>Akaike Information Criterion (AIC)</p></th>
+<th class="head text-left"><p>Bayesian Information Criterion (BIC)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Penalty for Complexity</strong></p></td>
+<td class="text-left"><p>Penalizes with <span class="math notranslate nohighlight">\(2k\)</span>.</p></td>
+<td class="text-left"><p>Penalizes with <span class="math notranslate nohighlight">\(k \ln(n)\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Focus</strong></p></td>
+<td class="text-left"><p>Finds the best <strong>approximating</strong> model for predictive accuracy.</p></td>
+<td class="text-left"><p>Finds the “true” model.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Sample Size</strong></p></td>
+<td class="text-left"><p>The penalty is constant with respect to sample size.</p></td>
+<td class="text-left"><p>The penalty increases with sample size, favoring simpler models.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Behavior</strong></p></td>
+<td class="text-left"><p>Tends to select more complex models than BIC.</p></td>
+<td class="text-left"><p>Tends to select more simpler models than AIC.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>NOTE: The terms “approximating model” and “true model” refer to their underlying assumptions about the reality you are trying to model.</p>
+<p><strong>AIC assumes that the “true” data-generating process is infinitely complex and therefore unknowable.</strong> We can only ever hope to approximate it with our models.</p>
+<ul class="simple">
+<li><p><strong>Goal</strong>: AIC’s goal is to find the model that provides the best trade-off between bias (how far your model is from the true process) and variance (how much your model would change with different data). In simpler terms, it’s about building the model that will give you the most accurate predictions on a new, unseen dataset.</p></li>
+<li><p><strong>Best for</strong>: This makes AIC ideal for tasks where <strong>prediction</strong> is the primary goal, such as forecasting future stock prices, predicting customer behavior, or machine learning applications. You’re not trying to discover the fundamental laws of the universe, you’re just trying to make the most useful prediction you can.</p></li>
+<li><p><strong>Mathematical Justification</strong>: AIC’s penalty term (<span class="math notranslate nohighlight">\(2k\)</span>) is derived from the Kullback-Leibler (KL) divergence, which is a measure of the information lost when approximating reality with a given model. By minimizing AIC, you are minimizing this information loss.</p></li>
+</ul>
+<p><strong>BIC assumes that there is a “true” model that generated the data, and this model exists within your set of candidate models.</strong> This is often a good assumption for scientific fields where we believe there are underlying, fixed physical laws governing a system.</p>
+<ul class="simple">
+<li><p><strong>Goal</strong>: BIC’s goal is to select the model that is most likely to be this “true” model. Because of its heavier penalty for more parameters (<span class="math notranslate nohighlight">\(k\ln(n)\)</span>), BIC is more likely to choose simpler, more parsimonious models. It essentially bets that the simplest model that explains the data well is the correct one.</p></li>
+<li><p><strong>Best for</strong>: This makes BIC more suitable for tasks of <strong>explanation and discovery</strong>, where you want to find the most fundamental, elegant, and concise model that describes a phenomenon. This is common in fields like physics, biology, and some social sciences.</p></li>
+<li><p><strong>Mathematical Justification</strong>: BIC is derived from Bayesian inference and is an approximation of the posterior probability of a model being the true model, given the data. By minimizing BIC, you are maximizing this posterior probability.</p></li>
+</ul>
+<p>In essence:</p>
+<ul class="simple">
+<li><p><strong>AIC</strong> asks: “Which model will give me the most accurate predictions for the future?”</p></li>
+<li><p><strong>BIC</strong> asks: “Which model is most likely to be the true explanation for the data I have?”</p></li>
+</ul>
+<p>This is why AIC often chooses a slightly more complex model than BIC. AIC is willing to accept a little extra complexity if it improves predictive accuracy, while BIC is more conservative, preferring a simpler model unless the evidence for a more complex one is overwhelming.</p>
+<p>In practice, if your goal is to find the model with the highest predictive power, AIC is often preferred. If your goal is to select the most efficient or fundamental model that is likely to be the “true” one, BIC might be a better choice.</p>
+<p>When you compare two models, you find AIC Difference <span class="math notranslate nohighlight">\(\Delta \text{AIC}\)</span> and BIC Difference <span class="math notranslate nohighlight">\(\Delta \text{BIC}\)</span> for these modesl. Here are some general guidelines for interpreting these differences, based on conventions in the scientific community:</p>
+<ul class="simple">
+<li><p><strong>AIC Difference (<span class="math notranslate nohighlight">\(\Delta \text{AIC}\)</span>)</strong>: A difference of more than 2 between two models is often considered significant. If the difference is between 0 and 2, the models are considered to have a similar level of support from the data. A model with a <span class="math notranslate nohighlight">\(\Delta\)</span>AIC of 10 or more is considered to have very little support compared to the best model.</p></li>
+<li><p><strong>BIC Difference (<span class="math notranslate nohighlight">\(\Delta \text{BIC}\)</span>)</strong>: Because BIC has a stronger penalty for complexity, its differences are interpreted more stringently. A difference of 0-2 is considered as weak evidence for the model with the lower BIC, a difference of 2-6 is considered positive evidence, a difference of 6-10 is strong evidence, and a difference of more than 10 is considered very strong evidence.</p></li>
+</ul>
+</section>
+</section>
+<section id="maximum-likelihood-estimation">
+<h2>Maximum Likelihood Estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Link to this heading">#</a></h2>
+<p>Maximum Likelihood Estimation (MLE) is a powerful and flexible method for estimating the parameters of a statistical model. It’s used to find the parameter values that make the observed data most probable. The <strong>likelihood function</strong> quantifies how probable the observed data is for a given set of parameters. The <strong>log-likelihood function</strong> is simply the natural logarithm of the likelihood function.</p>
+<p>The core idea of MLE is to find the parameter values that maximize the likelihood function, <span class="math notranslate nohighlight">\(L(\theta|x)\)</span>, where <span class="math notranslate nohighlight">\(\theta\)</span> represents the parameters and <span class="math notranslate nohighlight">\(x\)</span> is the data. The likelihood function is often a product of probability density functions (or probability mass functions) for each data point. For a set of independent and identically distributed (i.i.d.) observations, the likelihood is:</p>
+<div class="math notranslate nohighlight">
+\[L(\theta|x) = \prod_{i=1}^{n} f(x_i|\theta)\]</div>
+<p>Working with this product can be difficult, especially with many data points, as multiplying many small numbers can lead to computational underflow. This is where the <strong>log-likelihood</strong> comes in. By taking the natural logarithm, the product is transformed into a sum, which is much more computationally stable and easier to differentiate.</p>
+<div class="math notranslate nohighlight">
+\[\ln L(\theta|x) = \ln \left( \prod_{i=1}^{n} f(x_i|\theta) \right) = \sum_{i=1}^{n} \ln f(x_i|\theta)\]</div>
+<p>Since the logarithm is a monotonic function, maximizing the log-likelihood function yields the <strong>exact same parameter estimates</strong> as maximizing the likelihood function.</p>
+<p>The connection between Maximum Likelihood and regression modeling becomes clear when we make assumptions about the distribution of the errors. While Ordinary Least Squares (OLS) regression minimizes the sum of squared residuals, MLE provides a more general framework that can lead to the same result under specific conditions.</p>
+<p><strong>For OLS:</strong>
+The OLS method finds the coefficients that minimize the <strong>sum of squared residuals</strong> (or errors). That is, it minimizes the following:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (y_i - \hat{y}_i)^2 = \sum_{i=1}^{n} (y_i - (\beta_0 + \beta_1x_i))^2\]</div>
+<p><strong>Relation to MLE:</strong>
+The OLS solution is the Maximum Likelihood Estimate for a linear regression model <strong>if we assume that the error terms (<span class="math notranslate nohighlight">\(\epsilon_i\)</span>) are independently and identically distributed (i.i.d.) according to a normal distribution with a mean of zero and a constant variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>).</strong></p>
+<p>When we make this assumption, the probability of observing a particular data point <span class="math notranslate nohighlight">\(y_i\)</span> for a given <span class="math notranslate nohighlight">\(x_i\)</span> is a normal distribution centered at the predicted value, <span class="math notranslate nohighlight">\(\beta_0 + \beta_1x_i\)</span>. The log-likelihood function for this model can be written as:</p>
+<div class="math notranslate nohighlight">
+\[\ln L(\beta_0, \beta_1, \sigma^2|x,y) = -\frac{n}{2} \ln(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (y_i - (\beta_0 + \beta_1x_i))^2\]</div>
+<p>NOTE: We will derive a similar formula below but in a bit more general form.</p>
+<p>Notice the last term in the equation. To maximize the log-likelihood function, we need to maximize this entire expression. The first term is a constant with respect to the <span class="math notranslate nohighlight">\(\beta\)</span> coefficients, and the second term is negative. Therefore, to make the overall value as large as possible, we must make the negative term as small as possible. This is equivalent to minimizing the <strong>sum of squared residuals</strong>, which is exactly what OLS does.</p>
+<p><strong>Why is this important?</strong> This connection shows that OLS is not just an arbitrary method for fitting a line; it has a probabilistic foundation under the assumption of normally distributed errors. For other types of regression, such as logistic regression, there is no OLS equivalent. Instead, the parameters are always estimated using Maximum Likelihood, where the log-likelihood function is based on the appropriate distribution for the outcome variable (e.g., a Bernoulli distribution for binary outcomes).</p>
+</section>
+<section id="derivation-of-the-log-likelihood-for-least-squares">
+<h2>Derivation of the Log-Likelihood for Least Squares<a class="headerlink" href="#derivation-of-the-log-likelihood-for-least-squares" title="Link to this heading">#</a></h2>
+<p>Yes, there is a very useful formula for the log-likelihood (<span class="math notranslate nohighlight">\(\ln(L)\)</span>) that we can use for our case. It’s derived by making one key assumption: that the errors (the residuals) follow a normal distribution. This is the same underlying assumption that allows us to use least squares methods in the first place.</p>
+<p>Here is the derivation:</p>
+<ol class="arabic">
+<li><p><strong>Start with the probability of one data point.</strong> The probability of observing a single data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> given the model’s prediction <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is described by a normal distribution with a mean of <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> and a standard deviation of <span class="math notranslate nohighlight">\(\sigma_i\)</span>. The probability density function (PDF) for a single point is:</p>
+<div class="math notranslate nohighlight">
+\[p(y_i) = \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}}\]</div>
+</li>
+<li><p><strong>Form the likelihood function.</strong> Assuming each data point is an independent measurement, the total likelihood (<span class="math notranslate nohighlight">\(L\)</span>) of observing all <span class="math notranslate nohighlight">\(N\)</span> data points is the product of their individual probabilities:</p>
+<div class="math notranslate nohighlight">
+\[L = \prod_{i=1}^{N} p(y_i) = \prod_{i=1}^{N} \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
+</li>
+<li><p><strong>Take the natural logarithm.</strong> To simplify the product and make the calculations more manageable, we take the natural logarithm of the likelihood function. A product becomes a sum, and the exponential term simplifies.</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = \ln \left( \prod_{i=1}^{N} p(y_i) \right) = \sum_{i=1}^{N} \ln(p(y_i))\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = \sum_{i=1}^{N} \ln \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
+</li>
+<li><p><strong>Simplify the expression.</strong> Using logarithm rules (<span class="math notranslate nohighlight">\(\ln(a \cdot b) = \ln(a) + \ln(b)\)</span> and <span class="math notranslate nohighlight">\(\ln(e^x) = x\)</span>), we can expand the sum:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = \sum_{i=1}^{N} \left( \ln\left(\frac{1}{\sqrt{2\pi\sigma_i^2}}\right) - \frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2} \right)\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+</li>
+</ol>
+<section id="the-final-formula">
+<h3>The Final Formula<a class="headerlink" href="#the-final-formula" title="Link to this heading">#</a></h3>
+<p>The second term in this equation is directly related to our Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) statistic. Since <span class="math notranslate nohighlight">\(\chi^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\)</span>, we can rewrite the equation as:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \frac{1}{2}\chi^2 - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2})\]</div>
+<p>When comparing different models on the same dataset, the second term, which depends on the constant measurement uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>), is a constant and doesn’t affect which model is selected. Therefore, for our purposes, we can write a simplified and more practical relationship:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) \propto - \frac{1}{2}\chi^2\]</div>
+<p>This means that maximizing the log-likelihood is equivalent to <strong>minimizing the chi-squared statistic</strong>.</p>
+</section>
+<section id="how-to-use-this-for-aic-and-bic">
+<h3>How to Use This for AIC and BIC<a class="headerlink" href="#how-to-use-this-for-aic-and-bic" title="Link to this heading">#</a></h3>
+<p>Since the AIC and BIC formulas depend on <span class="math notranslate nohighlight">\(-2\ln(L)\)</span>, we can substitute our derived expression. When <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> finds the optimal parameters, it’s minimizing the <span class="math notranslate nohighlight">\(\chi^2\)</span> value. This is the best-fit <span class="math notranslate nohighlight">\(\chi^2\)</span>.</p>
+<p>So, for a model fitted with least squares, we can calculate the information criteria using the final <span class="math notranslate nohighlight">\(\chi^2\)</span> from the fit:</p>
+<ul class="simple">
+<li><p><strong>For AIC:</strong>
+$<span class="math notranslate nohighlight">\(-2\ln(L) = -2 \left( - \frac{1}{2}\chi^2 + \text{constant} \right) = \chi^2 + \text{constant'}\)</span><span class="math notranslate nohighlight">\(
+  Since the constants don't affect the model ranking, we can simply use:
+  \)</span><span class="math notranslate nohighlight">\(AIC = \chi^2 + 2k\)</span>$</p></li>
+<li><p><strong>For BIC:</strong>
+$<span class="math notranslate nohighlight">\(BIC = \chi^2 + k\ln(N)\)</span>$</p></li>
+</ul>
+<p>Where <span class="math notranslate nohighlight">\(\chi^2\)</span> is the final chi-squared value calculated from the WLS fit, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(N\)</span> is the number of data points. By calculating these values for different models fitted to the same data, you can choose the model with the lowest AIC or BIC as the one that provides the best balance of fit and parsimony.</p>
+<p>Excellent clarification question. You’ve hit on a crucial and often misunderstood point in statistical modeling, particularly in the context of regression.</p>
+<p>Let’s break down your options. The correct interpretation is a combination of your second and third points, which are essentially two ways of stating the same core assumption.</p>
+</section>
+<section id="the-correct-assumption-normality-of-errors">
+<h3>The Correct Assumption: Normality of Errors<a class="headerlink" href="#the-correct-assumption-normality-of-errors" title="Link to this heading">#</a></h3>
+<p>You are correct with these two statements:</p>
+<ul class="simple">
+<li><p><strong>We expect that errors (the residuals) for each point follow a normal distribution.</strong></p></li>
+<li><p><strong>The probability of observing a single data point $<span class="math notranslate nohighlight">\(y_i\)</span><span class="math notranslate nohighlight">\( given the model's prediction \)</span><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span><span class="math notranslate nohighlight">\( is described by a normal distribution with a mean of \)</span><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span>$.</strong></p></li>
+</ul>
+<p>These two statements describe the same concept from slightly different angles. In a standard linear regression model, we model the relationship as:</p>
+<div class="math notranslate nohighlight">
+\[
+y_i = f(x_i, \beta) + \epsilon_i
+\]</div>
+<p>Where:</p>
+<ul>
+<li><div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}y_i$$ is the observed outcome for the i-th data point.
+- $$f(x_i, \beta)$$ is the model's prediction for $$y_i$$ based on its input $$x_i$$ and parameters $$\beta$$. This is the **mean** of the distribution for $$y_i$$.
+- $$\epsilon_i$$ is the **error term** or residual for that data point.\\The fundamental assumption is that this error term, $$\epsilon_i$$, is a random variable drawn from a normal distribution with a mean of 0 and a constant variance $$\sigma^2$$. We write this as:\end{aligned}\end{align} \]</div>
+</li>
+</ul>
+<p>\epsilon_i \sim N(0, \sigma^2)
+$$</p>
+<p>This directly implies your third point: the observed value $<span class="math notranslate nohighlight">\(y_i\)</span><span class="math notranslate nohighlight">\( for a given \)</span><span class="math notranslate nohighlight">\(x_i\)</span>$ is expected to follow a normal distribution centered around the model’s prediction. We write this as:</p>
+<div class="math notranslate nohighlight">
+\[
+y_i | x_i \sim N(f(x_i, \beta), \sigma^2)
+\]</div>
+<p>This means that if we could collect many $<span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( values for the *exact same* \)</span><span class="math notranslate nohighlight">\(x\)</span><span class="math notranslate nohighlight">\( value, those \)</span><span class="math notranslate nohighlight">\(y\)</span>$ values would form a normal (bell-shaped) distribution around the line of best fit.</p>
+</section>
+<section id="why-the-first-option-is-incorrect">
+<h3>Why the First Option is Incorrect<a class="headerlink" href="#why-the-first-option-is-incorrect" title="Link to this heading">#</a></h3>
+<p>You asked: <strong>“Do we expect that all the data points should be on the normal distribution curve?”</strong></p>
+<p>This is a common misconception. Here’s why it’s incorrect:</p>
+<ol class="arabic simple">
+<li><p><strong>Data points ($<span class="math notranslate nohighlight">\(x_i, y_i\)</span>$) are pairs:</strong> They represent points in a 2D (or higher dimensional) space. A single normal distribution describes a single variable, not a relationship between variables.</p></li>
+<li><p>**The dependent variable $<span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( itself doesn't need to be normally distributed:** The assumption applies to the *residuals* (\)</span><span class="math notranslate nohighlight">\(y_i - \hat{y}_i\)</span><span class="math notranslate nohighlight">\(), not the raw \)</span><span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( values. Your \)</span><span class="math notranslate nohighlight">\(y\)</span>$ values could have any shape (e.g., be skewed or bimodal), but as long as the errors around the regression line are normally distributed, the assumption holds.</p></li>
+</ol>
+<p>In summary, when we use the log-likelihood formula for a normal distribution in a regression context, we are not assuming the raw data is normal. Instead, we are making a precise assumption that the <strong>errors of our model’s predictions are normally distributed.</strong> This assumption is what allows us to calculate the likelihood of observing our data given the model, which is a necessary step for calculating AIC and BIC.</p>
+<p>That first formula, <span class="math notranslate nohighlight">\(\sigma^2 = \frac{SSR}{n-k-1}\)</span>, is not quite right. The formula for the estimated error variance is a sample statistic, and it’s more accurately represented by <span class="math notranslate nohighlight">\(s^2\)</span>, which is commonly called the <strong>Mean Squared Error (MSE)</strong>. The second formula is correct and provides the proper definition.</p>
+</section>
+<hr class="docutils" />
+<section id="what-is-the-mean-squared-error-of-residuals-mse">
+<h3>What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?<a class="headerlink" href="#what-is-the-mean-squared-error-of-residuals-mse" title="Link to this heading">#</a></h3>
+<p>The <strong>Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)</strong> is the average squared difference between the observed values and the values predicted by the regression model. It’s the unbiased estimator for the true error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, in a linear regression model.</p>
+<p>The formula is:</p>
+<div class="math notranslate nohighlight">
+\[MSE = s^2 = \frac{SSR}{n - k - 1}\]</div>
+<p>Here’s what each term means:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(s^2\)</span></strong> or <strong><span class="math notranslate nohighlight">\(MSE\)</span></strong>: The estimated error variance.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(SSR\)</span> (Sum of Squared Residuals)</strong>: The sum of the squared differences between the observed values (<span class="math notranslate nohighlight">\(y_i\)</span>) and the predicted values (<span class="math notranslate nohighlight">\(\hat{y}_i\)</span>).
+$<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\)</span>$</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(n\)</span></strong>: The number of observations or data points.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(k\)</span></strong>: The number of independent variables (predictors) in the model.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(n - k - 1\)</span></strong>: The <strong>degrees of freedom</strong> for the residuals. This is the denominator because we lose one degree of freedom for the intercept and one for each predictor we estimate.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="derivation-and-intuition">
+<h3>Derivation and Intuition<a class="headerlink" href="#derivation-and-intuition" title="Link to this heading">#</a></h3>
+<p>The formula isn’t derived in the traditional sense of a mathematical proof but is based on the concept of an <strong>unbiased estimator</strong>.</p>
+<p>The goal is to estimate the true variance of the errors, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, which we don’t know. The sum of squared residuals, <span class="math notranslate nohighlight">\(SSR\)</span>, is a good starting point, but simply dividing by <span class="math notranslate nohighlight">\(n\)</span> would give us a biased estimate. The reason for this is that we use the sample data to estimate the regression coefficients (the slope and intercept), which forces the residuals to have a mean of zero. This constraint means the residuals are not truly independent.</p>
+<p>By dividing by the <strong>degrees of freedom</strong>, <span class="math notranslate nohighlight">\(n - k - 1\)</span>, instead of just <span class="math notranslate nohighlight">\(n\)</span>, we correct for this bias. The degrees of freedom represent the number of values in the final calculation of a statistic that are free to vary. In linear regression, once you’ve estimated the intercept and the slopes (a total of <span class="math notranslate nohighlight">\(k+1\)</span> parameters), the values of the residuals are no longer entirely free to vary. Therefore, dividing by <span class="math notranslate nohighlight">\(n - k - 1\)</span> provides an <strong>unbiased estimator</strong> of the true population variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">https://en.wikipedia.org/wiki/Maximum_likelihood_estimation</a></p></li>
+<li><p><a class="reference external" href="https://www.quantstart.com/articles/Maximum-Likelihood-Estimation-for-Linear-Regression/">https://www.quantstart.com/articles/Maximum-Likelihood-Estimation-for-Linear-Regression/</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math\01_basics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akaike-information-criterion-aic">Akaike Information Criterion (AIC)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-information-criterion-bic">Bayesian Information Criterion (BIC)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-and-when-to-use-which">Key Differences and When to Use Which</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-log-likelihood-for-least-squares">Derivation of the Log-Likelihood for Least Squares</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-formula">The Final Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correct-assumption-normality-of-errors">The Correct Assumption: Normality of Errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-first-option-is-incorrect">Why the First Option is Incorrect</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
