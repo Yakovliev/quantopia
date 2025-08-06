@@ -64,6 +64,8 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Weighted Least Squares - Code Examples" href="weighted-least-squares-code.html" />
+    <link rel="prev" title="Goodness of Fit and Chi-Squared Statistic" href="goodness-of-fit-and-chi-squared.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -126,8 +128,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -184,7 +184,7 @@
             </li>
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
@@ -200,6 +200,7 @@
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
 <li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
@@ -449,14 +450,16 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-log-likelihood-for-least-squares">Derivation of the Log-Likelihood for Least Squares</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-formula">The Final Formula</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correct-assumption-normality-of-errors">The Correct Assumption: Normality of Errors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-first-option-is-incorrect">Why the First Option is Incorrect</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd-what-if-sigma-is-uknown">TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd">TBD</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
             </nav>
@@ -579,98 +582,82 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 <section id="derivation-of-the-log-likelihood-for-least-squares">
 <h2>Derivation of the Log-Likelihood for Least Squares<a class="headerlink" href="#derivation-of-the-log-likelihood-for-least-squares" title="Link to this heading">#</a></h2>
 <p>Yes, there is a very useful formula for the log-likelihood (<span class="math notranslate nohighlight">\(\ln(L)\)</span>) that we can use for our case. It’s derived by making one key assumption: that the errors (the residuals) follow a normal distribution. This is the same underlying assumption that allows us to use least squares methods in the first place.</p>
-<p>Here is the derivation:</p>
+<p>Here is the derivation (note that we derive all the formulas under the assumption that we know exact values of <span class="math notranslate nohighlight">\(\sigma_i\)</span> or <span class="math notranslate nohighlight">\(\sigma\)</span>):</p>
 <ol class="arabic">
-<li><p><strong>Start with the probability of one data point.</strong> The probability of observing a single data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> given the model’s prediction <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is described by a normal distribution with a mean of <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> and a standard deviation of <span class="math notranslate nohighlight">\(\sigma_i\)</span>. The probability density function (PDF) for a single point is:</p>
+<li><p><strong>Start with the probability of one data point.</strong> We assume that the probability of observing a single data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> given the model’s prediction <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is described by a normal distribution with a mean of <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> and a standard deviation of <span class="math notranslate nohighlight">\(\sigma_i\)</span>. This is equivalent to the assumption that the error terms <span class="math notranslate nohighlight">\(\epsilon_i\)</span> are independently distributed according to a normal distribution with a mean of zero and a variance <span class="math notranslate nohighlight">\(\sigma_i^2\)</span>, so <span class="math notranslate nohighlight">\(\epsilon_i \sim N(0, \sigma_i^2)\)</span> (remember that <span class="math notranslate nohighlight">\(y_i = f(x_i, \beta) + \epsilon_i\)</span>). The probability density function (PDF) for a single point is:</p>
 <div class="math notranslate nohighlight">
 \[p(y_i) = \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}}\]</div>
 </li>
-<li><p><strong>Form the likelihood function.</strong> Assuming each data point is an independent measurement, the total likelihood (<span class="math notranslate nohighlight">\(L\)</span>) of observing all <span class="math notranslate nohighlight">\(N\)</span> data points is the product of their individual probabilities:</p>
+<li><p><strong>Form the likelihood function.</strong> Assuming each data point is an independent measurement, the total likelihood (<span class="math notranslate nohighlight">\(L\)</span>) of observing all <span class="math notranslate nohighlight">\(n\)</span> data points is the product of their individual probabilities:</p>
 <div class="math notranslate nohighlight">
-\[L = \prod_{i=1}^{N} p(y_i) = \prod_{i=1}^{N} \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
+\[L = \prod_{i=1}^{n} p(y_i) = \prod_{i=1}^{n} \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
 </li>
 <li><p><strong>Take the natural logarithm.</strong> To simplify the product and make the calculations more manageable, we take the natural logarithm of the likelihood function. A product becomes a sum, and the exponential term simplifies.</p>
 <div class="math notranslate nohighlight">
-\[\ln(L) = \ln \left( \prod_{i=1}^{N} p(y_i) \right) = \sum_{i=1}^{N} \ln(p(y_i))\]</div>
+\[\ln(L) = \ln \left( \prod_{i=1}^{n} p(y_i) \right) = \sum_{i=1}^{n} \ln(p(y_i))\]</div>
 <div class="math notranslate nohighlight">
-\[\ln(L) = \sum_{i=1}^{N} \ln \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
+\[\ln(L) = \sum_{i=1}^{n} \ln \left( \frac{1}{\sqrt{2\pi\sigma_i^2}} e^{-\frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2}} \right)\]</div>
 </li>
 <li><p><strong>Simplify the expression.</strong> Using logarithm rules (<span class="math notranslate nohighlight">\(\ln(a \cdot b) = \ln(a) + \ln(b)\)</span> and <span class="math notranslate nohighlight">\(\ln(e^x) = x\)</span>), we can expand the sum:</p>
 <div class="math notranslate nohighlight">
-\[\ln(L) = \sum_{i=1}^{N} \left( \ln\left(\frac{1}{\sqrt{2\pi\sigma_i^2}}\right) - \frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2} \right)\]</div>
+\[\ln(L) = \sum_{i=1}^{n} \left( \ln\left(\frac{1}{\sqrt{2\pi\sigma_i^2}}\right) - \frac{(y_i - f(x_i, \beta))^2}{2\sigma_i^2} \right)\]</div>
 <div class="math notranslate nohighlight">
-\[\ln(L) = - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
-<div class="math notranslate nohighlight">
-\[\ln(L) = - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+\[\ln(L) = - \sum_{i=1}^{n} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 </li>
-</ol>
-<section id="the-final-formula">
-<h3>The Final Formula<a class="headerlink" href="#the-final-formula" title="Link to this heading">#</a></h3>
-<p>The second term in this equation is directly related to our Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) statistic. Since <span class="math notranslate nohighlight">\(\chi^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\)</span>, we can rewrite the equation as:</p>
+<li><p>The second term in this equation is directly related to our Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) statistic. Since <span class="math notranslate nohighlight">\(\chi^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\)</span>, we can rewrite the equation as:</p>
 <div class="math notranslate nohighlight">
-\[\ln(L) = - \frac{1}{2}\chi^2 - \sum_{i=1}^{N} \ln(\sqrt{2\pi\sigma_i^2})\]</div>
-<p>When comparing different models on the same dataset, the second term, which depends on the constant measurement uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>), is a constant and doesn’t affect which model is selected. Therefore, for our purposes, we can write a simplified and more practical relationship:</p>
+\[\ln(L) = - \frac{1}{2}\chi^2 - \sum_{i=1}^{n} \ln(\sqrt{2\pi\sigma_i^2})\]</div>
+</li>
+<li><p>When comparing different models on the same dataset, the second term, which depends on the known measurement uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>), is a constant and doesn’t affect which model is selected. Therefore, for our purposes, we can write a simplified and more practical relationship:</p>
 <div class="math notranslate nohighlight">
 \[\ln(L) \propto - \frac{1}{2}\chi^2\]</div>
 <p>This means that maximizing the log-likelihood is equivalent to <strong>minimizing the chi-squared statistic</strong>.</p>
-</section>
+</li>
+<li><p>If <span class="math notranslate nohighlight">\(\sigma_i = \sigma\)</span> for all <span class="math notranslate nohighlight">\(i\)</span> (assumption of homoscedasticity), we can simplify this expression even more:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \ln(\sqrt{2\pi\sigma^2}) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - n \ln(\sqrt{2\pi\sigma^2}) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \frac{n}{2} \ln(2\pi\sigma^2) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma^2}\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2} \chi^2\]</div>
+</li>
+</ol>
 <section id="how-to-use-this-for-aic-and-bic">
 <h3>How to Use This for AIC and BIC<a class="headerlink" href="#how-to-use-this-for-aic-and-bic" title="Link to this heading">#</a></h3>
 <p>Since the AIC and BIC formulas depend on <span class="math notranslate nohighlight">\(-2\ln(L)\)</span>, we can substitute our derived expression. When <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> finds the optimal parameters, it’s minimizing the <span class="math notranslate nohighlight">\(\chi^2\)</span> value. This is the best-fit <span class="math notranslate nohighlight">\(\chi^2\)</span>.</p>
 <p>So, for a model fitted with least squares, we can calculate the information criteria using the final <span class="math notranslate nohighlight">\(\chi^2\)</span> from the fit:</p>
-<ul class="simple">
-<li><p><strong>For AIC:</strong>
-$<span class="math notranslate nohighlight">\(-2\ln(L) = -2 \left( - \frac{1}{2}\chi^2 + \text{constant} \right) = \chi^2 + \text{constant'}\)</span><span class="math notranslate nohighlight">\(
-  Since the constants don't affect the model ranking, we can simply use:
-  \)</span><span class="math notranslate nohighlight">\(AIC = \chi^2 + 2k\)</span>$</p></li>
-<li><p><strong>For BIC:</strong>
-$<span class="math notranslate nohighlight">\(BIC = \chi^2 + k\ln(N)\)</span>$</p></li>
-</ul>
-<p>Where <span class="math notranslate nohighlight">\(\chi^2\)</span> is the final chi-squared value calculated from the WLS fit, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(N\)</span> is the number of data points. By calculating these values for different models fitted to the same data, you can choose the model with the lowest AIC or BIC as the one that provides the best balance of fit and parsimony.</p>
-<p>Excellent clarification question. You’ve hit on a crucial and often misunderstood point in statistical modeling, particularly in the context of regression.</p>
-<p>Let’s break down your options. The correct interpretation is a combination of your second and third points, which are essentially two ways of stating the same core assumption.</p>
-</section>
-<section id="the-correct-assumption-normality-of-errors">
-<h3>The Correct Assumption: Normality of Errors<a class="headerlink" href="#the-correct-assumption-normality-of-errors" title="Link to this heading">#</a></h3>
-<p>You are correct with these two statements:</p>
-<ul class="simple">
-<li><p><strong>We expect that errors (the residuals) for each point follow a normal distribution.</strong></p></li>
-<li><p><strong>The probability of observing a single data point $<span class="math notranslate nohighlight">\(y_i\)</span><span class="math notranslate nohighlight">\( given the model's prediction \)</span><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span><span class="math notranslate nohighlight">\( is described by a normal distribution with a mean of \)</span><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span>$.</strong></p></li>
-</ul>
-<p>These two statements describe the same concept from slightly different angles. In a standard linear regression model, we model the relationship as:</p>
-<div class="math notranslate nohighlight">
-\[
-y_i = f(x_i, \beta) + \epsilon_i
-\]</div>
-<p>Where:</p>
 <ul>
-<li><div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}y_i$$ is the observed outcome for the i-th data point.
-- $$f(x_i, \beta)$$ is the model's prediction for $$y_i$$ based on its input $$x_i$$ and parameters $$\beta$$. This is the **mean** of the distribution for $$y_i$$.
-- $$\epsilon_i$$ is the **error term** or residual for that data point.\\The fundamental assumption is that this error term, $$\epsilon_i$$, is a random variable drawn from a normal distribution with a mean of 0 and a constant variance $$\sigma^2$$. We write this as:\end{aligned}\end{align} \]</div>
+<li><p><strong>For AIC:</strong></p>
+<div class="math notranslate nohighlight">
+\[-2\ln(L) = -2 \left( - \frac{1}{2}\chi^2 + \text{constant} \right) = \chi^2 + \text{constant}'\]</div>
+<p>Since the constants don’t affect the model ranking, we can simply use:</p>
+<div class="math notranslate nohighlight">
+\[AIC = \chi^2 + 2k\]</div>
+<p>NOTE: This last formula is valid for model comparison only (not valid to calculate the exact value of AIC). Also, this last formula is valid only if <span class="math notranslate nohighlight">\(\sigma_i\)</span> values are known.</p>
+</li>
+<li><p><strong>For BIC:</strong></p>
+<div class="math notranslate nohighlight">
+\[BIC = \chi^2 + k\ln(n)\]</div>
+<p>NOTE: This last formula is valid for model comparison only (not valid to calculate the exact value of AIC). Also, this last formula is valid only if <span class="math notranslate nohighlight">\(\sigma_i\)</span> values are known.</p>
 </li>
 </ul>
-<p>\epsilon_i \sim N(0, \sigma^2)
-$$</p>
-<p>This directly implies your third point: the observed value $<span class="math notranslate nohighlight">\(y_i\)</span><span class="math notranslate nohighlight">\( for a given \)</span><span class="math notranslate nohighlight">\(x_i\)</span>$ is expected to follow a normal distribution centered around the model’s prediction. We write this as:</p>
+<p>Remember: <span class="math notranslate nohighlight">\(\chi^2\)</span> is the final chi-squared value calculated from the Weighted Least Squares, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(N\)</span> is the number of data points. By calculating these values for different models fitted to the same data, you can choose the model with the lowest AIC or BIC as the one that provides the best balance of fit and parsimony.</p>
+<p>If the standard deviations <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the same for all the data points and are equal to <span class="math notranslate nohighlight">\(\sigma\)</span> (homoscedasticity), then we can directly substitute the following formula for AIC and BIC:</p>
 <div class="math notranslate nohighlight">
-\[
-y_i | x_i \sim N(f(x_i, \beta), \sigma^2)
-\]</div>
-<p>This means that if we could collect many $<span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( values for the *exact same* \)</span><span class="math notranslate nohighlight">\(x\)</span><span class="math notranslate nohighlight">\( value, those \)</span><span class="math notranslate nohighlight">\(y\)</span>$ values would form a normal (bell-shaped) distribution around the line of best fit.</p>
+\[\ln(L) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2} \chi^2\]</div>
 </section>
-<section id="why-the-first-option-is-incorrect">
-<h3>Why the First Option is Incorrect<a class="headerlink" href="#why-the-first-option-is-incorrect" title="Link to this heading">#</a></h3>
-<p>You asked: <strong>“Do we expect that all the data points should be on the normal distribution curve?”</strong></p>
-<p>This is a common misconception. Here’s why it’s incorrect:</p>
-<ol class="arabic simple">
-<li><p><strong>Data points ($<span class="math notranslate nohighlight">\(x_i, y_i\)</span>$) are pairs:</strong> They represent points in a 2D (or higher dimensional) space. A single normal distribution describes a single variable, not a relationship between variables.</p></li>
-<li><p>**The dependent variable $<span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( itself doesn't need to be normally distributed:** The assumption applies to the *residuals* (\)</span><span class="math notranslate nohighlight">\(y_i - \hat{y}_i\)</span><span class="math notranslate nohighlight">\(), not the raw \)</span><span class="math notranslate nohighlight">\(y\)</span><span class="math notranslate nohighlight">\( values. Your \)</span><span class="math notranslate nohighlight">\(y\)</span>$ values could have any shape (e.g., be skewed or bimodal), but as long as the errors around the regression line are normally distributed, the assumption holds.</p></li>
-</ol>
-<p>In summary, when we use the log-likelihood formula for a normal distribution in a regression context, we are not assuming the raw data is normal. Instead, we are making a precise assumption that the <strong>errors of our model’s predictions are normally distributed.</strong> This assumption is what allows us to calculate the likelihood of observing our data given the model, which is a necessary step for calculating AIC and BIC.</p>
-<p>That first formula, <span class="math notranslate nohighlight">\(\sigma^2 = \frac{SSR}{n-k-1}\)</span>, is not quite right. The formula for the estimated error variance is a sample statistic, and it’s more accurately represented by <span class="math notranslate nohighlight">\(s^2\)</span>, which is commonly called the <strong>Mean Squared Error (MSE)</strong>. The second formula is correct and provides the proper definition.</p>
 </section>
 <hr class="docutils" />
+<section id="tbd-what-if-sigma-is-uknown">
+<h2>TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown<a class="headerlink" href="#tbd-what-if-sigma-is-uknown" title="Link to this heading">#</a></h2>
+</section>
+<section id="tbd">
+<h2>TBD<a class="headerlink" href="#tbd" title="Link to this heading">#</a></h2>
+<p>Formula, <span class="math notranslate nohighlight">\(\sigma^2 = \frac{SSR}{n-k-1}\)</span>, is not quite right. The formula for the estimated error variance is a sample statistic, and it’s more accurately represented by <span class="math notranslate nohighlight">\(s^2\)</span>, which is commonly called the <strong>Mean Squared Error (MSE)</strong>. The second formula is correct and provides the proper definition.</p>
 <section id="what-is-the-mean-squared-error-of-residuals-mse">
 <h3>What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?<a class="headerlink" href="#what-is-the-mean-squared-error-of-residuals-mse" title="Link to this heading">#</a></h3>
 <p>The <strong>Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)</strong> is the average squared difference between the observed values and the values predicted by the regression model. It’s the unbiased estimator for the true error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, in a linear regression model.</p>
@@ -695,11 +682,16 @@ $<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y
 <p>By dividing by the <strong>degrees of freedom</strong>, <span class="math notranslate nohighlight">\(n - k - 1\)</span>, instead of just <span class="math notranslate nohighlight">\(n\)</span>, we correct for this bias. The degrees of freedom represent the number of values in the final calculation of a statistic that are free to vary. In linear regression, once you’ve estimated the intercept and the slopes (a total of <span class="math notranslate nohighlight">\(k+1\)</span> parameters), the values of the residuals are no longer entirely free to vary. Therefore, dividing by <span class="math notranslate nohighlight">\(n - k - 1\)</span> provides an <strong>unbiased estimator</strong> of the true population variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 </section>
 </section>
+<section id="modification-for-small-sample-size-for-aic-and-bic">
+<h2>Modification for Small Sample Size for AIC and ?BIC?<a class="headerlink" href="#modification-for-small-sample-size-for-aic-and-bic" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">https://en.wikipedia.org/wiki/Akaike_information_criterion</a></p>
+</section>
 <section id="additional-materials">
 <h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation">https://en.wikipedia.org/wiki/Maximum_likelihood_estimation</a></p></li>
 <li><p><a class="reference external" href="https://www.quantstart.com/articles/Maximum-Likelihood-Estimation-for-Linear-Regression/">https://www.quantstart.com/articles/Maximum-Likelihood-Estimation-for-Linear-Regression/</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">https://en.wikipedia.org/wiki/Akaike_information_criterion</a></p></li>
 </ul>
 </section>
 </section>
@@ -734,6 +726,24 @@ $<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="goodness-of-fit-and-chi-squared.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Goodness of Fit and Chi-Squared Statistic</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="weighted-least-squares-code.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Weighted Least Squares - Code Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -757,14 +767,16 @@ $<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-log-likelihood-for-least-squares">Derivation of the Log-Likelihood for Least Squares</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-final-formula">The Final Formula</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-correct-assumption-normality-of-errors">The Correct Assumption: Normality of Errors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-the-first-option-is-incorrect">Why the First Option is Incorrect</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd-what-if-sigma-is-uknown">TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd">TBD</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
   </nav></div>
