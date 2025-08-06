@@ -453,10 +453,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd-what-if-sigma-is-uknown">TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd">TBD</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-case-of-unknown-variance-ordinary-least-squares-ols">The Case of Unknown Variance: Ordinary Least Squares (OLS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-unknown-variance-sigma-2">Estimating the Unknown Variance <span class="math notranslate nohighlight">\(\sigma^2\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-maximized-log-likelihood">The Maximized Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-aic-and-bic-with-unknown-variance">Calculating AIC and BIC with Unknown Variance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
@@ -481,11 +481,12 @@ document.write(`
 <p>AIC is an estimator of prediction error and is rooted in information theory. It estimates the relative amount of information a model loses when representing the process that generated the data. The model with the lowest AIC value is considered the best among the candidate models.</p>
 <p>The formula is:</p>
 <div class="math notranslate nohighlight">
-\[AIC = -2 \ln(L) + 2k\]</div>
+\[AIC = -2 \ln(\hat{L}) + 2k\]</div>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(L)\)</span></strong>: This is the <strong>goodness-of-fit term</strong>. It’s derived from the maximum likelihood (<span class="math notranslate nohighlight">\(L\)</span>) of the model, which measures how well the model fits the data. A higher likelihood (and thus a smaller negative log-likelihood) indicates a better fit.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(2k\)</span></strong>: This is the <strong>penalty term</strong>. It’s a penalty for model complexity, where <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters in the model. A more complex model (one with more parameters) gets a higher penalty.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(\hat{L})\)</span></strong>: This is the <strong>goodness-of-fit term</strong>. It’s derived from the maximum likelihood (<span class="math notranslate nohighlight">\(\hat{L}\)</span>) of the model, which measures how well the model fits the data. A higher likelihood (and thus a smaller negative log-likelihood) indicates a better fit.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(2k\)</span></strong>: This is the <strong>penalty term</strong>. It’s a penalty for model complexity, where <span class="math notranslate nohighlight">\(k\)</span> is the total number of parameters estimated by the model. A more complex model (one with more parameters) gets a higher penalty.</p></li>
 </ul>
+<p><span class="math notranslate nohighlight">\(k\)</span> is equal to the number of structural parameters in the model’s function <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> (e.g., the <span class="math notranslate nohighlight">\(\beta\)</span> coefficients in a regression model) if the error variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> is known. However, if the error variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> is unknown, it must be estimated from the data, which means it counts as an additional estimated parameter and <span class="math notranslate nohighlight">\(k = p + 1\)</span>. We will review this in detail below.</p>
 <p>The AIC’s goal is to find the model that best approximates the unknown data-generating process, even if that process isn’t one of the candidate models. It’s focused on <strong>predictive accuracy</strong>.</p>
 </section>
 <section id="bayesian-information-criterion-bic">
@@ -493,9 +494,9 @@ document.write(`
 <p>BIC, also known as the Schwarz Information Criterion (SIC), is a criterion for model selection derived from a Bayesian perspective. Like AIC, it balances goodness of fit and complexity, but it does so more aggressively. The model with the lowest BIC value is the one preferred.</p>
 <p>The formula is:</p>
 <div class="math notranslate nohighlight">
-\[BIC = -2 \ln(L) + k \ln(n)\]</div>
+\[BIC = -2 \ln(\hat{L}) + k \ln(n)\]</div>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(L)\)</span></strong>: This is the same goodness-of-fit term as in AIC.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(-2 \ln(\hat{L})\)</span></strong>: This is the same goodness-of-fit term as in AIC.</p></li>
 <li><p><strong><span class="math notranslate nohighlight">\(k \ln(n)\)</span></strong>: This is the <strong>penalty term</strong>. The penalty for complexity is stronger than AIC’s because it includes the natural logarithm of the number of data points (<span class="math notranslate nohighlight">\(n\)</span>).</p></li>
 </ul>
 <p>Because of the <span class="math notranslate nohighlight">\(\ln(n)\)</span> factor, BIC applies a much heavier penalty for additional parameters, especially as the sample size grows. This means BIC tends to favor <strong>simpler models</strong> more strongly than AIC. It assumes that one of the candidate models is the “true” model, and its goal is to find that true model.</p>
@@ -581,8 +582,8 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 </section>
 <section id="derivation-of-the-log-likelihood-for-least-squares">
 <h2>Derivation of the Log-Likelihood for Least Squares<a class="headerlink" href="#derivation-of-the-log-likelihood-for-least-squares" title="Link to this heading">#</a></h2>
-<p>Yes, there is a very useful formula for the log-likelihood (<span class="math notranslate nohighlight">\(\ln(L)\)</span>) that we can use for our case. It’s derived by making one key assumption: that the errors (the residuals) follow a normal distribution. This is the same underlying assumption that allows us to use least squares methods in the first place.</p>
-<p>Here is the derivation (note that we derive all the formulas under the assumption that we know exact values of <span class="math notranslate nohighlight">\(\sigma_i\)</span> or <span class="math notranslate nohighlight">\(\sigma\)</span>):</p>
+<p>NOTE: <span class="math notranslate nohighlight">\(\ln(L)\)</span> denotes log-likelihood function. <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span> denotes the specific value of the log-likelihood function after the model has been fitted to the data and this specific value is maximized log-likelihood.</p>
+<p>Here is the derivation (note that we derive all the formulas in this section under the assumption that we know exact values of <span class="math notranslate nohighlight">\(\sigma_i\)</span> or <span class="math notranslate nohighlight">\(\sigma\)</span>):</p>
 <ol class="arabic">
 <li><p><strong>Start with the probability of one data point.</strong> We assume that the probability of observing a single data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> given the model’s prediction <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is described by a normal distribution with a mean of <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> and a standard deviation of <span class="math notranslate nohighlight">\(\sigma_i\)</span>. This is equivalent to the assumption that the error terms <span class="math notranslate nohighlight">\(\epsilon_i\)</span> are independently distributed according to a normal distribution with a mean of zero and a variance <span class="math notranslate nohighlight">\(\sigma_i^2\)</span>, so <span class="math notranslate nohighlight">\(\epsilon_i \sim N(0, \sigma_i^2)\)</span> (remember that <span class="math notranslate nohighlight">\(y_i = f(x_i, \beta) + \epsilon_i\)</span>). The probability density function (PDF) for a single point is:</p>
 <div class="math notranslate nohighlight">
@@ -628,58 +629,135 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 </ol>
 <section id="how-to-use-this-for-aic-and-bic">
 <h3>How to Use This for AIC and BIC<a class="headerlink" href="#how-to-use-this-for-aic-and-bic" title="Link to this heading">#</a></h3>
-<p>Since the AIC and BIC formulas depend on <span class="math notranslate nohighlight">\(-2\ln(L)\)</span>, we can substitute our derived expression. When <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> finds the optimal parameters, it’s minimizing the <span class="math notranslate nohighlight">\(\chi^2\)</span> value. This is the best-fit <span class="math notranslate nohighlight">\(\chi^2\)</span>.</p>
-<p>So, for a model fitted with least squares, we can calculate the information criteria using the final <span class="math notranslate nohighlight">\(\chi^2\)</span> from the fit:</p>
+<p>Since the AIC and BIC formulas depend on the maximized log-likelihood <span class="math notranslate nohighlight">\(-2\ln(\hat{L})\)</span>, we can use the results of our derivation. When a fitting procedure like <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> finds the optimal parameters <span class="math notranslate nohighlight">\(\hat{\beta}\)</span>, it does so by minimizing the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic. This is the best-fit of <span class="math notranslate nohighlight">\(\chi^2\)</span>. Let’s call this minimized value <span class="math notranslate nohighlight">\(\chi^2_{min}\)</span>.</p>
+<p>Because maximizing the log-likelihood is equivalent to minimizing the chi-squared statistic, the maximized log-likelihood, <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>, is given by:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\hat{L}) \propto - \frac{1}{2}\chi^2_{min}\]</div>
+<p>Now we can calculate the information criteria using this <strong>minimized</strong> <span class="math notranslate nohighlight">\(\chi^2\)</span> value from the fit:</p>
 <ul>
 <li><p><strong>For AIC:</strong></p>
 <div class="math notranslate nohighlight">
-\[-2\ln(L) = -2 \left( - \frac{1}{2}\chi^2 + \text{constant} \right) = \chi^2 + \text{constant}'\]</div>
-<p>Since the constants don’t affect the model ranking, we can simply use:</p>
+\[-2\ln(\hat{L}) = -2 \left( - \frac{1}{2}\chi^2_{min} + \text{constant} \right) = \chi^2_{min} + \text{constant}'\]</div>
+<p>Since the constants don’t affect model ranking, we can simply use the proportional formula:</p>
 <div class="math notranslate nohighlight">
-\[AIC = \chi^2 + 2k\]</div>
+\[AIC \propto \chi^2_{min} + 2k\]</div>
 <p>NOTE: This last formula is valid for model comparison only (not valid to calculate the exact value of AIC). Also, this last formula is valid only if <span class="math notranslate nohighlight">\(\sigma_i\)</span> values are known.</p>
 </li>
 <li><p><strong>For BIC:</strong></p>
 <div class="math notranslate nohighlight">
-\[BIC = \chi^2 + k\ln(n)\]</div>
+\[BIC \propto \chi^2_{min} + k\ln(n)\]</div>
 <p>NOTE: This last formula is valid for model comparison only (not valid to calculate the exact value of AIC). Also, this last formula is valid only if <span class="math notranslate nohighlight">\(\sigma_i\)</span> values are known.</p>
 </li>
 </ul>
-<p>Remember: <span class="math notranslate nohighlight">\(\chi^2\)</span> is the final chi-squared value calculated from the Weighted Least Squares, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(N\)</span> is the number of data points. By calculating these values for different models fitted to the same data, you can choose the model with the lowest AIC or BIC as the one that provides the best balance of fit and parsimony.</p>
-<p>If the standard deviations <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the same for all the data points and are equal to <span class="math notranslate nohighlight">\(\sigma\)</span> (homoscedasticity), then we can directly substitute the following formula for AIC and BIC:</p>
+<p>Remember: <span class="math notranslate nohighlight">\(\chi^2_{min}\)</span> is the final chi-squared value calculated from the Weighted Least Squares, <span class="math notranslate nohighlight">\(k\)</span> is the number of parameters, and <span class="math notranslate nohighlight">\(n\)</span> is the number of data points. By calculating these values for different models fitted to the same data, you can choose the model with the lowest AIC or BIC as the one that provides the best balance of fit and parsimony.</p>
+<p>If the standard deviations <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the same for all the data points and are equal to <span class="math notranslate nohighlight">\(\sigma\)</span> (homoscedasticity), then the maximized log-likelihood to be used in the AIC and BIC formulas is:</p>
 <div class="math notranslate nohighlight">
-\[\ln(L) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2} \chi^2\]</div>
+\[\ln(\hat{L}) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2} \chi^2_{min}\]</div>
 </section>
 </section>
-<hr class="docutils" />
-<section id="tbd-what-if-sigma-is-uknown">
-<h2>TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown<a class="headerlink" href="#tbd-what-if-sigma-is-uknown" title="Link to this heading">#</a></h2>
-</section>
-<section id="tbd">
-<h2>TBD<a class="headerlink" href="#tbd" title="Link to this heading">#</a></h2>
-<p>Formula, <span class="math notranslate nohighlight">\(\sigma^2 = \frac{SSR}{n-k-1}\)</span>, is not quite right. The formula for the estimated error variance is a sample statistic, and it’s more accurately represented by <span class="math notranslate nohighlight">\(s^2\)</span>, which is commonly called the <strong>Mean Squared Error (MSE)</strong>. The second formula is correct and provides the proper definition.</p>
-<section id="what-is-the-mean-squared-error-of-residuals-mse">
-<h3>What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?<a class="headerlink" href="#what-is-the-mean-squared-error-of-residuals-mse" title="Link to this heading">#</a></h3>
-<p>The <strong>Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)</strong> is the average squared difference between the observed values and the values predicted by the regression model. It’s the unbiased estimator for the true error variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, in a linear regression model.</p>
-<p>The formula is:</p>
+<section id="the-case-of-unknown-variance-ordinary-least-squares-ols">
+<h2>The Case of Unknown Variance: Ordinary Least Squares (OLS)<a class="headerlink" href="#the-case-of-unknown-variance-ordinary-least-squares-ols" title="Link to this heading">#</a></h2>
+<p>In the previous chapter, we operated under the assumption that the standard deviations of the errors, <span class="math notranslate nohighlight">\(\sigma_i\)</span>, were known. This is common in the physical sciences where measurement uncertainties can be well-defined. However, in many other fields, these uncertainties are not known beforehand.</p>
+<p>The most common scenario is to assume that while the variance is unknown, it is constant for all data points. This is the assumption of <strong>homoscedasticity</strong> (<span class="math notranslate nohighlight">\(\sigma_i = \sigma\)</span> for all <em>i</em>), which is fundamental to <strong>Ordinary Least Squares (OLS)</strong>. When <span class="math notranslate nohighlight">\(\sigma\)</span> is unknown, it becomes another parameter that we must estimate from the data.</p>
+<section id="estimating-the-unknown-variance-sigma-2">
+<h3>Estimating the Unknown Variance <span class="math notranslate nohighlight">\(\sigma^2\)</span><a class="headerlink" href="#estimating-the-unknown-variance-sigma-2" title="Link to this heading">#</a></h3>
+<p>Our goal is to maximize the log-likelihood function with respect to all model parameters, which now include the <span class="math notranslate nohighlight">\(\beta\)</span> parameters <em>and</em> the unknown variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<p>We start with the log-likelihood function for the homoscedastic case, as derived in Step 7 of the previous chapter:</p>
 <div class="math notranslate nohighlight">
-\[MSE = s^2 = \frac{SSR}{n - k - 1}\]</div>
-<p>Here’s what each term means:</p>
+\[\ln(L(\beta, \sigma^2)) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
+<p>This expression is often written in terms of the <strong>Residual Sum of Squares (RSS)</strong>, where <span class="math notranslate nohighlight">\(RSS = \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\ln(L(\beta, \sigma^2)) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln(\sigma^2) - \frac{RSS}{2\sigma^2}\]</div>
+<p>To find the values of <span class="math notranslate nohighlight">\(\beta\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span> that maximize this function, we can use a two-step process:</p>
+<ol class="arabic simple">
+<li><p>For any given value of <span class="math notranslate nohighlight">\(\sigma^2\)</span>, maximizing the log-likelihood is equivalent to minimizing the <code class="docutils literal notranslate"><span class="pre">RSS</span></code> term. This is exactly what the standard least-squares fitting procedure does to find the optimal parameters <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+<li><p>Once the optimal <span class="math notranslate nohighlight">\(\beta\)</span> parameters are found and the <code class="docutils literal notranslate"><span class="pre">RSS</span></code> is minimized, we can find the <strong>Maximum Likelihood Estimate (MLE)</strong> for the variance, denoted as <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span>, by taking the partial derivative of the log-likelihood function with respect to <span class="math notranslate nohighlight">\(\sigma^2\)</span> and setting it to zero.</p></li>
+</ol>
+<p>Let’s perform the second step. Treating <code class="docutils literal notranslate"><span class="pre">RSS</span></code> as a constant (since <span class="math notranslate nohighlight">\(\beta\)</span> is now fixed), we differentiate with respect to <span class="math notranslate nohighlight">\(\sigma^2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \ln(L)}{\partial \sigma^2} = - \frac{n}{2\sigma^2} + \frac{RSS}{2(\sigma^2)^2}\]</div>
+<p>Setting the derivative to zero to find the maximum:</p>
+<div class="math notranslate nohighlight">
+\[\frac{n}{2\hat{\sigma}^2} = \frac{RSS}{2(\hat{\sigma}^2)^2}\]</div>
+<p>Solving for <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> gives us the MLE for the variance:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\sigma}^2 = \frac{RSS}{n}\]</div>
+<blockquote>
+<div><p>This is a fundamentally important result: the maximum likelihood estimate for the unknown variance is the residual sum of squares divided by the number of data points.</p>
+</div></blockquote>
+<p>There are several important notes regarding this results:</p>
+<ol class="arabic simple">
+<li><p>The Maximum Likelihood Estimate (MLE) for the variance, <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = RSS/n\)</span>, is a <strong>biased estimator</strong>.</p></li>
+<li><p>The unbiased estimator, <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = RSS/(n-p)\)</span>, is what is typically used for inference and is reported in most statistical software as the “Mean Squared Error” (MSE). Here, <span class="math notranslate nohighlight">\(p\)</span> is the number of model parameters.</p></li>
+<li><p><strong>For calculating the log-likelihood and the information criteria (AIC, BIC) derived from it, we MUST use the biased Maximum Likelihood Estimate (<span class="math notranslate nohighlight">\(RSS/n\)</span>).</strong></p></li>
+</ol>
+<p>Let’s review the last statement in more details.</p>
+<p>Our primary goal was to find the parameter values that maximize the log-likelihood function. We found that the value of <span class="math notranslate nohighlight">\(\sigma^2\)</span> that maximizes this function (after <code class="docutils literal notranslate"><span class="pre">RSS</span></code> has been minimized by finding the best <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> parameters) is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\sigma}^2_{MLE} = \frac{RSS}{n} = \frac{1}{n}\sum_{i=1}^{n} (y_i - f(x_i, \hat{\beta}))^2\]</div>
+<p>This is the <strong>Maximum Likelihood Estimate (MLE)</strong> for the variance. While it is the correct value for maximizing the likelihood, it is a <strong>biased estimator</strong> of the true population variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>. On average, it will slightly underestimate the true variance.</p>
+<p>In applied statistics, the goal is often to get the most accurate possible estimate of the true population variance. For this, we use the <strong>unbiased estimator</strong>, which corrects for the bias mentioned above by adjusting the denominator. If we have estimated <span class="math notranslate nohighlight">\(k\)</span> model parameters (i.e., the number of coefficients in <span class="math notranslate nohighlight">\(\beta\)</span>), the unbiased estimate is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\sigma}^2_{unbiased} = \frac{RSS}{n-p}\]</div>
+<p>This is the <strong>Mean Squared Error (MSE)</strong>, and its square root is the <strong>Residual Standard Error (RSE)</strong> reported in the output of virtually all OLS regression software. The denominator, <span class="math notranslate nohighlight">\(n-p\)</span>, represents the residual <strong>degrees of freedom</strong>. By dividing by a smaller number, we increase the value of the estimate, correcting for the downward bias of the MLE.</p>
+<p><strong>Which estimator should we use for the log-likelihood?</strong></p>
+<p>The answer lies in the fundamental definition of AIC and BIC: they are based on the <strong>maximized value of the log-likelihood function</strong>.</p>
+<p>The derivation of AIC and BIC starts with <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>, which is the value of <span class="math notranslate nohighlight">\(\ln(L)\)</span> when <em>all</em> parameters have been set to their Maximum Likelihood Estimates. Therefore, to be mathematically consistent, we <strong>must</strong> use the MLE for the variance, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{MLE} = RSS/n\)</span>, when calculating the log-likelihood for AIC and BIC.</p>
+<p>Plugging the unbiased estimate <span class="math notranslate nohighlight">\(RSS/(n-p)\)</span> into the log-likelihood formula would result in a value that is <em>not</em> the true maximum likelihood, and the theoretical foundation of AIC and BIC would no longer hold.</p>
+<p><strong>In summary:</strong></p>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(s^2\)</span></strong> or <strong><span class="math notranslate nohighlight">\(MSE\)</span></strong>: The estimated error variance.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(SSR\)</span> (Sum of Squared Residuals)</strong>: The sum of the squared differences between the observed values (<span class="math notranslate nohighlight">\(y_i\)</span>) and the predicted values (<span class="math notranslate nohighlight">\(\hat{y}_i\)</span>).
-$<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2\)</span>$</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(n\)</span></strong>: The number of observations or data points.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(k\)</span></strong>: The number of independent variables (predictors) in the model.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(n - k - 1\)</span></strong>: The <strong>degrees of freedom</strong> for the residuals. This is the denominator because we lose one degree of freedom for the intercept and one for each predictor we estimate.</p></li>
+<li><p>For <strong>calculating AIC and BIC</strong>, use the <strong>biased</strong> MLE variance: <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = RSS/n\)</span>.</p></li>
+<li><p>For <strong>reporting the model’s error variance or standard error for inference</strong>, use the <strong>unbiased</strong> variance: <span class="math notranslate nohighlight">\(\hat{\sigma}^2 = RSS/(n-p)\)</span>.</p></li>
 </ul>
 </section>
-<hr class="docutils" />
-<section id="derivation-and-intuition">
-<h3>Derivation and Intuition<a class="headerlink" href="#derivation-and-intuition" title="Link to this heading">#</a></h3>
-<p>The formula isn’t derived in the traditional sense of a mathematical proof but is based on the concept of an <strong>unbiased estimator</strong>.</p>
-<p>The goal is to estimate the true variance of the errors, <span class="math notranslate nohighlight">\(\sigma^2\)</span>, which we don’t know. The sum of squared residuals, <span class="math notranslate nohighlight">\(SSR\)</span>, is a good starting point, but simply dividing by <span class="math notranslate nohighlight">\(n\)</span> would give us a biased estimate. The reason for this is that we use the sample data to estimate the regression coefficients (the slope and intercept), which forces the residuals to have a mean of zero. This constraint means the residuals are not truly independent.</p>
-<p>By dividing by the <strong>degrees of freedom</strong>, <span class="math notranslate nohighlight">\(n - k - 1\)</span>, instead of just <span class="math notranslate nohighlight">\(n\)</span>, we correct for this bias. The degrees of freedom represent the number of values in the final calculation of a statistic that are free to vary. In linear regression, once you’ve estimated the intercept and the slopes (a total of <span class="math notranslate nohighlight">\(k+1\)</span> parameters), the values of the residuals are no longer entirely free to vary. Therefore, dividing by <span class="math notranslate nohighlight">\(n - k - 1\)</span> provides an <strong>unbiased estimator</strong> of the true population variance, <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<section id="the-maximized-log-likelihood">
+<h3>The Maximized Log-Likelihood<a class="headerlink" href="#the-maximized-log-likelihood" title="Link to this heading">#</a></h3>
+<p>Now we can substitute this estimate <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> back into the log-likelihood equation to get the <em>maximized</em> log-likelihood, <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>. This value represents the highest possible likelihood given the data and the model form.</p>
+<div class="math notranslate nohighlight">
+\[\ln(\hat{L}) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln\left(\frac{RSS}{n}\right) - \frac{RSS}{2\left(\frac{RSS}{n}\right)}\]</div>
+<p>Simplifying the last term:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\hat{L}) = - \frac{n}{2} \ln(2\pi) - \frac{n}{2} \ln\left(\frac{RSS}{n}\right) - \frac{n}{2}\]</div>
+<p>Using the logarithm rule <span class="math notranslate nohighlight">\(\ln(a/b) = \ln(a) - \ln(b)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ln(\hat{L}) = - \frac{n}{2} \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right)\]</div>
+<p>This is the final expression for the maximized log-likelihood when <span class="math notranslate nohighlight">\(\sigma^2\)</span> is unknown.</p>
+</section>
+<section id="calculating-aic-and-bic-with-unknown-variance">
+<h3>Calculating AIC and BIC with Unknown Variance<a class="headerlink" href="#calculating-aic-and-bic-with-unknown-variance" title="Link to this heading">#</a></h3>
+<p>With the maximized log-likelihood, <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>, we can now calculate the information criteria. A crucial point is that we have estimated an additional parameter: the variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Therefore, the total number of estimated parameters, <span class="math notranslate nohighlight">\(k\)</span>, becomes:</p>
+<ul class="simple">
+<li><p><strong>Number of Parameters <span class="math notranslate nohighlight">\(k\)</span>:</strong> If your model has <span class="math notranslate nohighlight">\(p\)</span> parameters for the function <span class="math notranslate nohighlight">\(f(x,\beta)\)</span>, then the total number of estimated parameters is <span class="math notranslate nohighlight">\(k = p + 1\)</span>.</p></li>
+<li><p><strong>Example:</strong> For instance, in a simple linear regression model <span class="math notranslate nohighlight">\(y = \beta_0 + \beta_1 x\)</span>, there are two <span class="math notranslate nohighlight">\(\beta\)</span> parameters (<span class="math notranslate nohighlight">\(p=2\)</span>). When we also estimate the variance, the total number of parameters for the AIC/BIC calculation becomes <span class="math notranslate nohighlight">\(k = p + 1 = 3\)</span>.</p></li>
+</ul>
+<p>The general formulas for AIC and BIC are:</p>
+<div class="math notranslate nohighlight">
+\[AIC = -2\ln(\hat{L}) + 2k\]</div>
+<div class="math notranslate nohighlight">
+\[BIC = -2\ln(\hat{L}) + k\ln(n)\]</div>
+<p>We will use our expression for the maximized log-likelihood:
+<span class="math notranslate nohighlight">\(\ln(\hat{L}) = - \frac{n}{2} \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right)\)</span></p>
+<p><strong>For AIC:</strong></p>
+<p>Substituting the expression for <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span> into the AIC formula gives:</p>
+<div class="math notranslate nohighlight">
+\[AIC = -2 \left[ - \frac{n}{2} \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right) \right] + 2k\]</div>
+<div class="math notranslate nohighlight">
+\[AIC = n \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right) + 2k\]</div>
+<p>For the purpose of comparing different models on the same dataset, any terms that do not depend on the model can be dropped. The terms <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(\ln(2\pi)\)</span>, <span class="math notranslate nohighlight">\(\ln(n)\)</span>, and 1 are constant across all models. This leaves us with a simplified, proportional formula:</p>
+<div class="math notranslate nohighlight">
+\[AIC \propto n \ln(RSS) + 2k\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k = p + 1\)</span> is the total number of estimated parameters (including the variance).</p>
+<p><strong>For BIC:</strong></p>
+<p>We follow the exact same logic for BIC. Substituting the expression for <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span> into the BIC formula gives:</p>
+<div class="math notranslate nohighlight">
+\[BIC = -2 \left[ - \frac{n}{2} \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right) \right] + k\ln(n)\]</div>
+<div class="math notranslate nohighlight">
+\[BIC = n \left( \ln(2\pi) + \ln(RSS) - \ln(n) + 1 \right) + k\ln(n)\]</div>
+<p>Again, for model comparison, we can drop the same terms that are constant for a given dataset, resulting in the simplified, proportional formula for BIC:</p>
+<div class="math notranslate nohighlight">
+\[BIC \propto n \ln(RSS) + k\ln(n)\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k = p + 1\)</span> is the total number of estimated parameters (including the variance).</p>
+<p>It is important to remember that these simplified formulas produce values that are not the true AIC or BIC, but rather values that maintain the same differences between models as the full formulas would. Since model selection depends only on these differences (e.g., finding the model with the minimum AIC), these simplified versions are sufficient and computationally convenient for that purpose. However, if reporting the absolute AIC or BIC value is required, the full formula should be used.</p>
 </section>
 </section>
 <section id="modification-for-small-sample-size-for-aic-and-bic">
@@ -770,10 +848,10 @@ $<span class="math notranslate nohighlight">\(SSR = \sum_{i=1}^{n} (y_i - \hat{y
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-use-this-for-aic-and-bic">How to Use This for AIC and BIC</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd-what-if-sigma-is-uknown">TBD: What if <span class="math notranslate nohighlight">\(\sigma\)</span> is uknown</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tbd">TBD</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-mean-squared-error-of-residuals-mse">What is the Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE\)</span>)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-intuition">Derivation and Intuition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-case-of-unknown-variance-ordinary-least-squares-ols">The Case of Unknown Variance: Ordinary Least Squares (OLS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-unknown-variance-sigma-2">Estimating the Unknown Variance <span class="math notranslate nohighlight">\(\sigma^2\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-maximized-log-likelihood">The Maximized Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-aic-and-bic-with-unknown-variance">Calculating AIC and BIC with Unknown Variance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
