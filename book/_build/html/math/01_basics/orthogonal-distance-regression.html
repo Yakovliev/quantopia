@@ -198,10 +198,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
@@ -443,8 +442,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-and-odr">R-squared and ODR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-regression-and-other-parameters">Non-linear Regression and Other Parameters</a></li>
 </ul>
 </li>
 </ul>
@@ -486,8 +491,9 @@ document.write(`
 <li><p><strong><span class="math notranslate nohighlight">\(w_{x,i}\)</span> (x-axis weights):</strong> A data point with a small error in the x-direction (a small standard deviation) will have a large <span class="math notranslate nohighlight">\(w_x\)</span> value. This means the algorithm will penalize deviations in the x-direction more heavily, forcing the fitted curve to be closer to that point horizontally.</p></li>
 <li><p><strong><span class="math notranslate nohighlight">\(w_{y,i}\)</span> (y-axis weights):</strong> Similarly, a data point with a small error in the y-direction will have a large <span class="math notranslate nohighlight">\(w_y\)</span> value. This pushes the curve to be closer to that point vertically.</p></li>
 </ul>
+</section>
 <section id="odr-with-non-linear-functions">
-<h3>ODR with Non-linear Functions<a class="headerlink" href="#odr-with-non-linear-functions" title="Link to this heading">#</a></h3>
+<h2>ODR with Non-linear Functions<a class="headerlink" href="#odr-with-non-linear-functions" title="Link to this heading">#</a></h2>
 <p>ODR is especially powerful for non-linear regression because it can handle cases where both variables have errors and the relationship isn’t a straight line. The process involves an iterative numerical optimization algorithm to find the parameters of the non-linear function that minimize the objective function described above.</p>
 <p>For your specific case with a non-linear function and errors for both the x-axis and y-axis, you will need to:</p>
 <ol class="arabic simple">
@@ -497,6 +503,41 @@ document.write(`
 <li><p><strong>Use an ODR-specific software library or package</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code> in Python) to perform the regression. The solver will then iteratively adjust the parameters of your function until the sum of the squared orthogonal distances is minimized. ODR typically uses trust-region Levenberg-Marquardt algorithms.</p></li>
 </ol>
 <p>The output will be the best-fit parameters for your non-linear function, along with their standard errors, which can be used to assess the uncertainty of the estimates.</p>
+<p>Assessing the goodness of fit for Orthogonal Distance Regression (ODR), especially with non-linear models, is more complex than with Ordinary Least Squares (OLS). Since ODR accounts for errors in both x and y variables, traditional metrics like R-squared can be misleading or inappropriate.</p>
+<p>The most suitable and standard goodness-of-fit parameter for ODR is the <strong>reduced chi-squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</strong> statistic.</p>
+<section id="reduced-chi-squared-chi-red-2">
+<h3>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)<a class="headerlink" href="#reduced-chi-squared-chi-red-2" title="Link to this heading">#</a></h3>
+<p>The reduced chi-squared is a powerful and statistically rigorous measure for ODR because it directly incorporates the uncertainties (weights) of both the x and y data points. It is defined as the sum of squared weighted residuals divided by the number of degrees of freedom.</p>
+<div class="math notranslate nohighlight">
+\[\chi_{red}^2 = \frac{\sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right)}{n - p}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of data points.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is the number of parameters in the model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{x,i}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i}\)</span> are the known standard deviations of the errors for each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>.</p></li>
+</ul>
+<section id="interpretation-of-reduced-chi-squared">
+<h4>Interpretation of Reduced Chi-Squared<a class="headerlink" href="#interpretation-of-reduced-chi-squared" title="Link to this heading">#</a></h4>
+<p>The value of <span class="math notranslate nohighlight">\(\chi_{red}^2\)</span> tells you how well the model fits the data relative to the expected measurement errors.</p>
+<ul class="simple">
+<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 \approx 1\)</span></strong> indicates an excellent fit. The model’s residuals are consistent with the measurement uncertainties you provided. The observed scatter is what you’d expect.</p></li>
+<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 \gg 1\)</span></strong> (significantly greater than 1) suggests a poor fit. This means the model does not adequately describe the data, or you have underestimated your measurement uncertainties. The observed scatter is much larger than expected.</p></li>
+<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 &lt; 1\)</span></strong> may indicate that the model is “overfitting” the data, or that you have overestimated your measurement uncertainties.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="r-squared-and-odr">
+<h3>R-squared and ODR<a class="headerlink" href="#r-squared-and-odr" title="Link to this heading">#</a></h3>
+<p>While R-squared is a common metric for OLS, its application to ODR is problematic. R-squared is based on the idea of explaining the variance in the y-variable, assuming the x-variable is known without error. This assumption is explicitly violated in ODR. Calculating a pseudo R-squared value for ODR can be done, but it often lacks a clear statistical interpretation and can be insensitive to the order of the variables (swapping x and y). For these reasons, <strong>R-squared and adjusted R-squared are generally not recommended</strong> for evaluating ODR results.</p>
+</section>
+<section id="non-linear-regression-and-other-parameters">
+<h3>Non-linear Regression and Other Parameters<a class="headerlink" href="#non-linear-regression-and-other-parameters" title="Link to this heading">#</a></h3>
+<p>For both linear and non-linear regression, other metrics and methods are valuable for assessing the fit:</p>
+<ul class="simple">
+<li><p><strong>Residual Plots:</strong> These are crucial. Plotting the residuals (the distances from the points to the fitted curve) against the fitted values can reveal systematic patterns (e.g., a “U” shape) that indicate a poor model choice, even if other statistical parameters look good.</p></li>
+<li><p><strong>Standard Errors of Parameters:</strong> The standard errors of the fitted parameters provide a measure of their uncertainty. If these are very large, it suggests that the data are not sufficient to accurately determine the model’s parameters.</p></li>
+<li><p><strong>Confidence and Prediction Bands:</strong> Visualizing the confidence and prediction bands around the fitted curve is an excellent way to see the range of uncertainty in your model and its predictions.</p></li>
+</ul>
 </section>
 </section>
 </section>
@@ -565,8 +606,14 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-and-odr">R-squared and ODR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-regression-and-other-parameters">Non-linear Regression and Other Parameters</a></li>
 </ul>
 </li>
 </ul>

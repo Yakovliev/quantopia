@@ -64,7 +64,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Weighted Least Squares - Code Examples" href="weighted-least-squares-code.html" />
+    <link rel="next" title="Goodness of Fit and Chi-Squared Statistic" href="goodness-of-fit-and-chi-squared.html" />
     <link rel="prev" title="Variance and Covariance" href="variance-covariance.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -198,10 +198,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Weighted Least Squares</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
@@ -454,15 +453,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-b-skipping-the-sigma-parameter">Scenario B: Skipping the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goodness-of-fit-and-chi-squared-statistic">Goodness of Fit and Chi-Squared Statistic</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-chi-squared-value">Interpreting the Chi-Squared Value</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unknown-standard-deviation-for-scipy-optimize-curve-fit">Unknown standard deviation for <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-goodness-of-fit-is-calculated">How the Goodness of Fit is Calculated</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistic-for-non-linear-regression">Chi-Squared Statistic for Non-Linear Regression</a></li>
 </ul>
             </nav>
         </div>
@@ -605,128 +595,6 @@ The weights are typically inversely proportional to the variance of the errors f
 </div>
 </section>
 </section>
-<section id="goodness-of-fit-and-chi-squared-statistic">
-<h2>Goodness of Fit and Chi-Squared Statistic<a class="headerlink" href="#goodness-of-fit-and-chi-squared-statistic" title="Link to this heading">#</a></h2>
-<p>The concepts of goodness of fit and the chi-squared statistic are central to the statistical rigor of a least squares fit. Let’s build them from the ground up.</p>
-<blockquote>
-<div><p>In a general sense, <strong>“goodness of fit”</strong> is a measure of how well a statistical model describes a set of observations. When you fit a curve to data, you’re building a model. “Goodness of fit” is the answer to the question: “How close are the values predicted by my model to the actual data values I measured?”</p>
-</div></blockquote>
-<p>The fundamental building block for this is the <strong>residual</strong>. For each data point <span class="math notranslate nohighlight">\(i\)</span>, the residual, <span class="math notranslate nohighlight">\(e_i\)</span>, is simply the difference between the observed value (<span class="math notranslate nohighlight">\(y_i\)</span>) and the value predicted by the model (<span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span>):</p>
-<div class="math notranslate nohighlight">
-\[e_i = y_i - f(x_i, \beta)\]</div>
-<p>A perfect fit would have all residuals equal to zero. However, in reality, measurements have uncertainty, and a perfect fit is impossible. Our goal is to find a single number that summarizes all these residuals to tell us if the overall fit is “good enough.”</p>
-<p>A simple approach to summarizing the residuals would be to just sum their squares, as in Ordinary Least Squares (OLS):</p>
-<div class="math notranslate nohighlight">
-\[\text{Sum of Squared Residuals (SSR)} = \sum_{i=1}^{N} e_i^2 = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
-<p>The problem with SSR is that it doesn’t account for the <strong>precision of the individual measurements</strong>. Imagine two different experiments:</p>
-<ul class="simple">
-<li><p><strong>Experiment A:</strong> Data points are very precise (low uncertainty). A small SSR might still represent a poor fit because the residuals are much larger than the measurement uncertainties.</p></li>
-<li><p><strong>Experiment B:</strong> Data points are very noisy (high uncertainty). A large SSR might be a perfectly good fit because the residuals are consistent with the large measurement uncertainties.</p></li>
-</ul>
-<p>To create a goodness-of-fit metric that is meaningful regardless of the measurement units or precision, we need to <strong>normalize</strong> each residual by its own uncertainty. This is the key idea behind the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic.</p>
-<p><strong>The Derivation:</strong></p>
-<ol class="arabic">
-<li><p><strong>Define a standardized residual.</strong> For each data point <span class="math notranslate nohighlight">\(i\)</span>, we know its residual <span class="math notranslate nohighlight">\(e_i = y_i - f(x_i, \beta)\)</span> and its measurement uncertainty, quantified by the standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>. Let’s create a new, dimensionless value by dividing the residual by its standard deviation:</p>
-<div class="math notranslate nohighlight">
-\[\frac{e_i}{\sigma_i} = \frac{y_i - f(x_i, \beta)}{\sigma_i}\]</div>
-<p>This new value represents how many standard deviations the observed value is away from the model’s prediction. If this value is close to <span class="math notranslate nohighlight">\(\pm 1\)</span>, the model’s prediction is within one standard deviation of the measurement, which is what we would expect for a good fit.</p>
-</li>
-<li><p><strong>Sum the squares.</strong> The <strong>chi-squared statistic</strong> (<span class="math notranslate nohighlight">\(\chi^2\)</span>) is defined as the sum of the squares of these standardized residuals. We square them to ensure all values are positive and to give more weight to larger deviations, just as in OLS.</p>
-<div class="math notranslate nohighlight">
-\[\chi^2 = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2\]</div>
-</li>
-</ol>
-<p>This simple formula is the foundation of the <span class="math notranslate nohighlight">\(\chi^2\)</span> test. It is a single number that quantifies the overall discrepancy between the data and the model, scaled by the known measurement uncertainties.</p>
-<p>Notice that this is exactly the objective function that the Weighted Least Squares algorithm minimizes. When you provide <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values to <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code>, the function internally calculates the weights as <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span> and minimizes this same sum.</p>
-<section id="interpreting-the-chi-squared-value">
-<h3>Interpreting the Chi-Squared Value<a class="headerlink" href="#interpreting-the-chi-squared-value" title="Link to this heading">#</a></h3>
-<p>A raw <span class="math notranslate nohighlight">\(\chi^2\)</span> value on its own isn’t very informative because its expected value depends on the number of data points. To make it more meaningful, we use the concept of <strong>degrees of freedom</strong>.</p>
-<ul>
-<li><p><strong>Degrees of Freedom (<span class="math notranslate nohighlight">\(\nu\)</span>):</strong> This is defined as the number of data points minus the number of parameters you are fitting.</p>
-<div class="math notranslate nohighlight">
-\[\nu = N - P\]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(N\)</span>: Number of data points.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P\)</span>: Number of parameters in your model.
-The degrees of freedom represent the number of independent pieces of information available to test the goodness of fit after the model parameters have been determined.</p></li>
-</ul>
-</li>
-<li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>):</strong> To get a normalized measure that is easier to interpret, we divide <span class="math notranslate nohighlight">\(\chi^2\)</span> by the degrees of freedom.</p>
-<div class="math notranslate nohighlight">
-\[\chi^2_\nu = \frac{\chi^2}{\nu}\]</div>
-</li>
-</ul>
-<p>The interpretation of the reduced chi-squared value is intuitive and powerful:</p>
-<ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu \approx 1\)</span> (Ideal):</strong> This is the gold standard for a good fit. It means that the total squared deviation of the data from the model is, on average, about what you would expect given your known measurement uncertainties. The residuals are consistent with the random noise you’ve specified with your <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &gt; 1\)</span> (Poor Fit or Underestimated Errors):</strong> This indicates that the residuals are larger than what your uncertainties would predict. The model is a poor fit for the data. This could be because:</p>
-<ol class="arabic simple">
-<li><p>The model function <code class="docutils literal notranslate"><span class="pre">f(x)</span></code> is simply incorrect and doesn’t describe the underlying physical process.</p></li>
-<li><p>Your measurement uncertainties (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>) were underestimated, and the data is actually more noisy than you assumed.</p></li>
-</ol>
-</li>
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &lt; 1\)</span> (“Too Good” Fit or Overestimated Errors):</strong> This suggests that the model fits the data <em>better</em> than would be expected by random chance alone. This could be a sign that:</p>
-<ol class="arabic simple">
-<li><p>Your measurement uncertainties (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>) were overestimated.</p></li>
-<li><p>The model is over-fitting the data by matching the random noise instead of the underlying trend.</p></li>
-<li><p>The data might have been cherry-picked, or there’s a systematic error in how the uncertainties were determined.</p></li>
-</ol>
-</li>
-</ul>
-<p>In summary, the chi-squared statistic provides a rigorous, quantitative way to answer the question of “goodness of fit” by comparing the observed discrepancies between the model and the data against the known uncertainties of the data points themselves.</p>
-</section>
-</section>
-<section id="unknown-standard-deviation-for-scipy-optimize-curve-fit">
-<h2>Unknown standard deviation for <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code><a class="headerlink" href="#unknown-standard-deviation-for-scipy-optimize-curve-fit" title="Link to this heading">#</a></h2>
-<p>There is an the apparent paradox: the <code class="docutils literal notranslate"><span class="pre">chi-squared</span></code> formula needs <code class="docutils literal notranslate"><span class="pre">sigma</span></code>, but the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> function calculates a “goodness of fit” without it.</p>
-<p>The answer lies in a clever statistical trick <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> uses when you don’t provide explicit uncertainties.</p>
-<p>When you skip the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter, <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> doesn’t assume that the errors are zero. Instead, it makes a different, less strict assumption: it assumes that all your data points have the same <strong>unknown</strong> standard deviation, <span class="math notranslate nohighlight">\(\sigma_{unknown}\)</span>.</p>
-<p>This is a specific form of the homoscedasticity assumption. Since the standard deviation is the same for every point, you don’t need to specify it for the purpose of finding the best-fit parameters, because all the weights would be equal (<span class="math notranslate nohighlight">\(w_i = 1/\sigma_{unknown}^2\)</span>). As we discussed, a constant weight doesn’t change the location of the minimum of the sum of squares.</p>
-<section id="how-the-goodness-of-fit-is-calculated">
-<h3>How the Goodness of Fit is Calculated<a class="headerlink" href="#how-the-goodness-of-fit-is-calculated" title="Link to this heading">#</a></h3>
-<p>Even though the standard deviation is unknown, we can <strong>estimate</strong> it from the data itself after the fit is complete. The logic is as follows:</p>
-<ol class="arabic">
-<li><p><strong>Perform a standard OLS fit:</strong> The algorithm finds the parameters that minimize the plain old Sum of Squared Residuals (SSR):</p>
-<div class="math notranslate nohighlight">
-\[\text{SSR} = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
-</li>
-<li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the SSR by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-P\)</span>):</p>
-<div class="math notranslate nohighlight">
-\[\hat{\sigma}^2_{unknown} = \frac{\text{SSR}}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-P}\]</div>
-<p>This value, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{unknown}\)</span>, is a measure of the average scatter of your data points around the fitted curve.</p>
-</li>
-<li><p><strong>The Scaling Factor:</strong> The reduced chi-squared value is conceptually <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span>. When no <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the chi-squared value is technically calculated with <span class="math notranslate nohighlight">\(\sigma_i = 1\)</span> for all points. So, <span class="math notranslate nohighlight">\(\chi^2 = \text{SSR}\)</span>. Therefore, the reduced chi-squared is simply <span class="math notranslate nohighlight">\(\text{SSR}/\nu\)</span>. This value is used as the scaling factor for the covariance matrix. Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
-<p>More formally, the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> documentation states that when <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code>, the covariance matrix is scaled by a factor that demands the reduced chi-squared for the optimal parameters equals unity. This is equivalent to scaling the covariance matrix by <span class="math notranslate nohighlight">\(\text{SSR} / \nu\)</span>. Mathematically,</p>
-<p><code class="docutils literal notranslate"><span class="pre">pcov(absolute_sigma=False)</span> <span class="pre">=</span> <span class="pre">pcov(absolute_sigma=True)</span> <span class="pre">*</span> <span class="pre">chisq(popt)/(M-N)</span></code></p>
-<p>For more details, review the documentation: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
-</li>
-</ol>
-<p>In essence, when you skip the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter, the function does two things:</p>
-<ol class="arabic simple">
-<li><p>It assumes all points have the same, unknown uncertainty.</p></li>
-<li><p>It uses the <strong>observed scatter of the data</strong> (quantified by the residual variance, <span class="math notranslate nohighlight">\(\text{SSR}/\nu\)</span>) as a post-hoc <em>estimate</em> of that unknown uncertainty.</p></li>
-</ol>
-<p>This estimate of the uncertainty is then used to calculate the standard errors of your fitted parameters. This is a robust approach when you don’t have prior knowledge of your measurement errors, but it’s not as statistically rigorous as providing a known uncertainty via the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter. The parameter uncertainties you get are a reflection of how well your model explains the observed variation in your data, rather than being based on a known, independent measure of your experimental precision.</p>
-</section>
-</section>
-<section id="chi-squared-statistic-for-non-linear-regression">
-<h2>Chi-Squared Statistic for Non-Linear Regression<a class="headerlink" href="#chi-squared-statistic-for-non-linear-regression" title="Link to this heading">#</a></h2>
-<p>Generally, we can’t use a reduced chi-squared statistic for non-linear models. The key reason is that you can’t accurately determine the <strong>degrees of freedom</strong>, which is a crucial component of the reduced chi-squared calculation.</p>
-<p>The reduced chi-squared (<span class="math notranslate nohighlight">\(\chi^2_v\)</span>) is defined as the chi-squared statistic (<span class="math notranslate nohighlight">\(\chi^2\)</span>) divided by the number of degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>):</p>
-<div class="math notranslate nohighlight">
-\[\chi^2_v = \frac{\chi^2}{\nu}\]</div>
-<p>The chi-squared statistic itself, a measure of how well a model fits the data, is straightforward to calculate for <strong>both linear and non-linear models</strong>:</p>
-<div class="math notranslate nohighlight">
-\[\chi^2 = \sum_{i=1}^{N} \frac{(O_i - E_i)^2}{\sigma_i^2} = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2\]</div>
-<p>Here, <span class="math notranslate nohighlight">\(O_i\)</span> are the observed data points, <span class="math notranslate nohighlight">\(E_i\)</span> are the expected values from the model, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the measurement uncertainties.</p>
-<p>However, the degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>) is the number of data points (<span class="math notranslate nohighlight">\(N\)</span>) minus the number of parameters (<span class="math notranslate nohighlight">\(P\)</span>) that were fitted to the data (<span class="math notranslate nohighlight">\(\nu = N - P\)</span>).</p>
-<ul class="simple">
-<li><p><strong>For linear models</strong>, the number of fitted parameters (<span class="math notranslate nohighlight">\(P\)</span>) is well-defined and corresponds to the number of parameters in the model (e.g., the slope and intercept in a linear fit). The model is a simple superposition of basis functions. Because the relationship between the parameters and the chi-squared value is a quadratic function, the parameters are independent, and a clear number of degrees of freedom can be calculated.</p></li>
-<li><p><strong>For non-linear models</strong>, the relationship between the parameters and the data is more complex. A small change in one parameter can have a disproportionate effect on the others, making the parameters <strong>non-independent</strong>. As a result, the concept of a fixed number of parameters “removing” degrees of freedom is no longer valid. The number of degrees of freedom becomes unknown and therefore, it’s impossible to reliably compute a reduced chi-squared value.</p></li>
-</ul>
-</section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -769,11 +637,11 @@ The degrees of freedom represent the number of independent pieces of information
       </div>
     </a>
     <a class="right-next"
-       href="weighted-least-squares-code.html"
+       href="goodness-of-fit-and-chi-squared.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Weighted Least Squares - Code Examples</p>
+        <p class="prev-next-title">Goodness of Fit and Chi-Squared Statistic</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -804,15 +672,6 @@ The degrees of freedom represent the number of independent pieces of information
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-b-skipping-the-sigma-parameter">Scenario B: Skipping the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goodness-of-fit-and-chi-squared-statistic">Goodness of Fit and Chi-Squared Statistic</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-chi-squared-value">Interpreting the Chi-Squared Value</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unknown-standard-deviation-for-scipy-optimize-curve-fit">Unknown standard deviation for <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-goodness-of-fit-is-calculated">How the Goodness of Fit is Calculated</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-squared-statistic-for-non-linear-regression">Chi-Squared Statistic for Non-Linear Regression</a></li>
 </ul>
   </nav></div>
 
