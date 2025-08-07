@@ -459,7 +459,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-aic-and-bic-with-unknown-variance">Calculating AIC and BIC with Unknown Variance</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-the-corrected-aic-aicc">Modification for Small Sample Size: The Corrected AIC (AICc)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
             </nav>
@@ -760,9 +760,52 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 <p>It is important to remember that these simplified formulas produce values that are not the true AIC or BIC, but rather values that maintain the same differences between models as the full formulas would. Since model selection depends only on these differences (e.g., finding the model with the minimum AIC), these simplified versions are sufficient and computationally convenient for that purpose. However, if reporting the absolute AIC or BIC value is required, the full formula should be used.</p>
 </section>
 </section>
-<section id="modification-for-small-sample-size-for-aic-and-bic">
-<h2>Modification for Small Sample Size for AIC and ?BIC?<a class="headerlink" href="#modification-for-small-sample-size-for-aic-and-bic" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://en.wikipedia.org/wiki/Akaike_information_criterion">https://en.wikipedia.org/wiki/Akaike_information_criterion</a></p>
+<section id="modification-for-small-sample-size-the-corrected-aic-aicc">
+<h2>Modification for Small Sample Size: The Corrected AIC (AICc)<a class="headerlink" href="#modification-for-small-sample-size-the-corrected-aic-aicc" title="Link to this heading">#</a></h2>
+<p>The Akaike Information Criterion (AIC) is derived in the limit of a large sample size <span class="math notranslate nohighlight">\(n\)</span>. When the sample size is not large relative to the number of estimated parameters <span class="math notranslate nohighlight">\(k\)</span>, AIC can perform poorly. Specifically, it has a tendency to favor models with too many parameters, a phenomenon known as overfitting.</p>
+<p>To address this, the <strong>Corrected Akaike Information Criterion (AICc)</strong> was developed. AICc includes a second-order correction term that increases the penalty for extra parameters, with the size of this correction being larger for smaller sample sizes.</p>
+<p>The AICc is defined as the AIC with an added penalty term:</p>
+<div class="math notranslate nohighlight">
+\[AICc = AIC + \frac{2k(k+1)}{n - k - 1}\]</div>
+<p>Let’s derive the more common form of this equation. We start with the full definition of AIC:</p>
+<div class="math notranslate nohighlight">
+\[AIC = -2\ln(\hat{L}) + 2k\]</div>
+<p>Now, we add the correction term:</p>
+<div class="math notranslate nohighlight">
+\[AICc = \left( -2\ln(\hat{L}) + 2k \right) + \frac{2k(k+1)}{n - k - 1}\]</div>
+<p>We can combine the two terms that include <span class="math notranslate nohighlight">\(k\)</span> by factoring out <span class="math notranslate nohighlight">\(2k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[AICc = -2\ln(\hat{L}) + 2k \left( 1 + \frac{k+1}{n - k - 1} \right)\]</div>
+<p>To simplify the expression in the parenthesis, we find a common denominator:</p>
+<div class="math notranslate nohighlight">
+\[1 + \frac{k+1}{n - k - 1} = \frac{(n - k - 1) + (k+1)}{n - k - 1} = \frac{n}{n - k - 1}\]</div>
+<p>By substituting this simplified fraction back into the equation, we arrive at the most common and elegant formula for AICc:</p>
+<div class="math notranslate nohighlight">
+\[AICc = -2\ln(\hat{L}) + 2k \left( \frac{n}{n - k - 1} \right)\]</div>
+<p>This form clearly shows that the standard AIC penalty <span class="math notranslate nohighlight">\(2k\)</span> is being multiplied by a correction factor <span class="math notranslate nohighlight">\(n / (n - k - 1)\)</span>.</p>
+<p>Let’s examine the correction factor <span class="math notranslate nohighlight">\(n / (n - k - 1)\)</span>:</p>
+<ul class="simple">
+<li><p><strong>When <span class="math notranslate nohighlight">\(n\)</span> is large:</strong> As <span class="math notranslate nohighlight">\(n\)</span> becomes much larger than <span class="math notranslate nohighlight">\(k\)</span>, the fraction <span class="math notranslate nohighlight">\(n / (n - k - 1)\)</span> approaches <span class="math notranslate nohighlight">\(n/n\)</span>, which is 1. In this case, AICc converges to AIC. This is exactly what we want; for large samples, the correction is negligible.</p></li>
+<li><p><strong>When <span class="math notranslate nohighlight">\(n\)</span> is small:</strong> When <span class="math notranslate nohighlight">\(n\)</span> is close to <span class="math notranslate nohighlight">\(k\)</span>, the denominator <span class="math notranslate nohighlight">\(n - k - 1\)</span> becomes very small, making the correction factor large. This imposes a much heavier penalty on more complex models (those with a larger <span class="math notranslate nohighlight">\(k\)</span>), helping to prevent overfitting.</p></li>
+</ul>
+<p>Given its properties, it is often recommended to <strong>use AICc by default</strong>, rather than AIC, especially if you are not in a “big data” context. A common rule of thumb is to use AICc when the ratio <span class="math notranslate nohighlight">\(n/k\)</span> is less than 40.</p>
+<ul class="simple">
+<li><p><strong>Number of Parameters <span class="math notranslate nohighlight">\(k\)</span>:</strong> As before, <span class="math notranslate nohighlight">\(k\)</span> must include all estimated parameters. In the OLS case with <span class="math notranslate nohighlight">\(p\)</span> model coefficients, <span class="math notranslate nohighlight">\(k = p + 1\)</span> to account for the estimated variance.</p></li>
+</ul>
+<p>We can write the proportional formula for AICc in the OLS case (unknown variance) by starting with the proportional formula for AIC and adding the correction term:</p>
+<div class="math notranslate nohighlight">
+\[AICc \propto n \ln(RSS) + 2k + \frac{2k(k+1)}{n - k - 1}\]</div>
+<p>Or, using the multiplicative correction factor:</p>
+<div class="math notranslate nohighlight">
+\[AICc \propto n \ln(RSS) + 2k \left( \frac{n}{n - k - 1} \right)\]</div>
+<p>NOTE: There is an obvious restriction: <span class="math notranslate nohighlight">\(n\)</span> should be greater than <span class="math notranslate nohighlight">\(k+1\)</span> (<span class="math notranslate nohighlight">\(n &gt; k + 1\)</span>) to avoid the situation when denominator is zero or negative and AICc cannot be calculated.</p>
+<p>Is There a Small-Sample Correction for BIC? While AIC has a widely accepted and commonly used correction, <strong>there is no standard, universally adopted small-sample correction for BIC.</strong></p>
+<p>The reasons for this are rooted in their different theoretical origins:</p>
+<ol class="arabic simple">
+<li><p><strong>Different Foundations:</strong> AIC is derived from principles of information theory and aims to find the model that best approximates the true data-generating process with minimal information loss. Its derivation allows for a more straightforward second-order correction.</p></li>
+<li><p><strong>Asymptotic Nature of BIC:</strong> BIC is derived from a Bayesian probability framework. It is an asymptotic approximation to the full Bayesian model evidence, which is used to calculate the Bayes factor. The <span class="math notranslate nohighlight">\(k \ln(n)\)</span> penalty term arises naturally from this approximation.</p></li>
+<li><p><strong>Stronger Inherent Penalty:</strong> The penalty term in BIC, <span class="math notranslate nohighlight">\(k \ln(n)\)</span>, is already much stronger than AIC’s <span class="math notranslate nohighlight">\(2k\)</span> penalty (for any <span class="math notranslate nohighlight">\(n &gt; 7\)</span>). This strong penalty, which scales with sample size, already makes BIC less prone to the kind of overfitting in small samples that necessitated the creation of AICc.</p></li>
+</ol>
 </section>
 <section id="additional-materials">
 <h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
@@ -854,7 +897,7 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-aic-and-bic-with-unknown-variance">Calculating AIC and BIC with Unknown Variance</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-for-aic-and-bic">Modification for Small Sample Size for AIC and ?BIC?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modification-for-small-sample-size-the-corrected-aic-aicc">Modification for Small Sample Size: The Corrected AIC (AICc)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
   </nav></div>
