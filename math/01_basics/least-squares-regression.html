@@ -711,17 +711,19 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[ SER = \hat{\sigma} = \sqrt{\frac{RSS}{n - k}} \]</div>
 <p><strong>Comparison: RMSE vs. SER</strong></p>
-<ul class="simple">
-<li><p><strong>RMSE:</strong>
-$<span class="math notranslate nohighlight">\( RMSE = \sqrt{\frac{RSS}{n}} \)</span>$</p>
 <ul>
+<li><p><strong>RMSE:</strong></p>
+<div class="math notranslate nohighlight">
+\[ RMSE = \sqrt{\frac{RSS}{n}} \]</div>
+<ul class="simple">
 <li><p><strong>Interpretation:</strong> The average magnitude of the residual. It answers: “By how much is our model typically wrong in its predictions?”</p></li>
 <li><p><strong>Use Case:</strong> Best for comparing the predictive accuracy of different models on the <em>same dataset</em>, especially in machine learning contexts.</p></li>
 </ul>
 </li>
-<li><p><strong>SER:</strong>
-$<span class="math notranslate nohighlight">\( SER = \sqrt{\frac{RSS}{n - k}} \)</span>$</p>
-<ul>
+<li><p><strong>SER:</strong></p>
+<div class="math notranslate nohighlight">
+\[ SER = \sqrt{\frac{RSS}{n - k}} \]</div>
+<ul class="simple">
 <li><p><strong>Interpretation:</strong> An estimate of the standard deviation of the underlying, unobservable errors. It answers: “What is the typical size of the random noise in the data that our model cannot explain?”</p></li>
 <li><p><strong>Use Case:</strong> Rooted in statistical inference. It is used for calculating confidence intervals and p-values for the model parameters.</p></li>
 </ul>
