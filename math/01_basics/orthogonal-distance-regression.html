@@ -444,7 +444,14 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-roles-of-error-in-odr">The Two Roles of Error in ODR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-choose-odr-over-ols">When Should You Choose ODR over OLS?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-assess-the-goodness-of-fit-for-orthogonal-distance-regression-odr">How to Assess the Goodness of Fit for Orthogonal Distance Regression (ODR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-chi-squared-chi-2-and-reduced-chi-squared-chi-2-nu-statistics">The Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) and Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2-and-adjusted-r-squared">R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criteria-aic-and-bic">Information Criteria (AIC and BIC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-essential-evaluation-methods">Other Essential Evaluation Methods</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
 </ul>
@@ -470,27 +477,95 @@ document.write(`
 <p>This makes ODR particularly useful when both independent and dependent variables have measurement errors. The “orthogonal” part refers to the fact that the distances are measured perpendicular to the fitted curve, not vertically or horizontally.</p>
 <section id="general-principles-of-odr">
 <h2>General Principles of ODR<a class="headerlink" href="#general-principles-of-odr" title="Link to this heading">#</a></h2>
-<p>In a typical OLS regression, you assume that the independent variable (<span class="math notranslate nohighlight">\(x\)</span>) is known without error, and all the error is in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>). The goal is to minimize the sum of squared vertical distances from each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> to the fitted line <span class="math notranslate nohighlight">\(y = f(x_i)\)</span>.</p>
+<p>In a typical OLS regression, you assume that the independent variable <span class="math notranslate nohighlight">\(x\)</span> is known without error, and all the error is in the dependent variable <span class="math notranslate nohighlight">\(y\)</span>. The goal is to minimize the sum of squared vertical distances, which is the squared difference between the observed value <span class="math notranslate nohighlight">\(y_i\)</span> and the model’s prediction <span class="math notranslate nohighlight">\(f(x_i)\)</span>.</p>
 <p>ODR, however, treats both <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> as having errors. The method involves finding a point <span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span> on the curve <span class="math notranslate nohighlight">\(y = f(x)\)</span> that is closest to the observed data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>. The “distance” that ODR minimizes is the perpendicular distance between the observed point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and the point on the curve <span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span>.</p>
 <p>The objective function that ODR minimizes is:</p>
-<div class="math notranslate nohighlight">
-\[\sum_{i=1}^{n} \left( w_{x,i}^2(x_i - \hat{x}_i)^2 + w_{y,i}^2(y_i - \hat{y}_i)^2 \right)\]</div>
-<p>A more common and statistically grounded formulation, especially when using standard deviations, is to define the weights as the inverse of the variances:</p>
 <div class="math notranslate nohighlight">
 \[S = \sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right)\]</div>
 <p>where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(S\)</span> is the sum of squared weighted orthogonal distances.</p></li>
 <li><p><span class="math notranslate nohighlight">\((x_i, y_i)\)</span> are the observed data points.</p></li>
-<li><p><span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span> are the corresponding points on the fitted curve.</p></li>
-<li><p>The weights <span class="math notranslate nohighlight">\(w_{x,i}\)</span> and <span class="math notranslate nohighlight">\(w_{y,i}\)</span> are used to properly scale the errors in the objective function. They represent the inverse of the variance (the square of the standard deviation) of the errors for each variable.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma_{x,i}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i}\)</span> are the <strong>standard deviations</strong> of the errors for the <span class="math notranslate nohighlight">\(i\)</span>-th data point in the x and y directions, respectively.</p></li>
-<li><p>The terms <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{x,i}^2}\)</span> and <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{y,i}^2}\)</span> are the actual weights used in the minimization. They represent the <strong>inverse variance</strong>, a standard way to weight observations in statistics.</p></li>
+<li><p><span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span> are the corresponding adjusted points that lie on the fitted curve.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{x,i}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i}\)</span> are the known <strong>standard deviations</strong> of the errors for the <span class="math notranslate nohighlight">\(i\)</span>-th data point in the x and y directions, respectively.</p></li>
+<li><p>The terms <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{x,i}^2}\)</span> and <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{y,i}^2}\)</span> are the statistical weights. This is the standard practice of weighting by the inverse variance, which gives more influence to data.</p></li>
+<li><p><span class="math notranslate nohighlight">\(S\)</span> is the final value to be minimized, representing the sum of the squared weighted distances between the observed points and the curve.</p></li>
 </ul>
 <p>The core idea is that the regression should be more influenced by data points with smaller uncertainties and less by those with larger uncertainties.</p>
 <ul class="simple">
 <li><p><strong><span class="math notranslate nohighlight">\(w_{x,i}\)</span> (x-axis weights):</strong> A data point with a small error in the x-direction (a small standard deviation) will have a large <span class="math notranslate nohighlight">\(w_x\)</span> value. This means the algorithm will penalize deviations in the x-direction more heavily, forcing the fitted curve to be closer to that point horizontally.</p></li>
 <li><p><strong><span class="math notranslate nohighlight">\(w_{y,i}\)</span> (y-axis weights):</strong> Similarly, a data point with a small error in the y-direction will have a large <span class="math notranslate nohighlight">\(w_y\)</span> value. This pushes the curve to be closer to that point vertically.</p></li>
+</ul>
+</section>
+<section id="the-two-roles-of-error-in-odr">
+<h2>The Two Roles of Error in ODR<a class="headerlink" href="#the-two-roles-of-error-in-odr" title="Link to this heading">#</a></h2>
+<p>A careful look at the ODR objective function reveals that the error terms play two distinct and crucial roles in determining the final fit. To see this, we can rewrite the objective function by defining the <strong>error variance ratio</strong>, <span class="math notranslate nohighlight">\(\lambda_i\)</span>, for each data point:</p>
+<div class="math notranslate nohighlight">
+\[\lambda_i = \frac{\sigma_{y,i}^2}{\sigma_{x,i}^2}\]</div>
+<p>The objective function can then be expressed as:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \frac{1}{\sigma_{x,i}^2} \left( (x_i - \hat{x}_i)^2 + \frac{\sigma_{x,i}^2}{\sigma_{y,i}^2}(y_i - \hat{y}_i)^2 \right) = \sum_{i=1}^{n} \frac{1}{\sigma_{x,i}^2} \left( (x_i - \hat{x}_i)^2 + \frac{1}{\lambda_i}(y_i - \hat{y}_i)^2 \right)\]</div>
+<p>This form clearly separates the two roles:</p>
+<p><strong>1. Intra-Point Geometry (The Error Ratio <span class="math notranslate nohighlight">\(\lambda_i\)</span>)</strong></p>
+<p>The term inside the parenthesis, <span class="math notranslate nohighlight">\(\left( (x_i - \hat{x}_i)^2 + \frac{1}{\lambda_i}(y_i - \hat{y}_i)^2 \right)\)</span>, is controlled by the ratio <span class="math notranslate nohighlight">\(\lambda_i\)</span>. This ratio determines the <strong>geometry of the error</strong> for a single point <code class="docutils literal notranslate"><span class="pre">i</span></code>. It sets the relative “cost” of a deviation in the x-direction versus a deviation in the y-direction.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\lambda_i\)</span> is large (y-error &gt;&gt; x-error), the term <span class="math notranslate nohighlight">\(\frac{1}{\lambda_i}\)</span> is small, making it “cheaper” for the fit to accommodate deviations in y.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\lambda_i = 1\)</span> (x-error = y-error), the penalties are equal, and the error geometry is circular, resulting in a truly perpendicular distance.</p></li>
+</ul>
+<p>In essence, <span class="math notranslate nohighlight">\(\lambda_i\)</span> tells the algorithm the optimal <strong>direction</strong> from the data point to the curve.</p>
+<p><strong>2. Inter-Point Weighting (The Absolute Error Variance)</strong></p>
+<p>The term outside the parenthesis, <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{x,i}^2}\)</span>, acts as the <strong>overall weight for point <code class="docutils literal notranslate"><span class="pre">i</span></code></strong> within the sum. This term dictates the <strong>influence of point <code class="docutils literal notranslate"><span class="pre">i</span></code> relative to all other points</strong>.</p>
+<ul class="simple">
+<li><p>A point with small absolute errors (e.g., a small <span class="math notranslate nohighlight">\(\sigma_{x,i}\)</span>) will have a large weight (<span class="math notranslate nohighlight">\(1/\sigma_{x,i}^2\)</span>), making it a “strong magnet.” The algorithm will work much harder to minimize the distance for this point, as it contributes significantly to the total sum <span class="math notranslate nohighlight">\(S\)</span>.</p></li>
+<li><p>A point with large absolute errors will have a small weight, acting as a “weak magnet” with less influence on the final position of the curve.</p></li>
+</ul>
+<p>Therefore, the absolute magnitude of the errors is critical for determining which points the regression should prioritize.</p>
+<p><strong>When Does Only the Ratio Matter?</strong></p>
+<p>The powerful insight that you might only need the error ratio is <strong>only true under a specific, common assumption: that the error magnitudes are constant for all data points</strong> (homoscedastic errors).</p>
+<p>Let’s assume that <span class="math notranslate nohighlight">\(\sigma_{x,i} = \sigma_x\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i} = \sigma_y\)</span> for all points <code class="docutils literal notranslate"><span class="pre">i</span></code>. In this case:</p>
+<ol class="arabic simple">
+<li><p>The ratio <span class="math notranslate nohighlight">\(\lambda_i\)</span> becomes a single constant for the entire dataset: <span class="math notranslate nohighlight">\(\lambda = \sigma_y^2 / \sigma_x^2\)</span>.</p></li>
+<li><p>The weighting term <span class="math notranslate nohighlight">\(\frac{1}{\sigma_{x,i}^2}\)</span> also becomes a single constant: <span class="math notranslate nohighlight">\(\frac{1}{\sigma_x^2}\)</span>.</p></li>
+</ol>
+<p>Now, the objective function simplifies:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \frac{1}{\sigma_x^2} \left( (x_i - \hat{x}_i)^2 + \frac{1}{\lambda}(y_i - \hat{y}_i)^2 \right)\]</div>
+<p>Since <span class="math notranslate nohighlight">\(\frac{1}{\sigma_x^2}\)</span> is now a constant multiplier for the <em>entire sum</em>, we can factor it out:</p>
+<div class="math notranslate nohighlight">
+\[S = \frac{1}{\sigma_x^2} \sum_{i=1}^{n} \left( (x_i - \hat{x}_i)^2 + \frac{1}{\lambda}(y_i - \hat{y}_i)^2 \right)\]</div>
+<p>Multiplying the entire function by a constant does not change the location of its minimum. Therefore, if you can assume that your measurement errors are consistent across all your data points, then you <strong>do not need to know their absolute values to find the best-fit curve; you only need to know their ratio, <span class="math notranslate nohighlight">\(\lambda\)</span>.</strong> This is a very common scenario in practice, for instance, when all measurements are made using the same instrument under the same conditions.</p>
+<p>Now, let’s consider the implications of the error ratio <span class="math notranslate nohighlight">\(\lambda\)</span>. Let’s look at a single term in the sum for one data point:</p>
+<div class="math notranslate nohighlight">
+\[\text{Term}_i = \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2}\]</div>
+<p>The algorithm wants to make this term small.</p>
+<ul>
+<li><p><strong>Case 1: <span class="math notranslate nohighlight">\(\lambda_i \to \infty\)</span> (Error in x is zero)</strong></p>
+<p>This happens when <span class="math notranslate nohighlight">\(\sigma_{x,i}^2 \to 0\)</span>. Let’s look at the first part of the term: <span class="math notranslate nohighlight">\(\frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2}\)</span>.
+As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)</span> gets closer and closer to zero, this fraction will <strong>explode to infinity</strong> <em>unless</em> the numerator is also exactly zero. To prevent the total sum <span class="math notranslate nohighlight">\(S\)</span> from becoming infinite, the algorithm has no choice but to force the numerator to be zero.</p>
+<p>It <strong>must</strong> set <span class="math notranslate nohighlight">\(\hat{x}_i = x_i\)</span>.</p>
+<p>With this constraint, the first part of the term becomes zero. What’s left to minimize?</p>
+<div class="math notranslate nohighlight">
+\[\text{Term}_i = 0 + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2}\]</div>
+<p>Since the fitted point must lie on the curve, we know <span class="math notranslate nohighlight">\(\hat{y}_i = f(\hat{x}_i)\)</span>. And because we were forced to set <span class="math notranslate nohighlight">\(\hat{x}_i = x_i\)</span>, this means <span class="math notranslate nohighlight">\(\hat{y}_i = f(x_i)\)</span>. Substituting this in, the total objective function becomes:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \frac{(y_i - f(x_i))^2}{\sigma_{y,i}^2}\]</div>
+<p>This is the <strong>exact formula for Weighted Least Squares (WLS)</strong>. ODR has transformed into WLS because the infinite penalty on any horizontal deviation left it with no freedom to adjust the x-positions.</p>
+</li>
+<li><p><strong>Case 2: <span class="math notranslate nohighlight">\(\lambda_i \to 0\)</span> (Error in y is zero)</strong></p>
+<p>This is the symmetrical opposite. This happens when <span class="math notranslate nohighlight">\(\sigma_{y,i}^2 \to 0\)</span>. The second part of the term, <span class="math notranslate nohighlight">\(\frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2}\)</span>, will explode unless the algorithm forces <span class="math notranslate nohighlight">\(\hat{y}_i = y_i\)</span>. The objective function then reduces to minimizing only the horizontal weighted distances:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2}\]</div>
+<p>This is equivalent to performing WLS, but with the roles of x and y swapped.</p>
+</li>
+<li><p><strong>Case 3: <span class="math notranslate nohighlight">\(\lambda_i = 1\)</span> (Errors are equal)</strong></p>
+<p>This means <span class="math notranslate nohighlight">\(\sigma_{x,i}^2 = \sigma_{y,i}^2\)</span>. Let’s call this common variance <span class="math notranslate nohighlight">\(\sigma_i^2\)</span>. The objective function becomes:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_i^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_i^2} \right)\]</div>
+<p>We can factor out the denominator:</p>
+<div class="math notranslate nohighlight">
+\[S = \sum_{i=1}^{n} \frac{1}{\sigma_i^2} \left( (x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2 \right)\]</div>
+<p>By the Pythagorean theorem, the term <span class="math notranslate nohighlight">\((x_i - \hat{x}_i)^2 + (y_i - \hat{y}_i)^2\)</span> is simply the <strong>squared geometric (Euclidean) distance</strong> between the observed point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and the fitted point <span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span>. The overall objective function is therefore minimizing the weighted sum of these squared perpendicular distances. The weight for each point is given by its inverse variance <span class="math notranslate nohighlight">\(1/\sigma_i^2\)</span> giving more influence to the more certain data points.</p>
+<p>This becomes a simple (unweighted) sum of squared perpendicular distances only in the even more specific case where all errors are identical (<span class="math notranslate nohighlight">\(\sigma_i = \sigma\)</span> for all points).</p>
+</li>
 </ul>
 </section>
 <section id="odr-with-non-linear-functions">
@@ -504,8 +579,160 @@ document.write(`
 <li><p><strong>Use an ODR-specific software library or package</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code> in Python) to perform the regression. The solver will then iteratively adjust the parameters of your function until the sum of the squared orthogonal distances is minimized. ODR typically uses trust-region Levenberg-Marquardt algorithms.</p></li>
 </ol>
 <p>The output will be the best-fit parameters for your non-linear function, along with their standard errors, which can be used to assess the uncertainty of the estimates.</p>
+</section>
+<section id="when-should-you-choose-odr-over-ols">
+<h2>When Should You Choose ODR over OLS?<a class="headerlink" href="#when-should-you-choose-odr-over-ols" title="Link to this heading">#</a></h2>
+<p>The choice between Ordinary Least Squares (OLS) and Orthogonal Distance Regression (ODR) depends entirely on the nature of the errors in your data. Since ODR is more complex and computationally intensive, it’s important to know when its use is truly justified.</p>
+<p><strong>Use Ordinary Least Squares (OLS) when:</strong></p>
+<ul class="simple">
+<li><p><strong>Error in the independent variable (x) is negligible or zero.</strong> This is the classic assumption of OLS. If you are regressing against a variable like time, or a concentration that you set with high precision, the error in x is likely insignificant compared to the measurement error in y.</p></li>
+<li><p><strong>The error in x is significantly smaller than the error in y.</strong> As a rule of thumb, if the standard deviation of the y-error is more than 5 to 10 times larger than the standard deviation of the x-error, the results from OLS will be very close to those from ODR. In this case, the simplicity and speed of OLS make it the preferred choice.</p></li>
+<li><p><strong>The primary goal is prediction.</strong> If your main goal is to predict new y-values from new x-values (and you expect new data to have similar error properties), OLS provides an unbiased predictor for y given x, even if x has some error.</p></li>
+</ul>
+<p><strong>Use Orthogonal Distance Regression (ODR) when:</strong></p>
+<ul class="simple">
+<li><p><strong>Errors in both x and y are significant and of a similar magnitude.</strong> This is the primary use case for ODR. Ignoring significant errors in the independent variable leads to a bias known as regression dilution, where the estimated slope of the relationship is systematically underestimated (biased towards zero).</p></li>
+<li><p><strong>The choice of independent vs. dependent variable is arbitrary.</strong> For example, if you are comparing two different instruments by measuring the same quantity with both, there is no physical reason to call one instrument’s measurement “x” and the other “y”. ODR treats both variables symmetrically, giving a result that is independent of this arbitrary choice. OLS would give a different best-fit line if you swapped the x and y axes.</p></li>
+<li><p><strong>The model is highly non-linear.</strong> On very steep or very flat sections of a curve, the vertical distance minimized by OLS can be a poor representation of the “true” distance from a data point to the model. The perpendicular distance minimized by ODR is often more geometrically stable and robust in these cases.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Scenario</p></th>
+<th class="head text-left"><p>Recommended Method</p></th>
+<th class="head text-left"><p>Rationale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Error in x is negligible</p></td>
+<td class="text-left"><p><strong>OLS</strong></p></td>
+<td class="text-left"><p>The core assumption of OLS is met.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Error in x is much smaller than error in y</p></td>
+<td class="text-left"><p><strong>OLS</strong></p></td>
+<td class="text-left"><p>Results will be nearly identical to ODR, but OLS is simpler.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Errors in x and y are comparable</p></td>
+<td class="text-left"><p><strong>ODR</strong></p></td>
+<td class="text-left"><p>OLS will produce biased parameter estimates.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Variables are symmetric (e.g., comparing two methods)</p></td>
+<td class="text-left"><p><strong>ODR</strong></p></td>
+<td class="text-left"><p>The result should not depend on which variable is on which axis.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Highly non-linear model with errors in x</p></td>
+<td class="text-left"><p><strong>ODR</strong></p></td>
+<td class="text-left"><p>Orthogonal distance can be a more robust error metric.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="how-to-assess-the-goodness-of-fit-for-orthogonal-distance-regression-odr">
+<h2>How to Assess the Goodness of Fit for Orthogonal Distance Regression (ODR)<a class="headerlink" href="#how-to-assess-the-goodness-of-fit-for-orthogonal-distance-regression-odr" title="Link to this heading">#</a></h2>
+<p>Once you have performed an ODR fit, it is crucial to evaluate how well the resulting model actually represents your data. Because ODR does not seek to minimize the simple vertical distances like OLS, some of the most common goodness-of-fit metrics, like R-squared, are not appropriate. Instead, we must turn to metrics that are consistent with the ODR objective function.</p>
+<p>The primary methods for assessing an ODR fit rely on the final, minimized value of the objective function itself, residual analysis, and information criteria for model comparison.</p>
+<section id="the-chi-squared-chi-2-and-reduced-chi-squared-chi-2-nu-statistics">
+<h3>The Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) and Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) Statistics<a class="headerlink" href="#the-chi-squared-chi-2-and-reduced-chi-squared-chi-2-nu-statistics" title="Link to this heading">#</a></h3>
+<p>The most natural and powerful metrics for ODR goodness of fit are derived directly from the value that the algorithm worked to minimize.</p>
+<ul>
+<li><p><strong>The Chi-Squared Statistic (<span class="math notranslate nohighlight">\(\chi^2\)</span>)</strong></p>
+<p>The final, minimized value of the ODR objective function, <span class="math notranslate nohighlight">\(S\)</span>, is itself a chi-squared statistic.</p>
+<div class="math notranslate nohighlight">
+\[ \chi^2 = S_{min} = \sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right) \]</div>
+<p>This value represents the total weighted squared error of the fit. However, its absolute magnitude is difficult to interpret on its own, as it scales with the number of data points.</p>
+</li>
+<li><p><strong>The Reduced Chi-Squared Statistic (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) - The Best Indicator</strong></p>
+<p>To create a standardized and highly interpretable metric, we calculate the <strong>reduced chi-squared statistic</strong>, which is the final <span class="math notranslate nohighlight">\(\chi^2\)</span> value divided by the <strong>degrees of freedom</strong> (<span class="math notranslate nohighlight">\(\nu\)</span>).</p>
+<p>The degrees of freedom are the number of data points (<span class="math notranslate nohighlight">\(n\)</span>) minus the number of parameters (<span class="math notranslate nohighlight">\(p\)</span>) estimated by the model: <span class="math notranslate nohighlight">\(\nu = n - p\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[ \chi^2_\nu = \frac{\chi^2}{\nu} = \frac{S_{min}}{n - p} \]</div>
+<p>The reduced chi-squared value provides a powerful assessment of the fit quality under the assumption that your error estimates (<span class="math notranslate nohighlight">\(\sigma_{x,i}, \sigma_{y,i}\)</span>) are accurate:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu \approx 1.0\)</span></strong>: This is the ideal outcome. It indicates that the model is a good fit to the data and that the measurement errors were likely estimated correctly. The observed scatter of the data points around the fitted curve is consistent with their reported error bars.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &gt; 1.0\)</span></strong>: This suggests a poor fit. There are two possible reasons:</p>
+<ol class="arabic simple">
+<li><p><strong>The model is wrong:</strong> The chosen function does not adequately describe the true physical relationship.</p></li>
+<li><p><strong>The errors were underestimated:</strong> Your reported error values (<span class="math notranslate nohighlight">\(\sigma_{x,i}, \sigma_{y,i}\)</span>) are too small, and the data is actually “noisier” than you thought.</p></li>
+</ol>
+</li>
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &lt; 1.0\)</span></strong>: This indicates that the fit is “too good.” The data points are, on average, closer to the line than their error estimates would predict. This can mean:</p>
+<ol class="arabic simple">
+<li><p><strong>The errors were overestimated:</strong> Your reported error values are too large.</p></li>
+<li><p><strong>The model is overfitting the data:</strong> This is a risk if the model is too complex relative to the number of data points.</p></li>
+</ol>
+</li>
+</ul>
+<p>Many regression packages, including <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code>, report this value as <code class="docutils literal notranslate"><span class="pre">res_var</span></code> (residual variance), which is equivalent to the reduced chi-squared.</p>
+</li>
+</ul>
+<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a></p>
+</section>
+<section id="r-squared-r-2-and-adjusted-r-squared">
+<h3>R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared<a class="headerlink" href="#r-squared-r-2-and-adjusted-r-squared" title="Link to this heading">#</a></h3>
+<p><strong>Generally Not Recommended for ODR.</strong></p>
+<p>R-squared is defined as <span class="math notranslate nohighlight">\(R^2 = 1 - \frac{SS_{res}}{SS_{tot}}\)</span>, where <span class="math notranslate nohighlight">\(SS_{res}\)</span> is the sum of squared <em>vertical</em> residuals and <span class="math notranslate nohighlight">\(SS_{tot}\)</span> is the total sum of squares related to the <em>vertical</em> variance of the data.</p>
+<p>This metric is fundamentally incompatible with the principle of ODR for two reasons:</p>
+<ol class="arabic simple">
+<li><p>ODR does not minimize the vertical residuals, so <span class="math notranslate nohighlight">\(SS_{res}\)</span> does not represent what the algorithm was trying to do.</p></li>
+<li><p><span class="math notranslate nohighlight">\(SS_{tot}\)</span> only accounts for the variance in the y-variable, completely ignoring the error structure of the x-variable, which is central to ODR.</p></li>
+</ol>
+<p>Using a standard R-squared calculation on an ODR fit gives a misleading and often uninterpretable number. While some “pseudo R-squared” metrics exist, they lack the intuitive “percentage of variance explained” meaning and are best avoided in favor of the chi-squared statistics.</p>
+</section>
+<section id="information-criteria-aic-and-bic">
+<h3>Information Criteria (AIC and BIC)<a class="headerlink" href="#information-criteria-aic-and-bic" title="Link to this heading">#</a></h3>
+<p><strong>Recommended for Model Comparison.</strong></p>
+<p>The Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) are excellent tools for <strong>comparing different models</strong> fit to the same dataset. They do not tell you if a single model is a “good fit” in an absolute sense, but they can tell you which model is better relative to others.</p>
+<p>Both criteria work by balancing model fit with model complexity (the number of parameters, <span class="math notranslate nohighlight">\(p\)</span>). For models based on a chi-squared statistic (like ODR), they can be calculated as:</p>
+<ul class="simple">
+<li><p><strong>AIC</strong> = <span class="math notranslate nohighlight">\(\chi^2 + 2p\)</span></p></li>
+<li><p><strong>BIC</strong> = <span class="math notranslate nohighlight">\(\chi^2 + p \ln(n)\)</span></p></li>
+</ul>
+<p>When comparing two or more models, the one with the <strong>lower AIC or BIC value is considered better</strong>. It provides the most explanatory power for the least complexity.</p>
+</section>
+<section id="other-essential-evaluation-methods">
+<h3>Other Essential Evaluation Methods<a class="headerlink" href="#other-essential-evaluation-methods" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Graphical Residual Analysis:</strong> This is one of the most important steps. Instead of plotting vertical residuals, you should analyze the ODR residuals. You can plot a histogram of the standardized residuals or, more effectively, plot the magnitude of the orthogonal distance from each point to the curve against the fitted values. There should be no discernible pattern or trend in this plot; the residuals should appear randomly scattered.</p></li>
+<li><p><strong>Parameter Standard Errors:</strong> The ODR output will provide the best-fit parameters along with their standard errors (e.g., <code class="docutils literal notranslate"><span class="pre">beta_std</span></code> in <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code>). A large standard error relative to the parameter value indicates that the parameter is not well-constrained by the data, which can be a sign of a poor model or insufficient data.</p></li>
+</ul>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Metric</p></th>
+<th class="head text-left"><p>Applicability to ODR</p></th>
+<th class="head text-left"><p>Purpose &amp; Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>)</strong></p></td>
+<td class="text-left"><p><strong>Highly Recommended</strong></p></td>
+<td class="text-left"><p><strong>Primary indicator of fit quality.</strong> A value near 1.0 indicates a good fit where the model and error estimates are consistent.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>)</strong></p></td>
+<td class="text-left"><p><strong>Recommended</strong></p></td>
+<td class="text-left"><p>The raw, minimized sum of weighted squared errors. Used to calculate <span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>, AIC, and BIC.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>AIC / BIC</strong></p></td>
+<td class="text-left"><p><strong>Recommended</strong></p></td>
+<td class="text-left"><p><strong>Model comparison.</strong> Helps select the best model from a set of candidates. Lower values are better.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Residual Plots</strong></p></td>
+<td class="text-left"><p><strong>Essential</strong></p></td>
+<td class="text-left"><p><strong>Visual check for model validity.</strong> Residuals should be random, without patterns.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Parameter Standard Errors</strong></p></td>
+<td class="text-left"><p><strong>Essential</strong></p></td>
+<td class="text-left"><p><strong>Assesses the certainty of the fit parameters.</strong> Large errors indicate poorly determined parameters.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>)</strong></p></td>
+<td class="text-left"><p><strong>Not Recommended</strong></p></td>
+<td class="text-left"><p>Fundamentally inconsistent with the ODR objective function. Provides a misleading measure of fit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Assessing the goodness of fit for Orthogonal Distance Regression (ODR), especially with non-linear models, is more complex than with Ordinary Least Squares (OLS). Since ODR accounts for errors in both x and y variables, traditional metrics like R-squared can be misleading or inappropriate.</p>
 <p>The most suitable and standard goodness-of-fit parameter for ODR is the <strong>reduced chi-squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</strong> statistic.</p>
+</section>
 <section id="reduced-chi-squared-chi-red-2">
 <h3>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)<a class="headerlink" href="#reduced-chi-squared-chi-red-2" title="Link to this heading">#</a></h3>
 <p>The reduced chi-squared is a powerful and statistically rigorous measure for ODR because it directly incorporates the uncertainties (weights) of both the x and y data points. It is defined as the sum of squared weighted residuals divided by the number of degrees of freedom.</p>
@@ -539,6 +766,8 @@ document.write(`
 <li><p><strong>Standard Errors of Parameters:</strong> The standard errors of the fitted parameters provide a measure of their uncertainty. If these are very large, it suggests that the data are not sufficient to accurately determine the model’s parameters.</p></li>
 <li><p><strong>Confidence and Prediction Bands:</strong> Visualizing the confidence and prediction bands around the fitted curve is an excellent way to see the range of uncertainty in your model and its predictions.</p></li>
 </ul>
+<p>The res_var attribute of the Output is the so-called reduced Chi-square value for the fit, a popular choice of goodness-of-fit statistic. It is somewhat problematic for non-linear fitting, though. You can look at the residuals directly (out.delta for the X residuals and out.eps for the Y residuals). Implementing a cross-validation or bootstrap method for determining goodness-of-fit, as suggested in the linked paper, is left as an exercise for the reader.</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html</a></p>
 </section>
 </section>
 </section>
@@ -608,7 +837,14 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-principles-of-odr">General Principles of ODR</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-roles-of-error-in-odr">The Two Roles of Error in ODR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#odr-with-non-linear-functions">ODR with Non-linear Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-choose-odr-over-ols">When Should You Choose ODR over OLS?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-assess-the-goodness-of-fit-for-orthogonal-distance-regression-odr">How to Assess the Goodness of Fit for Orthogonal Distance Regression (ODR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-chi-squared-chi-2-and-reduced-chi-squared-chi-2-nu-statistics">The Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) and Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) Statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2-and-adjusted-r-squared">R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criteria-aic-and-bic">Information Criteria (AIC and BIC)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-essential-evaluation-methods">Other Essential Evaluation Methods</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
 </ul>
