@@ -471,6 +471,9 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="variance-and-covariance">
 <h1>Variance and Covariance<a class="headerlink" href="#variance-and-covariance" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>In statistics, we often use uppercase letters (e.g., <span class="math notranslate nohighlight">\(X\)</span>) to denote a <strong>random variable</strong>, which represents the abstract concept or process being measured (like the height of a person). Lowercase letters with an index (e.g., <span class="math notranslate nohighlight">\(x_i\)</span>) represent the specific <strong>observations</strong> or actual data points collected for that variable (e.g., <span class="math notranslate nohighlight">\(x_1 = 175\text{cm}\)</span>, <span class="math notranslate nohighlight">\(x_2 = 182\text{cm}\)</span>, etc.). While this document will primarily use the lowercase notation for calculations, it is helpful to remember this distinction.</p>
+</div></blockquote>
 <section id="mean-average">
 <h2>Mean (Average)<a class="headerlink" href="#mean-average" title="Link to this heading">#</a></h2>
 <p>Before diving into variance and covariance, we need to understand the concept of the mean, also known as the average. The mean is a measure of central tendency, representing the typical value in a dataset.</p>
@@ -754,7 +757,7 @@ $<span class="math notranslate nohighlight">\(s^2 = \frac{\sum_{i=1}^{n} (x_i - 
 </tr>
 <tr class="row-odd"><td class="text-left"><p>Source of Mean</p></td>
 <td class="text-left"><p>Calculated <em>from</em> the <span class="math notranslate nohighlight">\(n\)</span> data points in the sample.</p></td>
-<td class="text-left"><p>A fixed, known constant; <em>not</em> calculated from the data being used.</p></td>
+<td class="text-left"><p>A fixed parameter of the population, calculated using all <span class="math notranslate nohighlight">\(N\)</span> data points of the entire population.</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p>Constraint</p></td>
 <td class="text-left"><p>The sum of deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span> is constrained to zero.</p></td>
