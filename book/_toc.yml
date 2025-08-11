@@ -15,16 +15,15 @@ parts:
       - file: math/01_basics/divergence
       - file: math/01_basics/fourier-transform-01
       - file: math/01_basics/least-squares-regression
-        sections:
-          - file: math/01_basics/least-squares-regression-code
+      - file: math/01_basics/least-squares-regression-code
       - file: math/01_basics/ordinary-least-squares
-        sections:
-          - file: math/01_basics/ordinary-least-squares-code
+      - file: math/01_basics/ordinary-least-squares-code
       - file: math/01_basics/variance-covariance
       - file: math/01_basics/weighted-least-squares
+      - file: math/01_basics/weighted-least-squares-code-1
       - file: math/01_basics/goodness-of-fit-and-chi-squared
       - file: math/01_basics/aic-and-bic
-      - file: math/01_basics/weighted-least-squares-code
+      - file: math/01_basics/weighted-least-squares-code-2
       - file: math/01_basics/orthogonal-distance-regression
 
   - caption: PHYSICS

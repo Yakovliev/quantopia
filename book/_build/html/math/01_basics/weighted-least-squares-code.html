@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Orthogonal Distance Regression" href="orthogonal-distance-regression.html" />
-    <link rel="prev" title="Goodness of Fit and Chi-Squared Statistic" href="goodness-of-fit-and-chi-squared.html" />
+    <link rel="prev" title="Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)" href="aic-and-bic.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -189,17 +189,14 @@
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
 <li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Weighted Least Squares - Code Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
@@ -442,6 +439,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-most-useful-metric-reduced-chi-squared-2-red">The Most Useful Metric: Reduced Chi-Squared (<code class="docutils literal notranslate"><span class="pre">χ²_red</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example">Example 1. Non-Linear Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-non-linear-example-with-y-axis-errors-with-negligible-standard-deviation-for-the-first-point">Example 2. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>
@@ -463,6 +462,85 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="weighted-least-squares-code-examples">
 <h1>Weighted Least Squares - Code Examples<a class="headerlink" href="#weighted-least-squares-code-examples" title="Link to this heading">#</a></h1>
+<p>When the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> argument is not provided to <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>, the function performs an <strong>unweighted least-squares fit</strong>. This is mathematically equivalent to assuming the standard deviation (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) for every data point is equal to 1.</p>
+<p>This leads to two different ways to answer your question, depending on what you mean by “calculate chi-squared.”</p>
+<ol class="arabic simple">
+<li><p><strong>Can we calculate a formal, statistically rigorous Chi-Squared (<code class="docutils literal notranslate"><span class="pre">χ²</span></code>) for a goodness-of-fit test?</strong></p>
+<ul class="simple">
+<li><p><strong>Answer: No.</strong> A formal chi-squared test requires that you have <strong>known, independent experimental uncertainties (<code class="docutils literal notranslate"><span class="pre">σᵢ</span></code>)</strong> for each of your data points (<code class="docutils literal notranslate"><span class="pre">yᵢ</span></code>). The entire purpose of the test is to determine if the scatter of your data around the fitted model is consistent with your <em>a priori</em> knowledge of the measurement errors.</p></li>
+<li><p>The formula for a true chi-squared statistic is:
+$<span class="math notranslate nohighlight">\( \chi^2 = \sum_{i=1}^{n} \left( \frac{y_i - f(x_i)}{\sigma_i} \right)^2 \)</span>$</p></li>
+<li><p>Since you don’t have the <code class="docutils literal notranslate"><span class="pre">σᵢ</span></code> values, you cannot perform this formal test.</p></li>
+</ul>
+</li>
+<li><p><strong>Can we calculate a <em>value</em> that is related to Chi-Squared to help us evaluate the fit?</strong></p>
+<ul class="simple">
+<li><p><strong>Answer: Yes, absolutely.</strong> This is where your insight about <code class="docutils literal notranslate"><span class="pre">sigma=1</span></code> is crucial.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> assumes <code class="docutils literal notranslate"><span class="pre">σᵢ</span> <span class="pre">=</span> <span class="pre">1</span></code> for all points, the quantity it is minimizing is:
+$<span class="math notranslate nohighlight">\( \sum_{i=1}^{n} \left( \frac{y_i - f(x_i)}{1} \right)^2 = \sum_{i=1}^{n} (y_i - f(x_i))^2 = \text{RSS} \)</span>$</p></li>
+<li><p>This means that for an unweighted fit, the optimized <strong>Residual Sum of Squares (RSS) is numerically equal to the chi-squared value</strong> calculated under the <code class="docutils literal notranslate"><span class="pre">σ=1</span></code> assumption.</p></li>
+</ul>
+</li>
+</ol>
+<section id="the-most-useful-metric-reduced-chi-squared-2-red">
+<h2>The Most Useful Metric: Reduced Chi-Squared (<code class="docutils literal notranslate"><span class="pre">χ²_red</span></code>)<a class="headerlink" href="#the-most-useful-metric-reduced-chi-squared-2-red" title="Link to this heading">#</a></h2>
+<p>Even though we don’t have a formal <code class="docutils literal notranslate"><span class="pre">χ²</span></code> test, we can calculate the <strong>Reduced Chi-Squared</strong> (also written as <code class="docutils literal notranslate"><span class="pre">χ²_ν</span></code>), which is an extremely useful metric for evaluating the quality of a fit when errors are unknown.</p>
+<p>The Reduced Chi-Squared is defined as the Chi-Squared value divided by the <strong>degrees of freedom (<code class="docutils literal notranslate"><span class="pre">ν</span></code>)</strong>.</p>
+<div class="math notranslate nohighlight">
+\[ \chi^2_{\text{red}} = \frac{\chi^2}{\nu} \]</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">ν</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">-</span> <span class="pre">k</span></code> (<code class="docutils literal notranslate"><span class="pre">n</span></code> = number of data points, <code class="docutils literal notranslate"><span class="pre">k</span></code> = number of fitted parameters).</p>
+<p>Now, let’s substitute what we know from your case:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">χ²</span></code> is numerically equal to <code class="docutils literal notranslate"><span class="pre">RSS</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ν</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">-</span> <span class="pre">k</span></code></p></li>
+</ol>
+<p>Therefore, the Reduced Chi-Squared is:
+$<span class="math notranslate nohighlight">\( \chi^2_{\text{red}} = \frac{\text{RSS}}{n - k} \)</span>$</p>
+<p>Look familiar? This is the <strong>square of the Standard Error of the Regression (SER)</strong> you are already calculating!</p>
+<div class="math notranslate nohighlight">
+\[ \text{SER} = \sqrt{\frac{\text{RSS}}{n - k}} \implies \text{SER}^2 = \frac{\text{RSS}}{n - k} = \chi^2_{\text{red}} \]</div>
+<p><strong>How to Interpret Reduced Chi-Squared:</strong></p>
+<p>The Reduced Chi-Squared gives you a measure of how good your model is, taking into account the number of parameters you used.</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">χ²_red</span></code> ≈ 1.0:</strong> This is considered a <strong>good fit</strong>. It means that the variance of the residuals (<code class="docutils literal notranslate"><span class="pre">SER²</span></code>) is roughly what you’d expect for a model that correctly describes the data.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">χ²_red</span></code> &gt; 1.0:</strong> This suggests a <strong>poor fit</strong>. The model does not adequately explain the data (underfitting), or the true errors in the data are larger than the model assumes. The scatter of the data around the model is larger than can be explained by the model itself.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">χ²_red</span></code> &lt; 1.0:</strong> This can mean the fit is “<strong>too good</strong>”. The model may be <strong>overfitting</strong> the data—that is, it’s fitting the random noise in the data, not just the underlying trend. Alternatively, it could mean the true errors in your data are smaller than what the model’s form implies.</p></li>
+</ul>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Question</p></th>
+<th class="head"><p>Answer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Do you have known <code class="docutils literal notranslate"><span class="pre">σᵢ</span></code> for each data point <code class="docutils literal notranslate"><span class="pre">yᵢ</span></code>?</p></td>
+<td><p><strong>No.</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Can you perform a formal <code class="docutils literal notranslate"><span class="pre">χ²</span></code> goodness-of-fit test?</p></td>
+<td><p><strong>No.</strong> This requires known, independent errors.</p></td>
+</tr>
+<tr class="row-even"><td><p>What does <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> minimize when <code class="docutils literal notranslate"><span class="pre">sigma=None</span></code>?</p></td>
+<td><p>It minimizes the <strong>Residual Sum of Squares (RSS)</strong>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>What is the <code class="docutils literal notranslate"><span class="pre">χ²</span></code> value in this case?</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">χ²</span></code> value, assuming <code class="docutils literal notranslate"><span class="pre">σ=1</span></code>, is numerically <strong>equal to the RSS</strong>.</p></td>
+</tr>
+<tr class="row-even"><td><p>What is the best “chi-squared-like” metric to evaluate the fit?</p></td>
+<td><p>The <strong>Reduced Chi-Squared (<code class="docutils literal notranslate"><span class="pre">χ²_red</span></code>)</strong>, which you can calculate as <code class="docutils literal notranslate"><span class="pre">RSS</span> <span class="pre">/</span> <span class="pre">(n</span> <span class="pre">-</span> <span class="pre">k)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>What is the interpretation of this metric?</p></td>
+<td><p>A value close to <strong>1.0 indicates a good fit</strong>. Values much larger than 1 suggest underfitting, while values much smaller than 1 may suggest overfitting.</p></td>
+</tr>
+<tr class="row-even"><td><p>Is there a simpler way to think about this?</p></td>
+<td><p>Yes, the Reduced Chi-Squared is simply the <strong>square of the Standard Error of the Regression (<code class="docutils literal notranslate"><span class="pre">SER²</span></code>)</strong>, which you are already calculating.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="example-1-non-linear-example">
 <h2>Example 1. Non-Linear Example<a class="headerlink" href="#example-1-non-linear-example" title="Link to this heading">#</a></h2>
 <p>This example we reviewed previously in the least squares regression topic. In this example, we do not provide any information about y-axis errors for each data point.</p>
@@ -1603,12 +1681,12 @@ Value for x=0 (Expected value is 100): 100.0000
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="goodness-of-fit-and-chi-squared.html"
+       href="aic-and-bic.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Goodness of Fit and Chi-Squared Statistic</p>
+        <p class="prev-next-title">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</p>
       </div>
     </a>
     <a class="right-next"
@@ -1636,6 +1714,8 @@ Value for x=0 (Expected value is 100): 100.0000
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-most-useful-metric-reduced-chi-squared-2-red">The Most Useful Metric: Reduced Chi-Squared (<code class="docutils literal notranslate"><span class="pre">χ²_red</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example">Example 1. Non-Linear Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-non-linear-example-with-y-axis-errors-with-negligible-standard-deviation-for-the-first-point">Example 2. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>

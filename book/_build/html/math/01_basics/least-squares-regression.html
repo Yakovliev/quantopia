@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination) &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+    <title>Least Squares Regression, RSS, RMSE, R-squared &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
   
   
   
@@ -189,18 +189,16 @@
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
-<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
@@ -432,7 +430,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</h1>
+    <h1>Least Squares Regression, RSS, RMSE, R-squared</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -444,14 +442,11 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-core-idea-minimizing-differences">The Core Idea: Minimizing Differences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-regression">Least Squares Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sum-of-squared-residuals-ssr">Sum of Squared Residuals (SSR)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-squared-error-rmse">Root Mean Squared Error (RMSE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-sum-of-squares-rss">Residual Sum of Squares (RSS)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-coefficient-of-determination">R-squared (Coefficient of Determination)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjusted-r-squared-r-2">Adjusted R-squared <span class="math notranslate nohighlight">\(R^2\)</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions">Can Adjusted R-squared be Used for Linear vs. Non-Linear Functions?</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case">General Description of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjusted-r-squared-r-2">Adjusted R-squared <span class="math notranslate nohighlight">\(R^2\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-for-non-linear-models">R-squared for Non-Linear Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser">Root Mean Squared Error (RMSE) and Standard Error of the Regression (SER)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-levenberg-marquardt-algorithm-lma">What is the Levenberg-Marquardt Algorithm (LMA)?</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-it-related-to-least-squares-regression">How is it related to Least Squares Regression?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scipy-optimize-curve-fit"><code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a></li>
@@ -468,8 +463,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="least-squares-regression-ssr-rmse-r-squared-coefficient-of-determination">
-<h1>Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)<a class="headerlink" href="#least-squares-regression-ssr-rmse-r-squared-coefficient-of-determination" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="least-squares-regression-rss-rmse-r-squared">
+<h1>Least Squares Regression, RSS, RMSE, R-squared<a class="headerlink" href="#least-squares-regression-rss-rmse-r-squared" title="Link to this heading">#</a></h1>
 <p>When you have a set of experimental data points <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>, where <span class="math notranslate nohighlight">\(i\)</span> ranges from 1 to <span class="math notranslate nohighlight">\(n\)</span> (the number of data points), and you want to find a mathematical function that best describes the relationship between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, you are performing <strong>curve fitting</strong> or <strong>regression analysis</strong>. The goal is to find the parameters of a chosen function that make the function’s output as close as possible to your observed <span class="math notranslate nohighlight">\(y\)</span> values for the corresponding <span class="math notranslate nohighlight">\(x\)</span> values.</p>
 <p>Let’s review some specific non-linear case, and consider that we want to approximate the data with the function:</p>
 <div class="math notranslate nohighlight">
@@ -495,47 +490,32 @@ document.write(`
 <ul class="simple">
 <li><p>Squaring the residuals ensures that positive and negative differences don’t cancel each other out.</p></li>
 <li><p>It penalizes larger errors more heavily than smaller errors, which is often desirable.</p></li>
-<li><p>Mathematically, it leads to a convex optimization problem (for many functions), making it easier to find a unique minimum.</p></li>
 </ul>
-<p>So, we want to minimize the following quantity, which is the <strong>Sum of Squared Residuals (SSR)</strong>:</p>
+<p>So, we want to minimize the following quantity, which is the <strong>Residual Sum of Squares (RSS)</strong>:</p>
 <div class="math notranslate nohighlight">
-\[ SSR(A, B) = \sum_{i=1}^{n} (y_i - f(x_i; A, B))^2 \]</div>
+\[ RSS(A, B) = \sum_{i=1}^{n} (y_i - f(x_i; A, B))^2 \]</div>
 <p>Substituting our specific function:</p>
 <div class="math notranslate nohighlight">
-\[ SSR(A, B) = \sum_{i=1}^{n} (y_i - (A \cdot (e^{-B \cdot x_i} - 1) + 100))^2 \]</div>
-<p>To find the values of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> that minimize <span class="math notranslate nohighlight">\(SSR\)</span>, we typically use calculus. We take the partial derivatives of <span class="math notranslate nohighlight">\(SSR\)</span> with respect to each parameter (<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>), set them equal to zero, and solve the resulting system of equations.</p>
+\[ RSS(A, B) = \sum_{i=1}^{n} (y_i - (A \cdot (e^{-B \cdot x_i} - 1) + 100))^2 \]</div>
+<p>To find the values of <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> that minimize <span class="math notranslate nohighlight">\(RSS\)</span>, we typically use calculus. We take the partial derivatives of <span class="math notranslate nohighlight">\(RSS\)</span> with respect to each parameter (<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>), set them equal to zero, and solve the resulting system of equations.</p>
 <div class="math notranslate nohighlight">
-\[\frac{\partial SSR}{\partial A} = 0\]</div>
+\[\frac{\partial RSS}{\partial A} = 0\]</div>
 <div class="math notranslate nohighlight">
-\[\frac{\partial SSR}{\partial B} = 0\]</div>
-<p>For linear regression, these equations are linear and have a direct analytical solution. However, for non-linear functions like ours (due to the <span class="math notranslate nohighlight">\(e^{-B \cdot x}\)</span> term), these equations are often non-linear and require iterative numerical optimization algorithms (like the Levenberg-Marquardt algorithm, which is commonly used in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> in Python). We won’t derive the specific partial derivatives for the aforementioned function here, as it gets quite involved and typically handled by computational tools. The core idea remains the same: find <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> that make the slope of the <span class="math notranslate nohighlight">\(SSR\)</span> surface zero.</p>
-<p>Once you’ve found the best-fit parameters <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, you need to evaluate how “good” your approximation is. This is where metrics like SSR, RMSE, and R-squared come in.</p>
+\[\frac{\partial RSS}{\partial B} = 0\]</div>
+<p>For linear regression, these equations are linear and have a direct analytical solution. However, for non-linear functions like ours (due to the <span class="math notranslate nohighlight">\(e^{-B \cdot x}\)</span> term), these equations are often non-linear and require iterative numerical optimization algorithms (like the Levenberg-Marquardt algorithm, which is commonly used in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> in Python). We won’t derive the specific partial derivatives for the aforementioned function here, as it gets quite involved and typically handled by computational tools. The core idea remains the same: find <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> that make the slope of the <span class="math notranslate nohighlight">\(RSS\)</span> surface zero.</p>
+<p>Once you’ve found the best-fit parameters <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>, you need to evaluate how “good” your approximation is. This is where metrics like RSS, RMSE, and R-squared come in.</p>
 </section>
-<section id="sum-of-squared-residuals-ssr">
-<h2>Sum of Squared Residuals (SSR)<a class="headerlink" href="#sum-of-squared-residuals-ssr" title="Link to this heading">#</a></h2>
-<p>As derived above, SSR is:</p>
+<section id="residual-sum-of-squares-rss">
+<h2>Residual Sum of Squares (RSS)<a class="headerlink" href="#residual-sum-of-squares-rss" title="Link to this heading">#</a></h2>
+<p>As derived above, RSS is:</p>
 <div class="math notranslate nohighlight">
-\[SSR = \sum_{i=1}^{n} (y_i - f(x_i; A, B))^2\]</div>
-<p><strong>Meaning:</strong> SSR is a direct measure of the total discrepancy between your observed data points and your fitted function. A smaller SSR indicates a better fit to the data.</p>
+\[RSS = \sum_{i=1}^{n} (y_i - f(x_i; A, B))^2\]</div>
+<p>RSS is a direct measure of the total discrepancy between your observed data points and your fitted function. A smaller RSS indicates a better fit to the data.</p>
 <p><strong>Understanding:</strong></p>
 <ul class="simple">
 <li><p>It’s always non-negative.</p></li>
 <li><p>Its units are the square of the units of <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
-<li><p>It’s absolute: you CANNOT compare SSR directly between different datasets or models with different numbers of data points or vastly different scales of <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
-</ul>
-</section>
-<section id="root-mean-squared-error-rmse">
-<h2>Root Mean Squared Error (RMSE)<a class="headerlink" href="#root-mean-squared-error-rmse" title="Link to this heading">#</a></h2>
-<p>RMSE is derived directly from SSR and is often more interpretable:</p>
-<div class="math notranslate nohighlight">
-\[RMSE = \sqrt{\frac{SSR}{n}}\]</div>
-<p><strong>Meaning:</strong> RMSE represents the typical or average magnitude of the residuals. It gives you a sense of the average “error” your model makes in predicting <span class="math notranslate nohighlight">\(y\)</span>.</p>
-<p><strong>Understanding:</strong></p>
-<ul class="simple">
-<li><p>It’s in the same units as your dependent variable <span class="math notranslate nohighlight">\(y\)</span>. This makes it easier to interpret: “On average, our prediction is off by RMSE units of Y.”</p></li>
-<li><p>It’s sensitive to outliers because of the squaring of errors. Large errors contribute disproportionately to RMSE.</p></li>
-<li><p>Like SSR, a smaller RMSE indicates a better fit.</p></li>
-<li><p>You can compare RMSE values between different models <strong>on the same dataset</strong> to see which one performs better, provided the models have a similar number of parameters. Comparing RMSE across different datasets or datasets with vastly different scales of <span class="math notranslate nohighlight">\(y\)</span> can still be misleading.</p></li>
+<li><p>It’s absolute: you CANNOT compare RSS directly between different datasets or models with different numbers of data points or vastly different scales of <span class="math notranslate nohighlight">\(y\)</span>.</p></li>
 </ul>
 </section>
 <section id="r-squared-coefficient-of-determination">
@@ -548,93 +528,95 @@ document.write(`
 \[TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(y_i\)</span> are the observed data points and <span class="math notranslate nohighlight">\(\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\)</span> is the mean of the observed <span class="math notranslate nohighlight">\(y\)</span> values. TSS represents the total variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values around their mean. It’s the sum of squared differences if you were to approximate all <span class="math notranslate nohighlight">\(y_i\)</span> with their mean <span class="math notranslate nohighlight">\(\bar{y}\)</span> (which is essentially a horizontal line).</p>
 </li>
-<li><p><strong>Sum of Squared Residuals (SSR) / Sum of Squares Error (SSE) / Redisual Sum of Squares (RSS):</strong> This measures the variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values that is <em>not</em> explained by the regression model. It’s the sum of the squared differences between the observed <span class="math notranslate nohighlight">\(y_i\)</span> and the predicted <span class="math notranslate nohighlight">\(f(x_i)\)</span> (often denoted as <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>).</p>
+<li><p><strong>Residual Sum of Squares (RSS) / Sum of Squared Residuals (SSR) / Sum of Squares Error (SSE):</strong> This measures the variability in the observed <span class="math notranslate nohighlight">\(y\)</span> values that is <em>not</em> explained by the regression model. It’s the sum of the squared differences between the observed <span class="math notranslate nohighlight">\(y_i\)</span> and the predicted <span class="math notranslate nohighlight">\(f(x_i)\)</span> (often denoted as <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>).</p>
 <div class="math notranslate nohighlight">
-\[SSR = \sum_{i=1}^{n} (y_i - f(x_i))^2\]</div>
+\[RSS = \sum_{i=1}^{n} (y_i - f(x_i))^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(f(x_i)\)</span> (or <span class="math notranslate nohighlight">\(\hat{y}_i\)</span>) are the predicted values from your model.</p>
 </li>
 <li><p><strong>Sum of Squares due to Regression (SSR) / Explained Sum of Squares (ESS):</strong> This measures the variability in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>) that <em>is</em> explained by the regression model. It’s the sum of the squared differences between the predicted values <span class="math notranslate nohighlight">\(f(x_i)\)</span> and the mean of the observed <span class="math notranslate nohighlight">\(y\)</span> values <span class="math notranslate nohighlight">\(\bar{y}\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[ESS = \sum_{i=1}^{n} (f(x_i) - \bar{y})^2\]</div>
-<p><em>Note:</em> There can be some confusion with the acronym “SSR”. In many statistical texts, “SSR” refers to “Sum of Squares due to Regression” (what we’ve called ESS here), and “SSE” refers to “Sum of Squared Errors” (what we’ve called SSR here). However, in the context of R-squared’s formula (<span class="math notranslate nohighlight">\(1 - \frac{SSR}{TSS}\)</span>), the “SSR” in the numerator <em>always</em> refers to the <strong>Sum of Squared Residuals/Errors</strong>. To avoid confusion, we’ll stick to <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> for <strong>Sum of Squared Residuals/Errors</strong> and <span class="math notranslate nohighlight">\(ESS\)</span> for the explained sum of squares.</p>
+<p>NOTE: There can be some confusion with the acronym “SSR” as it may refer to “Sum of Squares due to Regression” or “Sum of Squared Residuals”. For these materials, we will use Residual Sum of Squares (RSS) and Explained Sum of Squares (ESS) to avoid any confusion.</p>
 </li>
 </ol>
 <p>R-squared is defined as:</p>
 <div class="math notranslate nohighlight">
-\[R^2 = 1 - \frac{SSR_{\text{res}}}{TSS}\]</div>
+\[R^2 = 1 - \frac{RSS}{TSS}\]</div>
 <p><strong>Meaning:</strong> R-squared tells you the proportion of the variance in the dependent variable (<span class="math notranslate nohighlight">\(y\)</span>) that is predictable from the independent variable (<span class="math notranslate nohighlight">\(x\)</span>) using your regression model. In simpler terms, it indicates how much of the variation in <span class="math notranslate nohighlight">\(y\)</span> can be explained by your chosen function.</p>
 <p><strong>Understanding:</strong></p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(R^2\)</span> ranges from 0 to 1 (or 0% to 100%).</p></li>
+<li><p><span class="math notranslate nohighlight">\(R^2\)</span> ranges from 0 to 1 (or 0% to 100%) for ordinary least squares with an intercept.</p></li>
 <li><p>An <span class="math notranslate nohighlight">\(R^2\)</span> of 1 (or 100%) means that your model perfectly explains all the variability in <span class="math notranslate nohighlight">\(y\)</span>. The residuals are all zero, and the function passes through every data point. This is rare in experimental data.</p></li>
 <li><p>An <span class="math notranslate nohighlight">\(R^2\)</span> of 0 means that your model explains none of the variability in <span class="math notranslate nohighlight">\(y\)</span>. In this case, your model performs no better than simply predicting the mean of <span class="math notranslate nohighlight">\(y\)</span> for all <span class="math notranslate nohighlight">\(x\)</span> values.</p></li>
 <li><p>A higher <span class="math notranslate nohighlight">\(R^2\)</span> generally indicates a better fit.</p></li>
+<li><p>NOTE: <span class="math notranslate nohighlight">\(R^2\)</span> may be less than zero or greater than one for non-linear regression or for linear models without an intercept.</p></li>
 </ul>
 <p><strong>Interpretation Caveats:</strong></p>
 <ul class="simple">
 <li><p>A high <span class="math notranslate nohighlight">\(R^2\)</span> doesn’t necessarily mean the model is “correct” or that the chosen function is the true underlying relationship. It just means it explains a lot of the variance.</p></li>
 <li><p>Adding more parameters to a model will generally increase <span class="math notranslate nohighlight">\(R^2\)</span>, even if those parameters don’t significantly improve the model’s predictive power (this is why <strong>adjusted R-squared</strong> is sometimes used, which penalizes for added complexity).</p></li>
-<li><p><strong>IMPORTANT</strong>: <span class="math notranslate nohighlight">\(R^2\)</span> is most appropriate for linear models. For non-linear models, using of <span class="math notranslate nohighlight">\(R^2\)</span> is not recommended.</p></li>
+<li><p><strong>IMPORTANT</strong>: <span class="math notranslate nohighlight">\(R^2\)</span> is most appropriate for linear models. For non-linear models, using of <span class="math notranslate nohighlight">\(R^2\)</span> is not recommended as it’s often misleading and shouldn’t be the primary metric.</p></li>
 <li><p>It’s possible to have a low <span class="math notranslate nohighlight">\(R^2\)</span> for a valid model if the inherent variability in the data (noise) is very high, even if the model captures the underlying trend.</p></li>
 </ul>
 </section>
 <section id="adjusted-r-squared-r-2">
 <h2>Adjusted R-squared <span class="math notranslate nohighlight">\(R^2\)</span><a class="headerlink" href="#adjusted-r-squared-r-2" title="Link to this heading">#</a></h2>
-<p>The standard R-squared <span class="math notranslate nohighlight">\(R^2\)</span> measures the proportion of variance in the dependent variable that is explained by the independent variables in a regression model. While useful, <span class="math notranslate nohighlight">\(R^2\)</span> has a significant drawback: <strong>it always increases or stays the same when you add more independent variables (predictors) to your model, even if those new variables do not genuinely improve the model’s explanatory power.</strong> This can lead to misleading conclusions, as a more complex model might appear better simply because it has more terms, not because it’s truly a better fit to the underlying phenomenon.</p>
-<p><strong>Adjusted R-squared</strong> addresses this issue by penalizing the inclusion of unnecessary predictors. It adjusts the <span class="math notranslate nohighlight">\(R^2\)</span> value based on the number of predictors in the model and the number of data points.</p>
-<p>Imagine you have a model with a certain <span class="math notranslate nohighlight">\(R^2\)</span>. If you add a new predictor that genuinely helps explain the variance in <span class="math notranslate nohighlight">\(y\)</span>, the <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> will decrease significantly, and the <span class="math notranslate nohighlight">\(R^2\)</span> will increase. However, if you add a new predictor that is irrelevant (e.g., random noise), <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> will still decrease slightly (due to random chance or fitting noise), causing <span class="math notranslate nohighlight">\(R^2\)</span> to increase, but this increase is not meaningful. Adjusted <span class="math notranslate nohighlight">\(R^2\)</span> accounts for this by considering the degrees of freedom.</p>
-<p>The formula for adjusted R-squared (<span class="math notranslate nohighlight">\(R^2_{adj}\)</span>) is:</p>
+<p>The standard R-squared <span class="math notranslate nohighlight">\(R^2\)</span> measures the proportion of variance in the dependent variable that is explained by the independent variables in a regression model. While useful, <span class="math notranslate nohighlight">\(R^2\)</span> has a significant drawback: <strong>it always increases or stays the same when you add more independent parameters to your model, even if those new variables do not genuinely improve the model’s explanatory power.</strong> This can lead to misleading conclusions, as a more complex model might appear better simply because it has more terms, not because it’s truly a better fit to the underlying phenomenon.</p>
+<p><strong>Adjusted R-squared</strong> addresses this issue by penalizing the inclusion of unnecessary parameters. It adjusts the <span class="math notranslate nohighlight">\(R^2\)</span> value based on the number of estimated parameters in the model and the number of data points.</p>
+<p>Imagine you have a model with a certain <span class="math notranslate nohighlight">\(R^2\)</span>. If you add a new parameter that genuinely helps explain the variance in <span class="math notranslate nohighlight">\(y\)</span>, the <span class="math notranslate nohighlight">\(RSS\)</span> will decrease significantly, and the <span class="math notranslate nohighlight">\(R^2\)</span> will increase. However, if you add a new parameter that is irrelevant (e.g., random noise), <span class="math notranslate nohighlight">\(RSS\)</span> will still decrease slightly (due to random chance or fitting noise), causing <span class="math notranslate nohighlight">\(R^2\)</span> to increase, but this increase is not meaningful. Adjusted <span class="math notranslate nohighlight">\(R^2\)</span> accounts for this by considering the degrees of freedom.</p>
+<p>The formula for adjusted R-squared <span class="math notranslate nohighlight">\(R^2_{adj}\)</span> is:</p>
 <div class="math notranslate nohighlight">
-\[R^2_{adj} = 1 - \frac{SSR_{\text{res}} / (n - k - 1)}{TSS / (n - 1)}\]</div>
+\[R^2_{adj} = 1 - \frac{RSS / (n - k)}{TSS / (n - 1)}\]</div>
 <p>Let’s break down the components and explain why this formula works:</p>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(n\)</span></strong>: The number of data points (observations).</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(k\)</span></strong>: The number of independent variables (predictors) in the model.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(SSR_{residuals}\)</span></strong>: Sum of Squared Residuals (unexplained variation).</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(TSS\)</span></strong>: Total Sum of Squares (total variation).</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: The number of data points (observations).</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>: The number of estimated parameters in the model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(RSS\)</span>: Residual Sum of Squares (unexplained variation).</p></li>
+<li><p><span class="math notranslate nohighlight">\(TSS\)</span>: Total Sum of Squares (total variation).</p></li>
 </ul>
 <p>To understand the division terms, we need to introduce the concept of <strong>degrees of freedom (df)</strong>:</p>
 <ul class="simple">
-<li><p><strong>Degrees of freedom for residuals (<span class="math notranslate nohighlight">\(df_{res}\)</span>):</strong> This is the number of data points minus the number of parameters estimated by the model. For a model with <span class="math notranslate nohighlight">\(k\)</span> independent variables and an intercept, there are <span class="math notranslate nohighlight">\(k+1\)</span> parameters (the intercept and <span class="math notranslate nohighlight">\(k\)</span> slopes/coefficients). So, <span class="math notranslate nohighlight">\(df_{res} = n - (k + 1)\)</span>.</p></li>
+<li><p><strong>Degrees of freedom for residuals (<span class="math notranslate nohighlight">\(df_{res}\)</span>):</strong> This is the number of data points minus the number of parameters estimated by the model <span class="math notranslate nohighlight">\(df_{res} = n - k\)</span>.</p></li>
 <li><p><strong>Degrees of freedom for total variation (<span class="math notranslate nohighlight">\(df_{tot}\)</span>):</strong> This is the number of data points minus 1 (because the mean <span class="math notranslate nohighlight">\(\bar{y}\)</span> is estimated from the data). So, <span class="math notranslate nohighlight">\(df_{tot} = n - 1\)</span>.</p></li>
 </ul>
 <p>Now, let’s rewrite the formula using degrees of freedom:</p>
 <div class="math notranslate nohighlight">
-\[R^2_{adj} = 1 - \frac{SSR_{\text{res}} / df_{res}}{TSS / df_{tot}}\]</div>
+\[R^2_{adj} = 1 - \frac{RSS / df_{res}}{TSS / df_{tot}}\]</div>
 <p>This can also be expressed in terms of <strong>Mean Squared Error (MSE)</strong>:</p>
 <ul class="simple">
-<li><p><strong>Mean Squared Error of Residuals (<span class="math notranslate nohighlight">\(MSE_{res}\)</span>):</strong> This is the average squared residual.
-<span class="math notranslate nohighlight">\(MSE_{res} = \frac{SSR_{\text{res}}}{n - k - 1}\)</span></p></li>
-<li><p><strong>Mean Squared Total (<span class="math notranslate nohighlight">\(MST_{tot}\)</span>):</strong> This is the sample variance of <span class="math notranslate nohighlight">\(y\)</span>.
-<span class="math notranslate nohighlight">\(MST_{tot} = \frac{TSS}{n - 1}\)</span></p></li>
+<li><p><strong>Mean Squared Error of Residuals <span class="math notranslate nohighlight">\(MSE\)</span>:</strong> This is the average squared residual.
+<span class="math notranslate nohighlight">\(MSE = \frac{RSS}{n - k}\)</span></p></li>
+<li><p><strong>Mean Squared Total <span class="math notranslate nohighlight">\(MST\)</span>:</strong> This is the sample variance of <span class="math notranslate nohighlight">\(y\)</span>.
+<span class="math notranslate nohighlight">\(MST = \frac{TSS}{n - 1}\)</span></p></li>
 </ul>
 <p>Substituting these into the adjusted R-squared formula:</p>
 <div class="math notranslate nohighlight">
-\[R^2_{adj} = 1 - \frac{MSE_{res}}{MST_{total}}\]</div>
+\[R^2_{adj} = 1 - \frac{MSE}{MST}\]</div>
 <p><strong>Why this adjustment works:</strong></p>
 <ul class="simple">
-<li><p><strong>Penalizing Complexity:</strong> When you add an irrelevant predictor, <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> will decrease only slightly, but <span class="math notranslate nohighlight">\(k\)</span> (the number of predictors) increases by 1. This means <span class="math notranslate nohighlight">\(n - k - 1\)</span> (the denominator for <span class="math notranslate nohighlight">\(MSE_{res}\)</span>) decreases. If the decrease in <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> is not substantial enough to offset the decrease in <span class="math notranslate nohighlight">\(n - k - 1\)</span>, then <span class="math notranslate nohighlight">\(MSE_{res}\)</span> might actually <em>increase</em>. If <span class="math notranslate nohighlight">\(MSE_{res}\)</span> increases, <span class="math notranslate nohighlight">\(R^2_{adj}\)</span> will decrease. This is the “penalty” for adding useless variables.</p></li>
-<li><p><strong>Fair Comparison:</strong> Adjusted <span class="math notranslate nohighlight">\(R^2\)</span> allows for a more fair comparison between models with different numbers of predictors. A model with a higher adjusted <span class="math notranslate nohighlight">\(R^2\)</span> is generally preferred, as it suggests a better fit that is not merely a result of adding more terms.</p></li>
+<li><p><strong>Penalizing Complexity:</strong> When you add an irrelevant parameter, <span class="math notranslate nohighlight">\(RSS\)</span> will decrease only slightly, but <span class="math notranslate nohighlight">\(k\)</span> (the number of estimated parameters) increases by 1. This means <span class="math notranslate nohighlight">\(n - k\)</span> (the denominator for <span class="math notranslate nohighlight">\(MSE\)</span>) decreases. If the decrease in <span class="math notranslate nohighlight">\(RSS\)</span> is not substantial enough to offset the decrease in <span class="math notranslate nohighlight">\(n - k\)</span>, then <span class="math notranslate nohighlight">\(MSE\)</span> might actually <em>increase</em>. If <span class="math notranslate nohighlight">\(MSE\)</span> increases, <span class="math notranslate nohighlight">\(R^2_{adj}\)</span> will decrease. This is the “penalty” for adding useless variables.</p></li>
+<li><p><strong>Fair Comparison:</strong> Adjusted <span class="math notranslate nohighlight">\(R^2\)</span> allows for a more fair comparison between models with different numbers of parameters. A model with a higher adjusted <span class="math notranslate nohighlight">\(R^2\)</span> is generally preferred, as it suggests a better fit that is not merely a result of adding more terms.</p></li>
 </ul>
 <p>You can also derive adjusted R-squared from standard R-squared:</p>
 <div class="math notranslate nohighlight">
-\[R^2 = 1 - \frac{SSR_{\text{res}}}{TSS}\]</div>
+\[R^2 = 1 - \frac{RSS}{TSS}\]</div>
 <div class="math notranslate nohighlight">
-\[\frac{SSR_{\text{res}}}{TSS} = 1 - R^2\]</div>
+\[\frac{RSS}{TSS} = 1 - R^2\]</div>
 <div class="math notranslate nohighlight">
-\[SSR_{\text{res}} = (1 - R^2) \cdot TSS\]</div>
-<p>Substitute <span class="math notranslate nohighlight">\(SSR_{\text{res}}\)</span> into the adjusted R-squared formula:</p>
+\[RSS = (1 - R^2) \cdot TSS\]</div>
+<p>Substitute <span class="math notranslate nohighlight">\(RSS\)</span> into the adjusted R-squared formula:</p>
 <div class="math notranslate nohighlight">
-\[R^2_{adj} = 1 - \frac{(1 - R^2) \cdot TSS / (n - k - 1)}{TSS / (n - 1)}\]</div>
+\[R^2_{adj} = 1 - \frac{(1 - R^2) \cdot TSS / (n - k)}{TSS / (n - 1)}\]</div>
 <p>Cancel out <span class="math notranslate nohighlight">\(TSS\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[R^2_{adj} = 1 - (1 - R^2) \frac{(n - 1)}{(n - k - 1)}\]</div>
+\[R^2_{adj} = 1 - (1 - R^2) \frac{n - 1}{n - k}\]</div>
 <p>This form clearly shows how <span class="math notranslate nohighlight">\(R^2_{adj}\)</span> relates to <span class="math notranslate nohighlight">\(R^2\)</span> and the degrees of freedom.</p>
-<section id="can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions">
-<h3>Can Adjusted R-squared be Used for Linear vs. Non-Linear Functions?<a class="headerlink" href="#can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions" title="Link to this heading">#</a></h3>
-<p><strong>Yes, adjusted R-squared can be used for both linear and non-linear functions. However, it should be used with caution non-linear functions/models</strong></p>
+</section>
+<section id="r-squared-for-non-linear-models">
+<h2>R-squared for Non-Linear Models<a class="headerlink" href="#r-squared-for-non-linear-models" title="Link to this heading">#</a></h2>
+<p><strong>Adjusted R-squared can be used for both linear and non-linear functions. However, it should be used with caution non-linear functions/models</strong></p>
 <ul class="simple">
-<li><p><strong>Linear Functions:</strong> Adjusted R-squared is very commonly used in linear regression. It’s the preferred metric over standard <span class="math notranslate nohighlight">\(R^2\)</span> when comparing linear models with different numbers of predictors, as it helps identify models that are parsimonious (simple yet effective).</p></li>
+<li><p><strong>Linear Functions:</strong> Adjusted R-squared is very commonly used in linear regression. It’s the preferred metric over standard <span class="math notranslate nohighlight">\(R^2\)</span> when comparing linear models with different numbers of parameters, as it helps identify models that are parsimonious (simple yet effective).</p></li>
 <li><p><strong>Non-Linear Functions:</strong> The principles behind adjusted R-squared (penalizing for model complexity and providing a more robust measure of explained variance) apply equally to non-linear models, especially when they are fitted using the least squares method (for example, using <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>).</p></li>
 </ul>
 <p>Technically, we can compute adjusted R-squared for any model fitted using least squares methods, including non-linear least squares.</p>
@@ -645,18 +627,110 @@ document.write(`
 <li><p>The penalty for additional parameters may not adequately capture model complexity in non-linear cases</p></li>
 </ul>
 <p>Therefore, when you are comparing different non-linear models, or trying to decide if adding another parameter to your non-linear function is truly beneficial, adjusted R-squared is a more appropriate metric than the standard R-squared. However, the general recommendation is to use adjusted R-squared with caution for non-linear models.</p>
-</section>
-</section>
-<section id="general-description-of-the-process-no-errors-on-x-and-y-axis-case">
-<h2>General Description of the Process (No Errors on X- and Y-axis Case):<a class="headerlink" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case" title="Link to this heading">#</a></h2>
+<p>For a linear model that includes an intercept term (e.g., <span class="math notranslate nohighlight">\(f(x) = \beta_0 + \beta_1 x\)</span>), the following identity is always true:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (y_i - \bar{y})^2 = \sum_{i=1}^{n} (f(x_i) - \bar{y})^2 + \sum_{i=1}^{n} (y_i - f(x_i))^2 \]</div>
+<p>Or, more simply:</p>
+<div class="math notranslate nohighlight">
+\[ TSS = ESS + RSS \]</div>
+<p>(Total Sum of Squares = Explained Sum of Squares + Residual Sum of Squares)</p>
+<p>This identity holds because, in linear OLS regression, the residuals <span class="math notranslate nohighlight">\(e_i = y_i - f(x_i)\)</span> are mathematically guaranteed to be uncorrelated with the predicted values <span class="math notranslate nohighlight">\(f(x_i)\)</span>. This leads to a key cross-product term being exactly zero. Let’s show this:</p>
+<p>Start with the definition of TSS:</p>
+<div class="math notranslate nohighlight">
+\[ TSS = \sum (y_i - \bar{y})^2 \]</div>
+<p>We can add and subtract the predicted value <span class="math notranslate nohighlight">\(f(x_i)\)</span> inside the parentheses:</p>
+<div class="math notranslate nohighlight">
+\[ TSS = \sum (y_i - f(x_i) + f(x_i) - \bar{y})^2 \]</div>
+<p>Group the terms:</p>
+<div class="math notranslate nohighlight">
+\[ TSS = \sum ( (y_i - f(x_i)) + (f(x_i) - \bar{y}) )^2 \]</div>
+<p>Expand the square:</p>
+<div class="math notranslate nohighlight">
+\[ TSS = \sum (y_i - f(x_i))^2 + \sum (f(x_i) - \bar{y})^2 + 2 \sum (y_i - f(x_i))(f(x_i) - \bar{y}) \]</div>
+<div class="math notranslate nohighlight">
+\[ TSS = RSS + ESS + 2 \sum e_i (f(x_i) - \bar{y}) \]</div>
+<p>For this identity to hold, the final cross-product term must be zero. In OLS linear regression, the method of minimizing the RSS ensures that</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sum e_i f(x_i) = 0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\sum e_i = 0\)</span></p></li>
+<li><p>Since <span class="math notranslate nohighlight">\(\bar{y}\)</span> is a constant, the cross-product term <span class="math notranslate nohighlight">\(2 \sum (y_i - f(x_i))(f(x_i) - \bar{y})\)</span> simplifies to <span class="math notranslate nohighlight">\(2 (\sum e_i f(x_i) - \bar{y} \sum e_i) = 2 (0 - \bar{y} \cdot 0) = 0\)</span>.</p></li>
+</ul>
+<p>Thus, for linear OLS, we have the clean decomposition: <span class="math notranslate nohighlight">\( TSS = ESS + RSS \)</span>.</p>
+<p>This allows <span class="math notranslate nohighlight">\(R^2\)</span> to be interpreted as the proportion of variance explained:</p>
+<div class="math notranslate nohighlight">
+\[ R^2 = \frac{ESS}{TSS} = \frac{TSS - RSS}{TSS} = 1 - \frac{RSS}{TSS} \]</div>
+<p><strong>Why This Fails for Non-Linear Regression</strong></p>
+<p>When you fit a non-linear model using an iterative method like Levenberg-Marquardt, the algorithm minimizes the RSS. However, it <strong>does not guarantee</strong> that the resulting residuals will be uncorrelated with the predicted values in the same way. The cross-product term <span class="math notranslate nohighlight">\(\sum (y_i - f(x_i))(f(x_i) - \bar{y})\)</span> is generally <strong>not zero</strong>.</p>
+<p>As a result, the neat identity breaks down:</p>
+<div class="math notranslate nohighlight">
+\[ TSS \neq ESS + RSS \quad (\text{for non-linear models}) \]</div>
+<p><strong>Consequences for R-squared Interpretation:</strong></p>
 <ol class="arabic simple">
-<li><p><strong>Visualize your data:</strong> Plot your <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> points to get an initial sense of the trend. This helps in choosing an appropriate functional form.</p></li>
-<li><p><strong>Choose a functional form:</strong> Based on your knowledge of the underlying process or by observing the data, select a mathematical function (like <span class="math notranslate nohighlight">\(A \cdot (e^{-B \cdot x} - 1) + 100\)</span>) that you believe can describe the relationship.</p></li>
-<li><p><strong>Define the objective function:</strong> Formulate the Sum of Squared Residuals (SSR) equation, which is the quantity you want to minimize.</p></li>
-<li><p><strong>Minimize the SSR:</strong> Use an optimization algorithm (like least squares implemented in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>) to find the values of the parameters (<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> in the reviewed case) that minimize the SSR.</p></li>
-<li><p><strong>Evaluate the fit:</strong> Calculate SSR, RMSE, and R-squared to quantify how well your chosen function with the optimized parameters fits your data.</p></li>
-<li><p><strong>Interpret the results:</strong> Understand what the values of <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(B\)</span>, SSR, RMSE, and R-squared tell you about the relationship between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> and the quality of your approximation.</p></li>
+<li><p><strong>Proportion of Variance is Lost:</strong> Since <span class="math notranslate nohighlight">\(TSS\)</span> no longer neatly partitions into ESS and RSS, the formula <span class="math notranslate nohighlight">\(R^2 = 1 - RSS/TSS\)</span> can no longer be interpreted as the “proportion of variance explained.” It is simply a statement comparing the model’s error <span class="math notranslate nohighlight">\(RSS\)</span> to the error of a baseline model (a horizontal line, <span class="math notranslate nohighlight">\(TSS\)</span>).</p></li>
+<li><p><strong>R-squared Can Be Negative:</strong> If a non-linear model provides a worse fit to the data than a simple horizontal line at the mean <span class="math notranslate nohighlight">\(\bar{y}\)</span>, the <span class="math notranslate nohighlight">\(RSS\)</span> can be larger than the TSS. If <span class="math notranslate nohighlight">\(RSS &gt; TSS\)</span>, then <span class="math notranslate nohighlight">\(RSS/TSS &gt; 1\)</span>, resulting in a <strong>negative R-squared</strong>.</p></li>
 </ol>
+<p>A negative <span class="math notranslate nohighlight">\(R^2\)</span> is a clear signal that the chosen non-linear model is a very poor fit for the data, performing worse than the most basic baseline model. For this reason, while you can calculate a value for <span class="math notranslate nohighlight">\(R^2\)</span> for any model, its interpretation must be handled with extreme care outside of linear regression. It is better viewed as a comparative metric rather than an absolute measure of explained variance.</p>
+</section>
+<section id="root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser">
+<h2>Root Mean Squared Error (RMSE) and Standard Error of the Regression (SER)<a class="headerlink" href="#root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser" title="Link to this heading">#</a></h2>
+<p>RMSE is derived directly from RSS and is often more interpretable:</p>
+<div class="math notranslate nohighlight">
+\[RMSE = \sqrt{\frac{RSS}{n}}\]</div>
+<p>RMSE represents the typical or average magnitude of the residuals. It gives you a sense of the average “error” your model makes in predicting <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p><strong>Understanding:</strong></p>
+<ul class="simple">
+<li><p>It’s in the same units as your dependent variable <span class="math notranslate nohighlight">\(y\)</span>. This makes it easier to interpret: “On average, our prediction is off by RMSE units of <span class="math notranslate nohighlight">\(y\)</span>.”</p></li>
+<li><p>It’s sensitive to outliers because of the squaring of errors. Large errors contribute disproportionately to RMSE.</p></li>
+<li><p>Like RSS, a smaller RMSE indicates a better fit.</p></li>
+<li><p>You can compare RMSE values between different models <strong>on the same dataset</strong> to see which one performs better, provided the models have a similar number of parameters. Comparing RMSE across different datasets or datasets with vastly different scales of <span class="math notranslate nohighlight">\(y\)</span> can still be misleading.</p></li>
+</ul>
+<p>While the Root Mean Squared Error (RMSE) provides a direct and intuitive measure of the average error magnitude, you may encounter a closely related metric known as the <strong>Standard Error of the Regression (SER)</strong>, also called the <em>Residual Standard Error</em> or <em>Standard Error of the Estimate</em>.</p>
+<p>The formula for the SER is:</p>
+<div class="math notranslate nohighlight">
+\[ SER = \sqrt{\frac{RSS}{n - k}} \]</div>
+<p>Let’s break down the components and the reasoning behind this formula:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(RSS\)</span> (Residual Sum of Squares):</strong> As before, this is the sum of the squared differences between the observed and predicted values.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(n\)</span>:</strong> The number of data points.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(k\)</span>:</strong> The number of estimated parameters in the model.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(n - k\)</span>:</strong> This term represents the <strong>degrees of freedom</strong> of the residuals.</p></li>
+</ul>
+<p><strong>Derivation and Rationale: Why <span class="math notranslate nohighlight">\(n - k\)</span>?</strong></p>
+<p>The concept of degrees of freedom is central to understanding the SER. When we estimate the <span class="math notranslate nohighlight">\(k\)</span> parameters of our model from the data, we “use up” <span class="math notranslate nohighlight">\(k\)</span> pieces of information. This leaves <span class="math notranslate nohighlight">\((n - k)\)</span> independent pieces of information (the residuals) to estimate the variance of the underlying error in our model.</p>
+<p>The term <span class="math notranslate nohighlight">\(RSS / (n - k)\)</span> is the <strong>Mean Squared Error (MSE)</strong>, which is considered an <strong>unbiased estimator</strong> of the variance of the random errors <span class="math notranslate nohighlight">\(\sigma^2\)</span> in the data. An unbiased estimator is one whose expected value is equal to the true population parameter it is trying to estimate. We discuss unbiased estimators in more details <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a>.</p>
+<p>Let’s formalize this. Assume our model is fundamentally correct and that the observed values <span class="math notranslate nohighlight">\(y_i\)</span> are composed of the true function value plus a random error term <span class="math notranslate nohighlight">\(\epsilon_i\)</span>, which is assumed to have a mean of 0 and a variance of <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[ y_i = f(x_i; \beta_1, ..., \beta_k) + \epsilon_i \]</div>
+<p>The RSS is the sum of the squared <em>sample</em> residuals, not the true errors <span class="math notranslate nohighlight">\(\epsilon_i\)</span>. It can be shown mathematically that the expected value of the RSS is:</p>
+<div class="math notranslate nohighlight">
+\[ E[RSS] = (n - k)\sigma^2 \]</div>
+<p>NOTE: We do not show this derivation in this material, however, you can validate derivation of a similar case <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a>.</p>
+<p>Therefore, to get an unbiased estimate of the true error variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, we must divide RSS by the degrees of freedom:</p>
+<div class="math notranslate nohighlight">
+\[ \hat{\sigma}^2 = MSE = \frac{RSS}{n - k} \]</div>
+<p>The Standard Error of the Regression (SER) is simply the square root of this unbiased variance estimate:</p>
+<div class="math notranslate nohighlight">
+\[ SER = \hat{\sigma} = \sqrt{\frac{RSS}{n - k}} \]</div>
+<p><strong>Comparison: RMSE vs. SER</strong></p>
+<ul>
+<li><p><strong>RMSE:</strong></p>
+<div class="math notranslate nohighlight">
+\[ RMSE = \sqrt{\frac{RSS}{n}} \]</div>
+<ul class="simple">
+<li><p><strong>Interpretation:</strong> The average magnitude of the residual. It answers: “By how much is our model typically wrong in its predictions?”</p></li>
+<li><p><strong>Use Case:</strong> Best for comparing the predictive accuracy of different models on the <em>same dataset</em>, especially in machine learning contexts.</p></li>
+</ul>
+</li>
+<li><p><strong>SER:</strong></p>
+<div class="math notranslate nohighlight">
+\[ SER = \sqrt{\frac{RSS}{n - k}} \]</div>
+<ul class="simple">
+<li><p><strong>Interpretation:</strong> An estimate of the standard deviation of the underlying, unobservable errors. It answers: “What is the typical size of the random noise in the data that our model cannot explain?”</p></li>
+<li><p><strong>Use Case:</strong> Rooted in statistical inference. It is used for calculating confidence intervals and p-values for the model parameters.</p></li>
+</ul>
+</li>
+</ul>
+<p>For large datasets (where <span class="math notranslate nohighlight">\(n\)</span> is much larger than <span class="math notranslate nohighlight">\(k\)</span>), the two values will be very close.</p>
 </section>
 <section id="what-is-the-levenberg-marquardt-algorithm-lma">
 <h2>What is the Levenberg-Marquardt Algorithm (LMA)?<a class="headerlink" href="#what-is-the-levenberg-marquardt-algorithm-lma" title="Link to this heading">#</a></h2>
@@ -713,8 +787,6 @@ document.write(`
 <p>Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy-1.16.0/reference/generated/scipy.optimize.curve_fit.html</a></p>
 </section>
 </section>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -783,14 +855,11 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-core-idea-minimizing-differences">The Core Idea: Minimizing Differences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#least-squares-regression">Least Squares Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sum-of-squared-residuals-ssr">Sum of Squared Residuals (SSR)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-squared-error-rmse">Root Mean Squared Error (RMSE)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-sum-of-squares-rss">Residual Sum of Squares (RSS)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-coefficient-of-determination">R-squared (Coefficient of Determination)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjusted-r-squared-r-2">Adjusted R-squared <span class="math notranslate nohighlight">\(R^2\)</span></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#can-adjusted-r-squared-be-used-for-linear-vs-non-linear-functions">Can Adjusted R-squared be Used for Linear vs. Non-Linear Functions?</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-description-of-the-process-no-errors-on-x-and-y-axis-case">General Description of the Process (No Errors on X- and Y-axis Case):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adjusted-r-squared-r-2">Adjusted R-squared <span class="math notranslate nohighlight">\(R^2\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-for-non-linear-models">R-squared for Non-Linear Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser">Root Mean Squared Error (RMSE) and Standard Error of the Regression (SER)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-levenberg-marquardt-algorithm-lma">What is the Levenberg-Marquardt Algorithm (LMA)?</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-it-related-to-least-squares-regression">How is it related to Least Squares Regression?</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scipy-optimize-curve-fit"><code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code></a></li>

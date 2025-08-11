@@ -189,18 +189,16 @@
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
 <li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, SSR, RMSE, R-squared (Coefficient of Determination)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
-</ul>
-</details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Variance and Covariance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
-<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code.html">Weighted Least Squares - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
@@ -460,6 +458,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example">Code Example</a></li>
 </ul>
             </nav>
         </div>
@@ -473,6 +472,9 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="variance-and-covariance">
 <h1>Variance and Covariance<a class="headerlink" href="#variance-and-covariance" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>In statistics, we often use uppercase letters (e.g., <span class="math notranslate nohighlight">\(X\)</span>) to denote a <strong>random variable</strong>, which represents the abstract concept or process being measured (like the height of a person). Lowercase letters with an index (e.g., <span class="math notranslate nohighlight">\(x_i\)</span>) represent the specific <strong>observations</strong> or actual data points collected for that variable (e.g., <span class="math notranslate nohighlight">\(x_1 = 175\text{cm}\)</span>, <span class="math notranslate nohighlight">\(x_2 = 182\text{cm}\)</span>, etc.). While this document will primarily use the lowercase notation for calculations, it is helpful to remember this distinction.</p>
+</div></blockquote>
 <section id="mean-average">
 <h2>Mean (Average)<a class="headerlink" href="#mean-average" title="Link to this heading">#</a></h2>
 <p>Before diving into variance and covariance, we need to understand the concept of the mean, also known as the average. The mean is a measure of central tendency, representing the typical value in a dataset.</p>
@@ -756,7 +758,7 @@ $<span class="math notranslate nohighlight">\(s^2 = \frac{\sum_{i=1}^{n} (x_i - 
 </tr>
 <tr class="row-odd"><td class="text-left"><p>Source of Mean</p></td>
 <td class="text-left"><p>Calculated <em>from</em> the <span class="math notranslate nohighlight">\(n\)</span> data points in the sample.</p></td>
-<td class="text-left"><p>A fixed, known constant; <em>not</em> calculated from the data being used.</p></td>
+<td class="text-left"><p>A fixed parameter of the population, calculated using all <span class="math notranslate nohighlight">\(N\)</span> data points of the entire population.</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p>Constraint</p></td>
 <td class="text-left"><p>The sum of deviations from <span class="math notranslate nohighlight">\(\bar{x}\)</span> is constrained to zero.</p></td>
@@ -887,6 +889,153 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 <li><p><a class="reference external" href="https://online.stat.psu.edu/stat505/book/export/html/653">https://online.stat.psu.edu/stat505/book/export/html/653</a></p></li>
 </ul>
 </section>
+<section id="code-example">
+<h2>Code Example<a class="headerlink" href="#code-example" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># --- 1. Variance Calculation ---</span>
+<span class="c1"># A simple list of numbers (our sample data)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Manual Calculation of Sample Variance (s^2) ---</span>
+<span class="c1"># Formula: s^2 = sum((x_i - mean)^2) / (n - 1)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">manual_sample_variance</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the sample variance manually.&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>  <span class="c1"># Cannot calculate variance with less than 2 data points</span>
+
+    <span class="n">mean</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="c1"># Calculate the sum of squared differences from the mean</span>
+    <span class="n">squared_diff</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+    <span class="c1"># Divide by n-1 for the unbiased sample variance</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">squared_diff</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">variance</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Variance ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample Data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">manual_var</span> <span class="o">=</span> <span class="n">manual_sample_variance</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Sample Variance: </span><span class="si">{</span><span class="n">manual_var</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Variance ---
+Sample Data: [10, 12, 15, 15, 18, 20]
+Manual Sample Variance: 13.6000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Using NumPy for Variance ---</span>
+<span class="c1"># NumPy&#39;s default is population variance (ddof=0)</span>
+<span class="c1"># To get sample variance, we set degrees of freedom (ddof) to 1</span>
+<span class="n">np_sample_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy Sample Variance (ddof=1): </span><span class="si">{</span><span class="n">np_sample_var</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Population variance (using ddof=0 or just the default)</span>
+<span class="n">np_population_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy Population Variance (ddof=0): </span><span class="si">{</span><span class="n">np_population_var</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NumPy Sample Variance (ddof=1): 13.6000
+NumPy Population Variance (ddof=0): 11.3333
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.var(data,</span> <span class="pre">ddof=1)</span></code>: This line calculates the <strong>sample variance</strong>. The <code class="docutils literal notranslate"><span class="pre">ddof=1</span></code> argument tells NumPy to use a denominator of <span class="math notranslate nohighlight">\(n-1\)</span> in the variance formula, which is the standard approach for estimating the variance of a <strong>population</strong> based on a <strong>sample</strong>. The result is stored in the <code class="docutils literal notranslate"><span class="pre">np_sample_var</span></code> variable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.var(data,</span> <span class="pre">ddof=0)</span></code>: This line calculates the <strong>population variance</strong>. The <code class="docutils literal notranslate"><span class="pre">ddof=0</span></code> argument (or simply omitting the <code class="docutils literal notranslate"><span class="pre">ddof</span></code> parameter, as 0 is the default) tells NumPy to use a denominator of <span class="math notranslate nohighlight">\(n\)</span>. This is the correct formula when you have the entire <strong>population</strong> of data and want to calculate its true variance. The result is stored in the <code class="docutils literal notranslate"><span class="pre">np_population_var</span></code> variable.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- 2. Covariance Calculation ---</span>
+<span class="c1"># Two lists representing two variables (X and Y)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Manual Calculation of Covariance ---</span>
+<span class="c1"># Formula: Cov(X,Y) = sum((x_i - mean_x) * (y_i - mean_y)) / (n - 1)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">manual_covariance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the sample covariance between two variables manually.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inputs must have the same length.&quot;</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+    <span class="n">mean_x</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">mean_y</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+
+    <span class="c1"># Calculate the sum of the product of the deviations</span>
+    <span class="n">product_of_deviations</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean_x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">mean_y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)]</span>
+    <span class="c1"># Divide by n-1 for the unbiased sample covariance</span>
+    <span class="n">covariance</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">product_of_deviations</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">covariance</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Covariance ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Variable X: </span><span class="si">{</span><span class="n">X</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Variable Y: </span><span class="si">{</span><span class="n">Y</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">manual_cov</span> <span class="o">=</span> <span class="n">manual_covariance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Sample Covariance: </span><span class="si">{</span><span class="n">manual_cov</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Using NumPy for Covariance ---</span>
+<span class="c1"># np.cov returns a 2x2 covariance matrix</span>
+<span class="c1"># C[0,0] is the variance of X</span>
+<span class="c1"># C[1,1] is the variance of Y</span>
+<span class="c1"># C[0,1] and C[1,0] are the covariance between X and Y</span>
+<span class="n">covariance_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">NumPy Covariance Matrix:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">)</span>
+
+<span class="c1"># We can extract the covariance value from the matrix</span>
+<span class="n">np_cov</span> <span class="o">=</span> <span class="n">covariance_matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy Sample Covariance: </span><span class="si">{</span><span class="n">np_cov</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Covariance ---
+Variable X: [2, 3, 5, 6]
+Variable Y: [1, 2, 4, 3]
+Manual Sample Covariance: 2.0000
+
+NumPy Covariance Matrix:
+[[3.33333333 2.        ]
+ [2.         1.66666667]]
+NumPy Sample Covariance: 2.0000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -971,6 +1120,7 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example">Code Example</a></li>
 </ul>
   </nav></div>
 
