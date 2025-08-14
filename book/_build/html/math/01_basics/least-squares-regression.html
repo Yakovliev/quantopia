@@ -196,9 +196,10 @@
 <li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
@@ -670,6 +671,16 @@ document.write(`
 <li><p><strong>R-squared Can Be Negative:</strong> If a non-linear model provides a worse fit to the data than a simple horizontal line at the mean <span class="math notranslate nohighlight">\(\bar{y}\)</span>, the <span class="math notranslate nohighlight">\(RSS\)</span> can be larger than the TSS. If <span class="math notranslate nohighlight">\(RSS &gt; TSS\)</span>, then <span class="math notranslate nohighlight">\(RSS/TSS &gt; 1\)</span>, resulting in a <strong>negative R-squared</strong>.</p></li>
 </ol>
 <p>A negative <span class="math notranslate nohighlight">\(R^2\)</span> is a clear signal that the chosen non-linear model is a very poor fit for the data, performing worse than the most basic baseline model. For this reason, while you can calculate a value for <span class="math notranslate nohighlight">\(R^2\)</span> for any model, its interpretation must be handled with extreme care outside of linear regression. It is better viewed as a comparative metric rather than an absolute measure of explained variance.</p>
+<p>If we’re going to use <span class="math notranslate nohighlight">\(R^2\)</span> for the non-linear regression, then we need to select between these two formulas:</p>
+<div class="math notranslate nohighlight">
+\[R^2 = \frac{ESS}{TSS}\]</div>
+<p>or</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{RSS}{TSS}\]</div>
+<p>First formula cannot be negative but can exceed 1. Second formula cannot exceed 1 but can be negative. While the usage of <span class="math notranslate nohighlight">\(R^2\)</span> is not recommended for non-linear regression, if you still decide to use this metric, the recommendation is to use the second formula:</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{RSS}{TSS}\]</div>
+<p>This formula is directly tied to the quantity (<span class="math notranslate nohighlight">\(RSS\)</span>) that is minimized during the regression. It compares the sum of the squared errors of your model (<span class="math notranslate nohighlight">\(RSS\)</span>) to the sum of the squared errors you would get from a very simple model that just predicts the mean of the data (<span class="math notranslate nohighlight">\(TSS\)</span>). This formula gives a clear and intuitive meaning to <span class="math notranslate nohighlight">\(R^2\)</span>. It represents the proportion of the variance in the dependent variable that is predictable from the independent variable(s). An <span class="math notranslate nohighlight">\(R^2\)</span> of 1 means your model has zero residual error, while an <span class="math notranslate nohighlight">\(R^2\)</span> of 0 means your model is no better than simply predicting the mean. Also, this formula ensures that <span class="math notranslate nohighlight">\(R^2\)</span> will not exceed 1. While it can become negative if the model is a very poor fit (i.e., <span class="math notranslate nohighlight">\(RSS &gt; TSS\)</span>), this is a valid and meaningful result that indicates the model is worse than a simple horizontal line at the mean.</p>
 </section>
 <section id="root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser">
 <h2>Root Mean Squared Error (RMSE) and Standard Error of the Regression (SER)<a class="headerlink" href="#root-mean-squared-error-rmse-and-standard-error-of-the-regression-ser" title="Link to this heading">#</a></h2>

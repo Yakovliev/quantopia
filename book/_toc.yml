@@ -21,9 +21,10 @@ parts:
       - file: math/01_basics/variance-covariance
       - file: math/01_basics/weighted-least-squares
       - file: math/01_basics/weighted-least-squares-code-1
+      - file: math/01_basics/weighted-least-squares-code-2
       - file: math/01_basics/goodness-of-fit-and-chi-squared
       - file: math/01_basics/aic-and-bic
-      - file: math/01_basics/weighted-least-squares-code-2
+      - file: math/01_basics/weighted-least-squares-code-3
       - file: math/01_basics/orthogonal-distance-regression
 
   - caption: PHYSICS
