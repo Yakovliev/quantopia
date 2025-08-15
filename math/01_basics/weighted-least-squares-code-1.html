@@ -579,7 +579,7 @@ Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
 Date:                Sat, 16 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        00:47:07   Log-Likelihood:               0.049782
+Time:                        01:27:42   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -1437,7 +1437,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
 Date:                Sat, 16 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        00:47:08   Log-Likelihood:                -1.0822
+Time:                        01:27:43   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -2430,6 +2430,16 @@ AICc (Corrected AIC): 6.3004
 <img alt="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" src="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" />
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The 95% prediction interval looks different on these graphs compared to the results from the <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>. The higher <span class="math notranslate nohighlight">\(x\)</span> variable value, the higher width of the 95% prediction interval in our last graph. This is not the same as for <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> case.</p>
+<p>The topic of prediction intervals is not considered here but probably these details will be added later.</p>
+<p>What you can do for now:</p>
+<ul class="simple">
+<li><p>Try to open this whole code in Google Colab using the appropriate icon in the Action pane of this page</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array to the following <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">np.array([0.2,</span> <span class="pre">0.3,</span> <span class="pre">0.4,</span> <span class="pre">0.9,</span> <span class="pre">0.9,</span> <span class="pre">0.4,</span> <span class="pre">0.5,</span> <span class="pre">0.4])</span></code> and see how it will impact prediction interval on the graph.</p></li>
+</ul>
+</div>
 </section>
 <section id="absolute-sigma-true">
 <h3><code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code><a class="headerlink" href="#absolute-sigma-true" title="Link to this heading">#</a></h3>
@@ -2721,6 +2731,175 @@ BIC (Bayesian Information Criterion): 9.5090
 AICc (Corrected AIC): 11.7501
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Generate and display plots ---</span>
+<span class="c1"># Create a matrix X for manual calculation of intervals</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># --- Calculate Confidence and Prediction Intervals Manually ---</span>
+<span class="c1"># Critical t-value for 95% confidence</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">t_crit</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span>
+
+<span class="c1"># 1. Confidence Interval for the mean response</span>
+<span class="c1"># SE(y_hat) = sqrt(diag(X @ pcov @ X.T))</span>
+<span class="n">se_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">pcov</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="n">ci_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+<span class="n">ci_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+
+<span class="c1"># 2. Prediction Interval for a new observation</span>
+<span class="c1"># PI = y_hat +/- t * sqrt(sigma_i^2 + SE(y_hat)^2)</span>
+<span class="c1"># Here sigma_i is the std dev of the individual point</span>
+<span class="n">se_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">se_mean</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pi_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+<span class="n">pi_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+
+<span class="c1"># --- Plotting ---</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WLS Regression Analysis with SciPy&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># Plot 1: WLS Fit with Confidence and Prediction Intervals</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data with Error Bars&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;WLS Fit&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_lower</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Confidence Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_upper</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_lower</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Prediction Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_upper</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Dependent Variable (y)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;WLS Fit with Confidence and Prediction Intervals&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 2: Residuals Plot</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Residuals (y_obs - y_pred)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 3: Weighted Residuals Plot</span>
+<span class="c1"># The error on the weighted residuals is 1.0 because they are normalized by sigma.</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weighted_residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted (Standardized) Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" src="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># --- Same Initial Data ---</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">6.9</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">,</span> <span class="mf">11.8</span><span class="p">,</span> <span class="mf">14.1</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># --- 1. Statsmodels Fit (for comparison) ---</span>
+<span class="n">wls_model</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">WLS</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">sm_results</span> <span class="o">=</span> <span class="n">wls_model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">sm_predictions</span> <span class="o">=</span> <span class="n">sm_results</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">sm_pred_summary</span> <span class="o">=</span> <span class="n">sm_predictions</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Statsmodels results.scale (Reduced Chi-Squared): </span><span class="si">{</span><span class="n">sm_results</span><span class="o">.</span><span class="n">scale</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Define the linear model function ---</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">x</span>
+
+<span class="c1"># --- 2. SciPy Fit with absolute_sigma=True ---</span>
+<span class="n">popt_true</span><span class="p">,</span> <span class="n">pcov_true</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y_pred_true</span> <span class="o">=</span> <span class="n">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_true</span><span class="p">)</span>
+<span class="n">dof</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt_true</span><span class="p">)</span>
+<span class="c1"># Manual PI calculation for absolute_sigma=True</span>
+<span class="n">se_mean_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">pcov_true</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="n">t_crit</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mf">0.05</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">dof</span><span class="p">)</span>
+<span class="c1"># Variance = (error of measurement)^2 + (error in mean fit)^2</span>
+<span class="n">se_pred_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">se_mean_true</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pi_lower_true</span> <span class="o">=</span> <span class="n">y_pred_true</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred_true</span>
+<span class="n">pi_upper_true</span> <span class="o">=</span> <span class="n">y_pred_true</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred_true</span>
+
+
+<span class="c1"># --- 3. SciPy Fit with absolute_sigma=False ---</span>
+<span class="n">popt_false</span><span class="p">,</span> <span class="n">pcov_false</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">y_pred_false</span> <span class="o">=</span> <span class="n">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_false</span><span class="p">)</span>
+
+<span class="c1"># First, we must manually calculate the reduced chi-squared to understand what happened</span>
+<span class="n">residuals_false</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred_false</span>
+<span class="n">chi_squared_false</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">residuals_false</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared_false</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SciPy manual Reduced Chi-Squared: </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># The returned pcov_false is already scaled by reduced_chi_squared.</span>
+<span class="c1"># Let&#39;s verify:</span>
+<span class="c1"># pcov_unscaled = pcov_true</span>
+<span class="c1"># print(&quot;\nVerification of pcov scaling:&quot;)</span>
+<span class="c1"># print(&quot;pcov_false:\n&quot;, pcov_false)</span>
+<span class="c1"># print(&quot;pcov_true * reduced_chi_squared:\n&quot;, pcov_true * reduced_chi_squared)</span>
+
+<span class="c1"># Manual PI calculation for absolute_sigma=False</span>
+<span class="c1"># The uncertainty in the fit line is now based on the scaled covariance</span>
+<span class="n">se_mean_false</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">pcov_false</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="c1"># The uncertainty of a new measurement is also assumed to be scaled</span>
+<span class="c1"># Var = scaled_sigma^2 + scaled_Var(mean_fit)</span>
+<span class="c1"># scaled_sigma^2 = sigma^2 * reduced_chi_squared</span>
+<span class="n">se_pred_false</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">reduced_chi_squared</span> <span class="o">+</span> <span class="n">se_mean_false</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pi_lower_false</span> <span class="o">=</span> <span class="n">y_pred_false</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred_false</span>
+<span class="n">pi_upper_false</span> <span class="o">=</span> <span class="n">y_pred_false</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred_false</span>
+
+
+<span class="c1"># --- Plotting All Three for Comparison ---</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data with Error Bars&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sm_results</span><span class="o">.</span><span class="n">fittedvalues</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Fit Line&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Statsmodels PI</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sm_pred_summary</span><span class="p">[</span><span class="s1">&#39;obs_ci_lower&#39;</span><span class="p">],</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Statsmodels PI&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sm_pred_summary</span><span class="p">[</span><span class="s1">&#39;obs_ci_upper&#39;</span><span class="p">],</span> <span class="s1">&#39;b--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Scipy absolute_sigma=True PI</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_lower_true</span><span class="p">,</span> <span class="s1">&#39;g:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;SciPy PI (absolute_sigma=True)&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_upper_true</span><span class="p">,</span> <span class="s1">&#39;g:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+
+<span class="c1"># Scipy absolute_sigma=False PI</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_lower_false</span><span class="p">,</span> <span class="s1">&#39;m-.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;SciPy PI (absolute_sigma=False)&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_upper_false</span><span class="p">,</span> <span class="s1">&#39;m-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dependent Variable (y)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comparison of Prediction Intervals&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statsmodels results.scale (Reduced Chi-Squared): 0.3141
+SciPy manual Reduced Chi-Squared: 0.3141
+</pre></div>
+</div>
+<img alt="../../_images/760a698018ff00d41b6d3fb9a16c6b57de0e269e0faf85eba00e3bd57dd49f93.png" src="../../_images/760a698018ff00d41b6d3fb9a16c6b57de0e269e0faf85eba00e3bd57dd49f93.png" />
 </div>
 </div>
 </section>
