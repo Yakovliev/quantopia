@@ -460,6 +460,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Output Analysis</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
 </ul>
             </nav>
         </div>
@@ -482,6 +483,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tools.eval_measures</span><span class="w"> </span><span class="kn">import</span> <span class="n">rmse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 </pre></div>
 </div>
 </div>
@@ -571,7 +573,7 @@ Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
 Date:                Fri, 15 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        02:15:38   Log-Likelihood:               0.049782
+Time:                        21:21:44   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -632,11 +634,11 @@ Notes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">nobs</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">nobs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">condition_number</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">condition_number</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition Number: </span><span class="si">{</span><span class="n">condition_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -647,6 +649,57 @@ Notes:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Degrees of Freedom: 6.0
 Number of Observations: 8.0
 Condition Number: 5.307859000400287
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T-value for Intercept: 5.078177576125257
+T-value for Slope: 37.98558492481207
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept: 0.002269613591419451
+P-value for Slope: 2.2225928494730514e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept (SciPy): </span><span class="si">{</span><span class="n">p_value_intercept_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope (SciPy): </span><span class="si">{</span><span class="n">p_value_slope_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept (SciPy): 0.002269613591419451
+P-value for Slope (SciPy): 2.2225928494730514e-08
 </pre></div>
 </div>
 </div>
@@ -877,7 +930,17 @@ Manual Unweighted R-squared alternative formula (ESS/TSS): 0.9070
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chi-Squared: 1.8848
-Reduced Chi-Squared: 0.3141
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared: </span><span class="si">{</span><span class="n">chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Reduced Chi-Squared</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared: </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;dof&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -1401,7 +1464,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
 Date:                Fri, 15 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        02:15:39   Log-Likelihood:                -1.0822
+Time:                        21:20:13   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -1430,11 +1493,11 @@ Notes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">nobs</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">nobs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">condition_number</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">condition_number</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition Number: </span><span class="si">{</span><span class="n">condition_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1445,6 +1508,57 @@ Notes:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Degrees of Freedom: 6.0
 Number of Observations: 8.0
 Condition Number: 11.478428240732693
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T-value for Intercept: 1.3612466734221584
+T-value for Slope: 33.64621914609759
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept: 0.22233728808292874
+P-value for Slope: 4.588381846337238e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept (SciPy): </span><span class="si">{</span><span class="n">p_value_intercept_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope (SciPy): </span><span class="si">{</span><span class="n">p_value_slope_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept (SciPy): 0.22233728808292874
+P-value for Slope (SciPy): 4.588381846337238e-08
 </pre></div>
 </div>
 </div>
@@ -1977,6 +2091,13 @@ Manual AICc (Corrected Akaike Information Criterion): 8.5645
 </div>
 </section>
 </section>
+<section id="example-3">
+<h2>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h2>
+<p>We will model the same case but using <code class="docutils literal notranslate"><span class="pre">scipy</span></code> library and <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> method from that library. The <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values are the same as in Example 1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2062,6 +2183,7 @@ Manual AICc (Corrected Akaike Information Criterion): 8.5645
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Output Analysis</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
 </ul>
   </nav></div>
 
