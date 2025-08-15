@@ -448,7 +448,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example-1">Code Example 1</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-intercept-term-in-linear-regression">The Intercept Term in Linear Regression</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sm-add-constant-works">How <code class="docutils literal notranslate"><span class="pre">sm.add_constant</span></code> Works</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-an-initial-ols-regression">Perform an Initial OLS Regression</a></li>
@@ -462,7 +462,6 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
 </ul>
             </nav>
         </div>
@@ -554,8 +553,8 @@ Finally, you rerun your original model (<code class="docutils literal notranslat
 <li><p><a class="reference external" href="https://www.aptech.com/blog/using-feasible-generalized-least-squares-to-improve-estimates/">https://www.aptech.com/blog/using-feasible-generalized-least-squares-to-improve-estimates/</a></p></li>
 </ul>
 </section>
-<section id="code-example-1">
-<h2>Code Example 1<a class="headerlink" href="#code-example-1" title="Link to this heading">#</a></h2>
+<section id="example-1">
+<h2>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -674,8 +673,31 @@ Finally, you rerun your original model (<code class="docutils literal notranslat
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error of the Regression (SER): </span><span class="si">{</span><span class="n">ser</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adjusted R-squared: </span><span class="si">{</span><span class="n">adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 1 &amp; 2: Performing OLS and Analyzing Residuals ---
 
-<span class="c1"># --- Plot OLS Results and Residuals ---</span>
+OLS Parameter Estimates:
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          5.2010      1.036      5.019      0.000       3.165       7.237
+x1             0.2993      0.011     26.845      0.000       0.277       0.321
+==============================================================================
+Residual Sum of Squares (RSS): 43755.13
+Root Mean Squared Error (RMSE): 9.37
+Standard Error of the Regression (SER): 9.37
+R-squared: 0.5914
+Adjusted R-squared: 0.5905
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Plot OLS Results and Residuals ---</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-v0_8-whitegrid&#39;</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -704,22 +726,6 @@ Finally, you rerun your original model (<code class="docutils literal notranslat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 1 &amp; 2: Performing OLS and Analyzing Residuals ---
-
-OLS Parameter Estimates:
-==============================================================================
-                 coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------
-const          5.2010      1.036      5.019      0.000       3.165       7.237
-x1             0.2993      0.011     26.845      0.000       0.277       0.321
-==============================================================================
-Residual Sum of Squares (RSS): 43755.13
-Root Mean Squared Error (RMSE): 9.37
-Standard Error of the Regression (SER): 9.37
-R-squared: 0.5914
-Adjusted R-squared: 0.5905
-</pre></div>
-</div>
 <img alt="../../_images/a67d187ead4bc3903977d851069dd6ddfef30fd266fcf3d07ac1e18f4b46d6da.png" src="../../_images/a67d187ead4bc3903977d851069dd6ddfef30fd266fcf3d07ac1e18f4b46d6da.png" />
 </div>
 </div>
@@ -1180,198 +1186,6 @@ WLS Adjusted R-squared: 0.5901
 </div>
 </div>
 </section>
-<section id="example-3">
-<h2>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span>
-
-<span class="c1"># --- 1. Define Functions ---</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">custom_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The custom non-linear function to approximate the data.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">variance_model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple linear model to estimate the standard deviation from residuals.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">b</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">num_params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper function to calculate common fit metrics.&quot;&quot;&quot;</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
-    <span class="n">rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
-    <span class="n">ser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">num_params</span><span class="p">))</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">r_squared</span> <span class="o">=</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">num_params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">r_squared</span><span class="p">):</span>
-        <span class="n">adj_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">num_params</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">adj_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;rss&quot;</span><span class="p">:</span> <span class="n">rss</span><span class="p">,</span> <span class="s2">&quot;rmse&quot;</span><span class="p">:</span> <span class="n">rmse</span><span class="p">,</span> <span class="s2">&quot;ser&quot;</span><span class="p">:</span> <span class="n">ser</span><span class="p">,</span>
-        <span class="s2">&quot;r_squared&quot;</span><span class="p">:</span> <span class="n">r_squared</span><span class="p">,</span> <span class="s2">&quot;adj_r_squared&quot;</span><span class="p">:</span> <span class="n">adj_r_squared</span>
-    <span class="p">}</span>
-
-<span class="c1"># --- 2. Prepare the Datasets ---</span>
-<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dataset 1&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">]),</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dataset 2&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">294</span><span class="p">,</span> <span class="mi">391</span><span class="p">]),</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">80.4</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">50.1</span><span class="p">,</span> <span class="mf">41.2</span><span class="p">,</span> <span class="mf">28.5</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">])},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Dataset 3&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">]),</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])},</span>
-<span class="p">]</span>
-
-<span class="c1"># --- 3. Perform Full WLS Analysis for Each Dataset ---</span>
-<span class="n">all_results</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
-    <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">20</span><span class="si">}</span><span class="s2"> Analyzing </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">20</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
-    
-    <span class="c1"># ======================================================================</span>
-    <span class="c1"># STAGE 1: Unweighted Non-Linear Least Squares (NLLS)</span>
-    <span class="c1"># ======================================================================</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- STAGE 1: Performing Unweighted Fit (NLLS) ---&quot;</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">popt_nlls</span><span class="p">,</span> <span class="n">pcov_nlls</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">custom_function</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
-        <span class="n">perr_nlls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov_nlls</span><span class="p">))</span>
-        <span class="n">y_pred_nlls</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_nlls</span><span class="p">)</span>
-        <span class="n">residuals_nlls</span> <span class="o">=</span> <span class="n">y_data</span> <span class="o">-</span> <span class="n">y_pred_nlls</span>
-        <span class="n">metrics_nlls</span> <span class="o">=</span> <span class="n">calculate_metrics</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">y_pred_nlls</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt_nlls</span><span class="p">))</span>
-        
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Parameters: A=</span><span class="si">{</span><span class="n">popt_nlls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr_nlls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, B=</span><span class="si">{</span><span class="n">popt_nlls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr_nlls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Metrics:    Adj. R²=</span><span class="si">{</span><span class="n">metrics_nlls</span><span class="p">[</span><span class="s1">&#39;adj_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, SER=</span><span class="si">{</span><span class="n">metrics_nlls</span><span class="p">[</span><span class="s1">&#39;ser&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        
-    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not perform unweighted fit for </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">continue</span>
-
-    <span class="c1"># ======================================================================</span>
-    <span class="c1"># STAGE 2: Weighted Non-Linear Least Squares (WNLLS)</span>
-    <span class="c1"># ======================================================================</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- STAGE 2: Estimating Weights and Performing Weighted Fit (WNLLS) ---&quot;</span><span class="p">)</span>
-    <span class="n">abs_residuals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">residuals_nlls</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">popt_var</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">variance_model</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">abs_residuals</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">estimated_sigma</span> <span class="o">=</span> <span class="n">variance_model</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_var</span><span class="p">)</span>
-        <span class="n">estimated_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">estimated_sigma</span><span class="p">)</span>
-
-        <span class="n">popt_wls</span><span class="p">,</span> <span class="n">pcov_wls</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span>
-            <span class="n">custom_function</span><span class="p">,</span> <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span>
-            <span class="n">p0</span><span class="o">=</span><span class="n">popt_nlls</span><span class="p">,</span>
-            <span class="n">sigma</span><span class="o">=</span><span class="n">estimated_sigma</span><span class="p">,</span>
-            <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-        <span class="n">perr_wls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov_wls</span><span class="p">))</span>
-        <span class="n">y_pred_wls</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_wls</span><span class="p">)</span>
-        <span class="n">metrics_wls</span> <span class="o">=</span> <span class="n">calculate_metrics</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">y_pred_wls</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt_wls</span><span class="p">))</span>
-        <span class="n">standardized_residuals_wls</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_data</span> <span class="o">-</span> <span class="n">y_pred_wls</span><span class="p">)</span> <span class="o">/</span> <span class="n">estimated_sigma</span>
-        
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Parameters: A=</span><span class="si">{</span><span class="n">popt_wls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr_wls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, B=</span><span class="si">{</span><span class="n">popt_wls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr_wls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Metrics:    Adj. R²=</span><span class="si">{</span><span class="n">metrics_wls</span><span class="p">[</span><span class="s1">&#39;adj_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, SER=</span><span class="si">{</span><span class="n">metrics_wls</span><span class="p">[</span><span class="s1">&#39;ser&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="s2">&quot;x_data&quot;</span><span class="p">:</span> <span class="n">x_data</span><span class="p">,</span> <span class="s2">&quot;y_data&quot;</span><span class="p">:</span> <span class="n">y_data</span><span class="p">,</span>
-            <span class="s2">&quot;popt_nlls&quot;</span><span class="p">:</span> <span class="n">popt_nlls</span><span class="p">,</span> <span class="s2">&quot;perr_nlls&quot;</span><span class="p">:</span> <span class="n">perr_nlls</span><span class="p">,</span> <span class="s2">&quot;y_pred_nlls&quot;</span><span class="p">:</span> <span class="n">y_pred_nlls</span><span class="p">,</span>
-            <span class="s2">&quot;residuals_nlls&quot;</span><span class="p">:</span> <span class="n">residuals_nlls</span><span class="p">,</span> <span class="s2">&quot;metrics_nlls&quot;</span><span class="p">:</span> <span class="n">metrics_nlls</span><span class="p">,</span>
-            <span class="s2">&quot;popt_wls&quot;</span><span class="p">:</span> <span class="n">popt_wls</span><span class="p">,</span> <span class="s2">&quot;perr_wls&quot;</span><span class="p">:</span> <span class="n">perr_wls</span><span class="p">,</span> <span class="s2">&quot;y_pred_wls&quot;</span><span class="p">:</span> <span class="n">y_pred_wls</span><span class="p">,</span>
-            <span class="s2">&quot;standardized_residuals_wls&quot;</span><span class="p">:</span> <span class="n">standardized_residuals_wls</span><span class="p">,</span> <span class="s2">&quot;metrics_wls&quot;</span><span class="p">:</span> <span class="n">metrics_wls</span><span class="p">,</span>
-        <span class="p">})</span>
-        
-    <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not perform weighted fit for </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="s2">&quot;x_data&quot;</span><span class="p">:</span> <span class="n">x_data</span><span class="p">,</span> <span class="s2">&quot;y_data&quot;</span><span class="p">:</span> <span class="n">y_data</span><span class="p">,</span>
-            <span class="s2">&quot;popt_nlls&quot;</span><span class="p">:</span> <span class="n">popt_nlls</span><span class="p">,</span> <span class="s2">&quot;perr_nlls&quot;</span><span class="p">:</span> <span class="n">perr_nlls</span><span class="p">,</span> <span class="s2">&quot;y_pred_nlls&quot;</span><span class="p">:</span> <span class="n">y_pred_nlls</span><span class="p">,</span>
-            <span class="s2">&quot;residuals_nlls&quot;</span><span class="p">:</span> <span class="n">residuals_nlls</span><span class="p">,</span> <span class="s2">&quot;metrics_nlls&quot;</span><span class="p">:</span> <span class="n">metrics_nlls</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;WLS Fit Failed&quot;</span>
-        <span class="p">})</span>
-
-<span class="c1"># --- 4. Plotting the Results ---</span>
-<span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">:</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysis of </span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
-    <span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">]</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original Data&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-    <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="mi">500</span><span class="p">)</span>
-    
-    <span class="n">y_plot_nlls</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;popt_nlls&#39;</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot_nlls</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unweighted Fit (Adj R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;metrics_nlls&#39;</span><span class="p">][</span><span class="s1">&#39;adj_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="s1">&#39;popt_wls&#39;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="n">y_plot_wls</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;popt_wls&#39;</span><span class="p">])</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot_wls</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>
-                <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Weighted Fit (Adj R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;metrics_wls&#39;</span><span class="p">][</span><span class="s1">&#39;adj_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
-
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Fit Comparison&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;residuals_nlls&#39;</span><span class="p">])</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Unweighted Fit Residuals&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Residual (y - ŷ)&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s1">&#39;standardized_residuals_wls&#39;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;standardized_residuals_wls&#39;</span><span class="p">])</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted Fit Standardized Residuals&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;WLS Fit Failed&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Standardized Residual&quot;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================== Analyzing Dataset 1 ====================
-
---- STAGE 1: Performing Unweighted Fit (NLLS) ---
-Unweighted Parameters: A=93.54±7.62, B=0.0270±0.0048
-Unweighted Metrics:    Adj. R²=0.9757, SER=4.7146
-
---- STAGE 2: Estimating Weights and Performing Weighted Fit (WNLLS) ---
-Weighted Parameters: A=95.23±4.65, B=0.0259±0.0028
-Weighted Metrics:    Adj. R²=0.9755, SER=4.7356
-
-==================== Analyzing Dataset 2 ====================
-
---- STAGE 1: Performing Unweighted Fit (NLLS) ---
-Unweighted Parameters: A=75.30±4.36, B=0.0110±0.0020
-Unweighted Metrics:    Adj. R²=0.9674, SER=5.1805
-
---- STAGE 2: Estimating Weights and Performing Weighted Fit (WNLLS) ---
-Weighted Parameters: A=72.63±3.20, B=0.0124±0.0015
-Weighted Metrics:    Adj. R²=0.9649, SER=5.3696
-
-==================== Analyzing Dataset 3 ====================
-
---- STAGE 1: Performing Unweighted Fit (NLLS) ---
-Unweighted Parameters: A=56.68±0.54, B=0.0099±0.0003
-Unweighted Metrics:    Adj. R²=0.9992, SER=0.6015
-
---- STAGE 2: Estimating Weights and Performing Weighted Fit (WNLLS) ---
-Weighted Parameters: A=56.65±0.16, B=0.0100±0.0002
-Weighted Metrics:    Adj. R²=0.9992, SER=0.6016
-</pre></div>
-</div>
-<img alt="../../_images/9e190302cba7aa65e1c8e7555ca42d19290c13e925d3db759b7bc29394684ebd.png" src="../../_images/9e190302cba7aa65e1c8e7555ca42d19290c13e925d3db759b7bc29394684ebd.png" />
-<img alt="../../_images/02817a7939d4bb34fe072d29e9a0f1cc044ff88102f0975e801613e0244a4ae4.png" src="../../_images/02817a7939d4bb34fe072d29e9a0f1cc044ff88102f0975e801613e0244a4ae4.png" />
-<img alt="../../_images/8dde57a0a2f78e1611e020c7288e400ec75ce2c3be936b1d13ef16bdc9d2d7c1.png" src="../../_images/8dde57a0a2f78e1611e020c7288e400ec75ce2c3be936b1d13ef16bdc9d2d7c1.png" />
-</div>
-</div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1445,7 +1259,7 @@ Weighted Metrics:    Adj. R²=0.9992, SER=0.6016
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-example-1">Code Example 1</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-intercept-term-in-linear-regression">The Intercept Term in Linear Regression</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-sm-add-constant-works">How <code class="docutils literal notranslate"><span class="pre">sm.add_constant</span></code> Works</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-an-initial-ols-regression">Perform an Initial OLS Regression</a></li>
@@ -1459,7 +1273,6 @@ Weighted Metrics:    Adj. R²=0.9992, SER=0.6016
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
 </ul>
   </nav></div>
 
