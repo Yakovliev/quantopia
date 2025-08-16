@@ -579,7 +579,7 @@ Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
 Date:                Sat, 16 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        03:48:29   Log-Likelihood:               0.049782
+Time:                        16:01:33   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -1302,6 +1302,9 @@ Manual AICc (Corrected Akaike Information Criterion): 6.3004
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weighted Sigma: [1. 1. 1. 1. 1. 1. 1. 1.]
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 <img alt="../../_images/1be0729880cc4e846041e02f774f132bebcac78231c99984ec05e19276a127b3.png" src="../../_images/1be0729880cc4e846041e02f774f132bebcac78231c99984ec05e19276a127b3.png" />
 </div>
 </div>
@@ -1437,7 +1440,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
 Date:                Sat, 16 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        03:48:30   Log-Likelihood:                -1.0822
+Time:                        16:01:34   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -2302,9 +2305,9 @@ Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 0.3141
 <span class="n">mse_model_weighted</span> <span class="o">=</span> <span class="n">ess_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">mse_resid_weighted</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="c1"># Same as reduced chi-squared</span>
 <span class="n">mse_total_weighted</span> <span class="o">=</span> <span class="n">weighted_centered_tss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manual Weighted Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_model_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Residual MSE: </span><span class="si">{</span><span class="n">mse_resid_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Total MSE: </span><span class="si">{</span><span class="n">mse_total_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_model_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Residual MSE: </span><span class="si">{</span><span class="n">mse_resid_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Total MSE: </span><span class="si">{</span><span class="n">mse_total_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2319,9 +2322,9 @@ Weighted SER: 0.5605
 
 --- Mean Squared Errors (MSE) ---
 
-Manual Weighted Mean Squared Error (MSE): 453.2692
-Manual Weighted Residual MSE: 0.3141
-Manual Weighted Total MSE: 65.0220
+Weighted Mean Squared Error (MSE): 453.2692
+Weighted Residual MSE: 0.3141
+Weighted Total MSE: 65.0220
 </pre></div>
 </div>
 </div>
@@ -2908,7 +2911,7 @@ AICc (Corrected AIC): 11.7501
   <div class="footer-item">
     
 <p class="component-author">
-By Vladyslav Yakovliev
+By Vladyslav Yakovliev (Ukraine)
 </p>
 
   </div>
