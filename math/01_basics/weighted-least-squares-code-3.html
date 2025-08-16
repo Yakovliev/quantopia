@@ -443,7 +443,6 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-non-linear-example-with-y-axis-errors">Example 3. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
@@ -541,7 +540,6 @@ document.write(`
     <span class="c1"># First point (Y=100) has no error, assign a very small sigma to give it high weight</span>
     <span class="c1"># Other points have an error of +/- 0.5</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-9</span>  <span class="c1"># Very small error for the first point</span>
 
     <span class="c1"># Initial guess for parameters A and B</span>
     <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
@@ -664,7 +662,7 @@ Value for x=0 (Expected value is 100): 100.0000
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. Plotting the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -694,24 +692,9 @@ Value for x=0 (Expected value is 100): 100.0000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/51952937a9bb30c0bf52af20b7298911bdb39ccc4a84acfe6ff3049bc43ff912.png" src="../../_images/51952937a9bb30c0bf52af20b7298911bdb39ccc4a84acfe6ff3049bc43ff912.png" />
+<img alt="../../_images/339bc966c96ef747fc46919549491cf76f88c217e0a7a152b11211da98669afe.png" src="../../_images/339bc966c96ef747fc46919549491cf76f88c217e0a7a152b11211da98669afe.png" />
 </div>
 </div>
-<p>Obtained value of <span class="math notranslate nohighlight">\(\chi^2\)</span> and <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> are too large.</p>
-<p>The first guess is we get such a result because of the very small value of the standard deviation for the first point. It may increase <span class="math notranslate nohighlight">\(\chi^2\)</span> and <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> significantly. We will double-check this below and will find out that the reason for such a behavior is different.</p>
-<p>However, even if we’re sure that the first y-value should be equal to 100 with a very good accuracy when <span class="math notranslate nohighlight">\(x = 0\)</span>, that’s not a good idea to assign a very small value of standard deviation for this first data point. The best choice in this case is to assign to the first data point the same value of standard deviation as for all other points (0.5 in our case).</p>
-<p>Thus, <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array should be <code class="docutils literal notranslate"><span class="pre">[0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code> for all the data points. After you identify all the model parameters, you can find how close the first predicted value of <span class="math notranslate nohighlight">\(y\)</span> is to 100.</p>
-</section>
-<section id="additional-notes">
-<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading">#</a></h2>
-<p>Regardless of whether you provide <code class="docutils literal notranslate"><span class="pre">sigma</span></code> or not, <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> internally uses a <strong>Levenberg-Marquardt algorithm</strong> by default to find the parameters that minimize the sum of squared residuals.</p>
-<p>The key difference when <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided is <em>what</em> the Levenberg-Marquardt algorithm minimizes:</p>
-<ul class="simple">
-<li><p><strong>Without <code class="docutils literal notranslate"><span class="pre">sigma</span></code> (OLS):</strong> It minimizes the ordinary sum of squared residuals: <span class="math notranslate nohighlight">\(\sum (y_i - f(x_i, \beta))^2\)</span>.</p></li>
-<li><p><strong>With <code class="docutils literal notranslate"><span class="pre">sigma</span></code> (WLS):</strong> It minimizes the <strong>weighted sum of squared residuals</strong>: <span class="math notranslate nohighlight">\(\sum w_i (y_i - f(x_i, \beta))^2\)</span>, where <span class="math notranslate nohighlight">\(w_i = 1 / \sigma_i^2\)</span>.</p></li>
-</ul>
-<p>The Levenberg-Marquardt algorithm is an iterative numerical optimization algorithm. It cleverly switches between a steepest descent method (when far from the minimum) and the Gauss-Newton method (when close to the minimum) to efficiently converge to the optimal parameter values. When <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the function being minimized (the objective function) simply changes from the unweighted sum of squares to the weighted sum of squares, but the core optimization algorithm remains Levenberg-Marquardt.</p>
-<p>You can actually specify other optimization algorithms for <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> using the <code class="docutils literal notranslate"><span class="pre">method</span></code> parameter (e.g., <code class="docutils literal notranslate"><span class="pre">'trf'</span></code> for Trust Region Reflective, or <code class="docutils literal notranslate"><span class="pre">'dogbox'</span></code> for dogleg algorithm), but Levenberg-Marquardt (<code class="docutils literal notranslate"><span class="pre">'lm'</span></code>) is the default and often a good choice for non-linear least squares problems. The concept of weighting applies similarly regardless of the specific algorithm used for minimization, as long as that algorithm supports minimizing a weighted sum of squares.</p>
 </section>
 <section id="example-3-non-linear-example-with-y-axis-errors">
 <h2>Example 3. Non-Linear Example with Y-axis Errors<a class="headerlink" href="#example-3-non-linear-example-with-y-axis-errors" title="Link to this heading">#</a></h2>
@@ -730,8 +713,6 @@ Value for x=0 (Expected value is 100): 100.0000
     <span class="c1"># First point (Y=100) has no error, assign a very small sigma to give it high weight</span>
     <span class="c1"># Other points have an error of +/- 0.5</span>
     <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sigma for </span><span class="si">{</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">sigma</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
 
     <span class="c1"># Initial guess for parameters A and B</span>
     <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
@@ -833,7 +814,6 @@ Value for x=0 (Expected value is 100): 100.0000
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitting Dataset 1 ---
-Sigma for Dataset 1: [0.5 0.5 0.5 0.5 0.5 0.5 0.5]
 Fitted parameters: A = 93.5355 +/- 0.8080, B = 0.0270 +/- 0.0005
 Condition number of the covariance matrix: 17123879.75
 Sum of Squared Residuals (SSR): 111.1352
@@ -1322,7 +1302,6 @@ Value for x=0 (Expected value is 100): 100.0000
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-non-linear-example-with-y-axis-errors">Example 3. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
