@@ -576,11 +576,11 @@ document.write(`
 \[\chi^2_v = \frac{\chi^2}{\nu}\]</div>
 <p>The chi-squared statistic itself, a measure of how well a model fits the data, is straightforward to calculate for <strong>both linear and non-linear models</strong>:</p>
 <div class="math notranslate nohighlight">
-\[\chi^2 = \sum_{i=1}^{N} \frac{(O_i - E_i)^2}{\sigma_i^2} = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2\]</div>
-<p>Here, <span class="math notranslate nohighlight">\(O_i\)</span> are the observed data points, <span class="math notranslate nohighlight">\(E_i\)</span> are the expected values from the model, and <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the measurement uncertainties.</p>
-<p>The conventional calculation for degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>) is the number of data points (<span class="math notranslate nohighlight">\(N\)</span>) minus the number of parameters (<span class="math notranslate nohighlight">\(P\)</span>) that were fitted to the data (<span class="math notranslate nohighlight">\(\nu = N - P\)</span>).</p>
+\[\chi^2 = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the measurement uncertainties.</p>
+<p>The conventional calculation for degrees of freedom (<span class="math notranslate nohighlight">\(\nu\)</span>) is the number of data points (<span class="math notranslate nohighlight">\(n\)</span>) minus the number of parameters (<span class="math notranslate nohighlight">\(p\)</span>) that were fitted to the data (<span class="math notranslate nohighlight">\(\nu = n - p\)</span>).</p>
 <ul class="simple">
-<li><p><strong>For linear models</strong>, this approach is well-established. The number of fitted parameters (<span class="math notranslate nohighlight">\(P\)</span>) corresponds directly to the model parameters (e.g., slope and intercept in linear regression). Because the model is a linear superposition of basis functions, the relationship between parameters and the chi-squared value is quadratic, making the parameters mathematically independent and the degrees of freedom calculation straightforward.</p></li>
+<li><p><strong>For linear models</strong>, this approach is well-established. The number of fitted parameters (<span class="math notranslate nohighlight">\(p\)</span>) corresponds directly to the model parameters (e.g., slope and intercept in linear regression). Because the model is a linear superposition of basis functions, the relationship between parameters and the chi-squared value is quadratic, making the parameters mathematically independent and the degrees of freedom calculation straightforward.</p></li>
 <li><p><strong>For non-linear models</strong>, several complications arise that challenge the traditional interpretation:</p>
 <ul>
 <li><p>The relationship between parameters and data becomes more complex</p></li>
