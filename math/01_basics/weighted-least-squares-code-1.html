@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
 <li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -578,8 +579,8 @@ document.write(`
 Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
-Date:                Sat, 16 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        16:01:33   Log-Likelihood:               0.049782
+Date:                Sun, 17 Aug 2025   Prob (F-statistic):           2.22e-08
+Time:                        00:52:39   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -1302,9 +1303,6 @@ Manual AICc (Corrected Akaike Information Criterion): 6.3004
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weighted Sigma: [1. 1. 1. 1. 1. 1. 1. 1.]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
 <img alt="../../_images/1be0729880cc4e846041e02f774f132bebcac78231c99984ec05e19276a127b3.png" src="../../_images/1be0729880cc4e846041e02f774f132bebcac78231c99984ec05e19276a127b3.png" />
 </div>
 </div>
@@ -1439,8 +1437,8 @@ Manual AICc (Corrected Akaike Information Criterion): 6.3004
 Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
-Date:                Sat, 16 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        16:01:34   Log-Likelihood:                -1.0822
+Date:                Sun, 17 Aug 2025   Prob (F-statistic):           4.59e-08
+Time:                        00:52:39   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -2421,7 +2419,7 @@ AICc (Corrected AIC): 6.3004
 <span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted (Standardized) Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals of the WLS Fit&quot;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
@@ -2430,7 +2428,7 @@ AICc (Corrected AIC): 6.3004
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" src="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" />
+<img alt="../../_images/caf17dee0b3bf388a21c566eff1c30ea5dc973f2cdd789ecf1a3e760c72b0ca1.png" src="../../_images/caf17dee0b3bf388a21c566eff1c30ea5dc973f2cdd789ecf1a3e760c72b0ca1.png" />
 </div>
 </div>
 <div class="admonition note">
@@ -2791,7 +2789,7 @@ AICc (Corrected AIC): 11.7501
 <span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted (Standardized) Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals of the WLS Fit&quot;</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
@@ -2800,7 +2798,7 @@ AICc (Corrected AIC): 11.7501
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" src="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" />
+<img alt="../../_images/93eb1556024e977cbdc5d89c59dfb4128b3368c192ffb2d177f56ecc1d24557b.png" src="../../_images/93eb1556024e977cbdc5d89c59dfb4128b3368c192ffb2d177f56ecc1d24557b.png" />
 </div>
 </div>
 </section>
