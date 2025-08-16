@@ -489,6 +489,10 @@ document.write(`
 <li><p><span class="math notranslate nohighlight">\(S\)</span> is the final value to be minimized, representing the sum of the squared weighted distances between the observed points and the curve.</p></li>
 </ul>
 <p>The core idea is that the regression should be more influenced by data points with smaller uncertainties and less by those with larger uncertainties.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is important to note that this form of the objective function assumes that the errors in the x and y variables are <strong>uncorrelated</strong>. If the errors were correlated, the objective function would require a more complex formulation involving a covariance matrix for each data point.</p>
+</div>
 </section>
 <section id="the-two-roles-of-error-in-odr">
 <h2>The Two Roles of Error in ODR<a class="headerlink" href="#the-two-roles-of-error-in-odr" title="Link to this heading">#</a></h2>
@@ -513,7 +517,7 @@ document.write(`
 <li><p>A point with large absolute errors will have a small weight, acting as a “weak magnet” with less influence on the final position of the curve.</p></li>
 </ul>
 <p>Therefore, the absolute magnitude of the errors is critical for determining which points the regression should prioritize.</p>
-<p><strong>When Does Only the Ratio Matter?</strong></p>
+<p><strong>When Does Only the Ratio Matter for Homoscedastic Errors?</strong></p>
 <p>The powerful insight that you might only need the error ratio is <strong>only true under a specific, common assumption: that the error magnitudes are constant for all data points</strong> (homoscedastic errors).</p>
 <p>Let’s assume that <span class="math notranslate nohighlight">\(\sigma_{x,i} = \sigma_x\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i} = \sigma_y\)</span> for all points <code class="docutils literal notranslate"><span class="pre">i</span></code>. In this case:</p>
 <ol class="arabic simple">
@@ -615,7 +619,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 </tr>
 <tr class="row-even"><td class="text-left"><p>Highly non-linear model with errors in x</p></td>
 <td class="text-left"><p><strong>ODR</strong></p></td>
-<td class="text-left"><p>Orthogonal distance can be a more robust error metric.</p></td>
+<td class="text-left"><p>The perpendicular distance minimized by ODR is often more geometrically stable. OLS can suffer from <strong>projection bias</strong> on steep or flat sections of a curve, where the vertical distance is a poor approximation of the true geometric error.</p></td>
 </tr>
 </tbody>
 </table>

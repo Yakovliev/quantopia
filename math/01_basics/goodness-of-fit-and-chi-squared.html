@@ -527,7 +527,7 @@ document.write(`
 <li><p><strong><span class="math notranslate nohighlight">\(\chi^2_{red} &lt; 1\)</span> (“Too Good” Fit or Overestimated Errors):</strong> This suggests that the model fits the data <em>better</em> than would be expected by random chance alone. This could be a sign that:</p>
 <ol class="arabic simple">
 <li><p>Your measurement uncertainties (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>) were overestimated.</p></li>
-<li><p>The model is over-fitting the data by matching the random noise instead of the underlying trend.</p></li>
+<li><p>The model is over-fitting the data by matching the random noise instead of the underlying trend. This often occurs when the model has too many parameters relative to the amount of information in the data, essentially fitting the noise rather than the underlying trend.</p></li>
 <li><p>The data might have been cherry-picked, or there’s a systematic error in how the uncertainties were determined.</p></li>
 </ol>
 </li>
@@ -551,12 +551,12 @@ document.write(`
 </li>
 <li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the RSS by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-P\)</span>):</p>
 <div class="math notranslate nohighlight">
-\[\hat{\sigma}^2_{unknown} = \frac{RSS}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-P}\]</div>
+\[\hat{\sigma}^2_{unknown} = \frac{RSS}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{n-p}\]</div>
 <p>This value, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{unknown}\)</span>, is a measure of the average scatter of your data points around the fitted curve.</p>
 </li>
 <li><p><strong>The Scaling Factor:</strong> The reduced chi-squared value is conceptually <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span>. When no <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the chi-squared value is technically calculated with <span class="math notranslate nohighlight">\(\sigma_i = 1\)</span> for all points. So, <span class="math notranslate nohighlight">\(\chi^2 = RSS\)</span>. Therefore, the reduced chi-squared is simply <span class="math notranslate nohighlight">\(RSS/\nu\)</span>. This value is used as the scaling factor for the covariance matrix. Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
 <p>More formally, the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> documentation states that when <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code>, the covariance matrix is scaled by a factor that demands the reduced chi-squared for the optimal parameters equals unity. This is equivalent to scaling the covariance matrix by <span class="math notranslate nohighlight">\(RSS / \nu\)</span>. Mathematically,</p>
-<p><code class="docutils literal notranslate"><span class="pre">pcov(absolute_sigma=False)</span> <span class="pre">=</span> <span class="pre">pcov(absolute_sigma=True)</span> <span class="pre">*</span> <span class="pre">chisq(popt)/(M-N)</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pcov(absolute_sigma=False)</span> <span class="pre">=</span> <span class="pre">pcov(absolute_sigma=True)</span> <span class="pre">*</span> <span class="pre">chisq(popt)/(n</span> <span class="pre">-</span> <span class="pre">p)</span></code></p>
 <p>For more details, review the documentation: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
 </li>
 </ol>
