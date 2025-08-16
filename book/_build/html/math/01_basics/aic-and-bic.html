@@ -697,7 +697,7 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
 <p>In applied statistics, the goal is often to get the most accurate possible estimate of the true population variance. For this, we use the <strong>unbiased estimator</strong>, which corrects for the bias mentioned above by adjusting the denominator. If we have estimated <span class="math notranslate nohighlight">\(k\)</span> model parameters (i.e., the number of coefficients in <span class="math notranslate nohighlight">\(\beta\)</span>), the unbiased estimate is:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\sigma}^2_{unbiased} = \frac{RSS}{n-p}\]</div>
-<p>This is the <strong>Mean Squared Error (MSE)</strong>, and its square root is the <strong>Residual Standard Error (RSE)</strong> reported in the output of virtually all OLS regression software. The denominator, <span class="math notranslate nohighlight">\(n-p\)</span>, represents the residual <strong>degrees of freedom</strong>. By dividing by a smaller number, we increase the value of the estimate, correcting for the downward bias of the MLE.</p>
+<p>This is the <strong>Mean Squared Error (MSE)</strong>, and its square root is the <strong>Standard Error of the Regression (SER)</strong> reported in the output of virtually all OLS regression software. The denominator, <span class="math notranslate nohighlight">\(n-p\)</span>, represents the residual <strong>degrees of freedom</strong>. By dividing by a smaller number, we increase the value of the estimate, correcting for the downward bias of the MLE.</p>
 <p><strong>Which estimator should we use for the log-likelihood?</strong></p>
 <p>The answer lies in the fundamental definition of AIC and BIC: they are based on the <strong>maximized value of the log-likelihood function</strong>.</p>
 <p>The derivation of AIC and BIC starts with <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>, which is the value of <span class="math notranslate nohighlight">\(\ln(L)\)</span> when <em>all</em> parameters have been set to their Maximum Likelihood Estimates. Therefore, to be mathematically consistent, we <strong>must</strong> use the MLE for the variance, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{MLE} = RSS/n\)</span>, when calculating the log-likelihood for AIC and BIC.</p>
@@ -918,7 +918,7 @@ The OLS solution is the Maximum Likelihood Estimate for a linear regression mode
   <div class="footer-item">
     
 <p class="component-author">
-By Vladyslav Yakovliev
+By Vladyslav Yakovliev (Ukraine)
 </p>
 
   </div>

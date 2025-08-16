@@ -26,6 +26,7 @@ parts:
       - file: math/01_basics/aic-and-bic
       - file: math/01_basics/weighted-least-squares-code-3
       - file: math/01_basics/orthogonal-distance-regression
+      - file: math/01_basics/odr-code
 
   - caption: PHYSICS
     chapters:

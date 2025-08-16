@@ -64,7 +64,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="The Continuity Equation" href="../../physics/continuity-equation-01.html" />
+    <link rel="next" title="ODR - Code Examples" href="odr-code.html" />
     <link rel="prev" title="WLS - Code Examples Part 3" href="weighted-least-squares-code-3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -450,14 +451,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2-and-adjusted-r-squared">R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criteria-aic-and-bic">Information Criteria (AIC and BIC)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-essential-evaluation-methods">Other Essential Evaluation Methods</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-and-odr">R-squared and ODR</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-regression-and-other-parameters">Non-linear Regression and Other Parameters</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
             </nav>
         </div>
@@ -489,6 +486,10 @@ document.write(`
 <li><p><span class="math notranslate nohighlight">\(S\)</span> is the final value to be minimized, representing the sum of the squared weighted distances between the observed points and the curve.</p></li>
 </ul>
 <p>The core idea is that the regression should be more influenced by data points with smaller uncertainties and less by those with larger uncertainties.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is important to note that this form of the objective function assumes that the errors in the x and y variables are <strong>uncorrelated</strong>. If the errors were correlated, the objective function would require a more complex formulation involving a covariance matrix for each data point.</p>
+</div>
 </section>
 <section id="the-two-roles-of-error-in-odr">
 <h2>The Two Roles of Error in ODR<a class="headerlink" href="#the-two-roles-of-error-in-odr" title="Link to this heading">#</a></h2>
@@ -513,7 +514,7 @@ document.write(`
 <li><p>A point with large absolute errors will have a small weight, acting as a “weak magnet” with less influence on the final position of the curve.</p></li>
 </ul>
 <p>Therefore, the absolute magnitude of the errors is critical for determining which points the regression should prioritize.</p>
-<p><strong>When Does Only the Ratio Matter?</strong></p>
+<p><strong>When Does Only the Ratio Matter for Homoscedastic Errors?</strong></p>
 <p>The powerful insight that you might only need the error ratio is <strong>only true under a specific, common assumption: that the error magnitudes are constant for all data points</strong> (homoscedastic errors).</p>
 <p>Let’s assume that <span class="math notranslate nohighlight">\(\sigma_{x,i} = \sigma_x\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i} = \sigma_y\)</span> for all points <code class="docutils literal notranslate"><span class="pre">i</span></code>. In this case:</p>
 <ol class="arabic simple">
@@ -615,7 +616,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 </tr>
 <tr class="row-even"><td class="text-left"><p>Highly non-linear model with errors in x</p></td>
 <td class="text-left"><p><strong>ODR</strong></p></td>
-<td class="text-left"><p>Orthogonal distance can be a more robust error metric.</p></td>
+<td class="text-left"><p>The perpendicular distance minimized by ODR is often more geometrically stable. OLS can suffer from <strong>projection bias</strong> on steep or flat sections of a curve, where the vertical distance is a poor approximation of the true geometric error.</p></td>
 </tr>
 </tbody>
 </table>
@@ -633,7 +634,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>The final, minimized value of the ODR objective function, <span class="math notranslate nohighlight">\(S\)</span>, is itself a chi-squared statistic.</p>
 <div class="math notranslate nohighlight">
 \[ \chi^2 = S_{min} = \sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right) \]</div>
-<p>This value represents the total weighted squared error of the fit. However, its absolute magnitude is difficult to interpret on its own, as it scales with the number of data points.</p>
+<p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> and <span class="math notranslate nohighlight">\(\hat{y}\)</span> are fitted data points on the curve. This value represents the total weighted squared error of the fit. However, its absolute magnitude is difficult to interpret on its own, as it scales with the number of data points.</p>
 </li>
 <li><p><strong>The Reduced Chi-Squared Statistic (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) - The Best Indicator</strong></p>
 <p>To create a standardized and highly interpretable metric, we calculate the <strong>reduced chi-squared statistic</strong>, which is the final <span class="math notranslate nohighlight">\(\chi^2\)</span> value divided by the <strong>degrees of freedom</strong> (<span class="math notranslate nohighlight">\(\nu\)</span>).</p>
@@ -647,6 +648,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <ol class="arabic simple">
 <li><p><strong>The model is wrong:</strong> The chosen function does not adequately describe the true physical relationship.</p></li>
 <li><p><strong>The errors were underestimated:</strong> Your reported error values (<span class="math notranslate nohighlight">\(\sigma_{x,i}, \sigma_{y,i}\)</span>) are too small, and the data is actually “noisier” than you thought.</p></li>
+<li><p><strong>Presence of Outliers</strong>: The dataset may contain one or more significant outliers. Because the chi-squared statistic is based on the sum of squared deviations, a few points that are very far from the fitted curve can disproportionately inflate the total value, leading to a high reduced chi-squared even if the model is appropriate for the rest of the data.</p></li>
 </ol>
 </li>
 <li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &lt; 1.0\)</span></strong>: This indicates that the fit is “too good.” The data points are, on average, closer to the line than their error estimates would predict. This can mean:</p>
@@ -659,28 +661,17 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>Many regression packages, including <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code>, report this value as <code class="docutils literal notranslate"><span class="pre">res_var</span></code> (residual variance), which is equivalent to the reduced chi-squared.</p>
 </li>
 </ul>
-<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a></p>
+<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>. The interpretation of the reduced chi-squared statistic is most rigorous for models that are linear in their parameters. For non-linear models, the statistical assumptions that guarantee the chi-squared distribution are not always met, and the exact number of degrees of freedom can be ambiguous. In such cases, the reduced chi-squared value remains a powerful and widely used heuristic for assessing the goodness of fit, but it should be interpreted with a degree of caution.</p>
 </section>
 <section id="r-squared-r-2-and-adjusted-r-squared">
 <h3>R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared<a class="headerlink" href="#r-squared-r-2-and-adjusted-r-squared" title="Link to this heading">#</a></h3>
-<p><strong>Generally Not Recommended for ODR.</strong></p>
-<p>R-squared is defined as <span class="math notranslate nohighlight">\(R^2 = 1 - \frac{SS_{res}}{SS_{tot}}\)</span>, where <span class="math notranslate nohighlight">\(SS_{res}\)</span> is the sum of squared <em>vertical</em> residuals and <span class="math notranslate nohighlight">\(SS_{tot}\)</span> is the total sum of squares related to the <em>vertical</em> variance of the data.</p>
-<p>This metric is fundamentally incompatible with the principle of ODR for two reasons:</p>
-<ol class="arabic simple">
-<li><p>ODR does not minimize the vertical residuals, so <span class="math notranslate nohighlight">\(SS_{res}\)</span> does not represent what the algorithm was trying to do.</p></li>
-<li><p><span class="math notranslate nohighlight">\(SS_{tot}\)</span> only accounts for the variance in the y-variable, completely ignoring the error structure of the x-variable, which is central to ODR.</p></li>
-</ol>
-<p>Using a standard R-squared calculation on an ODR fit gives a misleading and often uninterpretable number. While some “pseudo R-squared” metrics exist, they lack the intuitive “percentage of variance explained” meaning and are best avoided in favor of the chi-squared statistics.</p>
+<p>While R-squared is a common metric for OLS, its application to ODR is problematic. R-squared is based on the idea of explaining the variance in the y-variable, assuming the x-variable is known without error. This assumption is explicitly violated in ODR. Calculating a pseudo R-squared value for ODR can be done, but it often lacks a clear statistical interpretation and can be insensitive to the order of the variables (swapping x and y). For these reasons, <strong>R-squared and adjusted R-squared are generally not recommended</strong> for evaluating ODR results.</p>
 </section>
 <section id="information-criteria-aic-and-bic">
 <h3>Information Criteria (AIC and BIC)<a class="headerlink" href="#information-criteria-aic-and-bic" title="Link to this heading">#</a></h3>
 <p><strong>Recommended for Model Comparison.</strong></p>
 <p>The Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) are excellent tools for <strong>comparing different models</strong> fit to the same dataset. They do not tell you if a single model is a “good fit” in an absolute sense, but they can tell you which model is better relative to others.</p>
-<p>Both criteria work by balancing model fit with model complexity (the number of parameters, <span class="math notranslate nohighlight">\(p\)</span>). For models based on a chi-squared statistic (like ODR), they can be calculated as:</p>
-<ul class="simple">
-<li><p><strong>AIC</strong> = <span class="math notranslate nohighlight">\(\chi^2 + 2p\)</span></p></li>
-<li><p><strong>BIC</strong> = <span class="math notranslate nohighlight">\(\chi^2 + p \ln(n)\)</span></p></li>
-</ul>
+<p>Both criteria work by balancing model fit with model complexity (the number of parameters, <span class="math notranslate nohighlight">\(p\)</span>). For models based on a chi-squared statistic (like ODR), they can be calculated as: …</p>
 <p>When comparing two or more models, the one with the <strong>lower AIC or BIC value is considered better</strong>. It provides the most explanatory power for the least complexity.</p>
 </section>
 <section id="other-essential-evaluation-methods">
@@ -724,33 +715,6 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 </tbody>
 </table>
 </div>
-<p>Assessing the goodness of fit for Orthogonal Distance Regression (ODR), especially with non-linear models, is more complex than with Ordinary Least Squares (OLS). Since ODR accounts for errors in both x and y variables, traditional metrics like R-squared can be misleading or inappropriate.</p>
-<p>The most suitable and standard goodness-of-fit parameter for ODR is the <strong>reduced chi-squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</strong> statistic.</p>
-</section>
-<section id="reduced-chi-squared-chi-red-2">
-<h3>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)<a class="headerlink" href="#reduced-chi-squared-chi-red-2" title="Link to this heading">#</a></h3>
-<p>The reduced chi-squared is a powerful and statistically rigorous measure for ODR because it directly incorporates the uncertainties (weights) of both the x and y data points. It is defined as the sum of squared weighted residuals divided by the number of degrees of freedom.</p>
-<div class="math notranslate nohighlight">
-\[\chi_{red}^2 = \frac{\sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right)}{n - p}\]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of data points.</p></li>
-<li><p><span class="math notranslate nohighlight">\(p\)</span> is the number of parameters in the model.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma_{x,i}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{y,i}\)</span> are the known standard deviations of the errors for each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>.</p></li>
-</ul>
-<section id="interpretation-of-reduced-chi-squared">
-<h4>Interpretation of Reduced Chi-Squared<a class="headerlink" href="#interpretation-of-reduced-chi-squared" title="Link to this heading">#</a></h4>
-<p>The value of <span class="math notranslate nohighlight">\(\chi_{red}^2\)</span> tells you how well the model fits the data relative to the expected measurement errors.</p>
-<ul class="simple">
-<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 \approx 1\)</span></strong> indicates an excellent fit. The model’s residuals are consistent with the measurement uncertainties you provided. The observed scatter is what you’d expect.</p></li>
-<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 \gg 1\)</span></strong> (significantly greater than 1) suggests a poor fit. This means the model does not adequately describe the data, or you have underestimated your measurement uncertainties. The observed scatter is much larger than expected.</p></li>
-<li><p>A value of <strong><span class="math notranslate nohighlight">\(\chi_{red}^2 &lt; 1\)</span></strong> may indicate that the model is “overfitting” the data, or that you have overestimated your measurement uncertainties.</p></li>
-</ul>
-</section>
-</section>
-<hr class="docutils" />
-<section id="r-squared-and-odr">
-<h3>R-squared and ODR<a class="headerlink" href="#r-squared-and-odr" title="Link to this heading">#</a></h3>
-<p>While R-squared is a common metric for OLS, its application to ODR is problematic. R-squared is based on the idea of explaining the variance in the y-variable, assuming the x-variable is known without error. This assumption is explicitly violated in ODR. Calculating a pseudo R-squared value for ODR can be done, but it often lacks a clear statistical interpretation and can be insensitive to the order of the variables (swapping x and y). For these reasons, <strong>R-squared and adjusted R-squared are generally not recommended</strong> for evaluating ODR results.</p>
 </section>
 <section id="non-linear-regression-and-other-parameters">
 <h3>Non-linear Regression and Other Parameters<a class="headerlink" href="#non-linear-regression-and-other-parameters" title="Link to this heading">#</a></h3>
@@ -760,9 +724,17 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <li><p><strong>Standard Errors of Parameters:</strong> The standard errors of the fitted parameters provide a measure of their uncertainty. If these are very large, it suggests that the data are not sufficient to accurately determine the model’s parameters.</p></li>
 <li><p><strong>Confidence and Prediction Bands:</strong> Visualizing the confidence and prediction bands around the fitted curve is an excellent way to see the range of uncertainty in your model and its predictions.</p></li>
 </ul>
-<p>The res_var attribute of the Output is the so-called reduced Chi-square value for the fit, a popular choice of goodness-of-fit statistic. It is somewhat problematic for non-linear fitting, though. You can look at the residuals directly (out.delta for the X residuals and out.eps for the Y residuals). Implementing a cross-validation or bootstrap method for determining goodness-of-fit, as suggested in the linked paper, is left as an exercise for the reader.</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html</a></p>
 </section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/odr.html#module-scipy.odr">https://docs.scipy.org/doc/scipy/reference/odr.html#module-scipy.odr</a></p></li>
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html#scipy.odr.Output">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html#scipy.odr.Output</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/21395328/how-to-estimate-goodness-of-fit-using-scipy-odr">https://stackoverflow.com/questions/21395328/how-to-estimate-goodness-of-fit-using-scipy-odr</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/325581/odr-residual-variance-and-reduced-chi2-do-the-beta-uncertainties-represent-co">https://stats.stackexchange.com/questions/325581/odr-residual-variance-and-reduced-chi2-do-the-beta-uncertainties-represent-co</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/41028846/how-to-compute-standard-error-from-odr-results">https://stackoverflow.com/questions/41028846/how-to-compute-standard-error-from-odr-results</a></p></li>
+</ul>
 </section>
 </section>
 
@@ -806,11 +778,11 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
       </div>
     </a>
     <a class="right-next"
-       href="../../physics/continuity-equation-01.html"
+       href="odr-code.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The Continuity Equation</p>
+        <p class="prev-next-title">ODR - Code Examples</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -839,14 +811,10 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2-and-adjusted-r-squared">R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criteria-aic-and-bic">Information Criteria (AIC and BIC)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-essential-evaluation-methods">Other Essential Evaluation Methods</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduced-chi-squared-chi-red-2">Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi_{red}^2\)</span>)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-reduced-chi-squared">Interpretation of Reduced Chi-Squared</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-and-odr">R-squared and ODR</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-linear-regression-and-other-parameters">Non-linear Regression and Other Parameters</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
 </ul>
   </nav></div>
 
@@ -861,7 +829,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
   <div class="footer-item">
     
 <p class="component-author">
-By Vladyslav Yakovliev
+By Vladyslav Yakovliev (Ukraine)
 </p>
 
   </div>

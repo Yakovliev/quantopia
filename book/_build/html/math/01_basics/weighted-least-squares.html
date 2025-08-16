@@ -453,11 +453,15 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-residual-sum-of-squares-wrss">Weighted Residual Sum of Squares (WRSS)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-2-statistic">The Connection Between WRSS and the Chi-Squared (χ²) Statistic</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r2-and-adjusted-r-squared-in-wls"><strong>R-squared (R²) and Adjusted R-squared in WLS</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-sum-of-squares-tss">Total Sum of Squares (TSS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-sum-of-squares-ess">Explained Sum of Squares (ESS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2">R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-rmse-and-ser">Error Metrics: RMSE and SER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-squared-error-mse">Mean Squared Error (MSE)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
@@ -516,7 +520,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <li><p><strong>Weight Calculation:</strong> For each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> with associated standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>, a weight <span class="math notranslate nohighlight">\(w_i\)</span> is calculated as the inverse of the variance: <span class="math notranslate nohighlight">\(w_i = \frac{1}{\sigma_i^2}\)</span>.</p></li>
 <li><p><strong>Minimization Objective:</strong> The Levenberg-Marquardt algorithm (the default for <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code>) then seeks to minimize the <strong>weighted residual sum of squares (WRSS)</strong>:</p>
 <div class="math notranslate nohighlight">
-\[RSS_w = \sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+\[RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 <p>where <span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS, <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the model’s predicted value and <span class="math notranslate nohighlight">\(\beta\)</span> represents the model parameters.</p>
 </li>
 <li><p><strong>Impact of Weights:</strong> Measurements with smaller <span class="math notranslate nohighlight">\(\sigma_i\)</span> (higher precision) receive larger weights (<span class="math notranslate nohighlight">\(w_i\)</span>), thus exerting a greater influence on the determination of the fitted parameters. Conversely, measurements with larger <span class="math notranslate nohighlight">\(\sigma_i\)</span> (lower precision) receive smaller weights, having less impact on the fit. This ensures that the fitting process prioritizes minimizing deviations for the more reliable data points.</p></li>
@@ -533,7 +537,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <ol class="arabic">
 <li><p><strong>WLS Objective:</strong> WLS minimizes the weighted sum of squared residuals:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2\]</div>
 <p>where the weight <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>.</p>
 </li>
 <li><p><strong>When Homoscedasticity is Satisfied:</strong> If every data point has the same standard deviation, let’s call it <span class="math notranslate nohighlight">\(\sigma_{const}\)</span>. Then, for all <span class="math notranslate nohighlight">\(i\)</span>, we have <span class="math notranslate nohighlight">\(\sigma_i = \sigma_{const}\)</span>. This means all the weights are also the same:</p>
@@ -543,10 +547,10 @@ The weights are typically inversely proportional to the variance of the errors f
 </li>
 <li><p><strong>Mathematical Equivalence:</strong> The WLS minimization objective then becomes:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} C (y_i - f(x_i, \beta))^2 = C \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} C (y_i - f(x_i, \beta))^2 = C \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
 <p>Since <span class="math notranslate nohighlight">\(C\)</span> is just a positive constant, minimizing this expression is mathematically identical to minimizing the expression without the constant:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
 <p>This is exactly the objective of <strong>Ordinary Least Squares (OLS)</strong>.</p>
 </li>
 </ol>
@@ -609,7 +613,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <p>The objective of any “least squares” method is to find the model parameters that minimize the sum of the squared residuals. In Weighted Least Squares (WLS), this objective function is the <strong>Weighted Residual Sum of Squares (WRSS)</strong>. A small WRSS indicates a tight fit of the model to the data.</p>
 <p>The formula for the WRSS is:</p>
 <div class="math notranslate nohighlight">
-\[ RSS_w = \sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2 \]</div>
+\[ RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 \]</div>
 <p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS.</p></li>
@@ -619,50 +623,121 @@ The weights are typically inversely proportional to the variance of the errors f
 <li><p><span class="math notranslate nohighlight">\(w_i\)</span> is the weight assigned to the i-th data point.</p></li>
 </ul>
 <p>The crucial difference from the ordinary Residual Sum of Squares (RSS) is the inclusion of the weight, <span class="math notranslate nohighlight">\(w_i\)</span>. This weight ensures that not all squared residuals contribute equally to the final sum. As defined in your earlier sections, the weight is typically the inverse of the error variance (<span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>), giving more influence to more precise data points.</p>
-<section id="the-connection-between-wrss-and-the-chi-squared-2-statistic">
-<h3>The Connection Between WRSS and the Chi-Squared (χ²) Statistic<a class="headerlink" href="#the-connection-between-wrss-and-the-chi-squared-2-statistic" title="Link to this heading">#</a></h3>
-<p>In the context of curve fitting where meaningful, known uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) are provided for each data point, the WRSS takes on a profound statistical meaning. In this case, the WRSS value is identical to the <strong>chi-squared statistic (χ²)</strong>.</p>
+<section id="the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">
+<h3>The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic<a class="headerlink" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic" title="Link to this heading">#</a></h3>
+<p>In the context of curve fitting where meaningful, known uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) are provided for each data point, the WRSS takes on a profound statistical meaning. In this case, the WRSS value is identical to the <strong>chi-squared statistic <span class="math notranslate nohighlight">\(\chi^2\)</span></strong>.</p>
 <div class="math notranslate nohighlight">
-\[ \chi^2 = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = WRSS \]</div>
-<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> stasitics see <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>.</p>
+\[ \chi^2 = \sum_{i=1}^{n} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = RSS_w \]</div>
+<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics see <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>.</p>
+</section>
 </section>
 <section id="calculating-goodness-of-fit-metrics-with-wls">
-<h3>Calculating Goodness-of-Fit Metrics with WLS<a class="headerlink" href="#calculating-goodness-of-fit-metrics-with-wls" title="Link to this heading">#</a></h3>
-<p>Standard metrics like RMSE and R-squared should be adapted to use the weights in a WLS context to be consistent with the weighted regression.</p>
-<p><strong>Root Mean Squared Error (RMSE) and Standard Error of the Residuals (SER)</strong></p>
-<p>In WLS, both the RMSE and the SER (also known as the Residual Standard Error) are calculated using the WRSS to properly reflect the weighted nature of the fit.</p>
+<h2>Calculating Goodness-of-Fit Metrics with WLS<a class="headerlink" href="#calculating-goodness-of-fit-metrics-with-wls" title="Link to this heading">#</a></h2>
+<p>When performing a Weighted Least Squares (WLS) fit, the traditional goodness-of-fit metrics need to be adapted to account for the assigned weights. While the fundamental concepts remain the same, the calculations incorporate the weights to ensure that points with higher precision have a greater influence on the resulting metrics.</p>
+<p>The primary difference between the weighted and unweighted versions of these metrics is the inclusion of the weight term, <span class="math notranslate nohighlight">\(w_i\)</span>. As you’ve seen, this weight is typically the inverse of the error variance, <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>.</p>
+<p>Below is a comparison of standard (unweighted) goodness-of-fit metrics and their weighted counterparts.</p>
+<hr class="docutils" />
+<section id="total-sum-of-squares-tss">
+<h3>Total Sum of Squares (TSS)<a class="headerlink" href="#total-sum-of-squares-tss" title="Link to this heading">#</a></h3>
+<p>The <strong>Total Sum of Squares (TSS)</strong> measures the total variation in the observed data. It serves as a baseline for comparison. There are two common versions: centered and uncentered.</p>
 <ul>
-<li><p><strong>Weighted Root Mean Squared Error (WRMSE):</strong> A common formulation for the weighted RMSE is:</p>
+<li><p><strong>Centered TSS</strong>: Measures the total variation around the unweighted mean of the observed data.</p>
 <div class="math notranslate nohighlight">
-\[ RMSE_w = \sqrt{\frac{\sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2}{\sum_{i=1}^{N} w_i}} = \sqrt{\frac{RSS_w}{\sum w_i}} \]</div>
-<p>This calculates a weighted average of the squared errors. Note that some definitions might use <span class="math notranslate nohighlight">\(N\)</span> (the number of data points) in the denominator instead of the sum of the weights.</p>
-</li>
-<li><p><strong>Standard Error of the Residuals (SER) for WLS:</strong> The SER is an unbiased estimator of the error variance, adjusted for the number of parameters (<span class="math notranslate nohighlight">\(p\)</span>) in the model. Its formula is:</p>
+\[TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
+<p>where</p>
 <div class="math notranslate nohighlight">
-\[ \text{SER} = \sqrt{\frac{\text{WRSS}}{N - p}} \]</div>
-<p>This value quantifies the typical deviation of the data points from the fitted line in the weighted space. A smaller SER indicates that the model’s predictions are closer to the actual observations.</p>
+\[\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\]</div>
 </li>
+<li><p><strong>Weighted Centered TSS</strong>: Measures the total variation around the weighted mean of the observed data, giving more influence to precise points.</p>
+<div class="math notranslate nohighlight">
+\[TSS_{w} = \sum_{i=1}^{n} w_i (y_i - \bar{y}_{w})^2\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\bar{y}_{w} = \frac{\sum_{i=1}^{n} w_i y_i}{\sum_{i=1}^{n} w_i}\]</div>
+</li>
+<li><p><strong>Unweighted/Weighted Uncentered TSS</strong>: These versions measure the total sum of squares around zero instead of the mean.</p>
+<ul class="simple">
+<li><p><strong>Unweighted</strong>: <span class="math notranslate nohighlight">\(TSS_{uncentered} = \sum_{i=1}^{n} y_i^2\)</span></p></li>
+<li><p><strong>Weighted</strong>: <span class="math notranslate nohighlight">\(TSS_{w, uncentered} = \sum_{i=1}^{n} w_i y_i^2\)</span></p></li>
 </ul>
-<section id="r-squared-r2-and-adjusted-r-squared-in-wls">
-<h4><strong>R-squared (R²) and Adjusted R-squared in WLS</strong><a class="headerlink" href="#r-squared-r2-and-adjusted-r-squared-in-wls" title="Link to this heading">#</a></h4>
-<p>The interpretation of R-squared in WLS is more complex than in OLS. The standard R-squared formula is <span class="math notranslate nohighlight">\(R² = 1 - RSS/TSS\)</span>, where TSS is the Total Sum of Squares around the mean. In WLS, both the RSS and TSS must be weighted to be meaningful.</p>
-<ul>
-<li><p><strong>Weighted R-squared (R²_w):</strong> A widely accepted approach is to calculate a weighted version of both the residual sum of squares (which is WRSS) and the total sum of squares (WTSS).</p>
-<p>The <strong>Weighted Total Sum of Squares (WTSS)</strong> is defined as:</p>
-<div class="math notranslate nohighlight">
-\[ \text{WTSS} = \sum_{i=1}^{N} w_i (y_i - \bar{y}_w)^2 \]</div>
-<p>where <span class="math notranslate nohighlight">\(ȳ_w\)</span> is the <strong>weighted mean</strong> of the dependent variable <span class="math notranslate nohighlight">\(y\)</span>, calculated as <span class="math notranslate nohighlight">\(ȳ_w = (\sigma w_i * y_i) / (\sigma w_i)\)</span>.</p>
-<p>The weighted R-squared is then:</p>
-<div class="math notranslate nohighlight">
-\[ R^2_w = 1 - \frac{\text{WRSS}}{\text{WTSS}} \]</div>
-<p>This <span class="math notranslate nohighlight">\(R²_w\)</span> represents the proportion of the total weighted variance in the dependent variable that is explained by the weighted model. It is important to note that different statistical packages might use slightly different formulations, which can sometimes lead to confusion when comparing results.</p>
-</li>
-<li><p><strong>Adjusted Weighted R-squared:</strong> The adjusted R² is modified similarly, using the weighted R-squared and accounting for the number of data points (<span class="math notranslate nohighlight">\(N\)</span>) and the number of predictors (<span class="math notranslate nohighlight">\(p\)</span>):</p>
-<div class="math notranslate nohighlight">
-\[ \text{Adjusted } R^2_w = 1 - (1 - R^2_w) \frac{N-1}{N-p-1} \]</div>
 </li>
 </ul>
 </section>
+<hr class="docutils" />
+<section id="explained-sum-of-squares-ess">
+<h3>Explained Sum of Squares (ESS)<a class="headerlink" href="#explained-sum-of-squares-ess" title="Link to this heading">#</a></h3>
+<p>The <strong>Explained Sum of Squares (ESS)</strong> measures the variation in the observed data that is explained by the model.</p>
+<ul>
+<li><p><strong>ESS</strong>: Measures the variation of the predicted values around the unweighted mean of the observed data.</p>
+<div class="math notranslate nohighlight">
+\[ESS = \sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2\]</div>
+</li>
+<li><p><strong>Weighted ESS</strong>: Measures the variation of the predicted values around the weighted mean, weighted by the precision of each point.</p>
+<div class="math notranslate nohighlight">
+\[ESS_{w} = \sum_{i=1}^{n} w_i (\hat{y}_i - \bar{y}_{w})^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{y}_i = f(x_i, \beta)\)</span>.</p>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="r-squared-r-2">
+<h3>R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)<a class="headerlink" href="#r-squared-r-2" title="Link to this heading">#</a></h3>
+<p><strong>R-squared</strong> measures the proportion of the variance in the dependent variable that is predictable from the independent variable(s).</p>
+<ul>
+<li><p><strong>R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{RSS}{TSS} = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}\]</div>
+</li>
+<li><p><strong>Weighted R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{w} = 1 - \frac{RSS_{w}}{TSS_{w}} = 1 - \frac{\sum w_i (y_i - \hat{y}_i)^2}{\sum w_i (y_i - \bar{y}_{w})^2}\]</div>
+</li>
+<li><p><strong>Adjusted R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{adj} = 1 - (1 - R^2) \frac{n-1}{n-p}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the number of observations and <span class="math notranslate nohighlight">\(p\)</span> is the number of the estimated parameters.</p>
+</li>
+<li><p><strong>Weighted Adjusted R-squared (<span class="math notranslate nohighlight">\(R^2_{adj, w}\)</span>)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{adj, w} = 1 - (1 - R^2_{w}) \frac{n-1}{n-p}\]</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="error-metrics-rmse-and-ser">
+<h3>Error Metrics: RMSE and SER<a class="headerlink" href="#error-metrics-rmse-and-ser" title="Link to this heading">#</a></h3>
+<p>These metrics provide an indication of the typical error size.</p>
+<ul>
+<li><p><strong>Root Mean Squared Error (RMSE)</strong>: Measures the average magnitude of the residuals. It is a very useful metric because it’s expressed in the same units as the response variable.</p>
+<div class="math notranslate nohighlight">
+\[RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2} = \sqrt{\frac{RSS}{n}}\]</div>
+<p>For the weighted version, the denominator becomes the sum of the weights, which is one of key differences:</p>
+<div class="math notranslate nohighlight">
+\[RMSE_{w} = \sqrt{\frac{\sum_{i=1}^{n} w_i (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} w_i}} = \sqrt{\frac{RSS_{w}}{\sum w_i}}\]</div>
+</li>
+<li><p><strong>Standard Error of the Regression (SER)</strong>: Also known as the residual standard deviation or residual standard error, it estimates the standard deviation of the error term.</p>
+<div class="math notranslate nohighlight">
+\[SER = \sqrt{\frac{RSS}{n-p}}\]</div>
+<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
+<div class="math notranslate nohighlight">
+\[SER_{w} = \sqrt{\frac{RSS_{w}}{n-p}} = \sqrt{\chi^2_{red}}\]</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mean-squared-error-mse">
+<h3>Mean Squared Error (MSE)<a class="headerlink" href="#mean-squared-error-mse" title="Link to this heading">#</a></h3>
+<p><strong>Mean Squared Error (MSE)</strong> is a measure of the average squared difference between predicted and actual values in a model.</p>
+<ul>
+<li><p><strong>Unbiased MSE</strong>:</p>
+<div class="math notranslate nohighlight">
+\[MSE = \frac{RSS}{n-p}\]</div>
+</li>
+<li><p><strong>Unbiased Weighted MSE</strong>: This is the unbiased estimate of the average squared difference between predicted and actual values. In the context of WLS and chi-squared statistics, this is identical to the <strong>Reduced Chi-Squared</strong> (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[MSE_{w} = \frac{RSS_{w}}{n-p} = \frac{\chi^2}{n-p} = \chi^2_{red}\]</div>
+</li>
+</ul>
 </section>
 </section>
 <section id="additional-materials">
@@ -759,11 +834,15 @@ The weights are typically inversely proportional to the variance of the errors f
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-residual-sum-of-squares-wrss">Weighted Residual Sum of Squares (WRSS)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-2-statistic">The Connection Between WRSS and the Chi-Squared (χ²) Statistic</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r2-and-adjusted-r-squared-in-wls"><strong>R-squared (R²) and Adjusted R-squared in WLS</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-sum-of-squares-tss">Total Sum of Squares (TSS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-sum-of-squares-ess">Explained Sum of Squares (ESS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2">R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-rmse-and-ser">Error Metrics: RMSE and SER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-squared-error-mse">Mean Squared Error (MSE)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
@@ -781,7 +860,7 @@ The weights are typically inversely proportional to the variance of the errors f
   <div class="footer-item">
     
 <p class="component-author">
-By Vladyslav Yakovliev
+By Vladyslav Yakovliev (Ukraine)
 </p>
 
   </div>
