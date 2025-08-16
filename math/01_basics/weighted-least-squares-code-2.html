@@ -458,7 +458,6 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-confidence-interval-0-025-0-975">The Confidence Interval ([0.025 0.975])</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-weights-from-ols-residuals">Estimate Weights from OLS Residuals</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-the-final-wls-regression">Perform the Final WLS Regression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wls-standardized-residuals">WLS standardized residuals</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
@@ -519,15 +518,17 @@ You collect data from 1,000 households and run an OLS regression. You get initia
 <li><p><strong>Step 2: Detect Heteroscedasticity and Model Variance</strong>
 You plot the residuals (<span class="math notranslate nohighlight">\(e_i\)</span>) against the income (<span class="math notranslate nohighlight">\(x_i\)</span>). The plot looks like this:</p>
 <p>You observe a classic “megaphone” shape: the spread of the residuals is much smaller for low-income households and much larger for high-income households. This indicates that variance is not constant.</p>
-<p>You decide to model this variance. A reasonable assumption is that the standard deviation of spending is proportional to income. To estimate this relationship, you regress the absolute value of the residuals on income:
-$<span class="math notranslate nohighlight">\(|e_i| = \gamma_0 + \gamma_1 \cdot \text{income}_i\)</span>$</p>
+<p>You decide to model this variance. A reasonable assumption is that the standard deviation of spending is proportional to income. To estimate this relationship, you regress the absolute value of the residuals on income:</p>
+<div class="math notranslate nohighlight">
+\[|e_i| = \gamma_0 + \gamma_1 \cdot \text{income}_i\]</div>
 </li>
 <li><p><strong>Step 3: Calculate Weights</strong>
 From the regression in Step 2, you get the predicted (fitted) values for the absolute residuals, let’s call them <span class="math notranslate nohighlight">\(\hat{e}_{abs_i}\)</span>. These fitted values are your estimates for the standard deviation of each observation, so <span class="math notranslate nohighlight">\(\hat{\sigma}_i = \hat{e}_{abs_i}\)</span>.</p>
 <p>The estimated variance for each observation is therefore <span class="math notranslate nohighlight">\(\hat{\sigma}_i^2 = (\hat{e}_{abs_i})^2\)</span>.</p>
-<p>Now, you can calculate the weight for each household in your dataset:
-$<span class="math notranslate nohighlight">\(w_i = \frac{1}{\hat{\sigma}_i^2} = \frac{1}{(\hat{e}_{abs_i})^2}\)</span>$
-High-income households, which had large residuals, will get smaller weights. Low-income households, which had small residuals, will get larger weights.</p>
+<p>Now, you can calculate the weight for each household in your dataset:</p>
+<div class="math notranslate nohighlight">
+\[w_i = \frac{1}{\hat{\sigma}_i^2} = \frac{1}{(\hat{e}_{abs_i})^2}\]</div>
+<p>High-income households, which had large residuals, will get smaller weights. Low-income households, which had small residuals, will get larger weights.</p>
 </li>
 <li><p><strong>Step 4: Perform Final WLS Regression</strong>
 Finally, you rerun your original model (<code class="docutils literal notranslate"><span class="pre">Spending</span> <span class="pre">~</span> <span class="pre">Income</span></code>) but instruct your statistical software to use the weights (<span class="math notranslate nohighlight">\(w_i\)</span>) you just calculated. The new WLS model will minimize the weighted sum of squared residuals. The resulting estimates for the effect of income on spending will be more efficient, and the confidence intervals will be more accurate than what the initial OLS model provided.</p></li>
@@ -660,19 +661,6 @@ Finally, you rerun your original model (<code class="docutils literal notranslat
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">OLS Parameter Estimates:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ols_results</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="c1"># Access the metrics directly from the ols_results object</span>
-<span class="n">rss</span> <span class="o">=</span> <span class="n">ols_results</span><span class="o">.</span><span class="n">ssr</span> 
-<span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ols_results</span><span class="o">.</span><span class="n">mse_resid</span><span class="p">)</span> 
-<span class="n">ser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ols_results</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-<span class="n">r_squared</span> <span class="o">=</span> <span class="n">ols_results</span><span class="o">.</span><span class="n">rsquared</span>
-<span class="n">adjusted_r_squared</span> <span class="o">=</span> <span class="n">ols_results</span><span class="o">.</span><span class="n">rsquared_adj</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">rss</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Root Mean Squared Error (RMSE): </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error of the Regression (SER): </span><span class="si">{</span><span class="n">ser</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adjusted R-squared: </span><span class="si">{</span><span class="n">adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -686,11 +674,6 @@ OLS Parameter Estimates:
 const          5.2010      1.036      5.019      0.000       3.165       7.237
 x1             0.2993      0.011     26.845      0.000       0.277       0.321
 ==============================================================================
-Residual Sum of Squares (RSS): 43755.13
-Root Mean Squared Error (RMSE): 9.37
-Standard Error of the Regression (SER): 9.37
-R-squared: 0.5914
-Adjusted R-squared: 0.5905
 </pre></div>
 </div>
 </div>
@@ -761,7 +744,7 @@ Adjusted R-squared: 0.5905
 <p>In our output:</p>
 <ul class="simple">
 <li><p>For the constant <span class="math notranslate nohighlight">\(\beta_0\)</span>: The 95% confidence interval is <code class="docutils literal notranslate"><span class="pre">[3.165,</span> <span class="pre">7.237]</span></code>. Since this range does not contain zero, the intercept is statistically significant.</p></li>
-<li><p>For the income coefficient (<span class="math notranslate nohighlight">\(\beta_1\)</span>): The 95% confidence interval is <code class="docutils literal notranslate"><span class="pre">[0.277,</span> <span class="pre">0.321]</span></code>. This range also does not contain zero. This confirms that the true effect of a <span class="math notranslate nohighlight">\(1k increase in income on spending is likely to be between a \)</span>277 and a $321 increase, and it’s highly unlikely to be zero.</p></li>
+<li><p>For the income coefficient (<span class="math notranslate nohighlight">\(\beta_1\)</span>): The 95% confidence interval is <code class="docutils literal notranslate"><span class="pre">[0.277,</span> <span class="pre">0.321]</span></code>. This range also does not contain zero. This confirms that the true effect of a 1k increase in income on spending is likely to be between a <span class="math notranslate nohighlight">\(277 and a \)</span>321 increase, and it’s highly unlikely to be zero.</p></li>
 </ul>
 </section>
 <section id="estimate-weights-from-ols-residuals">
@@ -800,7 +783,7 @@ Weights have been calculated based on the variance model.
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">40</span><span class="p">])</span>  <span class="c1"># Display the first 40 weights for inspection</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">20</span><span class="p">])</span>  <span class="c1"># Display the first 40 weights for inspection</span>
 </pre></div>
 </div>
 </div>
@@ -808,10 +791,7 @@ Weights have been calculated based on the variance model.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.7853452  0.75496637 0.72631672 0.69926747 0.67370159 0.64951257
  0.62660329 0.60488505 0.58427668 0.56470383 0.54609828 0.52839731
  0.51154322 0.49548285 0.48016711 0.46555068 0.45159163 0.43825111
- 0.42549312 0.41328423 0.40159337 0.39039165 0.37965215 0.36934979
- 0.35946116 0.3499644  0.34083908 0.33206607 0.32362748 0.31550651
- 0.30768743 0.30015545 0.29289669 0.28589809 0.27914737 0.27263296
- 0.26634395 0.26027007 0.25440162 0.24872943]
+ 0.42549312 0.41328423]
 </pre></div>
 </div>
 </div>
@@ -833,27 +813,26 @@ Weights have been calculated based on the variance model.
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">WLS Parameter Estimates:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">wls_results</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 4: Performing WLS Regression with Calculated Weights ---
 
-<span class="n">wls_residuals</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">resid</span>
-
-<span class="c1"># Calculate Residual Sum of Squares (RSS)</span>
-<span class="n">wls_rss_calc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wls_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">wls_rss_calc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Access the metrics directly from the wls_results object</span>
-<span class="n">wls_rss</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">ssr</span>
-<span class="n">wls_rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wls_results</span><span class="o">.</span><span class="n">mse_resid</span><span class="p">)</span> 
-<span class="n">wls_ser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wls_results</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-<span class="n">wls_r_squared</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">rsquared</span>
-<span class="n">wls_adjusted_r_squared</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">rsquared_adj</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">wls_rss</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Root Mean Squared Error (RMSE): </span><span class="si">{</span><span class="n">wls_rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Standard Error of the Regression (SER): </span><span class="si">{</span><span class="n">wls_ser</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS R-squared: </span><span class="si">{</span><span class="n">wls_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Adjusted R-squared: </span><span class="si">{</span><span class="n">wls_adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># --- 5. Visualize and Compare OLS and WLS Results ---</span>
+WLS Parameter Estimates:
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          4.5562      0.397     11.490      0.000       3.777       5.335
+x1             0.3076      0.008     37.805      0.000       0.292       0.324
+==============================================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- 5. Visualize and Compare OLS and WLS Results ---</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
@@ -872,7 +851,7 @@ Weights have been calculated based on the variance model.
 <span class="n">wls_standardized_residuals</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">resid</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">estimated_variance</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">income</span><span class="p">,</span> <span class="n">wls_standardized_residuals</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals vs. Income (WLS)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals vs. Income (WLS)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="c1"># This is OVERSIMPLIFIED version. Should be used with caution.</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Annual Income (in thousands of $)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -884,43 +863,18 @@ Weights have been calculated based on the variance model.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 4: Performing WLS Regression with Calculated Weights ---
-
-WLS Parameter Estimates:
-==============================================================================
-                 coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------
-const          4.5562      0.397     11.490      0.000       3.777       5.335
-x1             0.3076      0.008     37.805      0.000       0.292       0.324
-==============================================================================
-WLS Residual Sum of Squares (RSS): 43805.61
-WLS Residual Sum of Squares (RSS): 816.31
-WLS Root Mean Squared Error (RMSE): 1.28
-WLS Standard Error of the Regression (SER): 1.28
-WLS R-squared: 0.7416
-WLS Adjusted R-squared: 0.7411
-</pre></div>
-</div>
 <img alt="../../_images/ad3b19acae219d8b017f20157fbc061ec628c4caa1d148a95363d5d14e76bcc8.png" src="../../_images/ad3b19acae219d8b017f20157fbc061ec628c4caa1d148a95363d5d14e76bcc8.png" />
 </div>
 </div>
-<p>NOTE: Compare the results of WLS and OLS to see that WLS provided us with more accurate results.</p>
-</section>
-<section id="wls-standardized-residuals">
-<h3>WLS standardized residuals<a class="headerlink" href="#wls-standardized-residuals" title="Link to this heading">#</a></h3>
-<p>WLS standardized residuals are a modified version of the standard residuals from a weighted least squares regression. They are calculated by dividing each WLS residual by its corresponding estimated standard deviation, which accounts for the varying weights given to each observation.</p>
-<p><strong>The Problem with OLS Residuals</strong></p>
-<p>In ordinary least squares (OLS) regression, a key assumption is <strong>homoscedasticity</strong>, which means the variance of the errors is constant across all levels of the independent variable. When this assumption is violated (<strong>heteroscedasticity</strong>), the spread of the residuals is not uniform. A common visual sign is a “cone” or “megaphone” shape in a residual plot.</p>
-<p><strong>The WLS Solution</strong></p>
-<p>Weighted least squares (WLS) addresses heteroscedasticity by assigning a <strong>weight</strong> to each data point. Observations with smaller variance (more reliable data) are given higher weights, while observations with larger variance (less reliable data) are given lower weights. This effectively “squishes” the cone shape and gives a more accurate regression line.</p>
-<p><strong>WLS Residuals vs. Standardized Residuals</strong></p>
-<ul class="simple">
-<li><p><strong>WLS Residuals</strong>: These are the raw residuals from the WLS model. They represent the difference between the observed value and the predicted value for each data point. However, they still reflect the original, non-uniform variance. A plot of raw WLS residuals against the independent variable would still show a heteroscedastic pattern, which isn’t useful for checking if the weighting was successful.</p></li>
-<li><p><strong>WLS Standardized Residuals</strong>: To properly check if the WLS model has corrected for heteroscedasticity, we need to standardize the residuals. This is done by taking each WLS residual and dividing it by its estimated standard deviation. The formula is:</p></li>
-</ul>
+<p>NOTE: Compare the shape of WLS and OLS graphs (Standardized Residuals vs. Income (WLS)).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Standardized residuals are a modified version of the standard residuals. However, here we used oversimplified version of standardized residuals, so these results should be used with caution.</p>
+<p>We used the following formula for calculation of the standardized residuals:</p>
 <div class="math notranslate nohighlight">
 \[\text{Standardized Residual}_i = \frac{\text{WLS Residual}_i}{\sqrt{\text{Estimated Variance}_i}}\]</div>
-<p>This process normalizes the residuals, so they should now have a constant variance and be randomly scattered around zero. Plotting these standardized residuals against the independent variable is the correct way to assess if the weighting scheme was effective. A successful WLS model will produce a standardized residual plot that looks like a random cloud of points with no discernible pattern.</p>
+<p>This formula is oversimplified and usually is not used in the textbooks. However, it allows us to demonstrate the change of the <code class="docutils literal notranslate"><span class="pre">residual</span> <span class="pre">vs</span> <span class="pre">income</span></code> figure shape.</p>
+</div>
 </section>
 </section>
 <section id="example-2">
@@ -983,39 +937,6 @@ WLS Adjusted R-squared: 0.7411
 <span class="n">ols_predictions</span> <span class="o">=</span> <span class="n">linear_model</span><span class="p">(</span><span class="n">income</span><span class="p">,</span> <span class="o">*</span><span class="n">popt_ols</span><span class="p">)</span>
 <span class="n">ols_residuals</span> <span class="o">=</span> <span class="n">observed_spending</span> <span class="o">-</span> <span class="n">ols_predictions</span>
 
-<span class="n">n</span> <span class="o">=</span> <span class="n">n_samples</span> <span class="c1"># Number of data points</span>
-<span class="n">k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt_ols</span><span class="p">)</span>  <span class="c1"># Number of parameters</span>
-
-<span class="c1"># Calculate Residual Sum of Squares (RSS)</span>
-<span class="n">ols_rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ols_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Calculate Root Mean Squared Error (RMSE)</span>
-<span class="n">ols_rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ols_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="n">ols_ser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ols_rss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">))</span>
-
-<span class="c1"># Calculate R-squared</span>
-<span class="c1"># 1. Calculate the Total Sum of Squares (TSS)</span>
-<span class="c1">#    TSS is the sum of the squared differences between observed values and their mean.</span>
-<span class="n">y_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">observed_spending</span><span class="p">)</span>
-<span class="n">tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">observed_spending</span> <span class="o">-</span> <span class="n">y_mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># 2. Calculate R-squared from RSS and TSS</span>
-<span class="n">ols_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">ols_rss</span> <span class="o">/</span> <span class="n">tss</span><span class="p">)</span>
-
-<span class="c1"># Adjusted R-squared calculation</span>
-<span class="c1"># Ensure n - k is not zero or negative to avoid division by zero</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">ols_adjusted_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ols_r_squared</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">ols_adjusted_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1"># Not applicable if degrees of freedom are insufficient</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">ols_rss</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Root Mean Squared Error (RMSE): </span><span class="si">{</span><span class="n">ols_rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error of the Residuals (SER): </span><span class="si">{</span><span class="n">ols_ser</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R-squared: </span><span class="si">{</span><span class="n">ols_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adjusted R-squared: </span><span class="si">{</span><span class="n">ols_adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
 <span class="c1"># --- Plot OLS Results and Residuals ---</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-v0_8-whitegrid&#39;</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -1047,11 +968,6 @@ WLS Adjusted R-squared: 0.7411
 OLS Parameter Estimates:
   Intercept: 5.2010 +/- 1.0362
   Slope:     0.2993 +/- 0.0111
-Residual Sum of Squares (RSS): 43755.13
-Root Mean Squared Error (RMSE): 9.35
-Standard Error of the Residuals (SER): 9.37
-R-squared: 0.5914
-Adjusted R-squared: 0.5905
 </pre></div>
 </div>
 <img alt="../../_images/e83675d2abb01e62bb0a4ee46c8c3fd254f458c7e065d642f71c4ea476fd06c8.png" src="../../_images/e83675d2abb01e62bb0a4ee46c8c3fd254f458c7e065d642f71c4ea476fd06c8.png" />
@@ -1091,7 +1007,7 @@ Sigma for each data point has been estimated based on the residuals.
 <span class="c1"># Now, we pass the estimated sigma to curve_fit.</span>
 <span class="c1"># `absolute_sigma=True` is crucial. It tells curve_fit that our sigma values are</span>
 <span class="c1"># the absolute standard deviations, which are used to calculate weights (1/sigma**2).</span>
-<span class="c1"># This also ensures the covariance matrix pcov is calculated correctly.</span>
+<span class="c1"># This also ensures the covariance matrix pcov is calculated correctly considering sigma, not relative weights only.</span>
 <span class="n">popt_wls</span><span class="p">,</span> <span class="n">pcov_wls</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_model</span><span class="p">,</span> <span class="n">income</span><span class="p">,</span> <span class="n">observed_spending</span><span class="p">,</span>
                                <span class="n">sigma</span><span class="o">=</span><span class="n">estimated_sigma</span><span class="p">,</span>
                                <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1109,39 +1025,22 @@ Sigma for each data point has been estimated based on the residuals.
 <span class="c1"># They should now have a constant variance (i.e., be homoscedastic).</span>
 <span class="n">wls_residuals</span> <span class="o">=</span> <span class="n">observed_spending</span> <span class="o">-</span> <span class="n">wls_predictions</span>
 <span class="n">wls_standardized_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">observed_spending</span> <span class="o">-</span> <span class="n">wls_predictions</span><span class="p">)</span> <span class="o">/</span> <span class="n">estimated_sigma</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 4: Performing Weighted Fit (WLS) with Estimated Sigma ---
 
-
-<span class="c1"># Calculate Residual Sum of Squares (RSS)</span>
-<span class="n">wls_rss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">wls_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Calculate Root Mean Squared Error (RMSE)</span>
-<span class="n">wls_rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">wls_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="n">wls_ser</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">wls_rss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">))</span>
-
-<span class="c1"># Calculate R-squared</span>
-<span class="c1"># 1. Calculate the Total Sum of Squares (TSS)</span>
-<span class="c1">#    TSS is the sum of the squared differences between observed values and their mean.</span>
-<span class="n">y_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">observed_spending</span><span class="p">)</span>
-<span class="n">tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">observed_spending</span> <span class="o">-</span> <span class="n">y_mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># 2. Calculate R-squared from RSS and TSS</span>
-<span class="n">wls_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">wls_rss</span> <span class="o">/</span> <span class="n">tss</span><span class="p">)</span>
-
-<span class="c1"># Adjusted R-squared calculation</span>
-<span class="c1"># Ensure n - k is not zero or negative to avoid division by zero</span>
-<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">wls_adjusted_r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">wls_r_squared</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">wls_adjusted_r_squared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="c1"># Not applicable if degrees of freedom are insufficient</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">wls_rss</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Root Mean Squared Error (RMSE): </span><span class="si">{</span><span class="n">wls_rmse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Standard Error of the Residuals (SER): </span><span class="si">{</span><span class="n">wls_ser</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS R-squared: </span><span class="si">{</span><span class="n">wls_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;WLS Adjusted R-squared: </span><span class="si">{</span><span class="n">wls_adjusted_r_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># --- 5. Visualize and Compare OLS and WLS Results ---</span>
+WLS Parameter Estimates:
+  Intercept: 4.5562 +/- 0.3097
+  Slope:     0.3076 +/- 0.0064
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- 5. Visualize and Compare OLS and WLS Results ---</span>
 <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 
 <span class="c1"># Plot 1: Comparison of OLS and WLS fits</span>
@@ -1159,7 +1058,7 @@ Sigma for each data point has been estimated based on the residuals.
 <span class="n">wls_standardized_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">observed_spending</span> <span class="o">-</span> <span class="n">wls_predictions</span><span class="p">)</span> <span class="o">/</span> <span class="n">estimated_sigma</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">income</span><span class="p">,</span> <span class="n">wls_standardized_residuals</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals vs. Income (WLS)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals vs. Income (WLS)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="c1"># This is OVERSIMPLIFIED version. Should be used with caution.</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Annual Income (in thousands of $)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Standardized Residuals&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
@@ -1170,20 +1069,17 @@ Sigma for each data point has been estimated based on the residuals.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Step 4: Performing Weighted Fit (WLS) with Estimated Sigma ---
-
-WLS Parameter Estimates:
-  Intercept: 4.5562 +/- 0.3097
-  Slope:     0.3076 +/- 0.0064
-WLS Residual Sum of Squares (RSS): 43805.61
-WLS Root Mean Squared Error (RMSE): 9.36
-WLS Standard Error of the Residuals (SER): 9.38
-WLS R-squared: 0.5909
-WLS Adjusted R-squared: 0.5901
-</pre></div>
-</div>
 <img alt="../../_images/701df4393dd6872ac9004a7031843aced0d24ebeb0cdcf232964f27fcf3a9ddd.png" src="../../_images/701df4393dd6872ac9004a7031843aced0d24ebeb0cdcf232964f27fcf3a9ddd.png" />
 </div>
+</div>
+<p>NOTE: Compare the shape of WLS and OLS graphs (Standardized Residuals vs. Income (WLS)).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Standardized residuals are a modified version of the standard residuals. However, here we used oversimplified version of standardized residuals, so these results should be used with caution.</p>
+<p>We used the following formula for calculation of the standardized residuals:</p>
+<div class="math notranslate nohighlight">
+\[\text{Standardized Residual}_i = \frac{\text{WLS Residual}_i}{\sqrt{\text{Estimated Variance}_i}}\]</div>
+<p>This formula is oversimplified and usually is not used in the textbooks. However, it allows us to demonstrate the change of the <code class="docutils literal notranslate"><span class="pre">residual</span> <span class="pre">vs</span> <span class="pre">income</span></code> figure shape.</p>
 </div>
 </section>
 </section>
@@ -1269,7 +1165,6 @@ WLS Adjusted R-squared: 0.5901
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-confidence-interval-0-025-0-975">The Confidence Interval ([0.025 0.975])</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-weights-from-ols-residuals">Estimate Weights from OLS Residuals</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-the-final-wls-regression">Perform the Final WLS Regression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#wls-standardized-residuals">WLS standardized residuals</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
