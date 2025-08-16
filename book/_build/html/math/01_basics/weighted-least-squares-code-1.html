@@ -460,6 +460,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Output Analysis</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-parameter">Absolute sigma parameter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-false"><code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-true"><code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Log-Likelihood</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -482,6 +489,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tools.eval_measures</span><span class="w"> </span><span class="kn">import</span> <span class="n">rmse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 </pre></div>
 </div>
 </div>
@@ -570,8 +578,8 @@ document.write(`
 Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
-Date:                Fri, 15 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        02:15:38   Log-Likelihood:               0.049782
+Date:                Sat, 16 Aug 2025   Prob (F-statistic):           2.22e-08
+Time:                        03:48:29   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -632,11 +640,11 @@ Notes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">nobs</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">nobs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">condition_number</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">condition_number</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition Number: </span><span class="si">{</span><span class="n">condition_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -647,6 +655,57 @@ Notes:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Degrees of Freedom: 6.0
 Number of Observations: 8.0
 Condition Number: 5.307859000400287
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T-value for Intercept: 5.078177576125257
+T-value for Slope: 37.98558492481207
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept: 0.002269613591419451
+P-value for Slope: 2.2225928494730514e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept (SciPy): </span><span class="si">{</span><span class="n">p_value_intercept_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope (SciPy): </span><span class="si">{</span><span class="n">p_value_slope_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept (SciPy): 0.002269613591419451
+P-value for Slope (SciPy): 2.2225928494730514e-08
 </pre></div>
 </div>
 </div>
@@ -870,7 +929,7 @@ Manual Unweighted R-squared alternative formula (ESS/TSS): 0.9070
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared: </span><span class="si">{</span><span class="n">chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Reduced Chi-Squared</span>
-<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared: </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -914,29 +973,6 @@ Manual Weighted RMSE: 0.1869
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Standard Error of the Regression (SER) ---</span>
-
-<span class="c1"># 1) Calculate weighted SER manually</span>
-<span class="c1"># Formula: sqrt(RSS_weighted / dof)</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manual Weighted SER: </span><span class="si">{</span><span class="n">ser_manual_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Compare with statsmodels SER calculation</span>
-<span class="n">ser_sm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">ssr</span> <span class="o">/</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Statsmodels SER (results.ssr / results.df_resid): </span><span class="si">{</span><span class="n">ser_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Manual Weighted SER: 0.5605
-Statsmodels SER (results.ssr / results.df_resid): 0.5605
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Standard Error of the Regression (SER) Calculations ---</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Standard Error of the Regression (SER) ---&quot;</span><span class="p">)</span>
 
@@ -948,12 +984,12 @@ Statsmodels SER (results.ssr / results.df_resid): 0.5605
 <span class="c1"># Manual calculation of Weighted SER</span>
 <span class="c1"># This should match the value from statsmodels</span>
 <span class="c1"># Formula: sqrt(sum of squared weighted residuals / degrees of freedom)</span>
-<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
+<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted SER: </span><span class="si">{</span><span class="n">ser_manual_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Manual calculation of Unweighted SER</span>
 <span class="c1"># Formula: sqrt(sum of squared unweighted residuals / degrees of freedom)</span>
-<span class="n">ser_manual_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
+<span class="n">ser_manual_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted_manual</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Unweighted SER: </span><span class="si">{</span><span class="n">ser_manual_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1032,13 +1068,13 @@ Manual Unweighted mse_total: 16.6355
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unbiased Scale (statsmodels results.scale): </span><span class="si">{</span><span class="n">unbiased_scale_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">rss_weighted_sm</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">ssr</span> <span class="c1"># Weighted Sum of Squared Residuals</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Sum of Squared Residuals (statsmodels results.ssr): </span><span class="si">{</span><span class="n">rss_weighted_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">unbiased_scale_sm_rss</span> <span class="o">=</span> <span class="n">rss_weighted_sm</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="n">unbiased_scale_sm_rss</span> <span class="o">=</span> <span class="n">rss_weighted_sm</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unbiased Scale (weighted RSS / degrees of freedom): </span><span class="si">{</span><span class="n">unbiased_scale_sm_rss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1400,8 +1436,8 @@ Manual AICc (Corrected Akaike Information Criterion): 6.3004
 Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
-Date:                Fri, 15 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        02:15:39   Log-Likelihood:                -1.0822
+Date:                Sat, 16 Aug 2025   Prob (F-statistic):           4.59e-08
+Time:                        03:48:30   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -1430,11 +1466,11 @@ Notes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">nobs</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">nobs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">nobs</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">condition_number</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">condition_number</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition Number: </span><span class="si">{</span><span class="n">condition_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1445,6 +1481,57 @@ Notes:
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Degrees of Freedom: 6.0
 Number of Observations: 8.0
 Condition Number: 11.478428240732693
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>T-value for Intercept: 1.3612466734221584
+T-value for Slope: 33.64621914609759
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept: 0.22233728808292874
+P-value for Slope: 4.588381846337238e-08
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_value_intercept_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept (SciPy): </span><span class="si">{</span><span class="n">p_value_intercept_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">p_value_slope_scipy</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># two-tailed p-value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope (SciPy): </span><span class="si">{</span><span class="n">p_value_slope_scipy</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P-value for Intercept (SciPy): 0.22233728808292874
+P-value for Slope (SciPy): 4.588381846337238e-08
 </pre></div>
 </div>
 </div>
@@ -1669,7 +1756,7 @@ Manual Unweighted R-squared alternative formula (ESS/TSS): 0.994728
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared: </span><span class="si">{</span><span class="n">chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Reduced Chi-Squared</span>
-<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared: </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1715,29 +1802,6 @@ Manual Weighted RMSE: 0.2770
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Standard Error of the Regression (SER) ---</span>
-
-<span class="c1"># 1) Calculate weighted SER manually</span>
-<span class="c1"># Formula: sqrt(RSS_weighted / dof)</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manual Weighted SER: </span><span class="si">{</span><span class="n">ser_manual_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Compare with statsmodels SER calculation</span>
-<span class="n">ser_sm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">ssr</span> <span class="o">/</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Statsmodels SER (results.ssr / results.df_resid): </span><span class="si">{</span><span class="n">ser_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Manual Weighted SER: 0.6398
-Statsmodels SER (results.ssr / results.df_resid): 0.6398
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Standard Error of the Regression (SER) Calculations ---</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Standard Error of the Regression (SER) ---&quot;</span><span class="p">)</span>
 
@@ -1749,12 +1813,12 @@ Statsmodels SER (results.ssr / results.df_resid): 0.6398
 <span class="c1"># Manual calculation of Weighted SER</span>
 <span class="c1"># This should match the value from statsmodels</span>
 <span class="c1"># Formula: sqrt(sum of squared weighted residuals / degrees of freedom)</span>
-<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
+<span class="n">ser_manual_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted_manual</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted SER: </span><span class="si">{</span><span class="n">ser_manual_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Manual calculation of Unweighted SER</span>
 <span class="c1"># Formula: sqrt(sum of squared unweighted residuals / degrees of freedom)</span>
-<span class="n">ser_manual_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted_manual</span> <span class="o">/</span> <span class="n">dof</span><span class="p">)</span>
+<span class="n">ser_manual_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted_manual</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Unweighted SER: </span><span class="si">{</span><span class="n">ser_manual_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1833,13 +1897,13 @@ Manual Unweighted mse_total: 16.6355
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unbiased Scale (statsmodels results.scale): </span><span class="si">{</span><span class="n">unbiased_scale_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Degrees of Freedom</span>
-<span class="n">dof</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">df_resid</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom: </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">rss_weighted_sm</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">ssr</span> <span class="c1"># Weighted Sum of Squared Residuals</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Sum of Squared Residuals (statsmodels results.ssr): </span><span class="si">{</span><span class="n">rss_weighted_sm</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">unbiased_scale_sm_rss</span> <span class="o">=</span> <span class="n">rss_weighted_sm</span> <span class="o">/</span> <span class="n">dof</span>
+<span class="n">unbiased_scale_sm_rss</span> <span class="o">=</span> <span class="n">rss_weighted_sm</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unbiased Scale (weighted RSS / degrees of freedom): </span><span class="si">{</span><span class="n">unbiased_scale_sm_rss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1977,6 +2041,767 @@ Manual AICc (Corrected Akaike Information Criterion): 8.5645
 </div>
 </section>
 </section>
+<section id="example-3">
+<h2>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h2>
+<p>We will model the same case but using <code class="docutils literal notranslate"><span class="pre">scipy</span></code> library and <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> method from that library. The <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values are the same as in Example 1:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample data from a hypothetical physics experiment</span>
+<span class="c1"># x represents an independent variable</span>
+<span class="c1"># y_obs represents the observed dependent variable</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mf">5.1</span><span class="p">,</span> <span class="mf">6.9</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">,</span> <span class="mf">11.8</span><span class="p">,</span> <span class="mf">14.1</span><span class="p">])</span>
+
+<span class="c1"># Standard deviation for each data point</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="c1"># The weights for WLS are the inverse of the variance (1 / sigma^2)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the linear model function for curve_fit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">b1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="absolute-sigma-parameter">
+<h3>Absolute sigma parameter<a class="headerlink" href="#absolute-sigma-parameter" title="Link to this heading">#</a></h3>
+<p>Note, that <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> provides the same result for standard errors as <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> approach in a case if <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code>. However, if <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code>, the estimated values of intercept <span class="math notranslate nohighlight">\(\beta_0\)</span> and slope <span class="math notranslate nohighlight">\(\beta_1\)</span> do not change, but standard errors become different. This is because if <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code>, then <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> considers <code class="docutils literal notranslate"><span class="pre">sigma</span></code> not just for calculating the weights; it considers <code class="docutils literal notranslate"><span class="pre">sigma</span></code> as standard deviations of measurements that should not be reestimated again.</p>
+<p>below, we will proceed with both cases to compare the results between both options and between <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> and <code class="docutils literal notranslate"><span class="pre">scipy</span></code> in general.</p>
+</section>
+<section id="absolute-sigma-false">
+<h3><code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code><a class="headerlink" href="#absolute-sigma-false" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Fit the model using scipy.optimize.curve_fit ---</span>
+<span class="c1"># popt: Optimal values for the parameters (b0, b1)</span>
+<span class="c1"># pcov: The estimated covariance matrix of popt</span>
+<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Standard errors are the sqrt of the diagonal of the covariance matrix</span>
+<span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
+<span class="n">std_err_intercept</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">std_err_slope</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Extract the fitted parameters (intercept and slope)</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">popt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Fitted Parameters ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intercept (beta_0): </span><span class="si">{</span><span class="n">intercept</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_intercept</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slope (beta_1): </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_slope</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Intercept (beta_0): 0.6375 +/- 0.1255
+Slope (beta_1): 1.5857 +/- 0.0417
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check condition number of the covariance matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition number of the covariance matrix: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">pcov</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Condition number of the covariance matrix: 28.17
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Calculate Model Predictions and Residuals ---</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+<span class="n">residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
+<span class="n">weighted_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span> <span class="c1"># same as residuals * sqrt(weights)</span>
+
+<span class="c1"># --- Basic Fit Information ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Basic Fit Information ---&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Number of observations</span>
+<span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span> <span class="c1"># Number of parameters (intercept, slope)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="c1"># Degrees of Freedom</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Parameters (p): </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom (degrees_of_freedom): </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Basic Fit Information ---
+Number of Observations (n): 8
+Number of Parameters (p): 2
+Degrees of Freedom (degrees_of_freedom): 6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Hypothesis Testing: t-values and p-values ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Hypothesis Testing ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate t-values</span>
+<span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">/</span> <span class="n">std_err_intercept</span>
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">/</span> <span class="n">std_err_slope</span>
+
+<span class="c1"># Calculate two-tailed p-values</span>
+<span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error for Intercept: </span><span class="si">{</span><span class="n">std_err_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error for Slope: </span><span class="si">{</span><span class="n">std_err_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Hypothesis Testing ---
+Standard Error for Intercept: 0.125542
+T-value for Intercept: 5.078178
+P-value for Intercept: 0.002270
+Standard Error for Slope: 0.041745
+T-value for Slope: 37.985584
+P-value for Slope: 0.000000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Sum of Squares Calculations ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Sum of Squares (SS) ---&quot;</span><span class="p">)</span>
+<span class="c1"># Residual Sum of Squares (RSS)</span>
+<span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">rss_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># This is also the Chi-Squared value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Residual Sum of Squares (Weighted RSS): </span><span class="si">{</span><span class="n">rss_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">rss_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Total Sum of Squares (TSS)</span>
+<span class="n">weighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">unweighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_obs</span><span class="p">)</span>
+<span class="n">weighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">weighted_centered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">unweighted_centered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Uncentered Total Sum of Squares (TSS)</span>
+<span class="n">weighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">unweighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">weighted_uncentered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">unweighted_uncentered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Explained Sum of Squares (ESS)</span>
+<span class="n">ess_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ess_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">ess_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">ess_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Sum of Squares (SS) ---
+
+Weighted Residual Sum of Squares (Weighted RSS): 1.8848
+Unweighted Residual Sum of Squares (RSS): 0.8626
+
+Weighted Centered Total Sum of Squares (TSS): 455.1540
+Unweighted Centered Total Sum of Squares (TSS): 116.4488
+
+Weighted Uncentered Total Sum of Squares (TSS): 1511.9919
+Unweighted Uncentered Total Sum of Squares (TSS): 604.7300
+
+Weighted Explained Sum of Squares (ESS): 453.2692
+Unweighted Explained Sum of Squares (ESS): 105.6192
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Goodness-of-Fit Metrics ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Goodness-of-Fit ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># R-squared</span>
+<span class="n">r_squared_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">weighted_centered_tss</span>
+<span class="n">r_squared_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">unweighted_centered_tss</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted R-squared: </span><span class="si">{</span><span class="n">r_squared_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted R-squared: </span><span class="si">{</span><span class="n">r_squared_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Adjusted R-squared</span>
+<span class="n">r_squared_adj_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_weighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+<span class="n">r_squared_adj_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_unweighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Adjusted R-squared: </span><span class="si">{</span><span class="n">r_squared_adj_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Adjusted R-squared: </span><span class="si">{</span><span class="n">r_squared_adj_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Chi-Squared and Reduced Chi-Squared</span>
+<span class="n">chi_squared</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="c1"># By definition</span>
+<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Chi-Squared: </span><span class="si">{</span><span class="n">chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Goodness-of-Fit ---
+
+Weighted R-squared: 0.9959
+Unweighted R-squared: 0.9926
+
+Weighted Adjusted R-squared: 0.9952
+Unweighted Adjusted R-squared: 0.9914
+
+Chi-Squared: 1.8848
+Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 0.3141
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Error Metrics ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Error Metrics ---&quot;</span><span class="p">)</span>
+<span class="c1"># Root Mean Squared Error (RMSE)</span>
+<span class="n">rmse_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">rmse_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unweighted RMSE: </span><span class="si">{</span><span class="n">rmse_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted RMSE: </span><span class="si">{</span><span class="n">rmse_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Standard Error of the Regression (SER)</span>
+<span class="n">ser_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
+<span class="n">ser_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="c1"># Same as sqrt of reduced_chi_squared</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unweighted SER: </span><span class="si">{</span><span class="n">ser_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted SER: </span><span class="si">{</span><span class="n">ser_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Mean Squared Errors (MSE) ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Mean Squared Errors (MSE) ---&quot;</span><span class="p">)</span>
+<span class="n">mse_model_weighted</span> <span class="o">=</span> <span class="n">ess_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">mse_resid_weighted</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="c1"># Same as reduced chi-squared</span>
+<span class="n">mse_total_weighted</span> <span class="o">=</span> <span class="n">weighted_centered_tss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manual Weighted Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_model_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Residual MSE: </span><span class="si">{</span><span class="n">mse_resid_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Total MSE: </span><span class="si">{</span><span class="n">mse_total_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Error Metrics ---
+
+Unweighted RMSE: 0.3284
+Weighted RMSE: 0.1869
+
+Unweighted SER: 0.3792
+Weighted SER: 0.5605
+
+--- Mean Squared Errors (MSE) ---
+
+Manual Weighted Mean Squared Error (MSE): 453.2692
+Manual Weighted Residual MSE: 0.3141
+Manual Weighted Total MSE: 65.0220
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Log-Likelihood &amp; Information Criteria ---&quot;</span><span class="p">)</span>
+<span class="c1"># Since absolute_sigma=False, we assume sigma is not known, but the weights are known.</span>
+
+<span class="c1"># First, calculate the Maximum Likelihood Estimate for the scale/variance parameter</span>
+<span class="n">mle_variance</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">n</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLE for variance (RSS_weighted / n): </span><span class="si">{</span><span class="n">mle_variance</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mle_variance</span><span class="p">)</span>
+<span class="n">term3</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Information Criteria</span>
+<span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC (Akaike Information Criterion): </span><span class="si">{</span><span class="n">aic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">bic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Log-Likelihood &amp; Information Criteria ---
+MLE for variance (RSS_weighted / n): 0.2356
+Maximum Log-Likelihood: 0.0498
+AIC (Akaike Information Criterion): 3.9004
+BIC (Bayesian Information Criterion): 4.0593
+AICc (Corrected AIC): 6.3004
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Generate and display plots ---</span>
+<span class="c1"># Create a matrix X for manual calculation of intervals</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># --- Calculate Confidence and Prediction Intervals Manually ---</span>
+<span class="c1"># Critical t-value for 95% confidence</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">t_crit</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span>
+
+<span class="c1"># 1. Confidence Interval for the mean response</span>
+<span class="c1"># SE(y_hat) = sqrt(diag(X @ pcov @ X.T))</span>
+<span class="n">se_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">pcov</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="n">ci_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+<span class="n">ci_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+
+<span class="c1"># 2. Prediction Interval for a new observation</span>
+<span class="c1"># PI = y_hat +/- t * sqrt(sigma_i^2 + SE(y_hat)^2)</span>
+<span class="c1"># Here sigma_i is the std dev of the individual point</span>
+<span class="n">se_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">se_mean</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pi_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+<span class="n">pi_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+
+<span class="c1"># --- Plotting ---</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WLS Regression Analysis with SciPy&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># Plot 1: WLS Fit with Confidence and Prediction Intervals</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data with Error Bars&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;WLS Fit&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_lower</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Confidence Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_upper</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_lower</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Prediction Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_upper</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Dependent Variable (y)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;WLS Fit with Confidence and Prediction Intervals&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 2: Residuals Plot</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Residuals (y_obs - y_pred)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 3: Weighted Residuals Plot</span>
+<span class="c1"># The error on the weighted residuals is 1.0 because they are normalized by sigma.</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weighted_residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted (Standardized) Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" src="../../_images/2325422324dd3ac63542cee5ebd9ba9d1b6bdc9bf6393154bd4b227bbab19d22.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The 95% prediction interval looks different on these graphs compared to the results from the <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>. The higher <span class="math notranslate nohighlight">\(x\)</span> variable value, the higher width of the 95% prediction interval in our last graph. This is not the same as for <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> case.</p>
+<p>The topic of prediction intervals is not considered here but probably these details will be added later.</p>
+<p>What you can do for now:</p>
+<ul class="simple">
+<li><p>Try to open this whole code in Google Colab using the appropriate icon in the Action pane of this page</p></li>
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array to the following <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">np.array([0.2,</span> <span class="pre">0.3,</span> <span class="pre">0.4,</span> <span class="pre">0.9,</span> <span class="pre">0.9,</span> <span class="pre">0.4,</span> <span class="pre">0.5,</span> <span class="pre">0.4])</span></code> and see how it will impact prediction interval on the graph.</p></li>
+</ul>
+</div>
+</section>
+<section id="absolute-sigma-true">
+<h3><code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code><a class="headerlink" href="#absolute-sigma-true" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Fit the model using scipy.optimize.curve_fit ---</span>
+<span class="c1"># popt: Optimal values for the parameters (b0, b1)</span>
+<span class="c1"># pcov: The estimated covariance matrix of popt</span>
+<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">linear_func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Standard errors are the sqrt of the diagonal of the covariance matrix</span>
+<span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
+<span class="n">std_err_intercept</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">std_err_slope</span> <span class="o">=</span> <span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Extract the fitted parameters (intercept and slope)</span>
+<span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span> <span class="o">=</span> <span class="n">popt</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Fitted Parameters ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intercept (beta_0): </span><span class="si">{</span><span class="n">intercept</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_intercept</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Slope (beta_1): </span><span class="si">{</span><span class="n">slope</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std_err_slope</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Intercept (beta_0): 0.6375 +/- 0.2240
+Slope (beta_1): 1.5857 +/- 0.0745
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check condition number of the covariance matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition number of the covariance matrix: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">pcov</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Condition number of the covariance matrix: 28.17
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Calculate Model Predictions and Residuals ---</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">linear_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+<span class="n">residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
+<span class="n">weighted_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span> <span class="c1"># same as residuals * sqrt(weights)</span>
+
+<span class="c1"># --- Basic Fit Information ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Basic Fit Information ---&quot;</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1"># Number of observations</span>
+<span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span> <span class="c1"># Number of parameters (intercept, slope)</span>
+<span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="c1"># Degrees of Freedom</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Parameters (p): </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom (degrees_of_freedom): </span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Basic Fit Information ---
+Number of Observations (n): 8
+Number of Parameters (p): 2
+Degrees of Freedom (degrees_of_freedom): 6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Hypothesis Testing: t-values and p-values ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Hypothesis Testing ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate t-values</span>
+<span class="n">t_value_intercept</span> <span class="o">=</span> <span class="n">intercept</span> <span class="o">/</span> <span class="n">std_err_intercept</span>
+<span class="n">t_value_slope</span> <span class="o">=</span> <span class="n">slope</span> <span class="o">/</span> <span class="n">std_err_slope</span>
+
+<span class="c1"># Calculate two-tailed p-values</span>
+<span class="n">p_value_intercept</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_intercept</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">p_value_slope</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_value_slope</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error for Intercept: </span><span class="si">{</span><span class="n">std_err_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Intercept: </span><span class="si">{</span><span class="n">t_value_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Intercept: </span><span class="si">{</span><span class="n">p_value_intercept</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Error for Slope: </span><span class="si">{</span><span class="n">std_err_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;T-value for Slope: </span><span class="si">{</span><span class="n">t_value_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P-value for Slope: </span><span class="si">{</span><span class="n">p_value_slope</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Hypothesis Testing ---
+Standard Error for Intercept: 0.223991
+T-value for Intercept: 2.846212
+P-value for Intercept: 0.029327
+Standard Error for Slope: 0.074481
+T-value for Slope: 21.290119
+P-value for Slope: 0.000001
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Sum of Squares Calculations ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Sum of Squares (SS) ---&quot;</span><span class="p">)</span>
+<span class="c1"># Residual Sum of Squares (RSS)</span>
+<span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">rss_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># This is also the Chi-Squared value</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Residual Sum of Squares (Weighted RSS): </span><span class="si">{</span><span class="n">rss_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">rss_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Total Sum of Squares (TSS)</span>
+<span class="n">weighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">unweighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_obs</span><span class="p">)</span>
+<span class="n">weighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">weighted_centered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">unweighted_centered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Uncentered Total Sum of Squares (TSS)</span>
+<span class="n">weighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">unweighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">weighted_uncentered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">unweighted_uncentered_tss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Explained Sum of Squares (ESS)</span>
+<span class="n">ess_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ess_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">ess_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">ess_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Sum of Squares (SS) ---
+
+Weighted Residual Sum of Squares (Weighted RSS): 1.8848
+Unweighted Residual Sum of Squares (RSS): 0.8626
+
+Weighted Centered Total Sum of Squares (TSS): 455.1540
+Unweighted Centered Total Sum of Squares (TSS): 116.4488
+
+Weighted Uncentered Total Sum of Squares (TSS): 1511.9919
+Unweighted Uncentered Total Sum of Squares (TSS): 604.7300
+
+Weighted Explained Sum of Squares (ESS): 453.2692
+Unweighted Explained Sum of Squares (ESS): 105.6192
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Goodness-of-Fit Metrics ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Goodness-of-Fit ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># R-squared</span>
+<span class="n">r_squared_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">weighted_centered_tss</span>
+<span class="n">r_squared_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">unweighted_centered_tss</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted R-squared: </span><span class="si">{</span><span class="n">r_squared_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted R-squared: </span><span class="si">{</span><span class="n">r_squared_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Adjusted R-squared</span>
+<span class="n">r_squared_adj_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_weighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+<span class="n">r_squared_adj_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_unweighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Weighted Adjusted R-squared: </span><span class="si">{</span><span class="n">r_squared_adj_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Adjusted R-squared: </span><span class="si">{</span><span class="n">r_squared_adj_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Chi-Squared and Reduced Chi-Squared</span>
+<span class="n">chi_squared</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="c1"># By definition</span>
+<span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Chi-Squared: </span><span class="si">{</span><span class="n">chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): </span><span class="si">{</span><span class="n">reduced_chi_squared</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Goodness-of-Fit ---
+
+Weighted R-squared: 0.9959
+Unweighted R-squared: 0.9926
+
+Weighted Adjusted R-squared: 0.9952
+Unweighted Adjusted R-squared: 0.9914
+
+Chi-Squared: 1.8848
+Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 0.3141
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Error Metrics ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Error Metrics ---&quot;</span><span class="p">)</span>
+<span class="c1"># Root Mean Squared Error (RMSE)</span>
+<span class="n">rmse_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">rmse_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unweighted RMSE: </span><span class="si">{</span><span class="n">rmse_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted RMSE: </span><span class="si">{</span><span class="n">rmse_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Standard Error of the Regression (SER)</span>
+<span class="n">ser_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
+<span class="n">ser_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="c1"># Same as sqrt of reduced_chi_squared</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Unweighted SER: </span><span class="si">{</span><span class="n">ser_unweighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted SER: </span><span class="si">{</span><span class="n">ser_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># --- Mean Squared Errors (MSE) ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Mean Squared Errors (MSE) ---&quot;</span><span class="p">)</span>
+<span class="n">mse_model_weighted</span> <span class="o">=</span> <span class="n">ess_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">mse_resid_weighted</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span> <span class="c1"># Same as reduced chi-squared</span>
+<span class="n">mse_total_weighted</span> <span class="o">=</span> <span class="n">weighted_centered_tss</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Manual Weighted Mean Squared Error (MSE): </span><span class="si">{</span><span class="n">mse_model_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Residual MSE: </span><span class="si">{</span><span class="n">mse_resid_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Manual Weighted Total MSE: </span><span class="si">{</span><span class="n">mse_total_weighted</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Error Metrics ---
+
+Unweighted RMSE: 0.3284
+Weighted RMSE: 0.1869
+
+Unweighted SER: 0.3792
+Weighted SER: 0.5605
+
+--- Mean Squared Errors (MSE) ---
+
+Manual Weighted Mean Squared Error (MSE): 453.2692
+Manual Weighted Residual MSE: 0.3141
+Manual Weighted Total MSE: 65.0220
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>Log-Likelihood<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>In this case, standard deviations <span class="math notranslate nohighlight">\(sigma_i\)</span> are known, so we do not need to calculate Maximum Likelihood Estimate (MLE) for the variance.</p>
+<p>We can use standard formula from <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \ln\left(\sqrt{2\pi\sigma_i^2}\right) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+<p>Let’s simplify it a bit:</p>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \ln\left(\sqrt{2\pi\sigma_i^2}\right) - \frac{1}{2} RSS_w\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \ln\left(\sqrt{2\pi} \sigma_i \right) - \frac{1}{2} RSS_w\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \left( \ln\left(\sqrt{2\pi} \right) + \ln\left(\sigma_i \right) \right) - \frac{1}{2} RSS_w\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \sum_{i=1}^{n} \ln\left(\sqrt{2\pi} \right) - \sum_{i=1}^{n} \ln\left(\sigma_i \right) - \frac{1}{2} RSS_w\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - n \ln\left(\sqrt{2\pi} \right) - \sum_{i=1}^{n} \ln\left(\sigma_i \right) - \frac{1}{2} RSS_w\]</div>
+<div class="math notranslate nohighlight">
+\[\ln(L) = - \frac{n}{2} \ln\left(2\pi \right) - \sum_{i=1}^{n} \ln\left(\sigma_i \right) - \frac{1}{2} RSS_w\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Log-Likelihood &amp; Information Criteria ---&quot;</span><span class="p">)</span>
+<span class="c1"># Since absolute_sigma=True, we assume sigma is known.</span>
+<span class="c1"># The log-likelihood formula for a Gaussian distribution with known sigma is:</span>
+<span class="c1"># L = -n/2*log(2*pi) - sum(log(sigma_i)) - 1/2 * sum(((y_i - y_pred_i)/sigma_i)^2)</span>
+<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+<span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
+<span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Information Criteria</span>
+<span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC (Akaike Information Criterion): </span><span class="si">{</span><span class="n">aic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">bic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Log-Likelihood &amp; Information Criteria ---
+Maximum Log-Likelihood: -2.6751
+AIC (Akaike Information Criterion): 9.3501
+BIC (Bayesian Information Criterion): 9.5090
+AICc (Corrected AIC): 11.7501
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Generate and display plots ---</span>
+<span class="c1"># Create a matrix X for manual calculation of intervals</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># --- Calculate Confidence and Prediction Intervals Manually ---</span>
+<span class="c1"># Critical t-value for 95% confidence</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">t_crit</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span>
+
+<span class="c1"># 1. Confidence Interval for the mean response</span>
+<span class="c1"># SE(y_hat) = sqrt(diag(X @ pcov @ X.T))</span>
+<span class="n">se_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">pcov</span> <span class="o">@</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+<span class="n">ci_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+<span class="n">ci_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_mean</span>
+
+<span class="c1"># 2. Prediction Interval for a new observation</span>
+<span class="c1"># PI = y_hat +/- t * sqrt(sigma_i^2 + SE(y_hat)^2)</span>
+<span class="c1"># Here sigma_i is the std dev of the individual point</span>
+<span class="n">se_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">se_mean</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pi_lower</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">-</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+<span class="n">pi_upper</span> <span class="o">=</span> <span class="n">y_pred</span> <span class="o">+</span> <span class="n">t_crit</span> <span class="o">*</span> <span class="n">se_pred</span>
+
+<span class="c1"># --- Plotting ---</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">ax3</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WLS Regression Analysis with SciPy&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># Plot 1: WLS Fit with Confidence and Prediction Intervals</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Data with Error Bars&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;WLS Fit&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_lower</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Confidence Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ci_upper</span><span class="p">,</span> <span class="s1">&#39;g--&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_lower</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;95% Prediction Interval&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pi_upper</span><span class="p">,</span> <span class="s1">&#39;y:&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Dependent Variable (y)&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;WLS Fit with Confidence and Prediction Intervals&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 2: Residuals Plot</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Residuals (y_obs - y_pred)&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Plot 3: Weighted Residuals Plot</span>
+<span class="c1"># The error on the weighted residuals is 1.0 because they are normalized by sigma.</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weighted_residuals</span><span class="p">,</span> <span class="n">yerr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">capsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Independent Variable (x)&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Weighted Residuals&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Weighted (Standardized) Residuals of the WLS Fit&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" src="../../_images/b6dad0884a98993e3b8a3a6153d4f438a0809b739080922560949cf899088c84.png" />
+</div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2060,6 +2885,13 @@ Manual AICc (Corrected Akaike Information Criterion): 8.5645
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Output Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-parameter">Absolute sigma parameter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-false"><code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#absolute-sigma-true"><code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Log-Likelihood</a></li>
 </ul>
 </li>
 </ul>
