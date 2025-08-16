@@ -503,16 +503,16 @@ document.write(`
 <ul>
 <li><p><strong>Degrees of Freedom (<span class="math notranslate nohighlight">\(\nu\)</span>):</strong> This is defined as the number of data points minus the number of parameters you are fitting.</p>
 <div class="math notranslate nohighlight">
-\[\nu = N - P\]</div>
+\[\nu = n - p\]</div>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(N\)</span>: Number of data points.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P\)</span>: Number of parameters in your model.
-The degrees of freedom represent the number of independent pieces of information available to test the goodness of fit after the model parameters have been determined.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: Number of data points.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span>: Number of estimated parameters in the model.</p></li>
 </ul>
+<p>The degrees of freedom represent the number of independent pieces of information available to test the goodness of fit after the model parameters have been determined.</p>
 </li>
 <li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> To get a normalized measure that is easier to interpret, we divide <span class="math notranslate nohighlight">\(\chi^2\)</span> by the degrees of freedom.</p>
 <div class="math notranslate nohighlight">
-\[\chi^2_{red} = \frac{\chi^2}{\nu}\]</div>
+\[\chi^2_{red} = \frac{\chi^2}{\nu} = \frac{\chi^2}{n - p}\]</div>
 </li>
 </ul>
 <p>The interpretation of the reduced chi-squared value is intuitive and powerful:</p>
