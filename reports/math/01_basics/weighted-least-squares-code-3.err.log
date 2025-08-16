@@ -1,0 +1,79 @@
+Traceback (most recent call last):
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\Vladyslav\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# 4. Plotting the results
+plt.figure(figsize=(8, 6))
+
+for i, res in enumerate(results):
+    plt.subplot(len(results), 1, i + 1)
+    plt.scatter(res["x_data"], res["y_data"], label="Original Data", color='blue', s=50)
+
+    if "y_predicted" in res:
+        x_plot = np.linspace(min(res["x_data"]), max(res["x_data"]), 500)
+        y_plot = custom_function(x_plot, res["A_fit"], res["B_fit"])
+        plt.plot(x_plot, y_plot, color='red', label=f"Fitted Curve\nA={res['A_fit']:.2f}±{res['A_err']:.2f}\nB={res['B_fit']:.4f}±{res['B_err']:.4f}")
+
+        if not np.isnan(res['adjusted_r_squared']):
+            plt.title(f"R²={res['r_squared']:.3f}, Adj. R²={res['adjusted_r_squared']:.3f}\nRMSE={res['rmse']:.2f}, $\\chi^2={res['chi_squared']:.4f}$, $\\chi^2_{{red}}={res['reduced_chi_squared']:.4f}$")
+        else:
+            plt.title(f"R²={res['r_squared']:.3f}, RMSE={res['rmse']:.2f}\nAdj. R²: N/A")
+    else:
+        plt.title(f"Fit (Error)")
+        plt.text(0.5, 0.5, f"Error: {res['error']}", horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes, color='red')
+
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.legend()
+    plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mTypeError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[16][39m[32m, line 6[39m
+[32m      4[39m [38;5;28;01mfor[39;00m i, res [38;5;129;01min[39;00m [38;5;28menumerate[39m(results):
+[32m      5[39m     plt.subplot([38;5;28mlen[39m(results), [32m1[39m, i + [32m1[39m)
+[32m----> [39m[32m6[39m     plt.scatter([43mres[49m[43m[[49m[33;43m"[39;49m[33;43mx_data[39;49m[33;43m"[39;49m[43m][49m, res[[33m"[39m[33my_data[39m[33m"[39m], label=[33m"[39m[33mOriginal Data[39m[33m"[39m, color=[33m'[39m[33mblue[39m[33m'[39m, s=[32m50[39m)
+[32m      8[39m     [38;5;28;01mif[39;00m [33m"[39m[33my_predicted[39m[33m"[39m [38;5;129;01min[39;00m res:
+[32m      9[39m         x_plot = np.linspace([38;5;28mmin[39m(res[[33m"[39m[33mx_data[39m[33m"[39m]), [38;5;28mmax[39m(res[[33m"[39m[33mx_data[39m[33m"[39m]), [32m500[39m)
+
+[31mTypeError[39m: string indices must be integers, not 'str'
+
