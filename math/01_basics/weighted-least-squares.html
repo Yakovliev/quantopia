@@ -520,7 +520,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <li><p><strong>Weight Calculation:</strong> For each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> with associated standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>, a weight <span class="math notranslate nohighlight">\(w_i\)</span> is calculated as the inverse of the variance: <span class="math notranslate nohighlight">\(w_i = \frac{1}{\sigma_i^2}\)</span>.</p></li>
 <li><p><strong>Minimization Objective:</strong> The Levenberg-Marquardt algorithm (the default for <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code>) then seeks to minimize the <strong>weighted residual sum of squares (WRSS)</strong>:</p>
 <div class="math notranslate nohighlight">
-\[RSS_w = \sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+\[RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 <p>where <span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS, <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the model’s predicted value and <span class="math notranslate nohighlight">\(\beta\)</span> represents the model parameters.</p>
 </li>
 <li><p><strong>Impact of Weights:</strong> Measurements with smaller <span class="math notranslate nohighlight">\(\sigma_i\)</span> (higher precision) receive larger weights (<span class="math notranslate nohighlight">\(w_i\)</span>), thus exerting a greater influence on the determination of the fitted parameters. Conversely, measurements with larger <span class="math notranslate nohighlight">\(\sigma_i\)</span> (lower precision) receive smaller weights, having less impact on the fit. This ensures that the fitting process prioritizes minimizing deviations for the more reliable data points.</p></li>
@@ -537,7 +537,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <ol class="arabic">
 <li><p><strong>WLS Objective:</strong> WLS minimizes the weighted sum of squared residuals:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2\]</div>
 <p>where the weight <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>.</p>
 </li>
 <li><p><strong>When Homoscedasticity is Satisfied:</strong> If every data point has the same standard deviation, let’s call it <span class="math notranslate nohighlight">\(\sigma_{const}\)</span>. Then, for all <span class="math notranslate nohighlight">\(i\)</span>, we have <span class="math notranslate nohighlight">\(\sigma_i = \sigma_{const}\)</span>. This means all the weights are also the same:</p>
@@ -547,10 +547,10 @@ The weights are typically inversely proportional to the variance of the errors f
 </li>
 <li><p><strong>Mathematical Equivalence:</strong> The WLS minimization objective then becomes:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} C (y_i - f(x_i, \beta))^2 = C \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} C (y_i - f(x_i, \beta))^2 = C \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
 <p>Since <span class="math notranslate nohighlight">\(C\)</span> is just a positive constant, minimizing this expression is mathematically identical to minimizing the expression without the constant:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+\[\sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
 <p>This is exactly the objective of <strong>Ordinary Least Squares (OLS)</strong>.</p>
 </li>
 </ol>
@@ -613,7 +613,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <p>The objective of any “least squares” method is to find the model parameters that minimize the sum of the squared residuals. In Weighted Least Squares (WLS), this objective function is the <strong>Weighted Residual Sum of Squares (WRSS)</strong>. A small WRSS indicates a tight fit of the model to the data.</p>
 <p>The formula for the WRSS is:</p>
 <div class="math notranslate nohighlight">
-\[ RSS_w = \sum_{i=1}^{N} w_i (y_i - f(x_i, \beta))^2 \]</div>
+\[ RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 \]</div>
 <p>where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS.</p></li>
@@ -627,8 +627,8 @@ The weights are typically inversely proportional to the variance of the errors f
 <h3>The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic<a class="headerlink" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic" title="Link to this heading">#</a></h3>
 <p>In the context of curve fitting where meaningful, known uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) are provided for each data point, the WRSS takes on a profound statistical meaning. In this case, the WRSS value is identical to the <strong>chi-squared statistic <span class="math notranslate nohighlight">\(\chi^2\)</span></strong>.</p>
 <div class="math notranslate nohighlight">
-\[ \chi^2 = \sum_{i=1}^{N} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{N} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = RSS_w \]</div>
-<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> stasitics see <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>.</p>
+\[ \chi^2 = \sum_{i=1}^{n} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = RSS_w \]</div>
+<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics see <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>.</p>
 </section>
 </section>
 <section id="calculating-goodness-of-fit-metrics-with-wls">
@@ -643,17 +643,17 @@ The weights are typically inversely proportional to the variance of the errors f
 <ul>
 <li><p><strong>Centered TSS</strong>: Measures the total variation around the unweighted mean of the observed data.</p>
 <div class="math notranslate nohighlight">
-\[TSS = \sum_{i=1}^{N} (y_i - \bar{y})^2\]</div>
+\[TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[\bar{y} = \frac{1}{N}\sum_{i=1}^{N} y_i\]</div>
+\[\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\]</div>
 </li>
 <li><p><strong>Weighted Centered TSS</strong>: Measures the total variation around the weighted mean of the observed data, giving more influence to precise points.</p>
 <div class="math notranslate nohighlight">
-\[TSS_{w} = \sum_{i=1}^{N} w_i (y_i - \bar{y}_{w})^2\]</div>
+\[TSS_{w} = \sum_{i=1}^{n} w_i (y_i - \bar{y}_{w})^2\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
-\[\bar{y}_{w} = \frac{\sum_{i=1}^{N} w_i y_i}{\sum_{i=1}^{N} w_i}\]</div>
+\[\bar{y}_{w} = \frac{\sum_{i=1}^{n} w_i y_i}{\sum_{i=1}^{n} w_i}\]</div>
 </li>
 <li><p><strong>Unweighted/Weighted Uncentered TSS</strong>: These versions measure the total sum of squares around zero instead of the mean.</p>
 <ul class="simple">
@@ -670,11 +670,11 @@ The weights are typically inversely proportional to the variance of the errors f
 <ul>
 <li><p><strong>ESS</strong>: Measures the variation of the predicted values around the unweighted mean of the observed data.</p>
 <div class="math notranslate nohighlight">
-\[ESS = \sum_{i=1}^{N} (\hat{y}_i - \bar{y})^2\]</div>
+\[ESS = \sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2\]</div>
 </li>
 <li><p><strong>Weighted ESS</strong>: Measures the variation of the predicted values around the weighted mean, weighted by the precision of each point.</p>
 <div class="math notranslate nohighlight">
-\[ESS_{w} = \sum_{i=1}^{N} w_i (\hat{y}_i - \bar{y}_{w})^2\]</div>
+\[ESS_{w} = \sum_{i=1}^{n} w_i (\hat{y}_i - \bar{y}_{w})^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{y}_i = f(x_i, \beta)\)</span>.</p>
 </li>
 </ul>
@@ -710,10 +710,10 @@ The weights are typically inversely proportional to the variance of the errors f
 <ul>
 <li><p><strong>Root Mean Squared Error (RMSE)</strong>: Measures the average magnitude of the residuals. It is a very useful metric because it’s expressed in the same units as the response variable.</p>
 <div class="math notranslate nohighlight">
-\[RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{N} (y_i - \hat{y}_i)^2} = \sqrt{\frac{RSS}{n}}\]</div>
+\[RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2} = \sqrt{\frac{RSS}{n}}\]</div>
 <p>For the weighted version, the denominator becomes the sum of the weights, which is one of key differences:</p>
 <div class="math notranslate nohighlight">
-\[RMSE_{w} = \sqrt{\frac{\sum_{i=1}^{N} w_i (y_i - \hat{y}_i)^2}{\sum_{i=1}^{N} w_i}} = \sqrt{\frac{RSS_{w}}{\sum w_i}}\]</div>
+\[RMSE_{w} = \sqrt{\frac{\sum_{i=1}^{n} w_i (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} w_i}} = \sqrt{\frac{RSS_{w}}{\sum w_i}}\]</div>
 </li>
 <li><p><strong>Standard Error of the Regression (SER)</strong>: Also known as the residual standard deviation or residual standard error, it estimates the standard deviation of the error term.</p>
 <div class="math notranslate nohighlight">

@@ -476,11 +476,11 @@ document.write(`
 <p>A perfect fit would have all residuals equal to zero. However, in reality, measurements have uncertainty, and a perfect fit is impossible. Our goal is to find a single number that summarizes all these residuals to tell us if the overall fit is “good enough.”</p>
 <p>A simple approach to summarizing the residuals would be to just sum their squares, as in Ordinary Least Squares (OLS):</p>
 <div class="math notranslate nohighlight">
-\[\text{Sum of Squared Residuals (SSR)} = \sum_{i=1}^{N} e_i^2 = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
-<p>The problem with SSR is that it doesn’t account for the <strong>precision of the individual measurements</strong>. Imagine two different experiments:</p>
+\[\text{Residual Sum of Squares (RSS)} = \sum_{i=1}^{N} e_i^2 = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+<p>The problem with RSS is that it doesn’t account for the <strong>precision of the individual measurements</strong>. Imagine two different experiments:</p>
 <ul class="simple">
-<li><p><strong>Experiment A:</strong> Data points are very precise (low uncertainty). A small SSR might still represent a poor fit because the residuals are much larger than the measurement uncertainties.</p></li>
-<li><p><strong>Experiment B:</strong> Data points are very noisy (high uncertainty). A large SSR might be a perfectly good fit because the residuals are consistent with the large measurement uncertainties.</p></li>
+<li><p><strong>Experiment A:</strong> Data points are very precise (low uncertainty). A small RSS might still represent a poor fit because the residuals are much larger than the measurement uncertainties.</p></li>
+<li><p><strong>Experiment B:</strong> Data points are very noisy (high uncertainty). A large RSS might be a perfectly good fit because the residuals are consistent with the large measurement uncertainties.</p></li>
 </ul>
 <p>To create a goodness-of-fit metric that is meaningful regardless of the measurement units or precision, we need to <strong>normalize</strong> each residual by its own uncertainty. This is the key idea behind the <span class="math notranslate nohighlight">\(\chi^2\)</span> statistic.</p>
 <p><strong>The Derivation:</strong></p>
@@ -510,21 +510,21 @@ document.write(`
 The degrees of freedom represent the number of independent pieces of information available to test the goodness of fit after the model parameters have been determined.</p></li>
 </ul>
 </li>
-<li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>):</strong> To get a normalized measure that is easier to interpret, we divide <span class="math notranslate nohighlight">\(\chi^2\)</span> by the degrees of freedom.</p>
+<li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> To get a normalized measure that is easier to interpret, we divide <span class="math notranslate nohighlight">\(\chi^2\)</span> by the degrees of freedom.</p>
 <div class="math notranslate nohighlight">
-\[\chi^2_\nu = \frac{\chi^2}{\nu}\]</div>
+\[\chi^2_{red} = \frac{\chi^2}{\nu}\]</div>
 </li>
 </ul>
 <p>The interpretation of the reduced chi-squared value is intuitive and powerful:</p>
 <ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu \approx 1\)</span> (Ideal):</strong> This is the gold standard for a good fit. It means that the total squared deviation of the data from the model is, on average, about what you would expect given your known measurement uncertainties. The residuals are consistent with the random noise you’ve specified with your <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &gt; 1\)</span> (Poor Fit or Underestimated Errors):</strong> This indicates that the residuals are larger than what your uncertainties would predict. The model is a poor fit for the data. This could be because:</p>
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_{red} \approx 1\)</span> (Ideal):</strong> This is the gold standard for a good fit. It means that the total squared deviation of the data from the model is, on average, about what you would expect given your known measurement uncertainties. The residuals are consistent with the random noise you’ve specified with your <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_{red} &gt; 1\)</span> (Poor Fit or Underestimated Errors):</strong> This indicates that the residuals are larger than what your uncertainties would predict. The model is a poor fit for the data. This could be because:</p>
 <ol class="arabic simple">
 <li><p>The model function <code class="docutils literal notranslate"><span class="pre">f(x)</span></code> is simply incorrect and doesn’t describe the underlying physical process.</p></li>
 <li><p>Your measurement uncertainties (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>) were underestimated, and the data is actually more noisy than you assumed.</p></li>
 </ol>
 </li>
-<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &lt; 1\)</span> (“Too Good” Fit or Overestimated Errors):</strong> This suggests that the model fits the data <em>better</em> than would be expected by random chance alone. This could be a sign that:</p>
+<li><p><strong><span class="math notranslate nohighlight">\(\chi^2_{red} &lt; 1\)</span> (“Too Good” Fit or Overestimated Errors):</strong> This suggests that the model fits the data <em>better</em> than would be expected by random chance alone. This could be a sign that:</p>
 <ol class="arabic simple">
 <li><p>Your measurement uncertainties (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>) were overestimated.</p></li>
 <li><p>The model is over-fitting the data by matching the random noise instead of the underlying trend.</p></li>
@@ -545,17 +545,17 @@ The degrees of freedom represent the number of independent pieces of information
 <h3>How the Goodness of Fit is Calculated<a class="headerlink" href="#how-the-goodness-of-fit-is-calculated" title="Link to this heading">#</a></h3>
 <p>Even though the standard deviation is unknown, we can <strong>estimate</strong> it from the data itself after the fit is complete. The logic is as follows:</p>
 <ol class="arabic">
-<li><p><strong>Perform a standard OLS fit:</strong> The algorithm finds the parameters that minimize the plain old Sum of Squared Residuals (SSR):</p>
+<li><p><strong>Perform a standard OLS fit:</strong> The algorithm finds the parameters that minimize the plain old Residual Sum of Squares (RSS):</p>
 <div class="math notranslate nohighlight">
-\[\text{SSR} = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
+\[RSS = \sum_{i=1}^{N} (y_i - f(x_i, \beta))^2\]</div>
 </li>
-<li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the SSR by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-P\)</span>):</p>
+<li><p><strong>Estimate the Variance:</strong> The best estimate for the unknown variance, <span class="math notranslate nohighlight">\(\sigma_{unknown}^2\)</span>, is the average squared residual. This is known as the <strong>residual variance</strong> or <strong>Mean Squared Error (MSE)</strong>, and it’s calculated by dividing the RSS by the degrees of freedom (<span class="math notranslate nohighlight">\(\nu = N-P\)</span>):</p>
 <div class="math notranslate nohighlight">
-\[\hat{\sigma}^2_{unknown} = \frac{\text{SSR}}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-P}\]</div>
+\[\hat{\sigma}^2_{unknown} = \frac{RSS}{\nu} = \frac{\sum_{i=1}^{N} (y_i - f(x_i, \beta))^2}{N-P}\]</div>
 <p>This value, <span class="math notranslate nohighlight">\(\hat{\sigma}^2_{unknown}\)</span>, is a measure of the average scatter of your data points around the fitted curve.</p>
 </li>
-<li><p><strong>The Scaling Factor:</strong> The reduced chi-squared value is conceptually <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span>. When no <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the chi-squared value is technically calculated with <span class="math notranslate nohighlight">\(\sigma_i = 1\)</span> for all points. So, <span class="math notranslate nohighlight">\(\chi^2 = \text{SSR}\)</span>. Therefore, the reduced chi-squared is simply <span class="math notranslate nohighlight">\(\text{SSR}/\nu\)</span>. This value is used as the scaling factor for the covariance matrix. Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
-<p>More formally, the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> documentation states that when <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code>, the covariance matrix is scaled by a factor that demands the reduced chi-squared for the optimal parameters equals unity. This is equivalent to scaling the covariance matrix by <span class="math notranslate nohighlight">\(\text{SSR} / \nu\)</span>. Mathematically,</p>
+<li><p><strong>The Scaling Factor:</strong> The reduced chi-squared value is conceptually <span class="math notranslate nohighlight">\(\chi^2/\nu\)</span>. When no <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is provided, the chi-squared value is technically calculated with <span class="math notranslate nohighlight">\(\sigma_i = 1\)</span> for all points. So, <span class="math notranslate nohighlight">\(\chi^2 = RSS\)</span>. Therefore, the reduced chi-squared is simply <span class="math notranslate nohighlight">\(RSS/\nu\)</span>. This value is used as the scaling factor for the covariance matrix. Link: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
+<p>More formally, the <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> documentation states that when <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code>, the covariance matrix is scaled by a factor that demands the reduced chi-squared for the optimal parameters equals unity. This is equivalent to scaling the covariance matrix by <span class="math notranslate nohighlight">\(RSS / \nu\)</span>. Mathematically,</p>
 <p><code class="docutils literal notranslate"><span class="pre">pcov(absolute_sigma=False)</span> <span class="pre">=</span> <span class="pre">pcov(absolute_sigma=True)</span> <span class="pre">*</span> <span class="pre">chisq(popt)/(M-N)</span></code></p>
 <p>For more details, review the documentation: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p>
 </li>
@@ -563,7 +563,7 @@ The degrees of freedom represent the number of independent pieces of information
 <p>In essence, when you skip the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter, the function does two things:</p>
 <ol class="arabic simple">
 <li><p>It assumes all points have the same, unknown uncertainty.</p></li>
-<li><p>It uses the <strong>observed scatter of the data</strong> (quantified by the residual variance, <span class="math notranslate nohighlight">\(\text{SSR}/\nu\)</span>) as a post-hoc <em>estimate</em> of that unknown uncertainty.</p></li>
+<li><p>It uses the <strong>observed scatter of the data</strong> (quantified by the residual variance, <span class="math notranslate nohighlight">\(RSS/\nu\)</span>) as a post-hoc <em>estimate</em> of that unknown uncertainty.</p></li>
 </ol>
 <p>This estimate of the uncertainty is then used to calculate the standard errors of your fitted parameters. This is a robust approach when you don’t have prior knowledge of your measurement errors, but it’s not as statistically rigorous as providing a known uncertainty via the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter. The parameter uncertainties you get are a reflection of how well your model explains the observed variation in your data, rather than being based on a known, independent measure of your experimental precision.</p>
 </section>
@@ -592,7 +592,7 @@ The degrees of freedom represent the number of independent pieces of information
 </li>
 </ul>
 <p><strong>You can still calculate</strong> the chi-squared (<span class="math notranslate nohighlight">\(\chi^2\)</span>) value to find best-fit parameters for your non-linear function through weighted least-squares fitting. Many statistical software packages routinely report reduced chi-squared values for nonlinear fits.</p>
-<p><strong>However, exercise caution when interpreting</strong> the reduced chi-squared (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) for nonlinear models:</p>
+<p><strong>However, exercise caution when interpreting</strong> the reduced chi-squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>) for nonlinear models:</p>
 <ul class="simple">
 <li><p>A value close to 1 does not guarantee a good model, as the degrees of freedom calculation may not be strictly valid</p></li>
 <li><p>The traditional interpretation guidelines may be less reliable</p></li>
