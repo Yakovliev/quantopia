@@ -64,7 +64,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="The Continuity Equation" href="../../physics/continuity-equation-01.html" />
+    <link rel="next" title="ODR - Code Examples" href="odr-code.html" />
     <link rel="prev" title="WLS - Code Examples Part 3" href="weighted-least-squares-code-3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -201,6 +201,7 @@
 <li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="nav bd-sidenav">
@@ -633,7 +634,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>The final, minimized value of the ODR objective function, <span class="math notranslate nohighlight">\(S\)</span>, is itself a chi-squared statistic.</p>
 <div class="math notranslate nohighlight">
 \[ \chi^2 = S_{min} = \sum_{i=1}^{n} \left( \frac{(x_i - \hat{x}_i)^2}{\sigma_{x,i}^2} + \frac{(y_i - \hat{y}_i)^2}{\sigma_{y,i}^2} \right) \]</div>
-<p>This value represents the total weighted squared error of the fit. However, its absolute magnitude is difficult to interpret on its own, as it scales with the number of data points.</p>
+<p>where <span class="math notranslate nohighlight">\(\hat{x}\)</span> and <span class="math notranslate nohighlight">\(\hat{y}\)</span> are fitted data points on the curve. This value represents the total weighted squared error of the fit. However, its absolute magnitude is difficult to interpret on its own, as it scales with the number of data points.</p>
 </li>
 <li><p><strong>The Reduced Chi-Squared Statistic (<span class="math notranslate nohighlight">\(\chi^2_\nu\)</span>) - The Best Indicator</strong></p>
 <p>To create a standardized and highly interpretable metric, we calculate the <strong>reduced chi-squared statistic</strong>, which is the final <span class="math notranslate nohighlight">\(\chi^2\)</span> value divided by the <strong>degrees of freedom</strong> (<span class="math notranslate nohighlight">\(\nu\)</span>).</p>
@@ -647,6 +648,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <ol class="arabic simple">
 <li><p><strong>The model is wrong:</strong> The chosen function does not adequately describe the true physical relationship.</p></li>
 <li><p><strong>The errors were underestimated:</strong> Your reported error values (<span class="math notranslate nohighlight">\(\sigma_{x,i}, \sigma_{y,i}\)</span>) are too small, and the data is actually “noisier” than you thought.</p></li>
+<li><p><strong>Presence of Outliers</strong>: The dataset may contain one or more significant outliers. Because the chi-squared statistic is based on the sum of squared deviations, a few points that are very far from the fitted curve can disproportionately inflate the total value, leading to a high reduced chi-squared even if the model is appropriate for the rest of the data.</p></li>
 </ol>
 </li>
 <li><p><strong><span class="math notranslate nohighlight">\(\chi^2_\nu &lt; 1.0\)</span></strong>: This indicates that the fit is “too good.” The data points are, on average, closer to the line than their error estimates would predict. This can mean:</p>
@@ -659,7 +661,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>Many regression packages, including <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code>, report this value as <code class="docutils literal notranslate"><span class="pre">res_var</span></code> (residual variance), which is equivalent to the reduced chi-squared.</p>
 </li>
 </ul>
-<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a></p>
+<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>. The interpretation of the reduced chi-squared statistic is most rigorous for models that are linear in their parameters. For non-linear models, the statistical assumptions that guarantee the chi-squared distribution are not always met, and the exact number of degrees of freedom can be ambiguous. In such cases, the reduced chi-squared value remains a powerful and widely used heuristic for assessing the goodness of fit, but it should be interpreted with a degree of caution.</p>
 </section>
 <section id="r-squared-r-2-and-adjusted-r-squared">
 <h3>R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared<a class="headerlink" href="#r-squared-r-2-and-adjusted-r-squared" title="Link to this heading">#</a></h3>
@@ -729,6 +731,9 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/odr.html#module-scipy.odr">https://docs.scipy.org/doc/scipy/reference/odr.html#module-scipy.odr</a></p></li>
 <li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html#scipy.odr.Output">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html#scipy.odr.Output</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/21395328/how-to-estimate-goodness-of-fit-using-scipy-odr">https://stackoverflow.com/questions/21395328/how-to-estimate-goodness-of-fit-using-scipy-odr</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/325581/odr-residual-variance-and-reduced-chi2-do-the-beta-uncertainties-represent-co">https://stats.stackexchange.com/questions/325581/odr-residual-variance-and-reduced-chi2-do-the-beta-uncertainties-represent-co</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/41028846/how-to-compute-standard-error-from-odr-results">https://stackoverflow.com/questions/41028846/how-to-compute-standard-error-from-odr-results</a></p></li>
 </ul>
 </section>
 </section>
@@ -773,11 +778,11 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
       </div>
     </a>
     <a class="right-next"
-       href="../../physics/continuity-equation-01.html"
+       href="odr-code.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The Continuity Equation</p>
+        <p class="prev-next-title">ODR - Code Examples</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
