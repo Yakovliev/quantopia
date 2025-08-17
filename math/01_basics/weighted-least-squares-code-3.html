@@ -1045,9 +1045,16 @@ AICc (Corrected AIC): 454.7018
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ser_weighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;mse_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse_weighted</span>
 
-    <span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
-    <span class="n">mle_variance</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">n</span>
-    <span class="n">llf</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">mle_variance</span><span class="p">)</span> <span class="o">-</span> <span class="n">rss_weighted</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">mle_variance</span><span class="p">)</span>
+    <span class="c1"># Since absolute_sigma=True, we assume sigma is known.</span>
+    <span class="c1"># The log-likelihood formula for a Gaussian distribution with known sigma is:</span>
+    <span class="c1"># L = -n/2*log(2*pi) - sum(log(sigma_i)) - 1/2 * sum(((y_i - y_pred_i)/sigma_i)^2)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
+    <span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Information Criteria</span>
     <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
     <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
     <span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -1185,6 +1192,112 @@ AICc (Corrected AIC): 454.7018
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum Log-Likelihood: -223.8509
+--- Fitted Parameters ---
+Parameter A: 93.5355 +/- 0.8080
+  T-value: 115.759755, P-value: 0.000000
+Parameter B: 0.0270 +/- 0.0005
+  T-value: 53.507498, P-value: 0.000000
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9798
+Unweighted R-squared: 0.9798
+Weighted Adjusted R-squared: 0.9757
+Unweighted Adjusted R-squared: 0.9757
+Chi-Squared: 444.5407
+Reduced Chi-Squared: 88.9081
+Unweighted RMSE: 3.9845
+Weighted RMSE: 3.9845
+Unweighted SER: 4.7146
+Weighted SER: 9.4291
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 444.5407
+Weighted Explained Sum of Squares (ESS): 24295.5217
+Weighted Centered Total Sum of Squares (TSS): 21970.4000
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
+</pre></div>
+</div>
+<img alt="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" src="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x_data&#39;: array([ 0,  5, 25, 34, 42, 57, 97]),
+ &#39;y_data&#39;: array([100. ,  79.7,  51.3,  44.6,  39.8,  29.9,  10.3]),
+ &#39;sigma&#39;: array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]),
+ &#39;weights&#39;: array([4., 4., 4., 4., 4., 4., 4.]),
+ &#39;popt&#39;: array([9.35355298e+01, 2.69716154e-02]),
+ &#39;pcov&#39;: array([[ 6.52887003e-01, -3.75497151e-04],
+        [-3.75497151e-04,  2.54088278e-07]]),
+ &#39;fit_params&#39;: array([9.35355298e+01, 2.69716154e-02]),
+ &#39;std_errs&#39;: array([8.08014234e-01, 5.04071699e-04]),
+ &#39;t_values&#39;: array([115.75975502,  53.507498  ]),
+ &#39;p_values&#39;: array([9.12365149e-10, 4.31128539e-08]),
+ &#39;number_of_observations&#39;: 7,
+ &#39;number_of_parameters&#39;: 2,
+ &#39;degrees_of_freedom&#39;: 5,
+ &#39;condition_number&#39;: np.float64(17123879.749667574),
+ &#39;y_pred&#39;: array([100.        ,  88.19955015,  54.12249259,  43.85084912,
+         36.59483663,  26.56928409,  13.29973129]),
+ &#39;unweighted_residuals&#39;: array([ 0.        , -8.49955015, -2.82249259,  0.74915088,  3.20516337,
+         3.33071591, -2.99973129]),
+ &#39;weighted_residuals&#39;: array([  0.        , -16.99910031,  -5.64498518,   1.49830177,
+          6.41032674,   6.66143181,  -5.99946257]),
+ &#39;residuals_scipy&#39;: array([ 0.        , 16.99910031,  5.64498518, -1.49830177, -6.41032674,
+        -6.66143181,  5.99946257]),
+ &#39;rss_unweighted&#39;: np.float64(111.13517273880338),
+ &#39;rss_weighted&#39;: np.float64(444.5406909552135),
+ &#39;unweighted_mean_y&#39;: np.float64(50.800000000000004),
+ &#39;weighted_mean_y&#39;: np.float64(50.800000000000004),
+ &#39;unweighted_centered_tss&#39;: np.float64(5492.6),
+ &#39;weighted_centered_tss&#39;: np.float64(21970.4),
+ &#39;unweighted_uncentered_tss&#39;: np.float64(23557.079999999998),
+ &#39;weighted_uncentered_tss&#39;: np.float64(94228.31999999999),
+ &#39;ess_unweighted&#39;: np.float64(6073.880420048486),
+ &#39;ess_weighted&#39;: np.float64(24295.521680193942),
+ &#39;r_squared_unweighted&#39;: np.float64(0.9797663815426568),
+ &#39;r_squared_weighted&#39;: np.float64(0.9797663815426568),
+ &#39;r_squared_adj_unweighted&#39;: np.float64(0.9757196578511882),
+ &#39;r_squared_adj_weighted&#39;: np.float64(0.9757196578511882),
+ &#39;chi_squared&#39;: np.float64(444.5406909552135),
+ &#39;reduced_chi_squared&#39;: np.float64(88.9081381910427),
+ &#39;rmse_unweighted&#39;: np.float64(3.984526728282856),
+ &#39;rmse_weighted&#39;: np.float64(3.984526728282856),
+ &#39;ser_unweighted&#39;: np.float64(4.714555604482852),
+ &#39;ser_weighted&#39;: np.float64(9.429111208965704),
+ &#39;mse_weighted&#39;: np.float64(88.9081381910427),
+ &#39;log_likelihood&#39;: np.float64(-223.85088494611983),
+ &#39;aic&#39;: np.float64(451.70176989223967),
+ &#39;bic&#39;: np.float64(451.5935901903503),
+ &#39;aicc&#39;: np.float64(454.70176989223967)}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
 Parameter A: 93.5355 +/- 0.8080
   T-value: 115.759755, P-value: 0.000000
@@ -1215,13 +1328,12 @@ Weighted Explained Sum of Squares (ESS): 24295.5217
 Weighted Centered Total Sum of Squares (TSS): 21970.4000
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -24.4615
-AIC (Akaike Information Criterion): 52.9231
-BIC (Bayesian Information Criterion): 52.8149
-AICc (Corrected AIC): 55.9231
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
 </pre></div>
 </div>
-<img alt="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" src="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" />
 </div>
 </div>
 </section>
