@@ -460,16 +460,6 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="wls-code-examples-part-3">
 <h1>WLS - Code Examples Part 3<a class="headerlink" href="#wls-code-examples-part-3" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>just some notes:</p>
 <p>Example 1. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</p>
 <p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
@@ -483,17 +473,17 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">mean_squared_error</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Define the function to fit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">custom_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    The model function to approximate the data.</span>
 <span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
@@ -543,7 +533,7 @@ document.write(`
 <span class="c1"># popt: Optimal values for the parameters so that the sum of the squared residuals is minimized.</span>
 <span class="c1"># pcov: The estimated covariance of popt.</span>
 <span class="c1"># Use sigma for weighted least squares</span>
-<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span><span class="p">,</span> <span class="n">infodict</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">custom_function</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span><span class="p">,</span> <span class="n">infodict</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">model_function</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">fit_a</span><span class="p">,</span> <span class="n">fit_b</span> <span class="o">=</span> <span class="n">popt</span>
 
@@ -556,7 +546,7 @@ document.write(`
 <span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="c1"># Degrees of Freedom</span>
 
 <span class="c1"># Generate predicted y values using the fitted function</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fit_a</span><span class="p">,</span> <span class="n">fit_b</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fit_a</span><span class="p">,</span> <span class="n">fit_b</span><span class="p">)</span>
 
 <span class="n">residuals_calc</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
 
@@ -811,15 +801,12 @@ Weighted Total MSE: 3661.7333
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Log-Likelihood &amp; Information Criteria ---&quot;</span><span class="p">)</span>
-<span class="c1"># Since absolute_sigma=False, we assume sigma is not known, but the weights are known.</span>
-
-<span class="c1"># First, calculate the Maximum Likelihood Estimate for the scale/variance parameter</span>
-<span class="n">mle_variance</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">n</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLE for variance (RSS_weighted / n): </span><span class="si">{</span><span class="n">mle_variance</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mle_variance</span><span class="p">)</span>
-<span class="n">term3</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="c1"># Since absolute_sigma=True, we assume sigma is known.</span>
+<span class="c1"># The log-likelihood formula for a Gaussian distribution with known sigma is:</span>
+<span class="c1"># L = -n/2*log(2*pi) - sum(log(sigma_i)) - 1/2 * sum(((y_i - y_pred_i)/sigma_i)^2)</span>
+<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+<span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
 <span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -831,7 +818,6 @@ Weighted Total MSE: 3661.7333
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">bic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">results</span><span class="p">[</span><span class="s1">&#39;mle_variance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mle_variance</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">llf</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
@@ -841,98 +827,33 @@ Weighted Total MSE: 3661.7333
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Log-Likelihood &amp; Information Criteria ---
-MLE for variance (RSS_weighted / n): 63.5058
-Maximum Log-Likelihood: -19.6095
-AIC (Akaike Information Criterion): 43.2190
-BIC (Bayesian Information Criterion): 43.1108
-AICc (Corrected AIC): 46.2190
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x_data&#39;: array([ 0,  5, 25, 34, 42, 57, 97]),
- &#39;y_data&#39;: array([100. ,  79.7,  51.3,  44.6,  39.8,  29.9,  10.3]),
- &#39;sigma&#39;: array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]),
- &#39;weights&#39;: array([4., 4., 4., 4., 4., 4., 4.]),
- &#39;fit_a&#39;: np.float64(93.53552979274119),
- &#39;fit_b&#39;: np.float64(0.02697161541461497),
- &#39;std_err_a&#39;: np.float64(0.8080142341097194),
- &#39;std_err_b&#39;: np.float64(0.0005040716988170932),
- &#39;number_of_observations&#39;: 7,
- &#39;number_of_parameters&#39;: 2,
- &#39;degrees_of_freedom&#39;: 5,
- &#39;y_pred&#39;: array([100.        ,  88.19955015,  54.12249259,  43.85084912,
-         36.59483663,  26.56928409,  13.29973129]),
- &#39;residuals_calc&#39;: array([ 0.        , -8.49955015, -2.82249259,  0.74915088,  3.20516337,
-         3.33071591, -2.99973129]),
- &#39;weighted_residuals&#39;: array([  0.        , -16.99910031,  -5.64498518,   1.49830177,
-          6.41032674,   6.66143181,  -5.99946257]),
- &#39;residuals_scipy&#39;: array([ 0.        , 16.99910031,  5.64498518, -1.49830177, -6.41032674,
-        -6.66143181,  5.99946257]),
- &#39;condition_number&#39;: np.float64(17123879.749667574),
- &#39;rss_unweighted&#39;: np.float64(111.13517273880338),
- &#39;rss_weighted&#39;: np.float64(444.5406909552135),
- &#39;unweighted_centered_tss&#39;: np.float64(5492.6),
- &#39;weighted_centered_tss&#39;: np.float64(21970.4),
- &#39;unweighted_uncentered_tss&#39;: np.float64(23557.079999999998),
- &#39;weighted_uncentered_tss&#39;: np.float64(94228.31999999999),
- &#39;ess_weighted&#39;: np.float64(24295.521680193942),
- &#39;ess_unweighted&#39;: np.float64(6073.880420048486),
- &#39;r_squared_weighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_unweighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_adj_weighted&#39;: np.float64(0.9757196578511882),
- &#39;r_squared_adj_unweighted&#39;: np.float64(0.9757196578511882),
- &#39;chi_squared&#39;: np.float64(444.5406909552135),
- &#39;reduced_chi_squared&#39;: np.float64(88.9081381910427),
- &#39;rmse_unweighted&#39;: np.float64(3.984526728282856),
- &#39;rmse_weighted&#39;: np.float64(3.984526728282856),
- &#39;ser_unweighted&#39;: np.float64(4.714555604482852),
- &#39;ser_weighted&#39;: np.float64(9.429111208965704),
- &#39;mse_model_weighted&#39;: np.float64(24295.521680193942),
- &#39;mse_weighted&#39;: np.float64(88.9081381910427),
- &#39;mse_total_weighted&#39;: np.float64(3661.7333333333336),
- &#39;mle_variance&#39;: np.float64(63.50581299360193),
- &#39;log_likelihood&#39;: np.float64(-19.609499525716124),
- &#39;aic&#39;: np.float64(43.21899905143225),
- &#39;bic&#39;: np.float64(43.11081934954287),
- &#39;aicc&#39;: np.float64(46.21899905143225)}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 4. Plotting the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span> <span class="c1"># Sets a grid style similar to plt.grid(True)</span>
 
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;y_predicted&quot;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-        <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="mi">500</span><span class="p">)</span>
-        <span class="n">y_plot</span> <span class="o">=</span> <span class="n">custom_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;A_fit&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;B_fit&quot;</span><span class="p">])</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">A=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;A_fit&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;A_err&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">B=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;B_fit&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;B_err&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">y_plot</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;fit_a&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;fit_b&quot;</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">A=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">B=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;adjusted_r_squared&#39;</span><span class="p">]):</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Adj. R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;adjusted_r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">RMSE=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">chi^2=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$, $</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R²=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;r_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, RMSE=</span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;rmse&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">Adj. R²: N/A&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fit (Error)&quot;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Adj. $R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">RMSE=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymax</span><span class="o">=</span><span class="mi">102</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -940,19 +861,7 @@ AICc (Corrected AIC): 46.2190
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">6</span>     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="k">if</span> <span class="s2">&quot;y_predicted&quot;</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>         <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="mi">500</span><span class="p">)</span>
-
-<span class="ne">TypeError</span>: string indices must be integers, not &#39;str&#39;
-</pre></div>
-</div>
-<img alt="../../_images/692999860fb79d70d5ba2fa21d824823862778bd011bca149c6d1cdf217155db.png" src="../../_images/692999860fb79d70d5ba2fa21d824823862778bd011bca149c6d1cdf217155db.png" />
+<img alt="../../_images/79200e4b29d53328f6ff66bed3107083ce07d8e830819b2ed5a109dd0b2e582b.png" src="../../_images/79200e4b29d53328f6ff66bed3107083ce07d8e830819b2ed5a109dd0b2e582b.png" />
 </div>
 </div>
 <section id="analysis-of-the-results">
@@ -988,6 +897,445 @@ AICc (Corrected AIC): 46.2190
 <li><p>Also, note that the errors for A and B parameters were increased afrer we increased</p></li>
 </ul>
 <p>The standard deviation of 0.6 will make <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> very close to 1 for the dataset 3 (see below)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Performs a weighted least squares curve fit and calculates various</span>
+<span class="sd">    goodness-of-fit and error metrics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (np.array): The independent variable data.</span>
+<span class="sd">        y_obs (np.array): The observed dependent variable data.</span>
+<span class="sd">        sigma (np.array): The standard deviations of the y_obs points.</span>
+<span class="sd">        function (callable): The function to fit to the data.</span>
+<span class="sd">        initial_guess (list): The initial guess for the function parameters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing all the calculated results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;x_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Perform the curve fit</span>
+    <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span><span class="p">,</span> <span class="n">infodict</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span>
+        <span class="n">function</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+        <span class="n">absolute_sigma</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;popt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popt</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;pcov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pcov</span>
+
+    <span class="c1"># Calculate standard errors and t/p-values</span>
+    <span class="n">perr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">pcov</span><span class="p">))</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span>
+    <span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">n</span> <span class="o">-</span> <span class="n">p</span>
+
+    <span class="n">t_values</span> <span class="o">=</span> <span class="n">popt</span> <span class="o">/</span> <span class="n">perr</span>
+    <span class="n">p_values</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">degrees_of_freedom</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">popt</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">perr</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degrees_of_freedom</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;condition_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">pcov</span><span class="p">)</span>
+
+    <span class="c1"># Generate predicted values and residuals</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">popt</span><span class="p">)</span>
+    <span class="n">unweighted_residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">weighted_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
+    
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_residuals</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_residuals</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;residuals_scipy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">infodict</span><span class="p">[</span><span class="s1">&#39;fvec&#39;</span><span class="p">]</span>
+
+    <span class="c1"># --- Sum of Squares (SS) Calculations ---</span>
+    <span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unweighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rss_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">weighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">])</span>
+    <span class="n">unweighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_obs</span><span class="p">)</span>
+
+    <span class="n">weighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">weighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unweighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">ess_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ess_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_mean_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_mean_y</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_mean_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_mean_y</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_centered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_centered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_centered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_centered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_uncentered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_uncentered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_uncentered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_uncentered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ess_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ess_weighted</span>
+
+    <span class="c1"># --- Goodness-of-Fit Metrics ---</span>
+    <span class="c1"># R-squared</span>
+    <span class="n">r_squared_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">unweighted_centered_tss</span>
+    <span class="n">r_squared_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">weighted_centered_tss</span>
+
+    <span class="c1"># Adjusted R-squared</span>
+    <span class="n">r_squared_adj_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_unweighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+    <span class="n">r_squared_adj_weighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r_squared_weighted</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span>
+
+    <span class="c1"># Chi-Squared and Reduced Chi-Squared</span>
+    <span class="n">chi_squared</span> <span class="o">=</span> <span class="n">rss_weighted</span>
+    <span class="n">reduced_chi_squared</span> <span class="o">=</span> <span class="n">chi_squared</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_adj_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_adj_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chi_squared</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared</span>
+
+    <span class="c1"># --- Error Metrics ---</span>
+    <span class="c1"># RMSE</span>
+    <span class="n">rmse_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">rmse_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]))</span>
+
+    <span class="c1"># SER (Standard Error of the Regression)</span>
+    <span class="n">ser_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
+    <span class="n">ser_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
+
+    <span class="n">mse_weighted</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ser_unweighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ser_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;mse_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse_weighted</span>
+
+    <span class="c1"># Since absolute_sigma=True, we assume sigma is known.</span>
+    <span class="c1"># The log-likelihood formula for a Gaussian distribution with known sigma is:</span>
+    <span class="c1"># L = -n/2*log(2*pi) - sum(log(sigma_i)) - 1/2 * sum(((y_i - y_pred_i)/sigma_i)^2)</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
+    <span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Information Criteria</span>
+    <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
+    <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
+    <span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">llf</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aicc</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_metrics</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prints the calculated metrics from the results dictionary.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        results (dict): The dictionary containing curve fit results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fit_params</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span>
+    <span class="n">std_errs</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+    <span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span>
+    <span class="n">p_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Fitted Parameters ---&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">std_errs</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Model Fit Statistics ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Parameters (p): </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom (n-p): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Goodness-of-Fit &amp; Error Metrics ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Adjusted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Adjusted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted RMSE: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted RMSE: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted SER: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted SER: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Sum of Squares ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_centered_tss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Information Criteria ---&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC (Akaike Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_curve_fit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Visualizes the original data and the fitted curve.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        results (dict): The dictionary containing curve fit results.</span>
+<span class="sd">        model_function (callable): The model function used for fitting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+    <span class="n">x_data</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]</span>
+    <span class="n">y_data</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;y_data&quot;</span><span class="p">]</span>
+    <span class="n">popt</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span>
+    <span class="n">perr</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+    
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original Data&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># Generate points for the fitted curve</span>
+    <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="n">y_plot</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="o">*</span><span class="n">popt</span><span class="p">)</span>
+    
+    <span class="n">label_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">popt</span><span class="p">,</span> <span class="n">perr</span><span class="p">)):</span>
+        <span class="n">label_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &quot;</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="c1"># Create a dynamic title with key metrics</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;$R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">$, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Adj. $R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">$</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;RMSE$_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">xmin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the data and parameters for analysis</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum Log-Likelihood: -223.8509
+--- Fitted Parameters ---
+Parameter A: 93.5355 +/- 0.8080
+  T-value: 115.759755, P-value: 0.000000
+Parameter B: 0.0270 +/- 0.0005
+  T-value: 53.507498, P-value: 0.000000
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9798
+Unweighted R-squared: 0.9798
+Weighted Adjusted R-squared: 0.9757
+Unweighted Adjusted R-squared: 0.9757
+Chi-Squared: 444.5407
+Reduced Chi-Squared: 88.9081
+Unweighted RMSE: 3.9845
+Weighted RMSE: 3.9845
+Unweighted SER: 4.7146
+Weighted SER: 9.4291
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 444.5407
+Weighted Explained Sum of Squares (ESS): 24295.5217
+Weighted Centered Total Sum of Squares (TSS): 21970.4000
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
+</pre></div>
+</div>
+<img alt="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" src="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x_data&#39;: array([ 0,  5, 25, 34, 42, 57, 97]),
+ &#39;y_data&#39;: array([100. ,  79.7,  51.3,  44.6,  39.8,  29.9,  10.3]),
+ &#39;sigma&#39;: array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]),
+ &#39;weights&#39;: array([4., 4., 4., 4., 4., 4., 4.]),
+ &#39;popt&#39;: array([9.35355298e+01, 2.69716154e-02]),
+ &#39;pcov&#39;: array([[ 6.52887003e-01, -3.75497151e-04],
+        [-3.75497151e-04,  2.54088278e-07]]),
+ &#39;fit_params&#39;: array([9.35355298e+01, 2.69716154e-02]),
+ &#39;std_errs&#39;: array([8.08014234e-01, 5.04071699e-04]),
+ &#39;t_values&#39;: array([115.75975502,  53.507498  ]),
+ &#39;p_values&#39;: array([9.12365149e-10, 4.31128539e-08]),
+ &#39;number_of_observations&#39;: 7,
+ &#39;number_of_parameters&#39;: 2,
+ &#39;degrees_of_freedom&#39;: 5,
+ &#39;condition_number&#39;: np.float64(17123879.749667574),
+ &#39;y_pred&#39;: array([100.        ,  88.19955015,  54.12249259,  43.85084912,
+         36.59483663,  26.56928409,  13.29973129]),
+ &#39;unweighted_residuals&#39;: array([ 0.        , -8.49955015, -2.82249259,  0.74915088,  3.20516337,
+         3.33071591, -2.99973129]),
+ &#39;weighted_residuals&#39;: array([  0.        , -16.99910031,  -5.64498518,   1.49830177,
+          6.41032674,   6.66143181,  -5.99946257]),
+ &#39;residuals_scipy&#39;: array([ 0.        , 16.99910031,  5.64498518, -1.49830177, -6.41032674,
+        -6.66143181,  5.99946257]),
+ &#39;rss_unweighted&#39;: np.float64(111.13517273880338),
+ &#39;rss_weighted&#39;: np.float64(444.5406909552135),
+ &#39;unweighted_mean_y&#39;: np.float64(50.800000000000004),
+ &#39;weighted_mean_y&#39;: np.float64(50.800000000000004),
+ &#39;unweighted_centered_tss&#39;: np.float64(5492.6),
+ &#39;weighted_centered_tss&#39;: np.float64(21970.4),
+ &#39;unweighted_uncentered_tss&#39;: np.float64(23557.079999999998),
+ &#39;weighted_uncentered_tss&#39;: np.float64(94228.31999999999),
+ &#39;ess_unweighted&#39;: np.float64(6073.880420048486),
+ &#39;ess_weighted&#39;: np.float64(24295.521680193942),
+ &#39;r_squared_unweighted&#39;: np.float64(0.9797663815426568),
+ &#39;r_squared_weighted&#39;: np.float64(0.9797663815426568),
+ &#39;r_squared_adj_unweighted&#39;: np.float64(0.9757196578511882),
+ &#39;r_squared_adj_weighted&#39;: np.float64(0.9757196578511882),
+ &#39;chi_squared&#39;: np.float64(444.5406909552135),
+ &#39;reduced_chi_squared&#39;: np.float64(88.9081381910427),
+ &#39;rmse_unweighted&#39;: np.float64(3.984526728282856),
+ &#39;rmse_weighted&#39;: np.float64(3.984526728282856),
+ &#39;ser_unweighted&#39;: np.float64(4.714555604482852),
+ &#39;ser_weighted&#39;: np.float64(9.429111208965704),
+ &#39;mse_weighted&#39;: np.float64(88.9081381910427),
+ &#39;log_likelihood&#39;: np.float64(-223.85088494611983),
+ &#39;aic&#39;: np.float64(451.70176989223967),
+ &#39;bic&#39;: np.float64(451.5935901903503),
+ &#39;aicc&#39;: np.float64(454.70176989223967)}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 93.5355 +/- 0.8080
+  T-value: 115.759755, P-value: 0.000000
+Parameter B: 0.0270 +/- 0.0005
+  T-value: 53.507498, P-value: 0.000000
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9798
+Unweighted R-squared: 0.9798
+Weighted Adjusted R-squared: 0.9757
+Unweighted Adjusted R-squared: 0.9757
+Chi-Squared: 444.5407
+Reduced Chi-Squared: 88.9081
+Unweighted RMSE: 3.9845
+Weighted RMSE: 3.9845
+Unweighted SER: 4.7146
+Weighted SER: 9.4291
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 444.5407
+Weighted Explained Sum of Squares (ESS): 24295.5217
+Weighted Centered Total Sum of Squares (TSS): 21970.4000
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 </section>
