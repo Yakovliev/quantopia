@@ -1061,8 +1061,8 @@ AICc (Corrected AIC): 17.3971
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Fitted Parameters ---&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">std_errs</span><span class="p">)):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Model Fit Statistics ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1192,10 +1192,10 @@ AICc (Corrected AIC): 17.3971
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 56.6753 +/- 0.4506
-  T-value: 125.786532, P-value: 0.000000
-Parameter B: 0.0099 +/- 0.0002
-  T-value: 42.866769, P-value: 0.000000
+Parameter A: 56.67528 +/- 0.45057
+  T-value: 125.78653154, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00023
+  T-value: 42.86676855, P-value: 0.00000013
 
 --- Model Fit Statistics ---
 
@@ -1279,10 +1279,10 @@ AICc (Corrected AIC): 17.3971
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 56.6753 +/- 0.9011
-  T-value: 62.893266, P-value: 0.000000
-Parameter B: 0.0099 +/- 0.0005
-  T-value: 21.433384, P-value: 0.000004
+Parameter A: 56.67528 +/- 0.90113
+  T-value: 62.89326577, P-value: 0.00000002
+Parameter B: 0.00995 +/- 0.00046
+  T-value: 21.43338427, P-value: 0.00000410
 
 --- Model Fit Statistics ---
 
@@ -1365,10 +1365,10 @@ AICc (Corrected AIC): 21.6742
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 56.6753 +/- 0.5407
-  T-value: 104.822112, P-value: 0.000000
-Parameter B: 0.0099 +/- 0.0003
-  T-value: 35.722309, P-value: 0.000000
+Parameter A: 56.67528 +/- 0.54068
+  T-value: 104.82211215, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00028
+  T-value: 35.72230867, P-value: 0.00000032
 
 --- Model Fit Statistics ---
 
@@ -1453,10 +1453,10 @@ AICc (Corrected AIC): 17.7386
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 56.6753 +/- 0.4506
-  T-value: 125.786532, P-value: 0.000000
-Parameter B: 0.0099 +/- 0.0002
-  T-value: 42.866769, P-value: 0.000000
+Parameter A: 56.67528 +/- 0.45057
+  T-value: 125.78653154, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00023
+  T-value: 42.86676855, P-value: 0.00000013
 
 --- Model Fit Statistics ---
 
