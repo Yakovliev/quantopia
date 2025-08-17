@@ -442,11 +442,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-general-investigation">Dataset 3. General Investigation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-for-further-analysis">Methods for Further Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-large-standard-deviation">Dataset 3. Large Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-standard-deviation-0-6">Dataset 3. Standard Deviation 0.6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-negligible-standard-deviation-for-the-first-point">Dataset 3. Negligible Standard Deviation for the First Point</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-1-and-2-standard-deviation-1-0">Dataset 1 and 2. Standard Deviation 1.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-1-2-3-validation-of-additional-functions">Dataset 1, 2, 3. Validation of Additional Functions</a></li>
 </ul>
             </nav>
         </div>
@@ -460,14 +463,23 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="wls-code-examples-part-3">
 <h1>WLS - Code Examples Part 3<a class="headerlink" href="#wls-code-examples-part-3" title="Link to this heading">#</a></h1>
-<p>just some notes:</p>
-<p>Example 1. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</p>
-<p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
-<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-9,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-9</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
-<p>Based on the results, we will see why it was a bad idea to set negligible value of the standard deviation for the first point.</p>
-<section id="example-1-non-linear-example-with-y-axis-errors">
-<h2>Example 1. Non-Linear Example with Y-axis Errors<a class="headerlink" href="#example-1-non-linear-example-with-y-axis-errors" title="Link to this heading">#</a></h2>
+<section id="dataset-3-general-investigation">
+<h2>Dataset 3. General Investigation<a class="headerlink" href="#dataset-3-general-investigation" title="Link to this heading">#</a></h2>
+<p>For this example, we will validate how our non-linear model function can fit the data and calculate a lot of various metrics.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sigma</span></code> array is <code class="docutils literal notranslate"><span class="pre">[0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code> for all the data points.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>List of all datasets that will be investigated on this page:</p>
+<p>Dataset 1</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">5,</span> <span class="pre">25,</span> <span class="pre">34,</span> <span class="pre">42,</span> <span class="pre">57,</span> <span class="pre">97])</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">y_obs</span> <span class="pre">=</span> <span class="pre">np.array([100,</span> <span class="pre">79.7,</span> <span class="pre">51.3,</span> <span class="pre">44.6,</span> <span class="pre">39.8,</span> <span class="pre">29.9,</span> <span class="pre">10.3])</span></code></p>
+<p>Dataset 2</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">19,</span> <span class="pre">45,</span> <span class="pre">104,</span> <span class="pre">191,</span> <span class="pre">294,</span> <span class="pre">391])</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">y_obs</span> <span class="pre">=</span> <span class="pre">np.array([100,</span> <span class="pre">80.4,</span> <span class="pre">66.4,</span> <span class="pre">50.1,</span> <span class="pre">41.2,</span> <span class="pre">28.5,</span> <span class="pre">20.1])</span></code></p>
+<p>Dataset 3</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">np.array([0,</span> <span class="pre">23,</span> <span class="pre">51,</span> <span class="pre">98,</span> <span class="pre">196,</span> <span class="pre">292,</span> <span class="pre">401])</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">y_obs</span> <span class="pre">=</span> <span class="pre">np.array([100,</span> <span class="pre">87.8,</span> <span class="pre">77,</span> <span class="pre">65.7,</span> <span class="pre">50.9,</span> <span class="pre">46.5,</span> <span class="pre">44.4])</span></code></p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -501,8 +513,17 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
-<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Dataset 1</span>
+<span class="c1"># x = np.array([0, 5, 25, 34, 42, 57, 97])</span>
+<span class="c1"># y_obs = np.array([100, 79.7, 51.3, 44.6, 39.8, 29.9, 10.3])</span>
+
+<span class="c1"># # Dataset 2</span>
+<span class="c1"># x = np.array([0, 19, 45, 104, 191, 294, 391])</span>
+<span class="c1"># y_obs = np.array([100, 80.4, 66.4, 50.1, 41.2, 28.5, 20.1])</span>
+
+<span class="c1"># # Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
 
 <span class="c1"># Define sigma for Weighted Least Squares</span>
 <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -515,14 +536,6 @@ document.write(`
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;sigma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weights</span>
-
-<span class="c1"># # Dataset 2</span>
-<span class="c1"># x = np.array([0, 19, 45, 104, 191, 294, 391])</span>
-<span class="c1"># y_obs = np.array([100, 80.4, 66.4, 50.1, 41.2, 28.5, 20.1])</span>
-
-<span class="c1"># # Dataset 3</span>
-<span class="c1"># x = np.array([0, 23, 51, 98, 196, 292, 401])</span>
-<span class="c1"># y_obs = np.array([100, 87.8, 77, 65.7, 50.9, 46.5, 44.4])</span>
 </pre></div>
 </div>
 </div>
@@ -598,8 +611,8 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-A parameter: 93.5355 +/- 0.8080
-B parameter: 0.0270 +/- 0.0005
+A parameter: 56.6753 +/- 0.4506
+B parameter: 0.0099 +/- 0.0002
 Number of Observations (n): 7
 Number of Parameters (p): 2
 Degrees of Freedom (degrees_of_freedom): 5
@@ -619,11 +632,11 @@ Degrees of Freedom (degrees_of_freedom): 5
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard Error for A: 0.808014
-T-value for A: 115.759755
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Standard Error for A: 0.450567
+T-value for A: 125.786532
 P-value for A: 0.000000
-Standard Error for B: 0.000504
-T-value for B: 53.507498
+Standard Error for B: 0.000232
+T-value for B: 42.866769
 P-value for B: 0.000000
 </pre></div>
 </div>
@@ -647,8 +660,8 @@ P-value for B: 0.000000
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Sum of Squares (SS) ---
 
-Weighted Residual Sum of Squares (Weighted RSS): 444.5407
-Unweighted Residual Sum of Squares (RSS): 111.1352
+Weighted Residual Sum of Squares (Weighted RSS): 7.2361
+Unweighted Residual Sum of Squares (RSS): 1.8090
 </pre></div>
 </div>
 </div>
@@ -685,14 +698,14 @@ Unweighted Residual Sum of Squares (RSS): 111.1352
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weighted Centered Total Sum of Squares (TSS): 21970.4000
-Unweighted Centered Total Sum of Squares (TSS): 5492.6000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Weighted Centered Total Sum of Squares (TSS): 11247.9771
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
 
-Weighted Uncentered Total Sum of Squares (TSS): 94228.3200
-Unweighted Uncentered Total Sum of Squares (TSS): 23557.0800
+Weighted Uncentered Total Sum of Squares (TSS): 138715.0000
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
 
-Weighted Explained Sum of Squares (ESS): 24295.5217
-Unweighted Explained Sum of Squares (ESS): 6073.8804
+Weighted Explained Sum of Squares (ESS): 11354.7876
+Unweighted Explained Sum of Squares (ESS): 2838.6969
 </pre></div>
 </div>
 </div>
@@ -732,14 +745,14 @@ Unweighted Explained Sum of Squares (ESS): 6073.8804
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Goodness-of-Fit ---
 
-Weighted R-squared: 0.9798
-Unweighted R-squared: 0.9798
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
 
-Weighted Adjusted R-squared: 0.9757
-Unweighted Adjusted R-squared: 0.9757
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
 
-Chi-Squared: 444.5407
-Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 88.9081
+Chi-Squared: 7.2361
+Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 1.4472
 </pre></div>
 </div>
 </div>
@@ -782,17 +795,17 @@ Reduced Chi-Squared (RSS_weighted / degrees_of_freedom): 88.9081
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Error Metrics ---
 
-Unweighted RMSE: 3.9845
-Weighted RMSE: 3.9845
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
 
-Unweighted SER: 4.7146
-Weighted SER: 9.4291
+Unweighted SER: 0.6015
+Weighted SER: 1.2030
 
 --- Mean Squared Errors (MSE) ---
 
-Weighted Mean Squared Error (MSE): 24295.5217
-Weighted MSE: 88.9081
-Weighted Total MSE: 3661.7333
+Weighted Mean Squared Error (MSE): 11354.7876
+Weighted MSE: 1.4472
+Weighted Total MSE: 1874.6629
 </pre></div>
 </div>
 </div>
@@ -827,10 +840,10 @@ Weighted Total MSE: 3661.7333
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Log-Likelihood &amp; Information Criteria ---
-Maximum Log-Likelihood: -223.8509
-AIC (Akaike Information Criterion): 451.7018
-BIC (Bayesian Information Criterion): 451.5936
-AICc (Corrected AIC): 454.7018
+Maximum Log-Likelihood: -5.1986
+AIC (Akaike Information Criterion): 14.3971
+BIC (Bayesian Information Criterion): 14.2890
+AICc (Corrected AIC): 17.3971
 </pre></div>
 </div>
 </div>
@@ -844,9 +857,9 @@ AICc (Corrected AIC): 454.7018
 
 <span class="n">x_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="nb">max</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_data&quot;</span><span class="p">]),</span> <span class="mi">500</span><span class="p">)</span>
 <span class="n">y_plot</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;fit_a&quot;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;fit_b&quot;</span><span class="p">])</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">A=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="se">\n</span><span class="s2">B=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">A=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_a&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">B=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_err_b&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, Adj. $R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">RMSE=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;$R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Adj. $R^2$=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">RMSE=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, $</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y&quot;</span><span class="p">)</span>
@@ -861,42 +874,14 @@ AICc (Corrected AIC): 454.7018
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/79200e4b29d53328f6ff66bed3107083ce07d8e830819b2ed5a109dd0b2e582b.png" src="../../_images/79200e4b29d53328f6ff66bed3107083ce07d8e830819b2ed5a109dd0b2e582b.png" />
+<img alt="../../_images/a87e6c766b295b0565caa68aa02893051548f3bf9cc746b2ceb628aa50f96fd6.png" src="../../_images/a87e6c766b295b0565caa68aa02893051548f3bf9cc746b2ceb628aa50f96fd6.png" />
 </div>
 </div>
-<section id="analysis-of-the-results">
-<h3>Analysis of the results<a class="headerlink" href="#analysis-of-the-results" title="Link to this heading">#</a></h3>
-<p>The results are totally the same as in the previous case.</p>
-<p>It’s clear that for dataset 1 and dataset 2 the results of our analysis show that the selected function doesn’t fit the data well enough:</p>
-<ul class="simple">
-<li><p>RMSE is too high</p></li>
-<li><p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is too high</p></li>
-</ul>
-<p>Thus, we need to look for another custom function for the datasets 1 and 2.</p>
-<p>For the dataset 3:</p>
-<ul class="simple">
-<li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> This is a measure of the <strong>goodness-of-fit relative to our assumed measurement errors</strong>. It normalizes the residuals by the standard deviation of the measurements (<span class="math notranslate nohighlight">\(\sigma_i\)</span>). A value close to 1 means the observed scatter of our data points around the fit is consistent with our assumed uncertainties.</p>
-<ul>
-<li><p>Since <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is 1.4472 (greater than 1), it suggests that the scatter in our data is <strong>larger than what we expected</strong> based on our assumed standard deviation of 0.5. This implies that we have likely <strong>underestimated the true measurement uncertainty</strong>.</p></li>
-</ul>
-</li>
-<li><p><strong>Root Mean Squared Error (RMSE):</strong> This is an <strong>estimate of the standard deviation of the residuals</strong>. The fact that our RMSE (0.5084) is very close to our assumed <span class="math notranslate nohighlight">\(\sigma_i\)</span> of 0.5 is a common occurrence and shows that our model is fitting the data well. However, because the reduced chi-squared is greater than 1, it tells us that the true underlying noise in the data is likely a bit larger than 0.5, even if the RMSE is close to that value. The <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is a more robust statistical tool for validating our assumption about the uncertainty of our measurements.</p></li>
-</ul>
-<p>Let’s try to increase the standard deviations from 0.5 to 1.0.</p>
 </section>
-<section id="usage-of-the-higher-value-of-errors">
-<h3>Usage of the Higher Value of Errors<a class="headerlink" href="#usage-of-the-higher-value-of-errors" title="Link to this heading">#</a></h3>
-<p>Results for the dataset 1 and 2:</p>
-<ul class="simple">
-<li><p>RMSE is too high</p></li>
-<li><p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is too high</p></li>
-</ul>
-<p>Results for the dataset 3:</p>
-<ul class="simple">
-<li><p>A reduced chi-squared value of 0.3618 is too low and indicates that we have overestimated the standard deviation of our measurements.</p></li>
-<li><p>Also, note that the errors for A and B parameters were increased afrer we increased</p></li>
-</ul>
-<p>The standard deviation of 0.6 will make <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> very close to 1 for the dataset 3 (see below)</p>
+<hr class="docutils" />
+<section id="methods-for-further-analysis">
+<h2>Methods for Further Analysis<a class="headerlink" href="#methods-for-further-analysis" title="Link to this heading">#</a></h2>
+<p>Here we provide the methods that we will be using for the further analysis of the datasets 1, 2, 3.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -904,18 +889,6 @@ AICc (Corrected AIC): 454.7018
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">curve_fit</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The custom function to approximate the data.</span>
-<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
@@ -1052,8 +1025,7 @@ AICc (Corrected AIC): 454.7018
     <span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
     <span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
     <span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
+    
     <span class="c1"># Information Criteria</span>
     <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
     <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
@@ -1087,8 +1059,8 @@ AICc (Corrected AIC): 454.7018
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- Fitted Parameters ---&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">std_errs</span><span class="p">)):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Model Fit Statistics ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1109,8 +1081,13 @@ AICc (Corrected AIC): 454.7018
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Sum of Squares ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Residual Sum of Squares (RSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Explained Sum of Squares (ESS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_centered_tss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Centered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_centered_tss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_uncentered_tss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted Uncentered Total Sum of Squares (TSS): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_uncentered_tss&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Information Criteria ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1146,16 +1123,20 @@ AICc (Corrected AIC): 454.7018
     <span class="n">y_plot</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="o">*</span><span class="n">popt</span><span class="p">)</span>
     
     <span class="n">label_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Fitted Curve</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">popt</span><span class="p">,</span> <span class="n">perr</span><span class="p">)):</span>
-        <span class="n">label_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> &quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">label_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;A=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">popt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">label_text</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;B=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">±</span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="c1"># for i, (param, err) in enumerate(zip(popt, perr)):</span>
+    <span class="c1">#     label_text += f&quot;{chr(ord(&#39;A&#39;) + i)}={param:.4f}±{err:.4f} &quot;</span>
 
     <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 
         <span class="c1"># Create a dynamic title with key metrics</span>
     <span class="n">title</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;$R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">$, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;Adj. $R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">$</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;RMSE$_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">$, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;$R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$, &quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Adj. $R^2_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_adj_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;RMSE$_</span><span class="se">{{</span><span class="s2">w</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$, &quot;</span>
         <span class="sa">f</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">chi^2_</span><span class="se">{{</span><span class="s2">red</span><span class="se">}}</span><span class="s2">=</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">$&quot;</span>
     <span class="p">)</span>
 
@@ -1172,11 +1153,27 @@ AICc (Corrected AIC): 454.7018
 </div>
 </div>
 </div>
+</section>
+<section id="dataset-3-comparison">
+<h2>Dataset 3. Comparison<a class="headerlink" href="#dataset-3-comparison" title="Link to this heading">#</a></h2>
+<p>This part is related to usage of the general methods for our analysis. We use dataset 3 again to compare the results with what we calculated above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the data and parameters for analysis</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
-<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
 <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
@@ -1192,12 +1189,11 @@ AICc (Corrected AIC): 454.7018
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum Log-Likelihood: -223.8509
---- Fitted Parameters ---
-Parameter A: 93.5355 +/- 0.8080
-  T-value: 115.759755, P-value: 0.000000
-Parameter B: 0.0270 +/- 0.0005
-  T-value: 53.507498, P-value: 0.000000
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.67528 +/- 0.45057
+  T-value: 125.78653154, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00023
+  T-value: 42.86676855, P-value: 0.00000013
 
 --- Model Fit Statistics ---
 
@@ -1206,103 +1202,343 @@ Number of Parameters (p): 2
 Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
-Weighted R-squared: 0.9798
-Unweighted R-squared: 0.9798
-Weighted Adjusted R-squared: 0.9757
-Unweighted Adjusted R-squared: 0.9757
-Chi-Squared: 444.5407
-Reduced Chi-Squared: 88.9081
-Unweighted RMSE: 3.9845
-Weighted RMSE: 3.9845
-Unweighted SER: 4.7146
-Weighted SER: 9.4291
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 7.2361
+Reduced Chi-Squared: 1.4472
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
+Unweighted SER: 0.6015
+Weighted SER: 1.2030
 
 --- Sum of Squares ---
-Weighted Residual Sum of Squares (RSS): 444.5407
-Weighted Explained Sum of Squares (ESS): 24295.5217
-Weighted Centered Total Sum of Squares (TSS): 21970.4000
+Weighted Residual Sum of Squares (RSS): 7.2361
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 11354.7876
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 11247.9771
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 138715.0000
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -223.8509
-AIC (Akaike Information Criterion): 451.7018
-BIC (Bayesian Information Criterion): 451.5936
-AICc (Corrected AIC): 454.7018
+Maximum Log-Likelihood: -5.1986
+AIC (Akaike Information Criterion): 14.3971
+BIC (Bayesian Information Criterion): 14.2890
+AICc (Corrected AIC): 17.3971
 </pre></div>
 </div>
-<img alt="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" src="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" />
+<img alt="../../_images/003ee19c55aa6c3911199c164d5c02a984c372c613ad0012c39499d3dad5dcfb.png" src="../../_images/003ee19c55aa6c3911199c164d5c02a984c372c613ad0012c39499d3dad5dcfb.png" />
 </div>
 </div>
+<p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> This is a measure of the <strong>goodness-of-fit relative to our assumed measurement errors</strong>. It normalizes the residuals by the standard deviation of the measurements (<span class="math notranslate nohighlight">\(\sigma_i\)</span>). A value close to 1 means the observed scatter of our data points around the fit is consistent with our assumed uncertainties.</p>
+<ul class="simple">
+<li><p>Since <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is 1.4472 (greater than 1), it suggests that the scatter in our data is <strong>larger than what we expected</strong> based on our assumed standard deviation of 0.5. This implies that we have likely <strong>underestimated the true measurement uncertainty</strong>.</p></li>
+</ul>
+<p><strong>Root Mean Squared Error (RMSE):</strong> This is an <strong>estimate of the standard deviation of the residuals</strong>. The fact that our RMSE (0.5084) is very close to our assumed <span class="math notranslate nohighlight">\(\sigma_i\)</span> of 0.5 is a common occurrence and shows that our model is fitting the data well. However, because the reduced chi-squared is greater than 1, it tells us that the true underlying noise in the data is likely a bit larger than 0.5, even if the RMSE is close to that value. The <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is a more robust statistical tool for validating our assumption about the uncertainty of our measurements.</p>
+<p>However, we also have to remember certain limitations of <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> in the case of nonlinear problems (see more details <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>).</p>
+<p>Let’s try to increase the standard deviations from 0.5 to 1.0.</p>
+</section>
+<section id="dataset-3-large-standard-deviation">
+<h2>Dataset 3. Large Standard Deviation<a class="headerlink" href="#dataset-3-large-standard-deviation" title="Link to this heading">#</a></h2>
+<p>Here we assume that standard deviations for each point equal to 1.0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x_data&#39;: array([ 0,  5, 25, 34, 42, 57, 97]),
- &#39;y_data&#39;: array([100. ,  79.7,  51.3,  44.6,  39.8,  29.9,  10.3]),
- &#39;sigma&#39;: array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]),
- &#39;weights&#39;: array([4., 4., 4., 4., 4., 4., 4.]),
- &#39;popt&#39;: array([9.35355298e+01, 2.69716154e-02]),
- &#39;pcov&#39;: array([[ 6.52887003e-01, -3.75497151e-04],
-        [-3.75497151e-04,  2.54088278e-07]]),
- &#39;fit_params&#39;: array([9.35355298e+01, 2.69716154e-02]),
- &#39;std_errs&#39;: array([8.08014234e-01, 5.04071699e-04]),
- &#39;t_values&#39;: array([115.75975502,  53.507498  ]),
- &#39;p_values&#39;: array([9.12365149e-10, 4.31128539e-08]),
- &#39;number_of_observations&#39;: 7,
- &#39;number_of_parameters&#39;: 2,
- &#39;degrees_of_freedom&#39;: 5,
- &#39;condition_number&#39;: np.float64(17123879.749667574),
- &#39;y_pred&#39;: array([100.        ,  88.19955015,  54.12249259,  43.85084912,
-         36.59483663,  26.56928409,  13.29973129]),
- &#39;unweighted_residuals&#39;: array([ 0.        , -8.49955015, -2.82249259,  0.74915088,  3.20516337,
-         3.33071591, -2.99973129]),
- &#39;weighted_residuals&#39;: array([  0.        , -16.99910031,  -5.64498518,   1.49830177,
-          6.41032674,   6.66143181,  -5.99946257]),
- &#39;residuals_scipy&#39;: array([ 0.        , 16.99910031,  5.64498518, -1.49830177, -6.41032674,
-        -6.66143181,  5.99946257]),
- &#39;rss_unweighted&#39;: np.float64(111.13517273880338),
- &#39;rss_weighted&#39;: np.float64(444.5406909552135),
- &#39;unweighted_mean_y&#39;: np.float64(50.800000000000004),
- &#39;weighted_mean_y&#39;: np.float64(50.800000000000004),
- &#39;unweighted_centered_tss&#39;: np.float64(5492.6),
- &#39;weighted_centered_tss&#39;: np.float64(21970.4),
- &#39;unweighted_uncentered_tss&#39;: np.float64(23557.079999999998),
- &#39;weighted_uncentered_tss&#39;: np.float64(94228.31999999999),
- &#39;ess_unweighted&#39;: np.float64(6073.880420048486),
- &#39;ess_weighted&#39;: np.float64(24295.521680193942),
- &#39;r_squared_unweighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_weighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_adj_unweighted&#39;: np.float64(0.9757196578511882),
- &#39;r_squared_adj_weighted&#39;: np.float64(0.9757196578511882),
- &#39;chi_squared&#39;: np.float64(444.5406909552135),
- &#39;reduced_chi_squared&#39;: np.float64(88.9081381910427),
- &#39;rmse_unweighted&#39;: np.float64(3.984526728282856),
- &#39;rmse_weighted&#39;: np.float64(3.984526728282856),
- &#39;ser_unweighted&#39;: np.float64(4.714555604482852),
- &#39;ser_weighted&#39;: np.float64(9.429111208965704),
- &#39;mse_weighted&#39;: np.float64(88.9081381910427),
- &#39;log_likelihood&#39;: np.float64(-223.85088494611983),
- &#39;aic&#39;: np.float64(451.70176989223967),
- &#39;bic&#39;: np.float64(451.5935901903503),
- &#39;aicc&#39;: np.float64(454.70176989223967)}
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 93.5355 +/- 0.8080
-  T-value: 115.759755, P-value: 0.000000
-Parameter B: 0.0270 +/- 0.0005
-  T-value: 53.507498, P-value: 0.000000
+Parameter A: 56.67528 +/- 0.90113
+  T-value: 62.89326577, P-value: 0.00000002
+Parameter B: 0.00995 +/- 0.00046
+  T-value: 21.43338427, P-value: 0.00000410
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 1.8090
+Reduced Chi-Squared: 0.3618
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
+Unweighted SER: 0.6015
+Weighted SER: 0.6015
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 1.8090
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 2838.6969
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 2811.9943
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 34678.7500
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -7.3371
+AIC (Akaike Information Criterion): 18.6742
+BIC (Bayesian Information Criterion): 18.5660
+AICc (Corrected AIC): 21.6742
+</pre></div>
+</div>
+<img alt="../../_images/25d6c1726a1f82ce196421b6e8ed49b071cbeb56d9ed9b97a2fdaf8a9f67a3cb.png" src="../../_images/25d6c1726a1f82ce196421b6e8ed49b071cbeb56d9ed9b97a2fdaf8a9f67a3cb.png" />
+</div>
+</div>
+<p>Results for the dataset 3:</p>
+<ul class="simple">
+<li><p>A reduced chi-squared value of 0.3618 is too low and indicates that we have overestimated the standard deviation of our measurements.</p></li>
+<li><p>Just a note: the errors for A and B parameters were increased afrer we increased <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values.</p></li>
+</ul>
+<p>The standard deviation of 0.6 will make <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> very close to 1 for the dataset 3 (see below)</p>
+</section>
+<section id="dataset-3-standard-deviation-0-6">
+<h2>Dataset 3. Standard Deviation 0.6<a class="headerlink" href="#dataset-3-standard-deviation-0-6" title="Link to this heading">#</a></h2>
+<p>Here we assume that standard deviations for each point equal to 1.0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.67528 +/- 0.54068
+  T-value: 104.82211215, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00028
+  T-value: 35.72230867, P-value: 0.00000032
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 5.0250
+Reduced Chi-Squared: 1.0050
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
+Unweighted SER: 0.6015
+Weighted SER: 1.0025
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 5.0250
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 7885.2692
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 7811.0952
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 96329.8611
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -5.3693
+AIC (Akaike Information Criterion): 14.7386
+BIC (Bayesian Information Criterion): 14.6304
+AICc (Corrected AIC): 17.7386
+</pre></div>
+</div>
+<img alt="../../_images/aee86504a236ea5f8b0b95ae29ed9182ac42234d11b77bc427831f17ae83503d.png" src="../../_images/aee86504a236ea5f8b0b95ae29ed9182ac42234d11b77bc427831f17ae83503d.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is close to 1.0 which would be perfect in a case of linear regression. However, we have non-linear regression and we need to be cautious about any interpretations of this metric.</p>
+<p>Our initial standard deviations of 0.5 are assumed to be measurement standard deviations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fact that the standard deviations of 0.6 makes <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> to be very close to 1.0 does not mean that 0.6 is a true standard deviation for our problem. Most probably, the true value of the standard deviations is somewhere between 0.5 and 0.6.</p>
+</div>
+</section>
+<section id="dataset-3-negligible-standard-deviation-for-the-first-point">
+<h2>Dataset 3. Negligible Standard Deviation for the First Point<a class="headerlink" href="#dataset-3-negligible-standard-deviation-for-the-first-point" title="Link to this heading">#</a></h2>
+<p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
+<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-6,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-6</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through first point <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.67528 +/- 0.45057
+  T-value: 125.78653154, P-value: 0.00000000
+Parameter B: 0.00995 +/- 0.00023
+  T-value: 42.86676855, P-value: 0.00000013
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9998
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9998
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 7.2361
+Reduced Chi-Squared: 1.4472
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.0000
+Unweighted SER: 0.6015
+Weighted SER: 1.2030
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 7.2361
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 40867.7639
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 40875.0000
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 10000000000098718.0000
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: 7.9238
+AIC (Akaike Information Criterion): -11.8476
+BIC (Bayesian Information Criterion): -11.9558
+AICc (Corrected AIC): -8.8476
+</pre></div>
+</div>
+<img alt="../../_images/0073a13d013834db9384cc175a4f1a3be8fdf6b324ae17f1a05ce1b889ba5f91.png" src="../../_images/0073a13d013834db9384cc175a4f1a3be8fdf6b324ae17f1a05ce1b889ba5f91.png" />
+</div>
+</div>
+<p>The extremely low value of the standard deviation for the first point did not provide any benefits. Some of the metrics were changed, but the values of the A and B parameters, as well as their standard errors, remained the same. Also, the weighted RMSE became zero due to the huge value of the weight for the first point, which doesn’t make a lot of sense for our non-linear problem.</p>
+<p>Thus, we will not use such an approach (with the extremely low value of the standard deviation for the first point) anymore.</p>
+</section>
+<section id="dataset-1-and-2-standard-deviation-1-0">
+<h2>Dataset 1 and 2. Standard Deviation 1.0<a class="headerlink" href="#dataset-1-and-2-standard-deviation-1-0" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- DATASET 1 ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- DATASET 1 ---
+--- Fitted Parameters ---
+Parameter A: 93.53553 +/- 1.61603
+  T-value: 57.87987751, P-value: 0.00000003
+Parameter B: 0.02697 +/- 0.00101
+  T-value: 26.75374900, P-value: 0.00000136
 
 --- Model Fit Statistics ---
 
@@ -1315,28 +1551,283 @@ Weighted R-squared: 0.9798
 Unweighted R-squared: 0.9798
 Weighted Adjusted R-squared: 0.9757
 Unweighted Adjusted R-squared: 0.9757
-Chi-Squared: 444.5407
-Reduced Chi-Squared: 88.9081
+Chi-Squared: 111.1352
+Reduced Chi-Squared: 22.2270
 Unweighted RMSE: 3.9845
 Weighted RMSE: 3.9845
 Unweighted SER: 4.7146
-Weighted SER: 9.4291
+Weighted SER: 4.7146
 
 --- Sum of Squares ---
-Weighted Residual Sum of Squares (RSS): 444.5407
-Weighted Explained Sum of Squares (ESS): 24295.5217
-Weighted Centered Total Sum of Squares (TSS): 21970.4000
+Weighted Residual Sum of Squares (RSS): 111.1352
+Unweighted Residual Sum of Squares (RSS): 111.1352
+Weighted Explained Sum of Squares (ESS): 6073.8804
+Unweighted Explained Sum of Squares (ESS): 6073.8804
+Weighted Centered Total Sum of Squares (TSS): 5492.6000
+Unweighted Centered Total Sum of Squares (TSS): 5492.6000
+Weighted Uncentered Total Sum of Squares (TSS): 23557.0800
+Unweighted Uncentered Total Sum of Squares (TSS): 23557.0800
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -223.8509
-AIC (Akaike Information Criterion): 451.7018
-BIC (Bayesian Information Criterion): 451.5936
-AICc (Corrected AIC): 454.7018
+Maximum Log-Likelihood: -62.0002
+AIC (Akaike Information Criterion): 128.0003
+BIC (Bayesian Information Criterion): 127.8921
+AICc (Corrected AIC): 131.0003
+</pre></div>
+</div>
+<img alt="../../_images/0a25baede63d164a62d7d78317fb87e5263378d1d564d24c36fea7c3e82fc763.png" src="../../_images/0a25baede63d164a62d7d78317fb87e5263378d1d564d24c36fea7c3e82fc763.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">294</span><span class="p">,</span> <span class="mi">391</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">80.4</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">50.1</span><span class="p">,</span> <span class="mf">41.2</span><span class="p">,</span> <span class="mf">28.5</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- DATASET 2 ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- DATASET 2 ---
+--- Fitted Parameters ---
+Parameter A: 75.29965 +/- 0.84176
+  T-value: 89.45521692, P-value: 0.00000000
+Parameter B: 0.01101 +/- 0.00039
+  T-value: 28.55077555, P-value: 0.00000099
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9728
+Unweighted R-squared: 0.9728
+Weighted Adjusted R-squared: 0.9674
+Unweighted Adjusted R-squared: 0.9674
+Chi-Squared: 134.1877
+Reduced Chi-Squared: 26.8375
+Unweighted RMSE: 4.3783
+Weighted RMSE: 4.3783
+Unweighted SER: 5.1805
+Weighted SER: 5.1805
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 134.1877
+Unweighted Residual Sum of Squares (RSS): 134.1877
+Weighted Explained Sum of Squares (ESS): 5302.9971
+Unweighted Explained Sum of Squares (ESS): 5302.9971
+Weighted Centered Total Sum of Squares (TSS): 4934.4171
+Unweighted Centered Total Sum of Squares (TSS): 4934.4171
+Weighted Uncentered Total Sum of Squares (TSS): 26296.8300
+Unweighted Uncentered Total Sum of Squares (TSS): 26296.8300
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -73.5264
+AIC (Akaike Information Criterion): 151.0528
+BIC (Bayesian Information Criterion): 150.9447
+AICc (Corrected AIC): 154.0528
+</pre></div>
+</div>
+<img alt="../../_images/40b9f0396b180949e5cd8119424640fb3f44749208b22fb069c4bd02d4aed936.png" src="../../_images/40b9f0396b180949e5cd8119424640fb3f44749208b22fb069c4bd02d4aed936.png" />
+</div>
+</div>
+<p>The results are totally the same as in the previous case.</p>
+<p>It’s clear that for dataset 1 and dataset 2 the results of our analysis show that the selected function doesn’t fit the data well enough:</p>
+<ul class="simple">
+<li><p>RMSE is too high</p></li>
+<li><p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is too high</p></li>
+</ul>
+<p>Thus, we need to look for another custom function for the datasets 1 and 2.</p>
+</section>
+<section id="dataset-1-2-3-validation-of-additional-functions">
+<h2>Dataset 1, 2, 3. Validation of Additional Functions<a class="headerlink" href="#dataset-1-2-3-validation-of-additional-functions" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function_2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f_1(x; A_1, B_1) = A_1 * (np.exp(-B_1 * x) - 1) + 100</span>
+<span class="sd">    f_2(x; A_2, B_2) = A_2 * (np.exp(-B_2 * x) - 1) + 100</span>
+<span class="sd">    f(x; A, B) = f_1(x; A_1, B_1) + f_2(x; A_2, B_2) - 100</span>
+
+<span class="sd">    A_1 = fitted values from the dataset 3 using our initial model function</span>
+<span class="sd">    B_1 = fitted values from the dataset 3 using our initial model function</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.675</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00995</span>
+
+    <span class="k">return</span> <span class="n">A_1</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B_1</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function_2</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- DATASET 1 ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- DATASET 1 ---
+--- Fitted Parameters ---
+Parameter A: 51.19699 +/- 1.89892
+  T-value: 26.96104237, P-value: 0.00000131
+Parameter B: 0.04681 +/- 0.00542
+  T-value: 8.63699380, P-value: 0.00034360
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9853
+Unweighted R-squared: 0.9853
+Weighted Adjusted R-squared: 0.9823
+Unweighted Adjusted R-squared: 0.9823
+Chi-Squared: 20.2077
+Reduced Chi-Squared: 4.0415
+Unweighted RMSE: 3.3981
+Weighted RMSE: 3.3981
+Unweighted SER: 4.0207
+Weighted SER: 2.0104
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 20.2077
+Unweighted Residual Sum of Squares (RSS): 80.8309
+Weighted Explained Sum of Squares (ESS): 1456.8613
+Unweighted Explained Sum of Squares (ESS): 5827.4452
+Weighted Centered Total Sum of Squares (TSS): 1373.1500
+Unweighted Centered Total Sum of Squares (TSS): 5492.6000
+Weighted Uncentered Total Sum of Squares (TSS): 5889.2700
+Unweighted Uncentered Total Sum of Squares (TSS): 23557.0800
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -21.3885
+AIC (Akaike Information Criterion): 46.7769
+BIC (Bayesian Information Criterion): 46.6687
+AICc (Corrected AIC): 49.7769
+</pre></div>
+</div>
+<img alt="../../_images/28d48229cbf37afc0f5b5c5547aaad2f1967bc108b1a61de7cc1a0ad27a55a68.png" src="../../_images/28d48229cbf37afc0f5b5c5547aaad2f1967bc108b1a61de7cc1a0ad27a55a68.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">294</span><span class="p">,</span> <span class="mi">391</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">80.4</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">50.1</span><span class="p">,</span> <span class="mf">41.2</span><span class="p">,</span> <span class="mf">28.5</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function_2</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- DATASET 2 ---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- DATASET 2 ---
+--- Fitted Parameters ---
+Parameter A: 16.68969 +/- 1.03562
+  T-value: 16.11559609, P-value: 0.00001676
+Parameter B: 0.03826 +/- 0.01111
+  T-value: 3.44327271, P-value: 0.01837040
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9780
+Unweighted R-squared: 0.9780
+Weighted Adjusted R-squared: 0.9736
+Unweighted Adjusted R-squared: 0.9736
+Chi-Squared: 27.1090
+Reduced Chi-Squared: 5.4218
+Unweighted RMSE: 3.9358
+Weighted RMSE: 3.9358
+Unweighted SER: 4.6569
+Weighted SER: 2.3285
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 27.1090
+Unweighted Residual Sum of Squares (RSS): 108.4359
+Weighted Explained Sum of Squares (ESS): 1172.4054
+Unweighted Explained Sum of Squares (ESS): 4689.6216
+Weighted Centered Total Sum of Squares (TSS): 1233.6043
+Unweighted Centered Total Sum of Squares (TSS): 4934.4171
+Weighted Uncentered Total Sum of Squares (TSS): 6574.2075
+Unweighted Uncentered Total Sum of Squares (TSS): 26296.8300
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -24.8391
+AIC (Akaike Information Criterion): 53.6782
+BIC (Bayesian Information Criterion): 53.5700
+AICc (Corrected AIC): 56.6782
+</pre></div>
+</div>
+<img alt="../../_images/0b512ade0bcba79b736d84f36dc64c82577138adbef6fc4bd4d57310e676e3b6.png" src="../../_images/0b512ade0bcba79b736d84f36dc64c82577138adbef6fc4bd4d57310e676e3b6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
+
+<span class="c1"># Dataset 2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">191</span><span class="p">,</span> <span class="mi">294</span><span class="p">,</span> <span class="mi">391</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">80.4</span><span class="p">,</span> <span class="mf">66.4</span><span class="p">,</span> <span class="mf">50.1</span><span class="p">,</span> <span class="mf">41.2</span><span class="p">,</span> <span class="mf">28.5</span><span class="p">,</span> <span class="mf">20.1</span><span class="p">])</span>
+
+<span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -1404,11 +1895,14 @@ AICc (Corrected AIC): 454.7018
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-general-investigation">Dataset 3. General Investigation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-for-further-analysis">Methods for Further Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-large-standard-deviation">Dataset 3. Large Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-standard-deviation-0-6">Dataset 3. Standard Deviation 0.6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-negligible-standard-deviation-for-the-first-point">Dataset 3. Negligible Standard Deviation for the First Point</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-1-and-2-standard-deviation-1-0">Dataset 1 and 2. Standard Deviation 1.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-1-2-3-validation-of-additional-functions">Dataset 1, 2, 3. Validation of Additional Functions</a></li>
 </ul>
   </nav></div>
 
