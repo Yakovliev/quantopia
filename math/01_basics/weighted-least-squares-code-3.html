@@ -801,15 +801,12 @@ Weighted Total MSE: 3661.7333
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Log-Likelihood &amp; Information Criteria ---&quot;</span><span class="p">)</span>
-<span class="c1"># Since absolute_sigma=False, we assume sigma is not known, but the weights are known.</span>
-
-<span class="c1"># First, calculate the Maximum Likelihood Estimate for the scale/variance parameter</span>
-<span class="n">mle_variance</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">n</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLE for variance (RSS_weighted / n): </span><span class="si">{</span><span class="n">mle_variance</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mle_variance</span><span class="p">)</span>
-<span class="n">term3</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+<span class="c1"># Since absolute_sigma=True, we assume sigma is known.</span>
+<span class="c1"># The log-likelihood formula for a Gaussian distribution with known sigma is:</span>
+<span class="c1"># L = -n/2*log(2*pi) - sum(log(sigma_i)) - 1/2 * sum(((y_i - y_pred_i)/sigma_i)^2)</span>
+<span class="n">term1</span> <span class="o">=</span> <span class="o">-</span><span class="n">n</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">term2</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma</span><span class="p">))</span>
+<span class="n">term3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">rss_weighted</span>
 <span class="n">llf</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">llf</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -821,7 +818,6 @@ Weighted Total MSE: 3661.7333
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">bic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">aicc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">results</span><span class="p">[</span><span class="s1">&#39;mle_variance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mle_variance</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">llf</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
@@ -831,11 +827,10 @@ Weighted Total MSE: 3661.7333
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Log-Likelihood &amp; Information Criteria ---
-MLE for variance (RSS_weighted / n): 63.5058
-Maximum Log-Likelihood: -19.6095
-AIC (Akaike Information Criterion): 43.2190
-BIC (Bayesian Information Criterion): 43.1108
-AICc (Corrected AIC): 46.2190
+Maximum Log-Likelihood: -223.8509
+AIC (Akaike Information Criterion): 451.7018
+BIC (Bayesian Information Criterion): 451.5936
+AICc (Corrected AIC): 454.7018
 </pre></div>
 </div>
 </div>
@@ -978,16 +973,16 @@ AICc (Corrected AIC): 46.2190
 
     <span class="c1"># Generate predicted values and residuals</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">popt</span><span class="p">)</span>
-    <span class="n">residuals_calc</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">unweighted_residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
     <span class="n">weighted_residuals</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span>
     
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;residuals_calc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals_calc</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_residuals</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_residuals</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;residuals_scipy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">infodict</span><span class="p">[</span><span class="s1">&#39;fvec&#39;</span><span class="p">]</span>
 
     <span class="c1"># --- Sum of Squares (SS) Calculations ---</span>
-    <span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residuals_calc</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unweighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">rss_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="n">weighted_mean_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">y_obs</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">])</span>
@@ -996,13 +991,20 @@ AICc (Corrected AIC): 46.2190
     <span class="n">weighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
+    <span class="n">weighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unweighted_uncentered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
     <span class="n">ess_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;weights&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">weighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">ess_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_pred</span> <span class="o">-</span> <span class="n">unweighted_mean_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss_unweighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rss_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rss_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_mean_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_mean_y</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_mean_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_mean_y</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_centered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_centered_tss</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_centered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_centered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_uncentered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_uncentered_tss</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;weighted_uncentered_tss&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weighted_uncentered_tss</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ess_unweighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ess_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ess_weighted</span>
 
@@ -1035,10 +1037,13 @@ AICc (Corrected AIC): 46.2190
     <span class="n">ser_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
     <span class="n">ser_weighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span><span class="p">)</span>
 
+    <span class="n">mse_weighted</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span>
+
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_unweighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;rmse_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmse_weighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ser_unweighted</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;ser_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ser_weighted</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;mse_weighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mse_weighted</span>
 
     <span class="c1"># --- Log-Likelihood and Information Criteria ---</span>
     <span class="n">mle_variance</span> <span class="o">=</span> <span class="n">rss_weighted</span> <span class="o">/</span> <span class="n">n</span>
