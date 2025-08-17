@@ -442,7 +442,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-dataset-1-investigation">Example 1. Dataset 1. Investigation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
 </ul>
@@ -460,13 +460,9 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="wls-code-examples-part-3">
 <h1>WLS - Code Examples Part 3<a class="headerlink" href="#wls-code-examples-part-3" title="Link to this heading">#</a></h1>
-<p>just some notes:</p>
-<p>Example 1. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</p>
-<p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
-<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-9,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-9</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
-<p>Based on the results, we will see why it was a bad idea to set negligible value of the standard deviation for the first point.</p>
-<section id="example-1-non-linear-example-with-y-axis-errors">
-<h2>Example 1. Non-Linear Example with Y-axis Errors<a class="headerlink" href="#example-1-non-linear-example-with-y-axis-errors" title="Link to this heading">#</a></h2>
+<section id="example-1-dataset-1-investigation">
+<h2>Example 1. Dataset 1. Investigation<a class="headerlink" href="#example-1-dataset-1-investigation" title="Link to this heading">#</a></h2>
+<p>For this example, we will validate how our non-linear model function can fit the data and calculate a lot of various metrics.</p>
 <p><code class="docutils literal notranslate"><span class="pre">sigma</span></code> array is <code class="docutils literal notranslate"><span class="pre">[0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code> for all the data points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1232,110 +1228,11 @@ AICc (Corrected AIC): 454.7018
 <img alt="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" src="../../_images/5eca3a4eec4fccec3b760bfdd88508abf6b8da3448c5d3a34c207f2154d8758b.png" />
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_results</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;x_data&#39;: array([ 0,  5, 25, 34, 42, 57, 97]),
- &#39;y_data&#39;: array([100. ,  79.7,  51.3,  44.6,  39.8,  29.9,  10.3]),
- &#39;sigma&#39;: array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]),
- &#39;weights&#39;: array([4., 4., 4., 4., 4., 4., 4.]),
- &#39;popt&#39;: array([9.35355298e+01, 2.69716154e-02]),
- &#39;pcov&#39;: array([[ 6.52887003e-01, -3.75497151e-04],
-        [-3.75497151e-04,  2.54088278e-07]]),
- &#39;fit_params&#39;: array([9.35355298e+01, 2.69716154e-02]),
- &#39;std_errs&#39;: array([8.08014234e-01, 5.04071699e-04]),
- &#39;t_values&#39;: array([115.75975502,  53.507498  ]),
- &#39;p_values&#39;: array([9.12365149e-10, 4.31128539e-08]),
- &#39;number_of_observations&#39;: 7,
- &#39;number_of_parameters&#39;: 2,
- &#39;degrees_of_freedom&#39;: 5,
- &#39;condition_number&#39;: np.float64(17123879.749667574),
- &#39;y_pred&#39;: array([100.        ,  88.19955015,  54.12249259,  43.85084912,
-         36.59483663,  26.56928409,  13.29973129]),
- &#39;unweighted_residuals&#39;: array([ 0.        , -8.49955015, -2.82249259,  0.74915088,  3.20516337,
-         3.33071591, -2.99973129]),
- &#39;weighted_residuals&#39;: array([  0.        , -16.99910031,  -5.64498518,   1.49830177,
-          6.41032674,   6.66143181,  -5.99946257]),
- &#39;residuals_scipy&#39;: array([ 0.        , 16.99910031,  5.64498518, -1.49830177, -6.41032674,
-        -6.66143181,  5.99946257]),
- &#39;rss_unweighted&#39;: np.float64(111.13517273880338),
- &#39;rss_weighted&#39;: np.float64(444.5406909552135),
- &#39;unweighted_mean_y&#39;: np.float64(50.800000000000004),
- &#39;weighted_mean_y&#39;: np.float64(50.800000000000004),
- &#39;unweighted_centered_tss&#39;: np.float64(5492.6),
- &#39;weighted_centered_tss&#39;: np.float64(21970.4),
- &#39;unweighted_uncentered_tss&#39;: np.float64(23557.079999999998),
- &#39;weighted_uncentered_tss&#39;: np.float64(94228.31999999999),
- &#39;ess_unweighted&#39;: np.float64(6073.880420048486),
- &#39;ess_weighted&#39;: np.float64(24295.521680193942),
- &#39;r_squared_unweighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_weighted&#39;: np.float64(0.9797663815426568),
- &#39;r_squared_adj_unweighted&#39;: np.float64(0.9757196578511882),
- &#39;r_squared_adj_weighted&#39;: np.float64(0.9757196578511882),
- &#39;chi_squared&#39;: np.float64(444.5406909552135),
- &#39;reduced_chi_squared&#39;: np.float64(88.9081381910427),
- &#39;rmse_unweighted&#39;: np.float64(3.984526728282856),
- &#39;rmse_weighted&#39;: np.float64(3.984526728282856),
- &#39;ser_unweighted&#39;: np.float64(4.714555604482852),
- &#39;ser_weighted&#39;: np.float64(9.429111208965704),
- &#39;mse_weighted&#39;: np.float64(88.9081381910427),
- &#39;log_likelihood&#39;: np.float64(-223.85088494611983),
- &#39;aic&#39;: np.float64(451.70176989223967),
- &#39;bic&#39;: np.float64(451.5935901903503),
- &#39;aicc&#39;: np.float64(454.70176989223967)}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
-Parameter A: 93.5355 +/- 0.8080
-  T-value: 115.759755, P-value: 0.000000
-Parameter B: 0.0270 +/- 0.0005
-  T-value: 53.507498, P-value: 0.000000
-
---- Model Fit Statistics ---
-
-Number of Observations (n): 7
-Number of Parameters (p): 2
-Degrees of Freedom (n-p): 5
-
---- Goodness-of-Fit &amp; Error Metrics ---
-Weighted R-squared: 0.9798
-Unweighted R-squared: 0.9798
-Weighted Adjusted R-squared: 0.9757
-Unweighted Adjusted R-squared: 0.9757
-Chi-Squared: 444.5407
-Reduced Chi-Squared: 88.9081
-Unweighted RMSE: 3.9845
-Weighted RMSE: 3.9845
-Unweighted SER: 4.7146
-Weighted SER: 9.4291
-
---- Sum of Squares ---
-Weighted Residual Sum of Squares (RSS): 444.5407
-Weighted Explained Sum of Squares (ESS): 24295.5217
-Weighted Centered Total Sum of Squares (TSS): 21970.4000
-
---- Information Criteria ---
-Maximum Log-Likelihood: -223.8509
-AIC (Akaike Information Criterion): 451.7018
-BIC (Bayesian Information Criterion): 451.5936
-AICc (Corrected AIC): 454.7018
-</pre></div>
-</div>
-</div>
-</div>
+<p>just some notes:</p>
+<p>Example 1. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</p>
+<p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
+<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-9,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-9</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
+<p>Based on the results, we will see why it was a bad idea to set negligible value of the standard deviation for the first point.</p>
 </section>
 </section>
 </section>
@@ -1404,7 +1301,7 @@ AICc (Corrected AIC): 454.7018
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-non-linear-example-with-y-axis-errors">Example 1. Non-Linear Example with Y-axis Errors</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-dataset-1-investigation">Example 1. Dataset 1. Investigation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
 </ul>
