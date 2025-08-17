@@ -444,7 +444,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-general-investigation">Dataset 3. General Investigation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-for-further-analysis">Methods for Further Analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-large-standard-deviation">Dataset 3. Large Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-standard-deviation-0-6">Dataset 3. Standard Deviation 0.6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-negligible-standard-deviation-for-the-first-point">Dataset 3. Negligible Standard Deviation for the First Point</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
 </ul>
@@ -1232,10 +1235,267 @@ AICc (Corrected AIC): 17.3971
 <img alt="../../_images/003ee19c55aa6c3911199c164d5c02a984c372c613ad0012c39499d3dad5dcfb.png" src="../../_images/003ee19c55aa6c3911199c164d5c02a984c372c613ad0012c39499d3dad5dcfb.png" />
 </div>
 </div>
-<p>just some notes:</p>
-<p>Example 1. Non-Linear Example with Y-axis Errors with Negligible Standard Deviation for the First Point</p>
+<p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> This is a measure of the <strong>goodness-of-fit relative to our assumed measurement errors</strong>. It normalizes the residuals by the standard deviation of the measurements (<span class="math notranslate nohighlight">\(\sigma_i\)</span>). A value close to 1 means the observed scatter of our data points around the fit is consistent with our assumed uncertainties.</p>
+<ul class="simple">
+<li><p>Since <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is 1.4472 (greater than 1), it suggests that the scatter in our data is <strong>larger than what we expected</strong> based on our assumed standard deviation of 0.5. This implies that we have likely <strong>underestimated the true measurement uncertainty</strong>.</p></li>
+</ul>
+<p><strong>Root Mean Squared Error (RMSE):</strong> This is an <strong>estimate of the standard deviation of the residuals</strong>. The fact that our RMSE (0.5084) is very close to our assumed <span class="math notranslate nohighlight">\(\sigma_i\)</span> of 0.5 is a common occurrence and shows that our model is fitting the data well. However, because the reduced chi-squared is greater than 1, it tells us that the true underlying noise in the data is likely a bit larger than 0.5, even if the RMSE is close to that value. The <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is a more robust statistical tool for validating our assumption about the uncertainty of our measurements.</p>
+<p>However, we also have to remember certain limitations of <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> in the case of nonlinear problems (see more details <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>).</p>
+<p>Let’s try to increase the standard deviations from 0.5 to 1.0.</p>
+</section>
+<section id="dataset-3-large-standard-deviation">
+<h2>Dataset 3. Large Standard Deviation<a class="headerlink" href="#dataset-3-large-standard-deviation" title="Link to this heading">#</a></h2>
+<p>Here we assume that standard deviations for each point equal to 1.0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.6753 +/- 0.9011
+  T-value: 62.893266, P-value: 0.000000
+Parameter B: 0.0099 +/- 0.0005
+  T-value: 21.433384, P-value: 0.000004
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 1.8090
+Reduced Chi-Squared: 0.3618
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
+Unweighted SER: 0.6015
+Weighted SER: 0.6015
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 1.8090
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 2838.6969
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 2811.9943
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 34678.7500
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -7.3371
+AIC (Akaike Information Criterion): 18.6742
+BIC (Bayesian Information Criterion): 18.5660
+AICc (Corrected AIC): 21.6742
+</pre></div>
+</div>
+<img alt="../../_images/25d6c1726a1f82ce196421b6e8ed49b071cbeb56d9ed9b97a2fdaf8a9f67a3cb.png" src="../../_images/25d6c1726a1f82ce196421b6e8ed49b071cbeb56d9ed9b97a2fdaf8a9f67a3cb.png" />
+</div>
+</div>
+<p>Results for the dataset 3:</p>
+<ul class="simple">
+<li><p>A reduced chi-squared value of 0.3618 is too low and indicates that we have overestimated the standard deviation of our measurements.</p></li>
+<li><p>Just a note: the errors for A and B parameters were increased afrer we increased <code class="docutils literal notranslate"><span class="pre">sigma</span></code> values.</p></li>
+</ul>
+<p>The standard deviation of 0.6 will make <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> very close to 1 for the dataset 3 (see below)</p>
+</section>
+<section id="dataset-3-standard-deviation-0-6">
+<h2>Dataset 3. Standard Deviation 0.6<a class="headerlink" href="#dataset-3-standard-deviation-0-6" title="Link to this heading">#</a></h2>
+<p>Here we assume that standard deviations for each point equal to 1.0.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.6753 +/- 0.5407
+  T-value: 104.822112, P-value: 0.000000
+Parameter B: 0.0099 +/- 0.0003
+  T-value: 35.722309, P-value: 0.000000
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9994
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9992
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 5.0250
+Reduced Chi-Squared: 1.0050
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.5084
+Unweighted SER: 0.6015
+Weighted SER: 1.0025
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 5.0250
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 7885.2692
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 7811.0952
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 96329.8611
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -5.3693
+AIC (Akaike Information Criterion): 14.7386
+BIC (Bayesian Information Criterion): 14.6304
+AICc (Corrected AIC): 17.7386
+</pre></div>
+</div>
+<img alt="../../_images/aee86504a236ea5f8b0b95ae29ed9182ac42234d11b77bc427831f17ae83503d.png" src="../../_images/aee86504a236ea5f8b0b95ae29ed9182ac42234d11b77bc427831f17ae83503d.png" />
+</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is close to 1.0 which would be perfect in a case of linear regression. However, we have non-linear regression and we need to be cautious about any interpretations of this metric.</p>
+<p>Our initial standard deviations of 0.5 are assumed to be measurement standard deviations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fact that the standard deviations of 0.6 makes <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> to be very close to 1.0 does not mean that 0.6 is a true standard deviation for our problem. Most probably, the true value of the standard deviations is somewhere between 0.5 and 0.6.</p>
+</div>
+</section>
+<section id="dataset-3-negligible-standard-deviation-for-the-first-point">
+<h2>Dataset 3. Negligible Standard Deviation for the First Point<a class="headerlink" href="#dataset-3-negligible-standard-deviation-for-the-first-point" title="Link to this heading">#</a></h2>
 <p>Here we assume that the Y-value for x=0 should be equal to 100, so the error for this y data point is close to zero. For the remaining points, we expect errors to be the same and equal to 0.5. Thus, standard deviation is <span class="math notranslate nohighlight">\(\sigma_{i} = 0.5\)</span> for each data point except the first one.</p>
-<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-9,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-9</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
+<p>We set <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array as <code class="docutils literal notranslate"><span class="pre">[1e-6,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code>. The first point with <code class="docutils literal notranslate"><span class="pre">sigma</span> <span class="pre">=</span> <span class="pre">1e-6</span></code> gets an extremely large weight, forcing the fitted curve to pass almost exactly through that point. This value is chosen to be practically zero, thereby assigning an exceptionally large weight to this data point in the minimization process, compelling the fitted curve to pass almost exactly through first point <span class="math notranslate nohighlight">\((x_1, y_1)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="c1"># Analyze the curve fit and get results</span>
+<span class="n">fit_results</span> <span class="o">=</span> <span class="n">analyze_curve_fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
+
+<span class="c1"># Print the metrics</span>
+<span class="n">print_metrics</span><span class="p">(</span><span class="n">fit_results</span><span class="p">)</span>
+
+<span class="c1"># Draw the curve fit plot</span>
+<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">fit_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Fitted Parameters ---
+Parameter A: 56.6753 +/- 0.4506
+  T-value: 125.786532, P-value: 0.000000
+Parameter B: 0.0099 +/- 0.0002
+  T-value: 42.866769, P-value: 0.000000
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Weighted R-squared: 0.9998
+Unweighted R-squared: 0.9994
+Weighted Adjusted R-squared: 0.9998
+Unweighted Adjusted R-squared: 0.9992
+Chi-Squared: 7.2361
+Reduced Chi-Squared: 1.4472
+Unweighted RMSE: 0.5084
+Weighted RMSE: 0.0000
+Unweighted SER: 0.6015
+Weighted SER: 1.2030
+
+--- Sum of Squares ---
+Weighted Residual Sum of Squares (RSS): 7.2361
+Unweighted Residual Sum of Squares (RSS): 1.8090
+Weighted Explained Sum of Squares (ESS): 40867.7639
+Unweighted Explained Sum of Squares (ESS): 2838.6969
+Weighted Centered Total Sum of Squares (TSS): 40875.0000
+Unweighted Centered Total Sum of Squares (TSS): 2811.9943
+Weighted Uncentered Total Sum of Squares (TSS): 10000000000098718.0000
+Unweighted Uncentered Total Sum of Squares (TSS): 34678.7500
+
+--- Information Criteria ---
+Maximum Log-Likelihood: 7.9238
+AIC (Akaike Information Criterion): -11.8476
+BIC (Bayesian Information Criterion): -11.9558
+AICc (Corrected AIC): -8.8476
+</pre></div>
+</div>
+<img alt="../../_images/0073a13d013834db9384cc175a4f1a3be8fdf6b324ae17f1a05ce1b889ba5f91.png" src="../../_images/0073a13d013834db9384cc175a4f1a3be8fdf6b324ae17f1a05ce1b889ba5f91.png" />
+</div>
+</div>
 <p>Based on the results, we will see why it was a bad idea to set negligible value of the standard deviation for the first point.</p>
 <section id="analysis-of-the-results">
 <h3>Analysis of the results<a class="headerlink" href="#analysis-of-the-results" title="Link to this heading">#</a></h3>
@@ -1246,16 +1506,6 @@ AICc (Corrected AIC): 17.3971
 <li><p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is too high</p></li>
 </ul>
 <p>Thus, we need to look for another custom function for the datasets 1 and 2.</p>
-<p>For the dataset 3:</p>
-<ul class="simple">
-<li><p><strong>Reduced Chi-Squared (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>):</strong> This is a measure of the <strong>goodness-of-fit relative to our assumed measurement errors</strong>. It normalizes the residuals by the standard deviation of the measurements (<span class="math notranslate nohighlight">\(\sigma_i\)</span>). A value close to 1 means the observed scatter of our data points around the fit is consistent with our assumed uncertainties.</p>
-<ul>
-<li><p>Since <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is 1.4472 (greater than 1), it suggests that the scatter in our data is <strong>larger than what we expected</strong> based on our assumed standard deviation of 0.5. This implies that we have likely <strong>underestimated the true measurement uncertainty</strong>.</p></li>
-</ul>
-</li>
-<li><p><strong>Root Mean Squared Error (RMSE):</strong> This is an <strong>estimate of the standard deviation of the residuals</strong>. The fact that our RMSE (0.5084) is very close to our assumed <span class="math notranslate nohighlight">\(\sigma_i\)</span> of 0.5 is a common occurrence and shows that our model is fitting the data well. However, because the reduced chi-squared is greater than 1, it tells us that the true underlying noise in the data is likely a bit larger than 0.5, even if the RMSE is close to that value. The <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is a more robust statistical tool for validating our assumption about the uncertainty of our measurements.</p></li>
-</ul>
-<p>Let’s try to increase the standard deviations from 0.5 to 1.0.</p>
 </section>
 <section id="usage-of-the-higher-value-of-errors">
 <h3>Usage of the Higher Value of Errors<a class="headerlink" href="#usage-of-the-higher-value-of-errors" title="Link to this heading">#</a></h3>
@@ -1264,12 +1514,6 @@ AICc (Corrected AIC): 17.3971
 <li><p>RMSE is too high</p></li>
 <li><p><span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> is too high</p></li>
 </ul>
-<p>Results for the dataset 3:</p>
-<ul class="simple">
-<li><p>A reduced chi-squared value of 0.3618 is too low and indicates that we have overestimated the standard deviation of our measurements.</p></li>
-<li><p>Also, note that the errors for A and B parameters were increased afrer we increased</p></li>
-</ul>
-<p>The standard deviation of 0.6 will make <span class="math notranslate nohighlight">\(\chi^2_{red}\)</span> very close to 1 for the dataset 3 (see below)</p>
 </section>
 </section>
 </section>
@@ -1340,7 +1584,10 @@ AICc (Corrected AIC): 17.3971
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-general-investigation">Dataset 3. General Investigation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-for-further-analysis">Methods for Further Analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-comparison">Dataset 3. Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-large-standard-deviation">Dataset 3. Large Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-standard-deviation-0-6">Dataset 3. Standard Deviation 0.6</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-3-negligible-standard-deviation-for-the-first-point">Dataset 3. Negligible Standard Deviation for the First Point</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-of-the-results">Analysis of the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-the-higher-value-of-errors">Usage of the Higher Value of Errors</a></li>
 </ul>
