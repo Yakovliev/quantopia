@@ -440,9 +440,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-investigation-of-odr">General Investigation of ODR</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-condition-number">Inverse Condition Number</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-s-for-halting-sum-of-squares-convergence">Reason(s) for Halting: Sum of Squares Convergence</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-1">Code 1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2">Code 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>
 </ul>
             </nav>
         </div>
@@ -456,8 +462,233 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="odr-code-examples">
 <h1>ODR - Code Examples<a class="headerlink" href="#odr-code-examples" title="Link to this heading">#</a></h1>
+<section id="general-investigation-of-odr">
+<h2>General Investigation of ODR<a class="headerlink" href="#general-investigation-of-odr" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.odr</span><span class="w"> </span><span class="kn">import</span> <span class="n">ODR</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">RealData</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The custom function to approximate the data.</span>
+<span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
+<span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
+    <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 3</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
+<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the ODR model and data</span>
+<span class="n">odr_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">model_function</span><span class="p">)</span>
+<span class="n">odr_data</span> <span class="o">=</span> <span class="n">RealData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sx</span><span class="o">=</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sy</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">)</span>
+
+<span class="c1"># Instantiate and run the ODR fit</span>
+<span class="n">odr_instance</span> <span class="o">=</span> <span class="n">ODR</span><span class="p">(</span><span class="n">odr_data</span><span class="p">,</span> <span class="n">odr_model</span><span class="p">,</span> <span class="n">beta0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">odr_instance</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Beta: [5.67694275e+01 9.88335260e-03]
+Beta Std Error: [4.26741666e-01 2.63972932e-04]
+Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
+ [-1.18588964e-04  9.25007382e-08]]
+Residual Variance: 0.7533097575791786
+Inverse Condition #: 0.17698951436366908
+Reason(s) for Halting:
+  Sum of squares convergence
+</pre></div>
+</div>
+</div>
+</div>
+<section id="inverse-condition-number">
+<h3>Inverse Condition Number<a class="headerlink" href="#inverse-condition-number" title="Link to this heading">#</a></h3>
+<p>The “Inverse Condition #” is the reciprocal (1/x) of the condition number. The condition number itself is a measure of how sensitive the solution (the estimated parameters of your model) is to changes in the input data.</p>
+<ul class="simple">
+<li><p><strong>A large Inverse Condition Number (close to 1)</strong> indicates a well-conditioned problem. This is desirable and suggests that small changes in your input data will only cause small changes in the estimated parameters.</p>
+<ul>
+<li><p>Our result of approximately 0.177 is in a moderate range - it’s not ideal (e.g., &gt;0.5 would be better for high precision), but it’s far from problematic levels (e.g., &lt;0.01), especially for a small dataset like ours. No major numerical instability is indicated here, and the fit should be reliable for practical purposes (for practical purposes, as long as inverse condition number isn’t extremely close to zero, it’s generally acceptable).</p></li>
+</ul>
+</li>
+<li><p><strong>A small Inverse Condition Number (close to 0)</strong> points to an ill-conditioned problem. In such cases, minor variations in the input data could lead to significant changes in the determined parameters, making the solution less reliable.</p></li>
+</ul>
+<p>In essence, this number helps you gauge the numerical stability and reliability of the parameter estimates provided by the Orthogonal Distance Regression (ODR) fit.</p>
+</section>
+<section id="reason-s-for-halting-sum-of-squares-convergence">
+<h3>Reason(s) for Halting: Sum of Squares Convergence<a class="headerlink" href="#reason-s-for-halting-sum-of-squares-convergence" title="Link to this heading">#</a></h3>
+<p>This indicates why the iterative fitting process stopped. The ODR algorithm works by iteratively adjusting the parameters (<code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> in your model) to minimize the sum of the squared weighted orthogonal distances from the data points to the fitted curve.</p>
+<p>“Sum of squares convergence” means that the algorithm terminated because the improvements in the sum of squared residuals from one iteration to the next became negligibly small. This is a standard and successful stopping criterion for such optimization routines. It implies that the algorithm has found a stable solution where further adjustments to the parameters do not significantly improve the fit to the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the original data in the results dictionary for plotting later</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_sigma_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_x</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_sigma_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_y</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_weights_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_weights_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Store results from ODR&#39;s Output object</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;odr_output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">beta</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sd_beta</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;cov_beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">cov_beta</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;inverse_condition_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">inv_condnum</span>
+
+<span class="c1"># Calculate t-values and p-values</span>
+<span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+<span class="n">p_values</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
+
+<span class="c1"># Chi-Squared and Reduced Chi-Squared from ODR output</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
+
+<span class="c1"># Calculate Chi-Squared manually as per the formula</span>
+<span class="c1"># ODR output provides delta (residuals in x) and eps (residuals in y)</span>
+<span class="n">delta_x</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
+<span class="n">epsilon_y</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
+
+<span class="n">chi_squared_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">delta_x</span> <span class="o">/</span> <span class="n">sigma_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">epsilon_y</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chi_squared_manual</span>
+
+<span class="c1"># Reduced Chi-Squared (manual calculation)</span>
+<span class="n">reduced_chi_squared_manual</span> <span class="o">=</span> <span class="n">chi_squared_manual</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
+
+<span class="c1"># Generate predicted values</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
+
+<span class="c1"># Unweighted residuals for unweighted metrics</span>
+<span class="n">unweighted_residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_residuals</span>
+
+<span class="c1"># Sum of Squares and R-squared metrics</span>
+<span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unweighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_obs</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">r_squared_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">unweighted_centered_tss</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_unweighted</span>
+
+<span class="c1"># Note: ODR does not have a concept of weighted R-squared as standard curve_fit.</span>
+<span class="c1"># The goodness-of-fit is primarily assessed by the reduced chi-squared.</span>
+
+<span class="c1"># Information Criteria (using the log-likelihood for ODR, which is implicitly</span>
+<span class="c1"># based on the chi-squared statistic, assuming a Gaussian error model).</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
+
+<span class="c1"># A simplified log-likelihood for ODR, based on the chi-squared value.</span>
+<span class="c1"># This is a good approximation for comparison purposes.</span>
+<span class="n">llf</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span>
+
+<span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
+<span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">llf</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aicc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">42</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="c1"># Generate predicted values</span>
+<span class="ne">---&gt; </span><span class="mi">42</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="c1"># Unweighted residuals for unweighted metrics</span>
+
+<span class="ne">NameError</span>: name &#39;function&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;odr_output&#39;</span><span class="p">]</span>
+<span class="n">fit_params</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span>
+<span class="n">std_errs</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+<span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span>
+<span class="n">p_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- ODR Fit Results ---&quot;</span><span class="p">)</span>
+<span class="n">output</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Summary of Results ---&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">std_errs</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">param</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">err</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  T-value: </span><span class="si">{</span><span class="n">t_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">, P-value: </span><span class="si">{</span><span class="n">p_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.8f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Model Fit Statistics ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of Observations (n): </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of Parameters (p): </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Degrees of Freedom (n-p): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Goodness-of-Fit &amp; Error Metrics ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared (from ODR): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared (manual): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (from ODR): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (manual): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Information Criteria ---&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC (Akaike Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>The res_var attribute of the Output is the so-called reduced Chi-square value for the fit, a popular choice of goodness-of-fit statistic. It is somewhat problematic for non-linear fitting, though. You can look at the residuals directly (out.delta for the X residuals and out.eps for the Y residuals). Implementing a cross-validation or bootstrap method for determining goodness-of-fit, as suggested in the linked paper, is left as an exercise for the reader.</p>
 <p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html</a></p>
+</section>
+</section>
 <section id="code-1">
 <h2>Code 1<a class="headerlink" href="#code-1" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -467,8 +698,13 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.odr</span><span class="w"> </span><span class="kn">import</span> <span class="n">ODR</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="n">RealData</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">analyze_odr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_odr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs an Orthogonal Distance Regression (ODR) curve fit and calculates</span>
 <span class="sd">    various goodness-of-fit and error metrics.</span>
@@ -490,30 +726,40 @@ document.write(`
     <span class="n">odr_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
     <span class="n">odr_data</span> <span class="o">=</span> <span class="n">RealData</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sx</span><span class="o">=</span><span class="n">sigma_x</span><span class="p">,</span> <span class="n">sy</span><span class="o">=</span><span class="n">sigma_y</span><span class="p">)</span>
 
+    <span class="c1"># Instantiate and run the ODR fit</span>
+    <span class="n">odr_instance</span> <span class="o">=</span> <span class="n">ODR</span><span class="p">(</span><span class="n">odr_data</span><span class="p">,</span> <span class="n">odr_model</span><span class="p">,</span> <span class="n">beta0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">odr_instance</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
     <span class="c1"># Store the original data in the results dictionary for plotting later</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_sigma_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_x</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_sigma_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sigma_y</span>
-
-    <span class="c1"># Instantiate and run the ODR fit</span>
-    <span class="n">odr_instance</span> <span class="o">=</span> <span class="n">ODR</span><span class="p">(</span><span class="n">odr_data</span><span class="p">,</span> <span class="n">odr_model</span><span class="p">,</span> <span class="n">beta0</span><span class="o">=</span><span class="n">initial_guess</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">odr_instance</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_weights_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_weights_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     
     <span class="c1"># Store results from ODR&#39;s Output object</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;odr_output&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">beta</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sd_beta</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;cov_beta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">cov_beta</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;inverse_condition_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">inv_condnum</span>
+
+    <span class="c1"># Calculate t-values and p-values</span>
+    <span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+    <span class="n">p_values</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
 
     <span class="c1"># Chi-Squared and Reduced Chi-Squared from ODR output</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
 
     <span class="c1"># Calculate Chi-Squared manually as per the formula</span>
-    <span class="c1"># ODR output provides delta (error in x) and eps (error in y)</span>
+    <span class="c1"># ODR output provides delta (residuals in x) and eps (residuals in y)</span>
     <span class="n">delta_x</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
     <span class="n">epsilon_y</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
     
@@ -523,15 +769,9 @@ document.write(`
     <span class="c1"># Reduced Chi-Squared (manual calculation)</span>
     <span class="n">reduced_chi_squared_manual</span> <span class="o">=</span> <span class="n">chi_squared_manual</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
-    
-    <span class="c1"># Calculate t-values and p-values</span>
-    <span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
-    <span class="n">p_values</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
 
     <span class="c1"># Generate predicted values</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
     
     <span class="c1"># Unweighted residuals for unweighted metrics</span>
@@ -566,8 +806,13 @@ document.write(`
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aicc</span>
 
     <span class="k">return</span> <span class="n">results</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">print_metrics</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_metrics</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prints the calculated metrics from the results dictionary for ODR.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -604,8 +849,13 @@ document.write(`
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AIC (Akaike Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BIC (Bayesian Information Criterion): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;AICc (Corrected AIC): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">draw_curve_fit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_curve_fit</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Visualizes the original data with error bars and the fitted curve from ODR.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -650,9 +900,13 @@ document.write(`
     <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">ymin</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1">## Dataset 3. Comparison</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The custom function to approximate the data.</span>
 <span class="sd">    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100</span>
@@ -717,6 +971,25 @@ AICc (Corrected AIC): 23.6317
 </pre></div>
 </div>
 <img alt="../../_images/f10d83ab880cec76ad5dd4f4c1a137a17cfde658579dbffd0127001af0245a41.png" src="../../_images/f10d83ab880cec76ad5dd4f4c1a137a17cfde658579dbffd0127001af0245a41.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">odr_results</span><span class="p">[</span><span class="s1">&#39;odr_output&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Beta: [5.67694275e+01 9.88335260e-03]
+Beta Std Error: [4.26741666e-01 2.63972932e-04]
+Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
+ [-1.18588964e-04  9.25007382e-08]]
+Residual Variance: 0.7533097575791786
+Inverse Condition #: 0.17698951436366908
+Reason(s) for Halting:
+  Sum of squares convergence
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -1189,6 +1462,9 @@ AICc (Corrected AIC): 40.5149
 <img alt="../../_images/68056f4ff588a076fb6be9b1d0110499cecc2f720592236cb8a33364db9b95b0.png" src="../../_images/68056f4ff588a076fb6be9b1d0110499cecc2f720592236cb8a33364db9b95b0.png" />
 </div>
 </div>
+</section>
+<section id="code-4">
+<h2>Code 4<a class="headerlink" href="#code-4" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -1825,9 +2101,15 @@ AICc (Corrected AIC): 32.3505
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-investigation-of-odr">General Investigation of ODR</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-condition-number">Inverse Condition Number</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-s-for-halting-sum-of-squares-convergence">Reason(s) for Halting: Sum of Squares Convergence</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-1">Code 1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2">Code 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>
 </ul>
   </nav></div>
 
