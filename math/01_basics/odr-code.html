@@ -554,6 +554,31 @@ Reason(s) for Halting:
 <p>“Sum of squares convergence” means that the algorithm terminated because the improvements in the sum of squared residuals from one iteration to the next became negligibly small. This is a standard and successful stopping criterion for such optimization routines. It implies that the algorithm has found a stable solution where further adjustments to the parameters do not significantly improve the fit to the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fit_params</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">beta</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fitted parameters (output.beta): </span><span class="si">{</span><span class="n">fit_params</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">sd_beta</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sd_beta</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviations of the parameters (output.sd_beta): </span><span class="si">{</span><span class="n">sd_beta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">sd_beta_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">cov_beta</span> <span class="o">*</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard deviations of the parameters (alternative calculation using cov_beta): </span><span class="si">{</span><span class="n">sd_beta_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">inv_cond_num</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">inv_condnum</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Inverse condition number (output.inv_condnum): </span><span class="si">{</span><span class="n">inv_cond_num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitted parameters (output.beta): [5.67694275e+01 9.88335260e-03]
+Standard deviations of the parameters (output.sd_beta): [4.26741666e-01 2.63972932e-04]
+Standard deviations of the parameters (alternative calculation using cov_beta): [4.26741666e-01 2.63972932e-04]
+Inverse condition number (output.inv_condnum): 0.17698951436366908
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Store the original data in the results dictionary for plotting later</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;original_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_obs</span>
@@ -571,30 +596,95 @@ Reason(s) for Halting:
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;inverse_condition_number&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">inv_condnum</span>
-
-<span class="c1"># Calculate t-values and p-values</span>
-<span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_values</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;std_errs&#39;</span><span class="p">]</span>
 <span class="n">p_values</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t_values</span><span class="p">),</span> <span class="n">df</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">2</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
-
-<span class="c1"># Chi-Squared and Reduced Chi-Squared from ODR output</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;t-values: </span><span class="si">{</span><span class="n">t_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;p-values: </span><span class="si">{</span><span class="n">p_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t-values: [133.02996178  37.44078054]
+p-values: [4.55295786e-10 2.56015184e-07]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">delta_x</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;delta_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Array of estimated errors in input variables, of same shape as x (output.delta):</span><span class="se">\n</span><span class="si">{</span><span class="n">delta_x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array of estimated errors in input variables, of same shape as x (output.delta):
+[ 0.          1.12128483  1.00051757 -1.82517415  0.59658578 -0.05011438
+ -0.01544762]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epsilon_y</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
+<span class="n">results</span><span class="p">[</span><span class="s1">&#39;epsilon_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon_y</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Array of estimated errors in response variables, of same shape as y (output.eps):</span><span class="se">\n</span><span class="si">{</span><span class="n">epsilon_y</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array of estimated errors in response variables, of same shape as y (output.eps):
+[ 0.          0.15853071  0.18633185 -0.52598787  0.46385468 -0.09998956
+ -0.09054455]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_square</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (output.sum_square): </span><span class="si">{</span><span class="n">sum_square</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">res_var</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (output.res_var): </span><span class="si">{</span><span class="n">res_var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Calculate Chi-Squared manually as per the formula</span>
 <span class="c1"># ODR output provides delta (residuals in x) and eps (residuals in y)</span>
-<span class="n">delta_x</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
-<span class="n">epsilon_y</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
-
-<span class="n">chi_squared_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">delta_x</span> <span class="o">/</span> <span class="n">sigma_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">epsilon_y</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">chi_squared_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">output</span><span class="o">.</span><span class="n">delta</span> <span class="o">/</span> <span class="n">sigma_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">eps</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chi_squared_manual</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">chi_squared_manual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Reduced Chi-Squared (manual calculation)</span>
 <span class="n">reduced_chi_squared_manual</span> <span class="o">=</span> <span class="n">chi_squared_manual</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
-
-<span class="c1"># Generate predicted values</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">reduced_chi_squared_manual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chi-squared (output.sum_square): 3.7665487878958936
+Reduced Chi-squared (output.res_var): 0.7533097575791786
+Chi-squared (manual calculation): 3.766548787895894
+Reduced Chi-squared (manual calculation): 0.7533097575791788
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate predicted values</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
 
@@ -634,12 +724,11 @@ Reason(s) for Halting:
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">42</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="c1"># Generate predicted values</span>
-<span class="ne">---&gt; </span><span class="mi">42</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
-<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
-<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="c1"># Unweighted residuals for unweighted metrics</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Generate predicted values</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Unweighted residuals for unweighted metrics</span>
 
 <span class="ne">NameError</span>: name &#39;function&#39; is not defined
 </pre></div>

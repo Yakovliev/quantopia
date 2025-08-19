@@ -36,45 +36,7 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Store the original data in the results dictionary for plotting later
-results['original_x'] = x
-results['original_y'] = y_obs
-results['original_sigma_x'] = sigma_x
-results['original_sigma_y'] = sigma_y
-results['original_weights_x'] = 1.0 / (sigma_x**2)
-results['original_weights_y'] = 1.0 / (sigma_y**2)
 
-# Store results from ODR's Output object
-results['odr_output'] = output
-results['fit_params'] = output.beta
-results['std_errs'] = output.sd_beta
-results['cov_beta'] = output.cov_beta
-results['number_of_observations'] = len(x)
-results['number_of_parameters'] = len(output.beta)
-results['degrees_of_freedom'] = results['number_of_observations'] - results['number_of_parameters']
-results['inverse_condition_number'] = output.inv_condnum
-
-# Calculate t-values and p-values
-t_values = results['fit_params'] / results['std_errs']
-p_values = stats.t.sf(np.abs(t_values), df=results['degrees_of_freedom']) * 2
-results['t_values'] = t_values
-results['p_values'] = p_values
-
-# Chi-Squared and Reduced Chi-Squared from ODR output
-results['chi_squared_odr'] = output.sum_square
-results['reduced_chi_squared_odr'] = output.res_var
-
-# Calculate Chi-Squared manually as per the formula
-# ODR output provides delta (residuals in x) and eps (residuals in y)
-delta_x = output.delta
-epsilon_y = output.eps
-
-chi_squared_manual = np.sum((delta_x / sigma_x)**2 + (epsilon_y / sigma_y)**2)
-results['chi_squared_manual'] = chi_squared_manual
-
-# Reduced Chi-Squared (manual calculation)
-reduced_chi_squared_manual = chi_squared_manual / results['degrees_of_freedom']
-results['reduced_chi_squared_manual'] = reduced_chi_squared_manual
 
 # Generate predicted values
 y_pred = function(results['fit_params'], x + delta_x) #????
@@ -115,12 +77,11 @@ results['aicc'] = aicc
 
 [31m---------------------------------------------------------------------------[39m
 [31mNameError[39m                                 Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[6][39m[32m, line 42[39m
-[32m     39[39m results[[33m'[39m[33mreduced_chi_squared_manual[39m[33m'[39m] = reduced_chi_squared_manual
-[32m     41[39m [38;5;66;03m# Generate predicted values[39;00m
-[32m---> [39m[32m42[39m y_pred = [43mfunction[49m(results[[33m'[39m[33mfit_params[39m[33m'[39m], x + delta_x) [38;5;66;03m#????[39;00m
-[32m     43[39m results[[33m'[39m[33my_pred[39m[33m'[39m] = y_pred
-[32m     45[39m [38;5;66;03m# Unweighted residuals for unweighted metrics[39;00m
+[36mCell[39m[36m [39m[32mIn[12][39m[32m, line 2[39m
+[32m      1[39m [38;5;66;03m# Generate predicted values[39;00m
+[32m----> [39m[32m2[39m y_pred = [43mfunction[49m(results[[33m'[39m[33mfit_params[39m[33m'[39m], x + delta_x) [38;5;66;03m#????[39;00m
+[32m      3[39m results[[33m'[39m[33my_pred[39m[33m'[39m] = y_pred
+[32m      5[39m [38;5;66;03m# Unweighted residuals for unweighted metrics[39;00m
 
 [31mNameError[39m: name 'function' is not defined
 
