@@ -654,30 +654,30 @@ p-values: [4.55295786e-10 2.56015184e-07]
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_square</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (output.sum_square): </span><span class="si">{</span><span class="n">sum_square</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (output.sum_square): </span><span class="si">{</span><span class="n">sum_square</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">res_var</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (output.res_var): </span><span class="si">{</span><span class="n">res_var</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (output.res_var): </span><span class="si">{</span><span class="n">res_var</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Calculate Chi-Squared manually as per the formula</span>
 <span class="c1"># ODR output provides delta (residuals in x) and eps (residuals in y)</span>
 <span class="n">chi_squared_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">output</span><span class="o">.</span><span class="n">delta</span> <span class="o">/</span> <span class="n">sigma_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">eps</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chi_squared_manual</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">chi_squared_manual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">chi_squared_manual</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="c1"># Reduced Chi-Squared (manual calculation)</span>
 <span class="n">reduced_chi_squared_manual</span> <span class="o">=</span> <span class="n">chi_squared_manual</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">reduced_chi_squared_manual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-squared (manual calculation): </span><span class="si">{</span><span class="n">reduced_chi_squared_manual</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chi-squared (output.sum_square): 3.7665487878958936
-Reduced Chi-squared (output.res_var): 0.7533097575791786
-Chi-squared (manual calculation): 3.766548787895894
-Reduced Chi-squared (manual calculation): 0.7533097575791788
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chi-squared (output.sum_square): 3.7665
+Reduced Chi-squared (output.res_var): 0.7533
+Chi-squared (manual calculation): 3.7665
+Reduced Chi-squared (manual calculation): 0.7533
 </pre></div>
 </div>
 </div>
@@ -685,7 +685,7 @@ Reduced Chi-squared (manual calculation): 0.7533097575791788
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate predicted values</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model_function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
 
 <span class="c1"># Unweighted residuals for unweighted metrics</span>
@@ -718,19 +718,6 @@ Reduced Chi-squared (manual calculation): 0.7533097575791788
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aicc</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Generate predicted values</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Unweighted residuals for unweighted metrics</span>
-
-<span class="ne">NameError</span>: name &#39;function&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -773,9 +760,45 @@ Reduced Chi-squared (manual calculation): 0.7533097575791788
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
+Beta: [5.67694275e+01 9.88335260e-03]
+Beta Std Error: [4.26741666e-01 2.63972932e-04]
+Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
+ [-1.18588964e-04  9.25007382e-08]]
+Residual Variance: 0.7533097575791786
+Inverse Condition #: 0.17698951436366908
+Reason(s) for Halting:
+  Sum of squares convergence
+
+--- Summary of Results ---
+Parameter A: 56.76943 +/- 0.42674
+  T-value: 133.02996178, P-value: 0.00000000
+Parameter B: 0.00988 +/- 0.00026
+  T-value: 37.44078054, P-value: 0.00000026
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit &amp; Error Metrics ---
+Chi-Squared (from ODR): 3.7665
+Chi-Squared (manual): 3.7665
+Reduced Chi-Squared (from ODR): 0.7533
+Reduced Chi-Squared (manual): 0.7533
+Unweighted R-squared: 0.9998
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -8.3158
+AIC (Akaike Information Criterion): 20.6317
+BIC (Bayesian Information Criterion): 20.5235
+AICc (Corrected AIC): 23.6317
+</pre></div>
 </div>
-<p>The res_var attribute of the Output is the so-called reduced Chi-square value for the fit, a popular choice of goodness-of-fit statistic. It is somewhat problematic for non-linear fitting, though. You can look at the residuals directly (out.delta for the X residuals and out.eps for the Y residuals). Implementing a cross-validation or bootstrap method for determining goodness-of-fit, as suggested in the linked paper, is left as an exercise for the reader.</p>
-<p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.odr.Output.html</a></p>
+</div>
+</div>
 </section>
 </section>
 <section id="code-1">
