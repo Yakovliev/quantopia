@@ -10,23 +10,23 @@ options:  # Add these options
 parts:
   - caption: MATH
     chapters:
-      - file: math/01_basics/gradient-operator
-      - file: math/01_basics/gradient-directional-derivative
-      - file: math/01_basics/divergence
-      - file: math/01_basics/fourier-transform-01
-      - file: math/01_basics/least-squares-regression
-      - file: math/01_basics/least-squares-regression-code
-      - file: math/01_basics/ordinary-least-squares
-      - file: math/01_basics/ordinary-least-squares-code
-      - file: math/01_basics/variance-covariance
-      - file: math/01_basics/weighted-least-squares
-      - file: math/01_basics/weighted-least-squares-code-1
-      - file: math/01_basics/weighted-least-squares-code-2
-      - file: math/01_basics/goodness-of-fit-and-chi-squared
-      - file: math/01_basics/aic-and-bic
-      - file: math/01_basics/weighted-least-squares-code-3
-      - file: math/01_basics/orthogonal-distance-regression
-      - file: math/01_basics/odr-code
+      - file: math/gradient-operator
+      - file: math/gradient-directional-derivative
+      - file: math/divergence
+      - file: math/fourier-transform-01
+      - file: math/least-squares-regression
+      - file: math/least-squares-regression-code
+      - file: math/ordinary-least-squares
+      - file: math/ordinary-least-squares-code
+      - file: math/variance-covariance
+      - file: math/weighted-least-squares
+      - file: math/weighted-least-squares-code-1
+      - file: math/weighted-least-squares-code-2
+      - file: math/goodness-of-fit-and-chi-squared
+      - file: math/aic-and-bic
+      - file: math/weighted-least-squares-code-3
+      - file: math/orthogonal-distance-regression
+      - file: math/odr-code
 
   - caption: PHYSICS
     chapters:
@@ -34,11 +34,11 @@ parts:
       - file: physics/continuity-equation-02
       - file: physics/ensemble
       - file: physics/microcanonical-ensemble
-      - file: physics/fokker-planck-equation-example
+      # - file: physics/fokker-planck-equation-example
 
   
-  - caption: DATA SCIENCE AND MACHINE LEARNING
-    chapters:
-      - file: data-science/knn-algorithm
-      - file: data-science/naive-bayes
-      - file: data-science/logistic-regression
+  # - caption: DATA SCIENCE AND MACHINE LEARNING
+    # chapters:
+      # - file: data-science/knn-algorithm
+      # - file: data-science/naive-bayes
+      # - file: data-science/logistic-regression

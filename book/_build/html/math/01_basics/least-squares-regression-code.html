@@ -209,13 +209,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../physics/fokker-planck-equation-example.html">Fokker-Planck Equation - Example Analysis (preview)</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA SCIENCE AND MACHINE LEARNING</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../../data-science/knn-algorithm.html">K-Nearest Neighbors (KNN) Algorithm (preview)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data-science/naive-bayes.html">Naive Bayes Method (preview)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../data-science/logistic-regression.html">Logistic Regression (preview)</a></li>
 </ul>
 
     </div>
@@ -711,8 +704,8 @@ Value for x=0 (Expected value is 100): 100.0000
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept: 5.112619361741473
-Coefficient (slope): 2.0361891065482363
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Intercept: 5.112619361741471
+Coefficient (slope): 2.0361891065482367
 R-squared: 0.9949303922700998
 </pre></div>
 </div>
@@ -741,48 +734,31 @@ R-squared: 0.9949303922700998
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> <span class="c1"># often used with statsmodels</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.995
+Model:                            OLS   Adj. R-squared:                  0.994
+Method:                 Least Squares   F-statistic:                     1178.
+Date:                Thu, 21 Aug 2025   Prob (F-statistic):           4.08e-08
+Time:                        23:49:00   Log-Likelihood:                -2.5554
+No. Observations:                   8   AIC:                             9.111
+Df Residuals:                       6   BIC:                             9.270
+Df Model:                           1                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P&gt;|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          5.1126      0.300     17.062      0.000       4.379       5.846
+x1             2.0362      0.059     34.315      0.000       1.891       2.181
+==============================================================================
+Omnibus:                        0.854   Durbin-Watson:                   2.485
+Prob(Omnibus):                  0.653   Jarque-Bera (JB):                0.559
+Skew:                           0.106   Prob(JB):                        0.756
+Kurtosis:                       1.722   Cond. No.                         11.5
+==============================================================================
 
-<span class="n">File</span> <span class="o">~/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">Science</span><span class="o">/</span><span class="n">quantopia</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.13</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">api</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">76</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="s2">&quot;BayesGaussMI&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="s2">&quot;BinomialBayesMixedGLM&quot;</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">72</span>     <span class="s2">&quot;__version_info__&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="p">]</span>
-<span class="ne">---&gt; </span><span class="mi">76</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">distributions</span><span class="p">,</span> <span class="n">iolib</span><span class="p">,</span> <span class="n">regression</span><span class="p">,</span> <span class="n">robust</span><span class="p">,</span> <span class="n">tools</span>
-<span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.__init__</span><span class="w"> </span><span class="kn">import</span> <span class="n">test</span>
-<span class="g g-Whitespace">     </span><span class="mi">78</span> <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels._version</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">79</span>     <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">version_tuple</span> <span class="k">as</span> <span class="n">__version_info__</span>
-<span class="g g-Whitespace">     </span><span class="mi">80</span> <span class="p">)</span>
-
-<span class="n">File</span> <span class="o">~/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">Science</span><span class="o">/</span><span class="n">quantopia</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.13</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">distributions</span><span class="o">/</span><span class="fm">__init__</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">7</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.empirical_distribution</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">ECDF</span><span class="p">,</span> <span class="n">ECDFDiscrete</span><span class="p">,</span> <span class="n">monotone_fn_inverter</span><span class="p">,</span> <span class="n">StepFunction</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.edgeworth</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExpandedNormal</span>
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span><span class="w"> </span><span class="nn">.discrete</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">genpoisson_p</span><span class="p">,</span> <span class="n">zipoisson</span><span class="p">,</span> <span class="n">zigenpoisson</span><span class="p">,</span> <span class="n">zinegbin</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="s1">&#39;ECDF&#39;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="s1">&#39;ECDFDiscrete&#39;</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>     <span class="mi">21</span>     <span class="s1">&#39;zipoisson&#39;</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="n">test</span> <span class="o">=</span> <span class="n">PytestTester</span><span class="p">()</span>
-
-<span class="n">File</span> <span class="o">~/</span><span class="n">Desktop</span><span class="o">/</span><span class="n">Science</span><span class="o">/</span><span class="n">quantopia</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.13</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">statsmodels</span><span class="o">/</span><span class="n">distributions</span><span class="o">/</span><span class="n">discrete</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">rv_discrete</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">nbinom</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">gammaln</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy._lib._util</span><span class="w"> </span><span class="kn">import</span> <span class="n">_lazywhere</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.base.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenericLikelihoodModel</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">class</span><span class="w"> </span><span class="nc">genpoisson_p_gen</span><span class="p">(</span><span class="n">rv_discrete</span><span class="p">):</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;_lazywhere&#39; from &#39;scipy._lib._util&#39; (/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/scipy/_lib/_util.py)
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 </pre></div>
 </div>
 </div>
@@ -871,7 +847,7 @@ Optimal Intercept (b): 5.1126 +/- 0.2996
         },
         kernelOptions: {
             name: "python3",
-            path: "./math/01_basics"
+            path: "./math\01_basics"
         },
         predefinedOutput: true
     }
