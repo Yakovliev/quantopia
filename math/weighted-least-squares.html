@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Weighted Least Squares &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/weighted-least-squares';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="WLS - Code Examples Part 1" href="weighted-least-squares-code-1.html" />
+    <link rel="prev" title="Variance and Covariance" href="variance-covariance.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/weighted-least-squares.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/weighted-least-squares.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/weighted-least-squares.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Weighted Least Squares</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-weighted-least-squares-wls">What is Weighted Least Squares (WLS)?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-individual-data-points-in-weighted-least-squares">Interpretation of Individual Data Points in Weighted Least Squares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#role-in-weighted-least-squares-wls">Role in Weighted Least Squares (WLS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-each-point-has-the-same-standard-deviation">What if each point has the same standard deviation?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-a-using-a-constant-sigma-array-with-absolute-sigma-true">Scenario A: Using a constant <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array with <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-b-skipping-the-sigma-parameter">Scenario B: Skipping the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-residual-sum-of-squares-wrss">Weighted Residual Sum of Squares (WRSS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-sum-of-squares-tss">Total Sum of Squares (TSS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-sum-of-squares-ess">Explained Sum of Squares (ESS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2">R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-rmse-and-ser">Error Metrics: RMSE and SER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-squared-error-mse">Mean Squared Error (MSE)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="weighted-least-squares">
+<h1>Weighted Least Squares<a class="headerlink" href="#weighted-least-squares" title="Link to this heading">#</a></h1>
+<section id="what-is-weighted-least-squares-wls">
+<h2>What is Weighted Least Squares (WLS)?<a class="headerlink" href="#what-is-weighted-least-squares-wls" title="Link to this heading">#</a></h2>
+<p><strong>Weighted Least Squares (WLS)</strong> is a variation of the Ordinary Least Squares (OLS) method. In OLS, it’s assumed that the variance of the errors (residuals) is constant across all observations. This assumption is called <strong>homoscedasticity</strong>. However, in many real-world scenarios, this assumption doesn’t hold; the errors might be larger for some observations than for others. This situation is called <strong>heteroscedasticity</strong>.</p>
+<p>When heteroscedasticity is present, OLS gives equal weight to all data points. This can lead to inefficient parameter estimates (meaning the estimates are not the most precise possible) and incorrect standard errors, which in turn affect the reliability of confidence intervals and hypothesis tests.</p>
+<p>WLS addresses this by assigning different <strong>weights</strong> to each data point in the regression. The goal of WLS is to minimize the sum of the <em>weighted</em> squared residuals:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(w_i\)</span> is the weight for the <span class="math notranslate nohighlight">\(i\)</span>-th data point.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> is the observed dependent variable for the <span class="math notranslate nohighlight">\(i\)</span>-th point.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the predicted value from the model for the <span class="math notranslate nohighlight">\(i\)</span>-th point, with parameters <span class="math notranslate nohighlight">\(\beta\)</span>.</p></li>
+</ul>
+<p><strong>How are weights determined?</strong>
+The weights are typically inversely proportional to the variance of the errors for each observation. If <span class="math notranslate nohighlight">\(\sigma_i^2\)</span> is the variance of the error for the <span class="math notranslate nohighlight">\(i\)</span>-th observation, then the weight <span class="math notranslate nohighlight">\(w_i\)</span> is usually <span class="math notranslate nohighlight">\(1/\sigma_i^2\)</span>. This means:</p>
+<ul class="simple">
+<li><p>Observations with smaller errors (lower variance) get larger weights, influencing the fit more.</p></li>
+<li><p>Observations with larger errors (higher variance) get smaller weights, influencing the fit less.</p></li>
+</ul>
+<p>NOTE: For additional statistical context, Weighted Least Squares is a special case of a broader method known as Generalized Least Squares (GLS). GLS is designed for situations where the errors are either heteroscedastic (have non-constant variance) or are correlated with each other. WLS simplifies the GLS framework by assuming that the errors, while having different variances, are not correlated with one another. This means the covariance matrix of the errors is a diagonal matrix, which makes the calculations more straightforward than in the full GLS approach.</p>
+</section>
+<section id="standard-deviation">
+<h2>Standard deviation<a class="headerlink" href="#standard-deviation" title="Link to this heading">#</a></h2>
+<p>In experimental sciences and data analysis, observations are inherently subject to <strong>measurement uncertainty</strong>. This uncertainty reflects the lack of perfect knowledge about the true value of a quantity due to limitations of instruments, environmental variations, or inherent stochastic processes. In our case of the regression analysis and statistics, we may also call it as an “error”.</p>
+<p>The <strong>standard deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)</strong> is the most common statistical measure used to quantify the spread or dispersion of a set of data points around their mean. In the context of individual experimental measurements, the standard deviation of a measurement (or its uncertainty) refers to the expected variability if that measurement were to be repeated multiple times under identical conditions.</p>
+<p>If a measurement <span class="math notranslate nohighlight">\(Y\)</span> is reported as <span class="math notranslate nohighlight">\(Y \pm \delta Y\)</span>, where <span class="math notranslate nohighlight">\(\delta Y\)</span> represents the uncertainty, this <span class="math notranslate nohighlight">\(\delta Y\)</span> is frequently taken to be the <strong>standard deviation</strong> of that measurement. It implies that approximately 68.3% of repeated measurements would fall within the range <span class="math notranslate nohighlight">\([Y - \delta Y, Y + \delta Y]\)</span>, assuming a normal distribution of errors.</p>
+<section id="interpretation-of-individual-data-points-in-weighted-least-squares">
+<h3>Interpretation of Individual Data Points in Weighted Least Squares<a class="headerlink" href="#interpretation-of-individual-data-points-in-weighted-least-squares" title="Link to this heading">#</a></h3>
+<p>When performing regression analysis, especially Weighted Least Squares (WLS), each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> is treated as follows:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(x_i\)</span> (Independent Variable):</strong> Typically assumed to be known precisely, or to have negligible uncertainty compared to <span class="math notranslate nohighlight">\(y_i\)</span>.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(y_i\)</span> (Dependent Variable):</strong> This value is considered the <strong>best estimate</strong> (or the sample mean) of the true underlying value of the dependent variable at <span class="math notranslate nohighlight">\(x_i\)</span>. This implies that if multiple independent measurements of <span class="math notranslate nohighlight">\(y\)</span> were taken at <span class="math notranslate nohighlight">\(x_i\)</span>, <span class="math notranslate nohighlight">\(y_i\)</span> would represent their average, aiming to minimize random errors.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(\sigma_i\)</span> (Uncertainty/Standard Deviation of <span class="math notranslate nohighlight">\(y_i\)</span>):</strong> This parameter, provided to the fitting algorithm (e.g., via the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> argument in <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>), quantifies the <strong>standard deviation of the measurement <span class="math notranslate nohighlight">\(y_i\)</span></strong>. It reflects the precision with which <span class="math notranslate nohighlight">\(y_i\)</span> was determined. A smaller <span class="math notranslate nohighlight">\(\sigma_i\)</span> indicates a more precise (less uncertain) measurement, and vice-versa.</p></li>
+</ul>
+</section>
+<section id="role-in-weighted-least-squares-wls">
+<h3>Role in Weighted Least Squares (WLS)<a class="headerlink" href="#role-in-weighted-least-squares-wls" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code> function, when provided with the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array and <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code>, performs a Weighted Least Squares minimization.</p>
+<ul>
+<li><p><strong>Weight Calculation:</strong> For each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> with associated standard deviation <span class="math notranslate nohighlight">\(\sigma_i\)</span>, a weight <span class="math notranslate nohighlight">\(w_i\)</span> is calculated as the inverse of the variance: <span class="math notranslate nohighlight">\(w_i = \frac{1}{\sigma_i^2}\)</span>.</p></li>
+<li><p><strong>Minimization Objective:</strong> The Levenberg-Marquardt algorithm (the default for <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code>) then seeks to minimize the <strong>weighted residual sum of squares (WRSS)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS, <span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the model’s predicted value and <span class="math notranslate nohighlight">\(\beta\)</span> represents the model parameters.</p>
+</li>
+<li><p><strong>Impact of Weights:</strong> Measurements with smaller <span class="math notranslate nohighlight">\(\sigma_i\)</span> (higher precision) receive larger weights (<span class="math notranslate nohighlight">\(w_i\)</span>), thus exerting a greater influence on the determination of the fitted parameters. Conversely, measurements with larger <span class="math notranslate nohighlight">\(\sigma_i\)</span> (lower precision) receive smaller weights, having less impact on the fit. This ensures that the fitting process prioritizes minimizing deviations for the more reliable data points.</p></li>
+</ul>
+<p>By incorporating these standard deviations, WLS provides more statistically efficient (more precise) estimates of the model parameters when the assumption of constant error variance (homoscedasticity) is violated, as is the case when different data points have different known uncertainties.</p>
+</section>
+</section>
+<section id="what-if-each-point-has-the-same-standard-deviation">
+<h2>What if each point has the same standard deviation?<a class="headerlink" href="#what-if-each-point-has-the-same-standard-deviation" title="Link to this heading">#</a></h2>
+<p>If each data point has the same standard deviation, the homoscedasticity is not violated. However, we can use standard deviation data to improve our results.</p>
+<p><strong>Homoscedasticity</strong> is the statistical assumption that the <strong>variance of the errors</strong> is constant across all levels of the independent variable. In our notation, this means <span class="math notranslate nohighlight">\(\sigma_i^2 = C\)</span>, where <span class="math notranslate nohighlight">\(C\)</span> is a constant for all data points <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Since standard deviation is the square root of variance (<span class="math notranslate nohighlight">\(\sigma = \sqrt{\sigma^2}\)</span>), a constant variance implies a constant standard deviation. If every data point has the same standard deviation, then the assumption of homoscedasticity is <strong>satisfied and not violated</strong>.</p>
+<p>This leads to a crucial and interesting point about the relationship between Weighted Least Squares (WLS) and Ordinary Least Squares (OLS).</p>
+<ol class="arabic">
+<li><p><strong>WLS Objective:</strong> WLS minimizes the weighted sum of squared residuals:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2\]</div>
+<p>where the weight <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>.</p>
+</li>
+<li><p><strong>When Homoscedasticity is Satisfied:</strong> If every data point has the same standard deviation, let’s call it <span class="math notranslate nohighlight">\(\sigma_{const}\)</span>. Then, for all <span class="math notranslate nohighlight">\(i\)</span>, we have <span class="math notranslate nohighlight">\(\sigma_i = \sigma_{const}\)</span>. This means all the weights are also the same:</p>
+<div class="math notranslate nohighlight">
+\[w_i = \frac{1}{\sigma_i^2} = \frac{1}{\sigma_{const}^2} = C\]</div>
+<p>where <span class="math notranslate nohighlight">\(C\)</span> is a constant.</p>
+</li>
+<li><p><strong>Mathematical Equivalence:</strong> The WLS minimization objective then becomes:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} C (y_i - f(x_i, \beta))^2 = C \sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
+<p>Since <span class="math notranslate nohighlight">\(C\)</span> is just a positive constant, minimizing this expression is mathematically identical to minimizing the expression without the constant:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (y_i - f(x_i, \beta))^2\]</div>
+<p>This is exactly the objective of <strong>Ordinary Least Squares (OLS)</strong>.</p>
+</li>
+</ol>
+<p>If the assumption of homoscedasticity holds true (i.e., every data point has the same standard deviation), then <strong>Weighted Least Squares and Ordinary Least Squares will produce the exact same parameter estimates</strong>.</p>
+<p>However, WLS can still be valuable even in this situation if you have a known, constant <code class="docutils literal notranslate"><span class="pre">sigma</span></code> and use <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code>, because it will provide you with the correct uncertainties (standard errors) for your fitted parameters. OLS would simply assume the errors are scaled by the goodness of fit, which might not be an accurate reflection of the true experimental uncertainties.</p>
+<section id="scenario-a-using-a-constant-sigma-array-with-absolute-sigma-true">
+<h3>Scenario A: Using a constant <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array with <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code><a class="headerlink" href="#scenario-a-using-a-constant-sigma-array-with-absolute-sigma-true" title="Link to this heading">#</a></h3>
+<p>Let’s assume your known, constant standard deviation is <span class="math notranslate nohighlight">\(\sigma_{known} = 0.5\)</span>. Your <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array would be <code class="docutils literal notranslate"><span class="pre">[0.5,</span> <span class="pre">0.5,</span> <span class="pre">0.5,</span> <span class="pre">...]</span></code></p>
+<ul class="simple">
+<li><p><strong>Fitted Parameters (<code class="docutils literal notranslate"><span class="pre">popt</span></code>):</strong> The optimal values for parameters A and B will be <strong>identical</strong> to the case where you don’t use <code class="docutils literal notranslate"><span class="pre">sigma</span></code>. As we discussed, the minimization is mathematically equivalent to OLS, and the location of the minimum of the objective function is the same.</p></li>
+<li><p><strong>Covariance Matrix (<code class="docutils literal notranslate"><span class="pre">pcov</span></code>) and Parameter Errors (<code class="docutils literal notranslate"><span class="pre">perr</span></code>):</strong> This is where the difference lies. By providing <code class="docutils literal notranslate"><span class="pre">sigma</span></code> and setting <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code>, you are telling the algorithm: “My measurements have an absolute standard deviation of 0.5. Calculate the parameter uncertainties based on this known fact.” The covariance matrix (<code class="docutils literal notranslate"><span class="pre">pcov</span></code>) and the standard errors (<code class="docutils literal notranslate"><span class="pre">perr</span></code>) derived from it will directly reflect the propagated uncertainty from your measurements.</p></li>
+</ul>
+<p>This is the <strong>statistically correct</strong> approach when you have known measurement uncertainties. The resulting parameter errors are a more accurate representation of the true uncertainty in your fitted parameters, grounded in the physical reality of your experiment.</p>
+</section>
+<section id="scenario-b-skipping-the-sigma-parameter">
+<h3>Scenario B: Skipping the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter<a class="headerlink" href="#scenario-b-skipping-the-sigma-parameter" title="Link to this heading">#</a></h3>
+<p>In this case, you simply call <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> without specifying <code class="docutils literal notranslate"><span class="pre">sigma</span></code>.</p>
+<ul class="simple">
+<li><p><strong>Fitted Parameters (<code class="docutils literal notranslate"><span class="pre">popt</span></code>):</strong> The optimal values for parameters A and B will be <strong>identical</strong> to Scenario A.</p></li>
+<li><p><strong>Covariance Matrix (<code class="docutils literal notranslate"><span class="pre">pcov</span></code>) and Parameter Errors (<code class="docutils literal notranslate"><span class="pre">perr</span></code>):</strong> The <code class="docutils literal notranslate"><span class="pre">curve_fit</span></code> function handles this differently. It performs a standard OLS fit (which is equivalent to WLS with constant weights), but then it <strong>scales the covariance matrix by the reduced chi-squared value (the goodness of fit)</strong>. This is the behavior of <code class="docutils literal notranslate"><span class="pre">absolute_sigma=False</span></code> (the default).</p>
+<ul>
+<li><p>The standard errors you get are based on the <strong>observed scatter of your data points around the fitted curve</strong>, not on any known measurement uncertainty.</p></li>
+<li><p>If your data points are very close to the fitted curve, the reduced chi-squared value will be small, and the calculated <code class="docutils literal notranslate"><span class="pre">perr</span></code> will be artificially small.</p></li>
+<li><p>If your data points are very scattered around the fitted curve, the reduced chi-squared value will be large, and the calculated <code class="docutils literal notranslate"><span class="pre">perr</span></code> will be artificially large.</p></li>
+</ul>
+</li>
+</ul>
+<p>Summary:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Using <code class="docutils literal notranslate"><span class="pre">sigma</span></code> with <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code> (constant <code class="docutils literal notranslate"><span class="pre">sigma</span></code>)</p></th>
+<th class="head"><p>Skipping <code class="docutils literal notranslate"><span class="pre">sigma</span></code> (OLS)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Fitted Parameters (<code class="docutils literal notranslate"><span class="pre">popt</span></code>)</strong></p></td>
+<td><p><strong>Identical</strong></p></td>
+<td><p><strong>Identical</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Parameter Errors (<code class="docutils literal notranslate"><span class="pre">perr</span></code>)</strong></p></td>
+<td><p><strong>More Accurate.</strong> Based on your known measurement uncertainty.</p></td>
+<td><p><strong>Less Accurate.</strong> Based on the observed scatter of the data.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Statistical Assumption</strong></p></td>
+<td><p>You know the absolute uncertainty of your measurements.</p></td>
+<td><p>You don’t know the absolute uncertainty, and the uncertainty is constant.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Purpose</strong></p></td>
+<td><p>To find the parameters and their uncertainties based on your experimental knowledge.</p></td>
+<td><p>To find the parameters and their uncertainties based on the model’s goodness of fit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="weighted-residual-sum-of-squares-wrss">
+<h2>Weighted Residual Sum of Squares (WRSS)<a class="headerlink" href="#weighted-residual-sum-of-squares-wrss" title="Link to this heading">#</a></h2>
+<p>The objective of any “least squares” method is to find the model parameters that minimize the sum of the squared residuals. In Weighted Least Squares (WLS), this objective function is the <strong>Weighted Residual Sum of Squares (WRSS)</strong>. A small WRSS indicates a tight fit of the model to the data.</p>
+<p>The formula for the WRSS is:</p>
+<div class="math notranslate nohighlight">
+\[ RSS_w = \sum_{i=1}^{n} w_i (y_i - f(x_i, \beta))^2 \]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(RSS_w\)</span> is WRSS.</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> is the observed value for the i-th data point.</p></li>
+<li><p><span class="math notranslate nohighlight">\(f(x_i, \beta)\)</span> is the value predicted by the model for the i-th data point.</p></li>
+<li><p><span class="math notranslate nohighlight">\((y_i - f(x_i, \beta))\)</span> is the residual (the error) for the i-th data point.</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_i\)</span> is the weight assigned to the i-th data point.</p></li>
+</ul>
+<p>The crucial difference from the ordinary Residual Sum of Squares (RSS) is the inclusion of the weight, <span class="math notranslate nohighlight">\(w_i\)</span>. This weight ensures that not all squared residuals contribute equally to the final sum. As defined in your earlier sections, the weight is typically the inverse of the error variance (<span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>), giving more influence to more precise data points.</p>
+<section id="the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">
+<h3>The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic<a class="headerlink" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic" title="Link to this heading">#</a></h3>
+<p>In the context of curve fitting where meaningful, known uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) are provided for each data point, the WRSS takes on a profound statistical meaning. In this case, the WRSS value is identical to the <strong>chi-squared statistic <span class="math notranslate nohighlight">\(\chi^2\)</span></strong>.</p>
+<div class="math notranslate nohighlight">
+\[ \chi^2 = \sum_{i=1}^{n} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = RSS_w \]</div>
+<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics see <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst">here</span></a>.</p>
+</section>
+</section>
+<section id="calculating-goodness-of-fit-metrics-with-wls">
+<h2>Calculating Goodness-of-Fit Metrics with WLS<a class="headerlink" href="#calculating-goodness-of-fit-metrics-with-wls" title="Link to this heading">#</a></h2>
+<p>When performing a Weighted Least Squares (WLS) fit, the traditional goodness-of-fit metrics need to be adapted to account for the assigned weights. While the fundamental concepts remain the same, the calculations incorporate the weights to ensure that points with higher precision have a greater influence on the resulting metrics.</p>
+<p>The primary difference between the weighted and unweighted versions of these metrics is the inclusion of the weight term, <span class="math notranslate nohighlight">\(w_i\)</span>. As you’ve seen, this weight is typically the inverse of the error variance, <span class="math notranslate nohighlight">\(w_i = 1/\sigma_i^2\)</span>.</p>
+<p>Below is a comparison of standard (unweighted) goodness-of-fit metrics and their weighted counterparts.</p>
+<hr class="docutils" />
+<section id="total-sum-of-squares-tss">
+<h3>Total Sum of Squares (TSS)<a class="headerlink" href="#total-sum-of-squares-tss" title="Link to this heading">#</a></h3>
+<p>The <strong>Total Sum of Squares (TSS)</strong> measures the total variation in the observed data. It serves as a baseline for comparison. There are two common versions: centered and uncentered.</p>
+<ul>
+<li><p><strong>Centered TSS</strong>: Measures the total variation around the unweighted mean of the observed data.</p>
+<div class="math notranslate nohighlight">
+\[TSS = \sum_{i=1}^{n} (y_i - \bar{y})^2\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\bar{y} = \frac{1}{n}\sum_{i=1}^{n} y_i\]</div>
+</li>
+<li><p><strong>Weighted Centered TSS</strong>: Measures the total variation around the weighted mean of the observed data, giving more influence to precise points.</p>
+<div class="math notranslate nohighlight">
+\[TSS_{w} = \sum_{i=1}^{n} w_i (y_i - \bar{y}_{w})^2\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\bar{y}_{w} = \frac{\sum_{i=1}^{n} w_i y_i}{\sum_{i=1}^{n} w_i}\]</div>
+</li>
+<li><p><strong>Unweighted/Weighted Uncentered TSS</strong>: These versions measure the total sum of squares around zero instead of the mean.</p>
+<ul class="simple">
+<li><p><strong>Unweighted</strong>: <span class="math notranslate nohighlight">\(TSS_{uncentered} = \sum_{i=1}^{n} y_i^2\)</span></p></li>
+<li><p><strong>Weighted</strong>: <span class="math notranslate nohighlight">\(TSS_{w, uncentered} = \sum_{i=1}^{n} w_i y_i^2\)</span></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="explained-sum-of-squares-ess">
+<h3>Explained Sum of Squares (ESS)<a class="headerlink" href="#explained-sum-of-squares-ess" title="Link to this heading">#</a></h3>
+<p>The <strong>Explained Sum of Squares (ESS)</strong> measures the variation in the observed data that is explained by the model.</p>
+<ul>
+<li><p><strong>ESS</strong>: Measures the variation of the predicted values around the unweighted mean of the observed data.</p>
+<div class="math notranslate nohighlight">
+\[ESS = \sum_{i=1}^{n} (\hat{y}_i - \bar{y})^2\]</div>
+</li>
+<li><p><strong>Weighted ESS</strong>: Measures the variation of the predicted values around the weighted mean, weighted by the precision of each point.</p>
+<div class="math notranslate nohighlight">
+\[ESS_{w} = \sum_{i=1}^{n} w_i (\hat{y}_i - \bar{y}_{w})^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{y}_i = f(x_i, \beta)\)</span>.</p>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="r-squared-r-2">
+<h3>R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)<a class="headerlink" href="#r-squared-r-2" title="Link to this heading">#</a></h3>
+<p><strong>R-squared</strong> measures the proportion of the variance in the dependent variable that is predictable from the independent variable(s).</p>
+<ul>
+<li><p><strong>R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{RSS}{TSS} = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}\]</div>
+</li>
+<li><p><strong>Weighted R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{w} = 1 - \frac{RSS_{w}}{TSS_{w}} = 1 - \frac{\sum w_i (y_i - \hat{y}_i)^2}{\sum w_i (y_i - \bar{y}_{w})^2}\]</div>
+</li>
+<li><p><strong>Adjusted R-squared</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{adj} = 1 - (1 - R^2) \frac{n-1}{n-p}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the number of observations and <span class="math notranslate nohighlight">\(p\)</span> is the number of the estimated parameters.</p>
+</li>
+<li><p><strong>Weighted Adjusted R-squared (<span class="math notranslate nohighlight">\(R^2_{adj, w}\)</span>)</strong>:</p>
+<div class="math notranslate nohighlight">
+\[R^2_{adj, w} = 1 - (1 - R^2_{w}) \frac{n-1}{n-p}\]</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="error-metrics-rmse-and-ser">
+<h3>Error Metrics: RMSE and SER<a class="headerlink" href="#error-metrics-rmse-and-ser" title="Link to this heading">#</a></h3>
+<p>These metrics provide an indication of the typical error size.</p>
+<ul>
+<li><p><strong>Root Mean Squared Error (RMSE)</strong>: Measures the average magnitude of the residuals. It is a very useful metric because it’s expressed in the same units as the response variable.</p>
+<div class="math notranslate nohighlight">
+\[RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2} = \sqrt{\frac{RSS}{n}}\]</div>
+<p>For the weighted version, the denominator becomes the sum of the weights, which is one of key differences:</p>
+<div class="math notranslate nohighlight">
+\[RMSE_{w} = \sqrt{\frac{\sum_{i=1}^{n} w_i (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} w_i}} = \sqrt{\frac{RSS_{w}}{\sum w_i}}\]</div>
+</li>
+<li><p><strong>Standard Error of the Regression (SER)</strong>: Also known as the residual standard deviation or residual standard error, it estimates the standard deviation of the error term.</p>
+<div class="math notranslate nohighlight">
+\[SER = \sqrt{\frac{RSS}{n-p}}\]</div>
+<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
+<div class="math notranslate nohighlight">
+\[SER_{w} = \sqrt{\frac{RSS_{w}}{n-p}} = \sqrt{\chi^2_{red}}\]</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="mean-squared-error-mse">
+<h3>Mean Squared Error (MSE)<a class="headerlink" href="#mean-squared-error-mse" title="Link to this heading">#</a></h3>
+<p><strong>Mean Squared Error (MSE)</strong> is a measure of the average squared difference between predicted and actual values in a model.</p>
+<ul>
+<li><p><strong>Unbiased MSE</strong>:</p>
+<div class="math notranslate nohighlight">
+\[MSE = \frac{RSS}{n-p}\]</div>
+</li>
+<li><p><strong>Unbiased Weighted MSE</strong>: This is the unbiased estimate of the average squared difference between predicted and actual values. In the context of WLS and chi-squared statistics, this is identical to the <strong>Reduced Chi-Squared</strong> (<span class="math notranslate nohighlight">\(\chi^2_{red}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[MSE_{w} = \frac{RSS_{w}}{n-p} = \frac{\chi^2}{n-p} = \chi^2_{red}\]</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html</a></p></li>
+<li><p><a class="reference external" href="https://online.stat.psu.edu/stat501/book/export/html/990">https://online.stat.psu.edu/stat501/book/export/html/990</a></p></li>
+<li><p><a class="reference external" href="https://www.stat.uchicago.edu/~yibi/teaching/stat224/L14.pdf">https://www.stat.uchicago.edu/~yibi/teaching/stat224/L14.pdf</a></p></li>
+<li><p><a class="reference external" href="https://ms.mcmaster.ca/canty/teaching/stat3a03/Lectures7.pdf">https://ms.mcmaster.ca/canty/teaching/stat3a03/Lectures7.pdf</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Reduced_chi-squared_statistic">https://en.wikipedia.org/wiki/Reduced_chi-squared_statistic</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Weighted_arithmetic_mean">https://en.wikipedia.org/wiki/Weighted_arithmetic_mean</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/51442/weighted-variance-one-more-time">https://stats.stackexchange.com/questions/51442/weighted-variance-one-more-time</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/61225/correct-equation-for-weighted-unbiased-sample-covariance/61298#61298">https://stats.stackexchange.com/questions/61225/correct-equation-for-weighted-unbiased-sample-covariance/61298#61298</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/330548/difference-in-r-squared-observed-from-statsmodels-when-wls-is-used">https://stats.stackexchange.com/questions/330548/difference-in-r-squared-observed-from-statsmodels-when-wls-is-used</a></p></li>
+<li><p><a class="reference external" href="https://stats.stackexchange.com/questions/439590/how-does-r-compute-r-squared-for-weighted-least-squares">https://stats.stackexchange.com/questions/439590/how-does-r-compute-r-squared-for-weighted-least-squares</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Pseudo-R-squared">https://en.wikipedia.org/wiki/Pseudo-R-squared</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="variance-covariance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Variance and Covariance</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="weighted-least-squares-code-1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">WLS - Code Examples Part 1</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-weighted-least-squares-wls">What is Weighted Least Squares (WLS)?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-of-individual-data-points-in-weighted-least-squares">Interpretation of Individual Data Points in Weighted Least Squares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#role-in-weighted-least-squares-wls">Role in Weighted Least Squares (WLS)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-if-each-point-has-the-same-standard-deviation">What if each point has the same standard deviation?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-a-using-a-constant-sigma-array-with-absolute-sigma-true">Scenario A: Using a constant <code class="docutils literal notranslate"><span class="pre">sigma</span></code> array with <code class="docutils literal notranslate"><span class="pre">absolute_sigma=True</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-b-skipping-the-sigma-parameter">Scenario B: Skipping the <code class="docutils literal notranslate"><span class="pre">sigma</span></code> parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weighted-residual-sum-of-squares-wrss">Weighted Residual Sum of Squares (WRSS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-connection-between-wrss-and-the-chi-squared-chi-2-statistic">The Connection Between WRSS and the Chi-Squared <span class="math notranslate nohighlight">\(\chi^2\)</span> Statistic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-goodness-of-fit-metrics-with-wls">Calculating Goodness-of-Fit Metrics with WLS</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-sum-of-squares-tss">Total Sum of Squares (TSS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explained-sum-of-squares-ess">Explained Sum of Squares (ESS)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-squared-r-2">R-squared (<span class="math notranslate nohighlight">\(R^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-rmse-and-ser">Error Metrics: RMSE and SER</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-squared-error-mse">Mean Squared Error (MSE)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
