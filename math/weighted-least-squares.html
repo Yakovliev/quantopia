@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -712,7 +712,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <li><p><strong>Standard Error of the Regression (SER)</strong>: Also known as the residual standard deviation or residual standard error, it estimates the standard deviation of the error term.</p>
 <div class="math notranslate nohighlight">
 \[SER = \sqrt{\frac{RSS}{n-p}}\]</div>
-<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
+<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
 <div class="math notranslate nohighlight">
 \[SER_{w} = \sqrt{\frac{RSS_{w}}{n-p}} = \sqrt{\chi^2_{red}}\]</div>
 </li>

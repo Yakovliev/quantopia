@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -573,7 +573,7 @@ Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
 Date:                Fri, 22 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        00:21:11   Log-Likelihood:               0.049782
+Time:                        00:30:56   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -1134,7 +1134,7 @@ Unbiased Scale (weighted RSS / degrees of freedom): 0.3141
 <section id="log-likelihood">
 <h3>Log-Likelihood<a class="headerlink" href="#log-likelihood" title="Link to this heading">#</a></h3>
 <p>Let’s figure out how the value of Log-Likelihood of the Model is calculated. The standard formulas for AIC and BIC can be found <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a></p>
-<p>We start with the general <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">formula</span></a>:</p>
+<p>We start with the general <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">formula</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\ln(L) = - \sum_{i=1}^{n} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 <p>Let’s modify it a bit using the assumptions from statsmodels. In <strong>Weighted Least Squares (WLS)</strong> <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, the assumption is that the error variances are known up to a constant factor (<span class="math notranslate nohighlight">\(\text{Var}(\epsilon_i) = \sigma_i^2 = \sigma^2 / w_i\)</span>), where <span class="math notranslate nohighlight">\(w_i\)</span> are the known weights. The <code class="docutils literal notranslate"><span class="pre">results.scale</span></code> value provides an estimate of this unknown constant <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Therefore, we substitute</p>
@@ -1431,7 +1431,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
 Date:                Fri, 22 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        00:21:12   Log-Likelihood:                -1.0822
+Time:                        00:30:57   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
