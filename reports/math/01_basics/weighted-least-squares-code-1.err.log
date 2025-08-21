@@ -1,5 +1,5 @@
 Traceback (most recent call last):
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 154, in wrapped
     asyncio.get_running_loop()
     ~~~~~~~~~~~~~~~~~~~~~~~~^^
 RuntimeError: no running event loop
@@ -7,7 +7,7 @@ RuntimeError: no running event loop
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
     executenb(
     ~~~~~~~~~^
         nb,
@@ -17,74 +17,45 @@ Traceback (most recent call last):
         ^^^^^^^^^
     )
     ^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 1319, in execute
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 158, in wrapped
     return loop.run_until_complete(inner)
            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 721, in run_until_complete
+  File "C:\Users\Vladyslav\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
     return future.result()
            ~~~~~~~~~~~~~^^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 709, in async_execute
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
     await self.async_execute_cell(
         cell, index, execution_count=self.code_cells_executed + 1
     )
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import numpy as np
-import statsmodels.api as sm
-import matplotlib.pyplot as plt
-from statsmodels.tools.eval_measures import rmse
-import scipy.stats as stats
+# Chi-Squared
+chi_squared = np.sum(((y_obs - results.predict()) / sigma)**2)
+print(f"Chi-Squared: {chi_squared:.4f}")
+
+# Reduced Chi-Squared
+reduced_chi_squared = chi_squared / dof
+print(f"Reduced Chi-Squared: {reduced_chi_squared:.4f}")
 ------------------
 
+----- stdout -----
+Chi-Squared: 1.8848
+------------------
 
 [31m---------------------------------------------------------------------------[39m
-[31mImportError[39m                               Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 2[39m
-[32m      1[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mnumpy[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mnp[39;00m
-[32m----> [39m[32m2[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mstatsmodels[39;00m[34;01m.[39;00m[34;01mapi[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01msm[39;00m
-[32m      3[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mmatplotlib[39;00m[34;01m.[39;00m[34;01mpyplot[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mplt[39;00m
-[32m      4[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mstatsmodels[39;00m[34;01m.[39;00m[34;01mtools[39;00m[34;01m.[39;00m[34;01meval_measures[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m rmse
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[16][39m[32m, line 6[39m
+[32m      3[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33mChi-Squared: [39m[38;5;132;01m{[39;00mchi_squared[38;5;132;01m:[39;00m[33m.4f[39m[38;5;132;01m}[39;00m[33m"[39m)
+[32m      5[39m [38;5;66;03m# Reduced Chi-Squared[39;00m
+[32m----> [39m[32m6[39m reduced_chi_squared = chi_squared / [43mdof[49m
+[32m      7[39m [38;5;28mprint[39m([33mf[39m[33m"[39m[33mReduced Chi-Squared: [39m[38;5;132;01m{[39;00mreduced_chi_squared[38;5;132;01m:[39;00m[33m.4f[39m[38;5;132;01m}[39;00m[33m"[39m)
 
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/statsmodels/api.py:76[39m
-[32m      1[39m __all__ = [
-[32m      2[39m     [33m"[39m[33mBayesGaussMI[39m[33m"[39m,
-[32m      3[39m     [33m"[39m[33mBinomialBayesMixedGLM[39m[33m"[39m,
-[32m   (...)[39m[32m     72[39m     [33m"[39m[33m__version_info__[39m[33m"[39m
-[32m     73[39m ]
-[32m---> [39m[32m76[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01m.[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m datasets, distributions, iolib, regression, robust, tools
-[32m     77[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01m.[39;00m[34;01m__init__[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m test
-[32m     78[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mstatsmodels[39;00m[34;01m.[39;00m[34;01m_version[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m (
-[32m     79[39m     version [38;5;28;01mas[39;00m __version__, version_tuple [38;5;28;01mas[39;00m __version_info__
-[32m     80[39m )
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/statsmodels/distributions/__init__.py:7[39m
-[32m      2[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01m.[39;00m[34;01mempirical_distribution[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m (
-[32m      3[39m     ECDF, ECDFDiscrete, monotone_fn_inverter, StepFunction
-[32m      4[39m     )
-[32m      5[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01m.[39;00m[34;01medgeworth[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m ExpandedNormal
-[32m----> [39m[32m7[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01m.[39;00m[34;01mdiscrete[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m (
-[32m      8[39m     genpoisson_p, zipoisson, zigenpoisson, zinegbin,
-[32m      9[39m     )
-[32m     11[39m __all__ = [
-[32m     12[39m     [33m'[39m[33mECDF[39m[33m'[39m,
-[32m     13[39m     [33m'[39m[33mECDFDiscrete[39m[33m'[39m,
-[32m   (...)[39m[32m     21[39m     [33m'[39m[33mzipoisson[39m[33m'[39m
-[32m     22[39m     ]
-[32m     24[39m test = PytestTester()
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/statsmodels/distributions/discrete.py:5[39m
-[32m      3[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mscipy[39;00m[34;01m.[39;00m[34;01mstats[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m rv_discrete, poisson, nbinom
-[32m      4[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mscipy[39;00m[34;01m.[39;00m[34;01mspecial[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m gammaln
-[32m----> [39m[32m5[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mscipy[39;00m[34;01m.[39;00m[34;01m_lib[39;00m[34;01m.[39;00m[34;01m_util[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m _lazywhere
-[32m      7[39m [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mstatsmodels[39;00m[34;01m.[39;00m[34;01mbase[39;00m[34;01m.[39;00m[34;01mmodel[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m GenericLikelihoodModel
-[32m     10[39m [38;5;28;01mclass[39;00m[38;5;250m [39m[34;01mgenpoisson_p_gen[39;00m(rv_discrete):
-
-[31mImportError[39m: cannot import name '_lazywhere' from 'scipy._lib._util' (/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/scipy/_lib/_util.py)
+[31mNameError[39m: name 'dof' is not defined
 

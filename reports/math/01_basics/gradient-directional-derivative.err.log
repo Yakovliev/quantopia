@@ -1,5 +1,5 @@
 Traceback (most recent call last):
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 154, in wrapped
     asyncio.get_running_loop()
     ~~~~~~~~~~~~~~~~~~~~~~~~^^
 RuntimeError: no running event loop
@@ -7,7 +7,7 @@ RuntimeError: no running event loop
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
     executenb(
     ~~~~~~~~~^
         nb,
@@ -17,370 +17,38 @@ Traceback (most recent call last):
         ^^^^^^^^^
     )
     ^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 1319, in execute
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 158, in wrapped
     return loop.run_until_complete(inner)
            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
-  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 721, in run_until_complete
+  File "C:\Users\Vladyslav\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
     return future.result()
            ~~~~~~~~~~~~~^^
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 709, in async_execute
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
     await self.async_execute_cell(
         cell, index, execution_count=self.code_cells_executed + 1
     )
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/Users/vladyakovliev/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-# Create a 3D plot
-quiver_w = np.zeros_like(U).flatten()  # No change in z for the gradient vectors in this 2D function
+# Create a sample figure
+df = px.data.iris()
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species")
 
-# Add cones to represent the gradient
-quiver_grad = go.Cone(x=X.flatten(), y=Y.flatten(), z=Z_func.flatten(),
-                      u=U.flatten(), v=V.flatten(), w=quiver_w, colorscale='Reds',
-                      sizemode='scaled', sizeref=1.0, showscale=True,
-                      colorbar=dict(title="Gradient Vectors", titleside="right", x=1.1, y=0.5))
-
-# Add cones to represent the directional derivatives
-quiver_dir_deriv = go.Cone(x=X.flatten(), y=Y.flatten(), z=Z_func.flatten(),
-                           u=(Z_dir_deriv*u[0]).flatten(), v=(Z_dir_deriv*u[1]).flatten(), w=quiver_w, colorscale='Blues',
-                           sizemode='scaled', sizeref=1.0, showscale=True,
-                           colorbar=dict(title="Directional Derivatives", titleside="right", x=1.2, y=0.5))
-
-fig = go.Figure(data=[quiver_grad, quiver_dir_deriv])
-
-# Update layout
-fig.update_layout(scene=dict(zaxis_title='f(x, y)', xaxis_title='X', yaxis_title='Y'),
-                  title="3D Plot of Gradients and Directional Derivatives of f(x, y) = x<sup>2</sup> + y<sup>2</sup>",
-                  autosize=True, height=600)
-
-# Show the figure
-fig.show()
 ------------------
 
 
 [31m---------------------------------------------------------------------------[39m
-[31mValueError[39m                                Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[9][39m[32m, line 5[39m
-[32m      2[39m quiver_w = np.zeros_like(U).flatten()  [38;5;66;03m# No change in z for the gradient vectors in this 2D function[39;00m
-[32m      4[39m [38;5;66;03m# Add cones to represent the gradient[39;00m
-[32m----> [39m[32m5[39m quiver_grad = [43mgo[49m[43m.[49m[43mCone[49m[43m([49m[43mx[49m[43m=[49m[43mX[49m[43m.[49m[43mflatten[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43my[49m[43m=[49m[43mY[49m[43m.[49m[43mflatten[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43mz[49m[43m=[49m[43mZ_func[49m[43m.[49m[43mflatten[49m[43m([49m[43m)[49m[43m,[49m
-[32m      6[39m [43m                      [49m[43mu[49m[43m=[49m[43mU[49m[43m.[49m[43mflatten[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43mv[49m[43m=[49m[43mV[49m[43m.[49m[43mflatten[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43mw[49m[43m=[49m[43mquiver_w[49m[43m,[49m[43m [49m[43mcolorscale[49m[43m=[49m[33;43m'[39;49m[33;43mReds[39;49m[33;43m'[39;49m[43m,[49m
-[32m      7[39m [43m                      [49m[43msizemode[49m[43m=[49m[33;43m'[39;49m[33;43mscaled[39;49m[33;43m'[39;49m[43m,[49m[43m [49m[43msizeref[49m[43m=[49m[32;43m1.0[39;49m[43m,[49m[43m [49m[43mshowscale[49m[43m=[49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-[32m      8[39m [43m                      [49m[43mcolorbar[49m[43m=[49m[38;5;28;43mdict[39;49m[43m([49m[43mtitle[49m[43m=[49m[33;43m"[39;49m[33;43mGradient Vectors[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43mtitleside[49m[43m=[49m[33;43m"[39;49m[33;43mright[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43mx[49m[43m=[49m[32;43m1.1[39;49m[43m,[49m[43m [49m[43my[49m[43m=[49m[32;43m0.5[39;49m[43m)[49m[43m)[49m
-[32m     10[39m [38;5;66;03m# Add cones to represent the directional derivatives[39;00m
-[32m     11[39m quiver_dir_deriv = go.Cone(x=X.flatten(), y=Y.flatten(), z=Z_func.flatten(),
-[32m     12[39m                            u=(Z_dir_deriv*u[[32m0[39m]).flatten(), v=(Z_dir_deriv*u[[32m1[39m]).flatten(), w=quiver_w, colorscale=[33m'[39m[33mBlues[39m[33m'[39m,
-[32m     13[39m                            sizemode=[33m'[39m[33mscaled[39m[33m'[39m, sizeref=[32m1.0[39m, showscale=[38;5;28;01mTrue[39;00m,
-[32m     14[39m                            colorbar=[38;5;28mdict[39m(title=[33m"[39m[33mDirectional Derivatives[39m[33m"[39m, titleside=[33m"[39m[33mright[39m[33m"[39m, x=[32m1.2[39m, y=[32m0.5[39m))
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[10][39m[32m, line 2[39m
+[32m      1[39m [38;5;66;03m# Create a sample figure[39;00m
+[32m----> [39m[32m2[39m df = [43mpx[49m.data.iris()
+[32m      3[39m fig = px.scatter(df, x=[33m"[39m[33msepal_width[39m[33m"[39m, y=[33m"[39m[33msepal_length[39m[33m"[39m, color=[33m"[39m[33mspecies[39m[33m"[39m)
 
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/graph_objs/_cone.py:2202[39m, in [36mCone.__init__[39m[34m(self, arg, anchor, autocolorscale, cauto, cmax, cmid, cmin, coloraxis, colorbar, colorscale, customdata, customdatasrc, hoverinfo, hoverinfosrc, hoverlabel, hovertemplate, hovertemplatesrc, hovertext, hovertextsrc, ids, idssrc, legend, legendgroup, legendgrouptitle, legendrank, legendwidth, lighting, lightposition, meta, metasrc, name, opacity, reversescale, scene, showlegend, showscale, sizemode, sizeref, stream, text, textsrc, u, uhoverformat, uid, uirevision, usrc, v, vhoverformat, visible, vsrc, w, whoverformat, wsrc, x, xhoverformat, xsrc, y, yhoverformat, ysrc, z, zhoverformat, zsrc, **kwargs)[39m
-[32m   2200[39m [38;5;28mself[39m._set_property([33m"[39m[33mcmin[39m[33m"[39m, arg, cmin)
-[32m   2201[39m [38;5;28mself[39m._set_property([33m"[39m[33mcoloraxis[39m[33m"[39m, arg, coloraxis)
-[32m-> [39m[32m2202[39m [38;5;28;43mself[39;49m[43m.[49m[43m_set_property[49m[43m([49m[33;43m"[39;49m[33;43mcolorbar[39;49m[33;43m"[39;49m[43m,[49m[43m [49m[43marg[49m[43m,[49m[43m [49m[43mcolorbar[49m[43m)[49m
-[32m   2203[39m [38;5;28mself[39m._set_property([33m"[39m[33mcolorscale[39m[33m"[39m, arg, colorscale)
-[32m   2204[39m [38;5;28mself[39m._set_property([33m"[39m[33mcustomdata[39m[33m"[39m, arg, customdata)
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/basedatatypes.py:4403[39m, in [36mBasePlotlyType._set_property[39m[34m(self, name, arg, provided)[39m
-[32m   4397[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34m_set_property[39m([38;5;28mself[39m, name, arg, provided):
-[32m   4398[39m [38;5;250m    [39m[33;03m"""[39;00m
-[32m   4399[39m [33;03m    Initialize a property of this object using the provided value[39;00m
-[32m   4400[39m [33;03m    or a value popped from the arguments dictionary. If neither[39;00m
-[32m   4401[39m [33;03m    is available, do not set the property.[39;00m
-[32m   4402[39m [33;03m    """[39;00m
-[32m-> [39m[32m4403[39m     [43m_set_property_provided_value[49m[43m([49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[43mname[49m[43m,[49m[43m [49m[43marg[49m[43m,[49m[43m [49m[43mprovided[49m[43m)[49m
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/basedatatypes.py:398[39m, in [36m_set_property_provided_value[39m[34m(obj, name, arg, provided)[39m
-[32m    396[39m val = provided [38;5;28;01mif[39;00m provided [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;28;01melse[39;00m val
-[32m    397[39m [38;5;28;01mif[39;00m val [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-[32m--> [39m[32m398[39m     [43mobj[49m[43m[[49m[43mname[49m[43m][49m = val
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/basedatatypes.py:4924[39m, in [36mBasePlotlyType.__setitem__[39m[34m(self, prop, value)[39m
-[32m   4922[39m [38;5;66;03m# ### Handle compound property ###[39;00m
-[32m   4923[39m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(validator, CompoundValidator):
-[32m-> [39m[32m4924[39m     [38;5;28;43mself[39;49m[43m.[49m[43m_set_compound_prop[49m[43m([49m[43mprop[49m[43m,[49m[43m [49m[43mvalue[49m[43m)[49m
-[32m   4926[39m [38;5;66;03m# ### Handle compound array property ###[39;00m
-[32m   4927[39m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(validator, (CompoundArrayValidator, BaseDataValidator)):
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/basedatatypes.py:5335[39m, in [36mBasePlotlyType._set_compound_prop[39m[34m(self, prop, val)[39m
-[32m   5332[39m [38;5;66;03m# Import value[39;00m
-[32m   5333[39m [38;5;66;03m# ------------[39;00m
-[32m   5334[39m validator = [38;5;28mself[39m._get_validator(prop)
-[32m-> [39m[32m5335[39m val = [43mvalidator[49m[43m.[49m[43mvalidate_coerce[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43mskip_invalid[49m[43m=[49m[38;5;28;43mself[39;49m[43m.[49m[43m_skip_invalid[49m[43m)[49m
-[32m   5337[39m [38;5;66;03m# Save deep copies of current and new states[39;00m
-[32m   5338[39m [38;5;66;03m# ------------------------------------------[39;00m
-[32m   5339[39m curr_val = [38;5;28mself[39m._compound_props.get(prop, [38;5;28;01mNone[39;00m)
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/_plotly_utils/basevalidators.py:2425[39m, in [36mCompoundValidator.validate_coerce[39m[34m(self, v, skip_invalid, _validate)[39m
-[32m   2422[39m     v = [38;5;28mself[39m.data_class()
-[32m   2424[39m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(v, [38;5;28mdict[39m):
-[32m-> [39m[32m2425[39m     v = [38;5;28;43mself[39;49m[43m.[49m[43mdata_class[49m[43m([49m[43mv[49m[43m,[49m[43m [49m[43mskip_invalid[49m[43m=[49m[43mskip_invalid[49m[43m,[49m[43m [49m[43m_validate[49m[43m=[49m[43m_validate[49m[43m)[49m
-[32m   2427[39m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(v, [38;5;28mself[39m.data_class):
-[32m   2428[39m     [38;5;66;03m# Copy object[39;00m
-[32m   2429[39m     v = [38;5;28mself[39m.data_class(v)
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/graph_objs/cone/_colorbar.py:1720[39m, in [36mColorBar.__init__[39m[34m(self, arg, bgcolor, bordercolor, borderwidth, dtick, exponentformat, labelalias, len, lenmode, minexponent, nticks, orientation, outlinecolor, outlinewidth, separatethousands, showexponent, showticklabels, showtickprefix, showticksuffix, thickness, thicknessmode, tick0, tickangle, tickcolor, tickfont, tickformat, tickformatstops, tickformatstopdefaults, ticklabeloverflow, ticklabelposition, ticklabelstep, ticklen, tickmode, tickprefix, ticks, ticksuffix, ticktext, ticktextsrc, tickvals, tickvalssrc, tickwidth, title, x, xanchor, xpad, xref, y, yanchor, ypad, yref, **kwargs)[39m
-[32m   1718[39m [38;5;28mself[39m._set_property([33m"[39m[33mypad[39m[33m"[39m, arg, ypad)
-[32m   1719[39m [38;5;28mself[39m._set_property([33m"[39m[33myref[39m[33m"[39m, arg, yref)
-[32m-> [39m[32m1720[39m [38;5;28;43mself[39;49m[43m.[49m[43m_process_kwargs[49m[43m([49m[43m*[49m[43m*[49m[38;5;28;43mdict[39;49m[43m([49m[43marg[49m[43m,[49m[43m [49m[43m*[49m[43m*[49m[43mkwargs[49m[43m)[49m[43m)[49m
-[32m   1721[39m [38;5;28mself[39m._skip_invalid = [38;5;28;01mFalse[39;00m
-
-[36mFile [39m[32m~/Desktop/Science/quantopia/venv/lib/python3.13/site-packages/plotly/basedatatypes.py:4451[39m, in [36mBasePlotlyType._process_kwargs[39m[34m(self, **kwargs)[39m
-[32m   4449[39m     [38;5;28mself[39m[k] = v
-[32m   4450[39m [38;5;28;01melif[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m._skip_invalid:
-[32m-> [39m[32m4451[39m     [38;5;28;01mraise[39;00m err
-
-[31mValueError[39m: Invalid property specified for object of type plotly.graph_objs.cone.ColorBar: 'titleside'
-
-Did you mean "title"?
-
-    Valid properties:
-        bgcolor
-            Sets the color of padded area.
-        bordercolor
-            Sets the axis line color.
-        borderwidth
-            Sets the width (in px) or the border enclosing this
-            color bar.
-        dtick
-            Sets the step in-between ticks on this axis. Use with
-            `tick0`. Must be a positive number, or special strings
-            available to "log" and "date" axes. If the axis `type`
-            is "log", then ticks are set every 10^(n*dtick) where n
-            is the tick number. For example, to set a tick mark at
-            1, 10, 100, 1000, ... set dtick to 1. To set tick marks
-            at 1, 100, 10000, ... set dtick to 2. To set tick marks
-            at 1, 5, 25, 125, 625, 3125, ... set dtick to
-            log_10(5), or 0.69897000433. "log" has several special
-            values; "L<f>", where `f` is a positive number, gives
-            ticks linearly spaced in value (but not position). For
-            example `tick0` = 0.1, `dtick` = "L0.5" will put ticks
-            at 0.1, 0.6, 1.1, 1.6 etc. To show powers of 10 plus
-            small digits between, use "D1" (all digits) or "D2"
-            (only 2 and 5). `tick0` is ignored for "D1" and "D2".
-            If the axis `type` is "date", then you must convert the
-            time to milliseconds. For example, to set the interval
-            between ticks to one day, set `dtick` to 86400000.0.
-            "date" also has special values "M<n>" gives ticks
-            spaced by a number of months. `n` must be a positive
-            integer. To set ticks on the 15th of every third month,
-            set `tick0` to "2000-01-15" and `dtick` to "M3". To set
-            ticks every 4 years, set `dtick` to "M48"
-        exponentformat
-            Determines a formatting rule for the tick exponents.
-            For example, consider the number 1,000,000,000. If
-            "none", it appears as 1,000,000,000. If "e", 1e+9. If
-            "E", 1E+9. If "power", 1x10^9 (with 9 in a super
-            script). If "SI", 1G. If "B", 1B.
-        labelalias
-            Replacement text for specific tick or hover labels. For
-            example using {US: 'USA', CA: 'Canada'} changes US to
-            USA and CA to Canada. The labels we would have shown
-            must match the keys exactly, after adding any
-            tickprefix or ticksuffix. For negative numbers the
-            minus sign symbol used (U+2212) is wider than the
-            regular ascii dash. That means you need to use −1
-            instead of -1. labelalias can be used with any axis
-            type, and both keys (if needed) and values (if desired)
-            can include html-like tags or MathJax.
-        len
-            Sets the length of the color bar This measure excludes
-            the padding of both ends. That is, the color bar length
-            is this length minus the padding on both ends.
-        lenmode
-            Determines whether this color bar's length (i.e. the
-            measure in the color variation direction) is set in
-            units of plot "fraction" or in *pixels. Use `len` to
-            set the value.
-        minexponent
-            Hide SI prefix for 10^n if |n| is below this number.
-            This only has an effect when `tickformat` is "SI" or
-            "B".
-        nticks
-            Specifies the maximum number of ticks for the
-            particular axis. The actual number of ticks will be
-            chosen automatically to be less than or equal to
-            `nticks`. Has an effect only if `tickmode` is set to
-            "auto".
-        orientation
-            Sets the orientation of the colorbar.
-        outlinecolor
-            Sets the axis line color.
-        outlinewidth
-            Sets the width (in px) of the axis line.
-        separatethousands
-            If "true", even 4-digit integers are separated
-        showexponent
-            If "all", all exponents are shown besides their
-            significands. If "first", only the exponent of the
-            first tick is shown. If "last", only the exponent of
-            the last tick is shown. If "none", no exponents appear.
-        showticklabels
-            Determines whether or not the tick labels are drawn.
-        showtickprefix
-            If "all", all tick labels are displayed with a prefix.
-            If "first", only the first tick is displayed with a
-            prefix. If "last", only the last tick is displayed with
-            a suffix. If "none", tick prefixes are hidden.
-        showticksuffix
-            Same as `showtickprefix` but for tick suffixes.
-        thickness
-            Sets the thickness of the color bar This measure
-            excludes the size of the padding, ticks and labels.
-        thicknessmode
-            Determines whether this color bar's thickness (i.e. the
-            measure in the constant color direction) is set in
-            units of plot "fraction" or in "pixels". Use
-            `thickness` to set the value.
-        tick0
-            Sets the placement of the first tick on this axis. Use
-            with `dtick`. If the axis `type` is "log", then you
-            must take the log of your starting tick (e.g. to set
-            the starting tick to 100, set the `tick0` to 2) except
-            when `dtick`=*L<f>* (see `dtick` for more info). If the
-            axis `type` is "date", it should be a date string, like
-            date data. If the axis `type` is "category", it should
-            be a number, using the scale where each category is
-            assigned a serial number from zero in the order it
-            appears.
-        tickangle
-            Sets the angle of the tick labels with respect to the
-            horizontal. For example, a `tickangle` of -90 draws the
-            tick labels vertically.
-        tickcolor
-            Sets the tick color.
-        tickfont
-            Sets the color bar's tick label font
-        tickformat
-            Sets the tick label formatting rule using d3 formatting
-            mini-languages which are very similar to those in
-            Python. For numbers, see:
-            https://github.com/d3/d3-format/tree/v1.4.5#d3-format.
-            And for dates see: https://github.com/d3/d3-time-
-            format/tree/v2.2.3#locale_format. We add two items to
-            d3's date formatter: "%h" for half of the year as a
-            decimal number as well as "%{n}f" for fractional
-            seconds with n digits. For example, *2016-10-13
-            09:15:23.456* with tickformat "%H~%M~%S.%2f" would
-            display "09~15~23.46"
-        tickformatstops
-            A tuple of :class:`plotly.graph_objects.cone.colorbar.T
-            ickformatstop` instances or dicts with compatible
-            properties
-        tickformatstopdefaults
-            When used in a template (as layout.template.data.cone.c
-            olorbar.tickformatstopdefaults), sets the default
-            property values to use for elements of
-            cone.colorbar.tickformatstops
-        ticklabeloverflow
-            Determines how we handle tick labels that would
-            overflow either the graph div or the domain of the
-            axis. The default value for inside tick labels is *hide
-            past domain*. In other cases the default is *hide past
-            div*.
-        ticklabelposition
-            Determines where tick labels are drawn relative to the
-            ticks. Left and right options are used when
-            `orientation` is "h", top and bottom when `orientation`
-            is "v".
-        ticklabelstep
-            Sets the spacing between tick labels as compared to the
-            spacing between ticks. A value of 1 (default) means
-            each tick gets a label. A value of 2 means shows every
-            2nd label. A larger value n means only every nth tick
-            is labeled. `tick0` determines which labels are shown.
-            Not implemented for axes with `type` "log" or
-            "multicategory", or when `tickmode` is "array".
-        ticklen
-            Sets the tick length (in px).
-        tickmode
-            Sets the tick mode for this axis. If "auto", the number
-            of ticks is set via `nticks`. If "linear", the
-            placement of the ticks is determined by a starting
-            position `tick0` and a tick step `dtick` ("linear" is
-            the default value if `tick0` and `dtick` are provided).
-            If "array", the placement of the ticks is set via
-            `tickvals` and the tick text is `ticktext`. ("array" is
-            the default value if `tickvals` is provided).
-        tickprefix
-            Sets a tick label prefix.
-        ticks
-            Determines whether ticks are drawn or not. If "", this
-            axis' ticks are not drawn. If "outside" ("inside"),
-            this axis' are drawn outside (inside) the axis lines.
-        ticksuffix
-            Sets a tick label suffix.
-        ticktext
-            Sets the text displayed at the ticks position via
-            `tickvals`. Only has an effect if `tickmode` is set to
-            "array". Used with `tickvals`.
-        ticktextsrc
-            Sets the source reference on Chart Studio Cloud for
-            `ticktext`.
-        tickvals
-            Sets the values at which ticks on this axis appear.
-            Only has an effect if `tickmode` is set to "array".
-            Used with `ticktext`.
-        tickvalssrc
-            Sets the source reference on Chart Studio Cloud for
-            `tickvals`.
-        tickwidth
-            Sets the tick width (in px).
-        title
-            :class:`plotly.graph_objects.cone.colorbar.Title`
-            instance or dict with compatible properties
-        x
-            Sets the x position with respect to `xref` of the color
-            bar (in plot fraction). When `xref` is "paper",
-            defaults to 1.02 when `orientation` is "v" and 0.5 when
-            `orientation` is "h". When `xref` is "container",
-            defaults to 1 when `orientation` is "v" and 0.5 when
-            `orientation` is "h". Must be between 0 and 1 if `xref`
-            is "container" and between "-2" and 3 if `xref` is
-            "paper".
-        xanchor
-            Sets this color bar's horizontal position anchor. This
-            anchor binds the `x` position to the "left", "center"
-            or "right" of the color bar. Defaults to "left" when
-            `orientation` is "v" and "center" when `orientation` is
-            "h".
-        xpad
-            Sets the amount of padding (in px) along the x
-            direction.
-        xref
-            Sets the container `x` refers to. "container" spans the
-            entire `width` of the plot. "paper" refers to the width
-            of the plotting area only.
-        y
-            Sets the y position with respect to `yref` of the color
-            bar (in plot fraction). When `yref` is "paper",
-            defaults to 0.5 when `orientation` is "v" and 1.02 when
-            `orientation` is "h". When `yref` is "container",
-            defaults to 0.5 when `orientation` is "v" and 1 when
-            `orientation` is "h". Must be between 0 and 1 if `yref`
-            is "container" and between "-2" and 3 if `yref` is
-            "paper".
-        yanchor
-            Sets this color bar's vertical position anchor This
-            anchor binds the `y` position to the "top", "middle" or
-            "bottom" of the color bar. Defaults to "middle" when
-            `orientation` is "v" and "bottom" when `orientation` is
-            "h".
-        ypad
-            Sets the amount of padding (in px) along the y
-            direction.
-        yref
-            Sets the container `y` refers to. "container" spans the
-            entire `height` of the plot. "paper" refers to the
-            height of the plotting area only.
-        
-Did you mean "title"?
-
-Bad property path:
-titleside
-^^^^^^^^^
+[31mNameError[39m: name 'px' is not defined
 
