@@ -702,14 +702,14 @@ document.write(`
 </ul>
 <p><strong>Derivation and Rationale: Why <span class="math notranslate nohighlight">\(n - k\)</span>?</strong></p>
 <p>The concept of degrees of freedom is central to understanding the SER. When we estimate the <span class="math notranslate nohighlight">\(k\)</span> parameters of our model from the data, we “use up” <span class="math notranslate nohighlight">\(k\)</span> pieces of information. This leaves <span class="math notranslate nohighlight">\((n - k)\)</span> independent pieces of information (the residuals) to estimate the variance of the underlying error in our model.</p>
-<p>The term <span class="math notranslate nohighlight">\(RSS / (n - k)\)</span> is the <strong>Mean Squared Error (MSE)</strong>, which is considered an <strong>unbiased estimator</strong> of the variance of the random errors <span class="math notranslate nohighlight">\(\sigma^2\)</span> in the data. An unbiased estimator is one whose expected value is equal to the true population parameter it is trying to estimate. We discuss unbiased estimators in more details <a class="reference internal" href="#../variance-covariance.ipynb"><span class="xref myst">here</span></a>.</p>
+<p>The term <span class="math notranslate nohighlight">\(RSS / (n - k)\)</span> is the <strong>Mean Squared Error (MSE)</strong>, which is considered an <strong>unbiased estimator</strong> of the variance of the random errors <span class="math notranslate nohighlight">\(\sigma^2\)</span> in the data. An unbiased estimator is one whose expected value is equal to the true population parameter it is trying to estimate. We discuss unbiased estimators in more details <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a>.</p>
 <p>Let’s formalize this. Assume our model is fundamentally correct and that the observed values <span class="math notranslate nohighlight">\(y_i\)</span> are composed of the true function value plus a random error term <span class="math notranslate nohighlight">\(\epsilon_i\)</span>, which is assumed to have a mean of 0 and a variance of <span class="math notranslate nohighlight">\(\sigma^2\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[ y_i = f(x_i; \beta_1, ..., \beta_k) + \epsilon_i \]</div>
 <p>The RSS is the sum of the squared <em>sample</em> residuals, not the true errors <span class="math notranslate nohighlight">\(\epsilon_i\)</span>. It can be shown mathematically that the expected value of the RSS is:</p>
 <div class="math notranslate nohighlight">
 \[ E[RSS] = (n - k)\sigma^2 \]</div>
-<p>NOTE: We do not show this derivation in this material, however, you can validate derivation of a similar case <a class="reference internal" href="#../variance-covariance.ipynb"><span class="xref myst">here</span></a>.</p>
+<p>NOTE: We do not show this derivation in this material, however, you can validate derivation of a similar case <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a>.</p>
 <p>Therefore, to get an unbiased estimate of the true error variance <span class="math notranslate nohighlight">\(\sigma^2\)</span>, we must divide RSS by the degrees of freedom:</p>
 <div class="math notranslate nohighlight">
 \[ \hat{\sigma}^2 = MSE = \frac{RSS}{n - k} \]</div>

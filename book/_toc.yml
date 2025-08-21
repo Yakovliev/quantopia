@@ -34,6 +34,7 @@ parts:
       - file: physics/continuity-equation-02
       - file: physics/ensemble
       - file: physics/microcanonical-ensemble
+      # - file: physics/microcanonical-ensemble-code
       # - file: physics/fokker-planck-equation-example
 
   

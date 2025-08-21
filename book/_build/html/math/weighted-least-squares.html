@@ -622,7 +622,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <p>In the context of curve fitting where meaningful, known uncertainties (<span class="math notranslate nohighlight">\(\sigma_i\)</span>) are provided for each data point, the WRSS takes on a profound statistical meaning. In this case, the WRSS value is identical to the <strong>chi-squared statistic <span class="math notranslate nohighlight">\(\chi^2\)</span></strong>.</p>
 <div class="math notranslate nohighlight">
 \[ \chi^2 = \sum_{i=1}^{n} \left( \frac{y_i - f(x_i, \beta)}{\sigma_i} \right)^2 = \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2} = RSS_w \]</div>
-<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics see <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst">here</span></a>.</p>
+<p>This is more than just a notational change; it recasts the WRSS as a goodness-of-fit statistic. By comparing the calculated <span class="math notranslate nohighlight">\(\chi^2\)</span> value with the theoretical chi-squared distribution for a given number of degrees of freedom, one can quantitatively assess how well the model describes the data. More details about <span class="math notranslate nohighlight">\(\chi^2\)</span> statistics see <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>.</p>
 </section>
 </section>
 <section id="calculating-goodness-of-fit-metrics-with-wls">
@@ -712,7 +712,7 @@ The weights are typically inversely proportional to the variance of the errors f
 <li><p><strong>Standard Error of the Regression (SER)</strong>: Also known as the residual standard deviation or residual standard error, it estimates the standard deviation of the error term.</p>
 <div class="math notranslate nohighlight">
 \[SER = \sqrt{\frac{RSS}{n-p}}\]</div>
-<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
+<p>The weighted version is particularly important as it is the square root of the <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc"><strong>Reduced Chi-Squared</strong></span></a> value (<span class="math notranslate nohighlight">\(SER_w\)</span> value close to 1 indicates that the model’s fit is consistent with the measurement errors):</p>
 <div class="math notranslate nohighlight">
 \[SER_{w} = \sqrt{\frac{RSS_{w}}{n-p}} = \sqrt{\chi^2_{red}}\]</div>
 </li>

@@ -439,7 +439,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predicted-values-of-x-and-y">Predicted values of x and y</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-1">Code 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2">Code 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>
@@ -753,7 +753,7 @@ Reduced Chi-squared (manual calculation): 0.7533
 
 <span class="c1"># A simplified log-likelihood for ODR, based on the chi-squared value.</span>
 <span class="c1"># This is a good approximation for comparison purposes.</span>
-<span class="n">llf</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span>
+<span class="n">llf</span> <span class="o">=</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span>
 
 <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
 <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
@@ -763,14 +763,27 @@ Reduced Chi-squared (manual calculation): 0.7533
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;bic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bic</span>
 <span class="n">results</span><span class="p">[</span><span class="s1">&#39;aicc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aicc</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Maximum Log-Likelihood:&#39;</span><span class="p">,</span> <span class="n">llf</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AIC:&#39;</span><span class="p">,</span> <span class="n">aic</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;BIC:&#39;</span><span class="p">,</span> <span class="n">bic</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;AICC:&#39;</span><span class="p">,</span> <span class="n">aicc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum Log-Likelihood: -14.748413858813365
+AIC: 33.49682771762673
+BIC: 33.38864801573735
+AICC: 36.49682771762673
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="code-1">
-<h2>Code 1<a class="headerlink" href="#code-1" title="Link to this heading">#</a></h2>
+<section id="general-methods-for-odr-analysis">
+<h2>General Methods for ODR Analysis<a class="headerlink" href="#general-methods-for-odr-analysis" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -2187,7 +2200,7 @@ AICc (Corrected AIC): 32.3505
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predicted-values-of-x-and-y">Predicted values of x and y</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-1">Code 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-2">Code 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>

@@ -655,7 +655,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>Many regression packages, including <code class="docutils literal notranslate"><span class="pre">scipy.odr</span></code>, report this value as <code class="docutils literal notranslate"><span class="pre">res_var</span></code> (residual variance), which is equivalent to the reduced chi-squared.</p>
 </li>
 </ul>
-<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="#../goodness-of-fit-and-chi-squared.ipynb"><span class="xref myst">here</span></a>. The interpretation of the reduced chi-squared statistic is most rigorous for models that are linear in their parameters. For non-linear models, the statistical assumptions that guarantee the chi-squared distribution are not always met, and the exact number of degrees of freedom can be ambiguous. In such cases, the reduced chi-squared value remains a powerful and widely used heuristic for assessing the goodness of fit, but it should be interpreted with a degree of caution.</p>
+<p>See the notes about non-linear case for the Reduced Chi-Squared <a class="reference internal" href="goodness-of-fit-and-chi-squared.html"><span class="std std-doc">here</span></a>. The interpretation of the reduced chi-squared statistic is most rigorous for models that are linear in their parameters. For non-linear models, the statistical assumptions that guarantee the chi-squared distribution are not always met, and the exact number of degrees of freedom can be ambiguous. In such cases, the reduced chi-squared value remains a powerful and widely used heuristic for assessing the goodness of fit, but it should be interpreted with a degree of caution.</p>
 </section>
 <section id="r-squared-r-2-and-adjusted-r-squared">
 <h3>R-Squared (<span class="math notranslate nohighlight">\(R^2\)</span>) and Adjusted R-Squared<a class="headerlink" href="#r-squared-r-2-and-adjusted-r-squared" title="Link to this heading">#</a></h3>
@@ -667,7 +667,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 <p>The Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) are excellent tools for <strong>comparing different models</strong> fit to the same dataset. They do not tell you if a single model is a “good fit” in an absolute sense, but they can tell you which model is better relative to others.</p>
 <p>Both criteria work by balancing model fit with model complexity (the number of parameters, <span class="math notranslate nohighlight">\(p\)</span>).</p>
 <p>When comparing two or more models, the one with the <strong>lower AIC or BIC value is considered better</strong>. It provides the most explanatory power for the least complexity.</p>
-<p>Formulas for AIC and BIC, see <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a>. Maximum log-likelihood derivation for the case of ODR that is necessary for calculation of AIC and BIC, you can find below.</p>
+<p>Formulas for AIC and BIC, see <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a>. Maximum log-likelihood derivation for the case of ODR that is necessary for calculation of AIC and BIC, you can find below.</p>
 </section>
 <section id="parameter-standard-errors">
 <h3>Parameter Standard Errors<a class="headerlink" href="#parameter-standard-errors" title="Link to this heading">#</a></h3>
@@ -710,7 +710,7 @@ As the denominator <span class="math notranslate nohighlight">\(\sigma_{x,i}^2\)
 </section>
 <section id="log-likelihood-for-odr">
 <h2>Log-Likelihood for ODR<a class="headerlink" href="#log-likelihood-for-odr" title="Link to this heading">#</a></h2>
-<p>For Orthogonal Distance Regression (ODR), the derivation of the log-likelihood function differs from Ordinary Least Squares (OLS) because ODR accounts for measurement errors in both the independent (x) and dependent (y) variables. More details about basis of log-likelihood see <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a>.</p>
+<p>For Orthogonal Distance Regression (ODR), the derivation of the log-likelihood function differs from Ordinary Least Squares (OLS) because ODR accounts for measurement errors in both the independent (x) and dependent (y) variables. More details about basis of log-likelihood see <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a>.</p>
 <p>The maximum likelihood approach for ODR is based on the assumption that the errors in both x and y are independent and normally distributed. For each data point <span class="math notranslate nohighlight">\((x_i, y_i)\)</span>, we assume there exists a “true” point <span class="math notranslate nohighlight">\((\hat{x}_i, \hat{y}_i)\)</span> on the model curve, <span class="math notranslate nohighlight">\(y = f(x; \beta)\)</span>, where <span class="math notranslate nohighlight">\(\beta\)</span> is the vector of model parameters. The observed data are subject to measurement errors.</p>
 <p>The model is defined by:</p>
 <div class="math notranslate nohighlight">

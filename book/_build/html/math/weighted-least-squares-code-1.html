@@ -573,7 +573,7 @@ Dep. Variable:                      y   R-squared:                       0.996
 Model:                            WLS   Adj. R-squared:                  0.995
 Method:                 Least Squares   F-statistic:                     1443.
 Date:                Fri, 22 Aug 2025   Prob (F-statistic):           2.22e-08
-Time:                        00:02:47   Log-Likelihood:               0.049782
+Time:                        00:45:06   Log-Likelihood:               0.049782
 No. Observations:                   8   AIC:                             3.900
 Df Residuals:                       6   BIC:                             4.059
 Df Model:                           1                                         
@@ -1133,8 +1133,8 @@ Unbiased Scale (weighted RSS / degrees of freedom): 0.3141
 </section>
 <section id="log-likelihood">
 <h3>Log-Likelihood<a class="headerlink" href="#log-likelihood" title="Link to this heading">#</a></h3>
-<p>Let’s figure out how the value of Log-Likelihood of the Model is calculated. The standard formulas for AIC and BIC can be found <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a></p>
-<p>We start with the general <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">formula</span></a>:</p>
+<p>Let’s figure out how the value of Log-Likelihood of the Model is calculated. The standard formulas for AIC and BIC can be found <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a></p>
+<p>We start with the general <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">formula</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\ln(L) = - \sum_{i=1}^{n} \ln(\sqrt{2\pi\sigma_i^2}) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 <p>Let’s modify it a bit using the assumptions from statsmodels. In <strong>Weighted Least Squares (WLS)</strong> <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, the assumption is that the error variances are known up to a constant factor (<span class="math notranslate nohighlight">\(\text{Var}(\epsilon_i) = \sigma_i^2 = \sigma^2 / w_i\)</span>), where <span class="math notranslate nohighlight">\(w_i\)</span> are the known weights. The <code class="docutils literal notranslate"><span class="pre">results.scale</span></code> value provides an estimate of this unknown constant <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Therefore, we substitute</p>
@@ -1154,7 +1154,7 @@ Unbiased Scale (weighted RSS / degrees of freedom): 0.3141
 \[\ln(L) = - \frac{1}{2}\sum_{i=1}^{n} \ln\left(2 \pi\right) - \frac{1}{2}\sum_{i=1}^{n} \ln\left(\sigma^2\right) + \frac{1}{2}\sum_{i=1}^{n} \ln\left(w_i\right) - \frac{RSS_w}{2 \sigma^2}\]</div>
 <div class="math notranslate nohighlight">
 \[\ln(L) = - \frac{n}{2} \ln\left(2 \pi\right) - \frac{n}{2} \ln\left(\sigma^2\right) + \frac{1}{2}\sum_{i=1}^{n} \ln\left(w_i\right) - \frac{RSS_w}{2 \sigma^2}\]</div>
-<p>Now, we can find the <strong>Maximum Likelihood Estimate (MLE)</strong> for the variance, denoted as <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span>, by taking the partial derivative of the log-likelihood function with respect to <span class="math notranslate nohighlight">\(\sigma^2\)</span> and setting it to zero. The same approach is described <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a> in more details.</p>
+<p>Now, we can find the <strong>Maximum Likelihood Estimate (MLE)</strong> for the variance, denoted as <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span>, by taking the partial derivative of the log-likelihood function with respect to <span class="math notranslate nohighlight">\(\sigma^2\)</span> and setting it to zero. The same approach is described <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a> in more details.</p>
 <div class="math notranslate nohighlight">
 \[\frac{\partial \ln(L)}{\partial \sigma^2} = - \frac{n}{2\sigma^2} + \frac{RSS_w}{2(\sigma^2)^2}\]</div>
 <p>Setting the derivative to zero to find the maximum:</p>
@@ -1164,7 +1164,7 @@ Unbiased Scale (weighted RSS / degrees of freedom): 0.3141
 <div class="math notranslate nohighlight">
 \[\hat{\sigma}^2 = \frac{RSS_w}{n}\]</div>
 <blockquote>
-<div><p>This is a fundamentally important result: the maximum likelihood estimate (MLE) for the unknown variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the weighted residual sum of squares divided by the number of data points. Note that our result is a biased estimator. Discussion about biased vs unbiased estimator can be found <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a>.</p>
+<div><p>This is a fundamentally important result: the maximum likelihood estimate (MLE) for the unknown variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the weighted residual sum of squares divided by the number of data points. Note that our result is a biased estimator. Discussion about biased vs unbiased estimator can be found <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a>.</p>
 </div></blockquote>
 <p>Now, we can substitute this estimate <span class="math notranslate nohighlight">\(\hat{\sigma}^2\)</span> back into the log-likelihood equation to get the <em>maximized</em> log-likelihood, <span class="math notranslate nohighlight">\(\ln(\hat{L})\)</span>. This value represents the highest possible likelihood given the data and the model form.</p>
 <div class="math notranslate nohighlight">
@@ -1431,7 +1431,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            WLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1132.
 Date:                Fri, 22 Aug 2025   Prob (F-statistic):           4.59e-08
-Time:                        00:02:48   Log-Likelihood:                -1.0822
+Time:                        00:45:07   Log-Likelihood:                -1.0822
 No. Observations:                   8   AIC:                             6.164
 Df Residuals:                       6   BIC:                             6.323
 Df Model:                           1                                         
@@ -2678,7 +2678,7 @@ Manual Weighted Total MSE: 65.0220
 <section id="id2">
 <h3>Log-Likelihood<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>In this case, standard deviations <span class="math notranslate nohighlight">\(sigma_i\)</span> are known, so we do not need to calculate Maximum Likelihood Estimate (MLE) for the variance.</p>
-<p>We can use standard formula from <a class="reference internal" href="#../aic-and-bic.ipynb"><span class="xref myst">here</span></a>:</p>
+<p>We can use standard formula from <a class="reference internal" href="aic-and-bic.html"><span class="std std-doc">here</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\ln(L) = - \sum_{i=1}^{n} \ln\left(\sqrt{2\pi\sigma_i^2}\right) - \frac{1}{2} \sum_{i=1}^{n} \frac{(y_i - f(x_i, \beta))^2}{\sigma_i^2}\]</div>
 <p>Let’s simplify it a bit:</p>

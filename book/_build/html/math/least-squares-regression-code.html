@@ -638,7 +638,7 @@ Value for x=0 (Expected value is 100): 100.0000
 </div>
 </div>
 <hr class="docutils" />
-<p>R-squared (coefficient of determination) <span class="math notranslate nohighlight">\(R^2\)</span> remains a valuable tool for comparing different non-linear models fitted to the <em>same dataset</em>. If you tried another non-linear function on the same data, you could compare their R-squared values to see which one provides a better fit. However, in our case we use the same model for different datasets, so that’s not a good idea to compare <span class="math notranslate nohighlight">\(R^2\)</span> values between these datasets. Also, we need to use <span class="math notranslate nohighlight">\(R^2\)</span> with caution (see the details <a class="reference internal" href="#../least-squares-regression.ipynb"><span class="xref myst">here</span></a>)</p>
+<p>R-squared (coefficient of determination) <span class="math notranslate nohighlight">\(R^2\)</span> remains a valuable tool for comparing different non-linear models fitted to the <em>same dataset</em>. If you tried another non-linear function on the same data, you could compare their R-squared values to see which one provides a better fit. However, in our case we use the same model for different datasets, so that’s not a good idea to compare <span class="math notranslate nohighlight">\(R^2\)</span> values between these datasets. Also, we need to use <span class="math notranslate nohighlight">\(R^2\)</span> with caution (see the details <a class="reference internal" href="least-squares-regression.html"><span class="std std-doc">here</span></a>)</p>
 <p>While a high <span class="math notranslate nohighlight">\(R^2\)</span> is good, it doesn’t guarantee that our non-linear model is the “correct” physical model or that it will extrapolate well. It only indicates how well it fits the <em>observed data</em>. Overfitting can still occur, especially with complex non-linear functions and limited data.</p>
 <p>Just like with linear models, if you are comparing non-linear models with different numbers of parameters, the raw <span class="math notranslate nohighlight">\(R^2\)</span> can be misleading (it tends to increase with more parameters). In such cases, <strong>adjusted R-squared</strong> is a better metric as it penalizes for model complexity.</p>
 <p>In summary, for our non-linear function fitted with <code class="docutils literal notranslate"><span class="pre">scipy.optimize.curve_fit</span></code>, R-squared is a valid and useful metric, but not primary metric.</p>
@@ -740,7 +740,7 @@ Dep. Variable:                      y   R-squared:                       0.995
 Model:                            OLS   Adj. R-squared:                  0.994
 Method:                 Least Squares   F-statistic:                     1178.
 Date:                Fri, 22 Aug 2025   Prob (F-statistic):           4.08e-08
-Time:                        00:02:15   Log-Likelihood:                -2.5554
+Time:                        00:44:31   Log-Likelihood:                -2.5554
 No. Observations:                   8   AIC:                             9.111
 Df Residuals:                       6   BIC:                             9.270
 Df Model:                           1                                         
