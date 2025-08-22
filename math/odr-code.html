@@ -847,48 +847,24 @@ AICC: 36.49682771762673
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;t_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_values</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;p_values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_values</span>
 
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;delta_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;epsilon_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;x_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">xplus</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">y</span>
+
     <span class="c1"># Chi-Squared and Reduced Chi-Squared from ODR output</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">sum_square</span>
     <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">res_var</span>
-
-    <span class="c1"># Calculate Chi-Squared manually as per the formula</span>
-    <span class="c1"># ODR output provides delta (residuals in x) and eps (residuals in y)</span>
-    <span class="n">delta_x</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">delta</span>
-    <span class="n">epsilon_y</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">eps</span>
-    
-    <span class="n">chi_squared_manual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">delta_x</span> <span class="o">/</span> <span class="n">sigma_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">epsilon_y</span> <span class="o">/</span> <span class="n">sigma_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">chi_squared_manual</span>
-
-    <span class="c1"># Reduced Chi-Squared (manual calculation)</span>
-    <span class="n">reduced_chi_squared_manual</span> <span class="o">=</span> <span class="n">chi_squared_manual</span> <span class="o">/</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;degrees_of_freedom&#39;</span><span class="p">]</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduced_chi_squared_manual</span>
-
-    <span class="c1"># Generate predicted values</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;fit_params&#39;</span><span class="p">],</span> <span class="n">x</span> <span class="o">+</span> <span class="n">delta_x</span><span class="p">)</span> <span class="c1">#????</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;y_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_pred</span>
-    
-    <span class="c1"># Unweighted residuals for unweighted metrics</span>
-    <span class="n">unweighted_residuals</span> <span class="o">=</span> <span class="n">y_obs</span> <span class="o">-</span> <span class="n">y_pred</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;unweighted_residuals&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">unweighted_residuals</span>
-    
-    <span class="c1"># Sum of Squares and R-squared metrics</span>
-    <span class="n">rss_unweighted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unweighted_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">unweighted_centered_tss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y_obs</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_obs</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">r_squared_unweighted</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rss_unweighted</span> <span class="o">/</span> <span class="n">unweighted_centered_tss</span>
-    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_squared_unweighted</span>
-
-    <span class="c1"># Note: ODR does not have a concept of weighted R-squared as standard curve_fit.</span>
-    <span class="c1"># The goodness-of-fit is primarily assessed by the reduced chi-squared.</span>
 
     <span class="c1"># Information Criteria (using the log-likelihood for ODR, which is implicitly</span>
     <span class="c1"># based on the chi-squared statistic, assuming a Gaussian error model).</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
-    
+
     <span class="c1"># A simplified log-likelihood for ODR, based on the chi-squared value.</span>
     <span class="c1"># This is a good approximation for comparison purposes.</span>
-    <span class="n">llf</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span>
-    
+    <span class="n">llf</span> <span class="o">=</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span>
+
     <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
     <span class="n">bic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span>
     <span class="n">aicc</span> <span class="o">=</span> <span class="n">aic</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -932,10 +908,7 @@ AICC: 36.49682771762673
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Goodness-of-Fit &amp; Error Metrics ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared (from ODR): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chi-Squared (manual): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_manual&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (from ODR): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_odr&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced Chi-Squared (manual): </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;reduced_chi_squared_manual&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unweighted R-squared: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;r_squared_unweighted&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Information Criteria ---&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum Log-Likelihood: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;log_likelihood&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1022,13 +995,15 @@ AICC: 36.49682771762673
 <span class="n">print_metrics</span><span class="p">(</span><span class="n">odr_results</span><span class="p">)</span>
 
 <span class="c1"># Draw the curve fit plot</span>
-<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+<span class="c1"># draw_curve_fit(odr_results, model_function)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-Beta: [5.67694275e+01 9.88335260e-03]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Beta: [5.67694275e+01 9.88335260e-03]
 Beta Std Error: [4.26741666e-01 2.63972932e-04]
 Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
  [-1.18588964e-04  9.25007382e-08]]
@@ -1051,19 +1026,15 @@ Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
 Chi-Squared (from ODR): 3.7665
-Chi-Squared (manual): 3.7665
 Reduced Chi-Squared (from ODR): 0.7533
-Reduced Chi-Squared (manual): 0.7533
-Unweighted R-squared: 0.9998
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -8.3158
-AIC (Akaike Information Criterion): 20.6317
-BIC (Bayesian Information Criterion): 20.5235
-AICc (Corrected AIC): 23.6317
+Maximum Log-Likelihood: -14.7484
+AIC (Akaike Information Criterion): 33.4968
+BIC (Bayesian Information Criterion): 33.3886
+AICc (Corrected AIC): 36.4968
 </pre></div>
 </div>
-<img alt="../_images/f10d83ab880cec76ad5dd4f4c1a137a17cfde658579dbffd0127001af0245a41.png" src="../_images/f10d83ab880cec76ad5dd4f4c1a137a17cfde658579dbffd0127001af0245a41.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1119,7 +1090,7 @@ Reason(s) for Halting:
 <span class="n">print_metrics</span><span class="p">(</span><span class="n">odr_results</span><span class="p">)</span>
 
 <span class="c1"># Draw the curve fit plot</span>
-<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+<span class="c1"># draw_curve_fit(odr_results, model_function)</span>
 </pre></div>
 </div>
 </div>
@@ -1148,19 +1119,15 @@ Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
 Chi-Squared (from ODR): 12.4853
-Chi-Squared (manual): 12.4853
 Reduced Chi-Squared (from ODR): 2.4971
-Reduced Chi-Squared (manual): 2.4971
-Unweighted R-squared: 1.0000
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -12.6752
-AIC (Akaike Information Criterion): 29.3505
-BIC (Bayesian Information Criterion): 29.2423
-AICc (Corrected AIC): 32.3505
+Maximum Log-Likelihood: -19.1078
+AIC (Akaike Information Criterion): 42.2156
+BIC (Bayesian Information Criterion): 42.1074
+AICc (Corrected AIC): 45.2156
 </pre></div>
 </div>
-<img alt="../_images/940a2538eb0066fab481872d30b0366b6b1f16530628837aff877ec5d6103675.png" src="../_images/940a2538eb0066fab481872d30b0366b6b1f16530628837aff877ec5d6103675.png" />
 </div>
 </div>
 </section>
@@ -1511,7 +1478,7 @@ Reason(s) for Halting:
 <span class="n">print_metrics</span><span class="p">(</span><span class="n">odr_results</span><span class="p">)</span>
 
 <span class="c1"># Draw the curve fit plot</span>
-<span class="n">draw_curve_fit</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+<span class="c1"># draw_curve_fit(odr_results, model_function)</span>
 </pre></div>
 </div>
 </div>
@@ -1540,19 +1507,15 @@ Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
 Chi-Squared (from ODR): 5.2691
-Chi-Squared (manual): 5.2691
 Reduced Chi-Squared (from ODR): 1.0538
-Reduced Chi-Squared (manual): 1.0538
-Unweighted R-squared: 0.9999
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -16.7574
-AIC (Akaike Information Criterion): 37.5149
-BIC (Bayesian Information Criterion): 37.4067
-AICc (Corrected AIC): 40.5149
+Maximum Log-Likelihood: -23.1900
+AIC (Akaike Information Criterion): 50.3800
+BIC (Bayesian Information Criterion): 50.2718
+AICc (Corrected AIC): 53.3800
 </pre></div>
 </div>
-<img alt="../_images/68056f4ff588a076fb6be9b1d0110499cecc2f720592236cb8a33364db9b95b0.png" src="../_images/68056f4ff588a076fb6be9b1d0110499cecc2f720592236cb8a33364db9b95b0.png" />
 </div>
 </div>
 </section>
