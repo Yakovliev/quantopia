@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The Continuity Equation &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+    <title>Mass: Inertial vs. Gravitational &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
   
   
   
@@ -59,13 +59,12 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/continuity-equation-01';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'physics/inertial_vs_gravitational_mass';</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="The Continuity Equation: One-Dimensional Advection of a Density Profile" href="continuity-equation-02.html" />
-    <link rel="prev" title="ODR - Code Examples" href="../math/odr-code.html" />
+    <link rel="prev" title="Microcanonical Ensemble" href="microcanonical-ensemble.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -205,11 +204,11 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="continuity-equation-01.html">The Continuity Equation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Mass: Inertial vs. Gravitational</a></li>
 </ul>
 
     </div>
@@ -264,7 +263,7 @@
       
       
       
-      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/continuity-equation-01.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/physics/inertial_vs_gravitational_mass.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Colab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -312,7 +311,7 @@
       
       
       
-      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/continuity-equation-01.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fphysics/inertial_vs_gravitational_mass.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -342,7 +341,7 @@
       
       
       
-      <li><a href="../_sources/physics/continuity-equation-01.ipynb" target="_blank"
+      <li><a href="../_sources/physics/inertial_vs_gravitational_mass.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -426,7 +425,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>The Continuity Equation</h1>
+    <h1>Mass: Inertial vs. Gravitational</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -436,7 +435,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-overview">Derivation Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inertial-mass-m-i">Inertial Mass (<span class="math notranslate nohighlight">\(m_i\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravitational-mass-m-g">Gravitational Mass (<span class="math notranslate nohighlight">\(m_g\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-big-question-why-are-they-the-same">The Big Question: Why Are They The Same?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-the-observation-galileo-s-insight">Step 1: The Observation (Galileo’s Insight)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-the-explanation-einstein-s-leap-of-genius">Step 2: The Explanation (Einstein’s Leap of Genius)</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -448,160 +453,96 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="the-continuity-equation">
-<h1>The Continuity Equation<a class="headerlink" href="#the-continuity-equation" title="Link to this heading">#</a></h1>
-<p>The continuity equation is a fundamental principle in physics that describes the conservation of a physical quantity—such as mass, charge, or energy—as it moves through space and time. It mathematically expresses how the density of this conserved quantity changes within a region due to the flow of the quantity into or out of that region.</p>
-<hr class="docutils" />
-<p><strong>General Form of the Continuity Equation</strong></p>
-<p>In its most general form, the continuity equation is written as:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-\]</div>
-<ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong> (rho) is the <strong>density</strong> of the conserved quantity (e.g., mass density, charge density).</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{J}\)</span></strong> is the <strong>flux density vector</strong> (e.g., mass flux, current density), representing the rate at which the quantity moves through space.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\frac{\partial \rho}{\partial t}\)</span></strong> is the <strong>partial derivative of density with respect to time</strong>, indicating how the density changes over time.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\nabla \cdot \mathbf{J}\)</span></strong> is the <strong>divergence of the flux</strong>, representing the net outflow of the quantity from an infinitesimal volume.</p></li>
-</ul>
-<hr class="docutils" />
-<p><strong>Physical Interpretation</strong></p>
-<ul class="simple">
-<li><p><strong>Conservation Principle</strong>: The continuity equation embodies the idea that the total amount of the conserved quantity remains constant within a closed system unless there is some external addition or removal.</p></li>
-<li><p><strong>Local Conservation</strong>: It applies locally, meaning conservation holds at every point in space and time, not just globally.</p></li>
-<li><p><strong>Flow Dynamics</strong>: It relates the change in density of the quantity to its flow, linking temporal changes to spatial movements.</p></li>
-</ul>
-<section id="derivation-overview">
-<h2>Derivation Overview<a class="headerlink" href="#derivation-overview" title="Link to this heading">#</a></h2>
-<p>The continuity equation can be derived from the fundamental principle of conservation of a physical quantity within an arbitrary volume. Here’s a detailed step-by-step derivation:</p>
-<p><strong>1. Conservation Principle</strong></p>
-<p>Consider an arbitrary fixed control volume <span class="math notranslate nohighlight">\(V\)</span> in space with a closed surface <span class="math notranslate nohighlight">\(S\)</span>. The total amount <span class="math notranslate nohighlight">\(Q(t)\)</span> of the conserved quantity within <span class="math notranslate nohighlight">\(V\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> is given by:</p>
-<div class="math notranslate nohighlight">
-\[
-Q(t) = \int_V \rho(\mathbf{r}, t) \, dV
-\]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\( \rho(\mathbf{r}, t) \)</span> is the density of the conserved quantity at position <span class="math notranslate nohighlight">\( \mathbf{r} \)</span> and time <span class="math notranslate nohighlight">\( t \)</span>.</p></li>
-</ul>
-<p>The rate of change of <span class="math notranslate nohighlight">\( Q(t) \)</span> with respect to time is:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{dQ}{dt} = \int_V \frac{\partial \rho}{\partial t} \, dV
-\]</div>
-<p><strong>2. Net Flow Across the Boundary</strong></p>
-<p>The net flow of the quantity out of the control volume <span class="math notranslate nohighlight">\( V \)</span> through its boundary surface <span class="math notranslate nohighlight">\( S \)</span> is given by:</p>
-<div class="math notranslate nohighlight">
-\[
-\text{Net outflow} = \oint_S \mathbf{J} \cdot \mathbf{n} \, dS
-\]</div>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\( \mathbf{J} \)</span> is the flux density vector.</p></li>
-<li><p><span class="math notranslate nohighlight">\( \mathbf{n} \)</span> is the outward-pointing unit normal vector on the surface <span class="math notranslate nohighlight">\( S \)</span>.</p></li>
-<li><p><span class="math notranslate nohighlight">\( dS \)</span> is an infinitesimal area element on <span class="math notranslate nohighlight">\( S \)</span>.</p></li>
-</ul>
-<p><strong>3. Conservation Equation</strong></p>
-<p>According to the conservation principle:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{dQ}{dt} = -\oint_S \mathbf{J} \cdot \mathbf{n} \, dS
-\]</div>
-<ul class="simple">
-<li><p>The negative sign indicates that an outward flux reduces the amount of the quantity within <span class="math notranslate nohighlight">\( V \)</span>.</p></li>
-</ul>
-<p><strong>4. Applying the Divergence Theorem</strong></p>
-<p>The divergence theorem relates the surface integral over <span class="math notranslate nohighlight">\( S \)</span> to a volume integral over <span class="math notranslate nohighlight">\( V \)</span>:</p>
-<div class="math notranslate nohighlight">
-\[
-\oint_S \mathbf{J} \cdot \mathbf{n} \, dS = \int_V \nabla \cdot \mathbf{J} \, dV
-\]</div>
-<p>Substituting into the conservation equation:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{dQ}{dt} = -\int_V \nabla \cdot \mathbf{J} \, dV
-\]</div>
-<p><strong>5. Combining the Equations</strong></p>
-<p>We have:</p>
-<div class="math notranslate nohighlight">
-\[
-\int_V \frac{\partial \rho}{\partial t} \, dV = -\int_V \nabla \cdot \mathbf{J} \, dV
-\]</div>
-<p><strong>6. Bringing Terms Together</strong></p>
-<p>Bring all terms to one side:</p>
-<div class="math notranslate nohighlight">
-\[
-\int_V \left( \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} \right) dV = 0
-\]</div>
-<p><strong>7. Inferring the Local Continuity Equation</strong></p>
-<p>Since the volume <span class="math notranslate nohighlight">\( V \)</span> is arbitrary, and the integrand is continuous, the only way this equation can hold for all possible volumes is if the integrand itself is zero everywhere within the volume:</p>
-<div class="math notranslate nohighlight">
-\[
-\frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-\]</div>
-<p>This is the local form of the continuity equation.</p>
-<hr class="docutils" />
-<p><strong>APPLICATIONS</strong></p>
-<p><strong>1. Fluid Dynamics</strong></p>
-<p>In fluid dynamics, the continuity equation ensures mass conservation in fluid flow.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="mass-inertial-vs-gravitational">
+<h1>Mass: Inertial vs. Gravitational<a class="headerlink" href="#mass-inertial-vs-gravitational" title="Link to this heading">#</a></h1>
+<section id="inertial-mass-m-i">
+<h2>Inertial Mass (<span class="math notranslate nohighlight">\(m_i\)</span>)<a class="headerlink" href="#inertial-mass-m-i" title="Link to this heading">#</a></h2>
+<p>Inertial mass is, in essence, a measure of an object’s “stubbornness.” It’s the inherent property of an object that resists any change in its state of motion.</p>
 <ul>
-<li><p><strong>General Form</strong>:</p>
+<li><p><strong>Core Concept:</strong> Resistance to acceleration.</p></li>
+<li><p><strong>Governing Law:</strong> This is the mass that appears in <strong>Newton’s Second Law of Motion</strong>:</p>
 <div class="math notranslate nohighlight">
-\[
-  \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{u}) = 0
-  \]</div>
-<ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong>: Fluid density.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{u}\)</span></strong>: Fluid velocity vector.</p></li>
-</ul>
-</li>
-<li><p><strong>Incompressible Flow</strong> (<span class="math notranslate nohighlight">\(\rho\)</span> is constant):</p>
-<div class="math notranslate nohighlight">
-\[
-  \nabla \cdot \mathbf{u} = 0
-  \]</div>
-<ul class="simple">
-<li><p>Implies that the divergence of the velocity field is zero; the volume of fluid elements does not change over time.</p></li>
-</ul>
+\[F = m_i \cdot a\]</div>
+<p>(Force = inertial mass × acceleration)</p>
 </li>
 </ul>
-<p><strong>Example</strong>: Water flowing through a pipe of varying cross-sectional area. The mass flow rate must remain constant, so where the pipe narrows, the fluid velocity increases.</p>
-<p><strong>2. Electromagnetism</strong></p>
-<p>In electromagnetism, it expresses the conservation of electric charge.</p>
+<p><strong>Detailed Explanation:</strong></p>
+<p>Imagine you are in deep space, far from any significant gravitational pull. You have a bowling ball and a tennis ball floating in front of you.</p>
+<ol class="arabic simple">
+<li><p>If you push the tennis ball, it will accelerate quickly and easily move away from you. It has a <strong>low inertial mass</strong>.</p></li>
+<li><p>If you apply the <em>exact same push</em> (the same force) to the bowling ball, it will accelerate much more slowly. It resists the change in its motion far more than the tennis ball. It has a <strong>high inertial mass</strong>.</p></li>
+</ol>
+<p>Inertial mass has nothing to do with gravity, weight, or location. It is an intrinsic property of the matter that makes up an object. It tells you how much force you need to apply to that object to make it accelerate by a certain amount. The more inertial mass an object has, the more “sluggish” it is to changes in its velocity.</p>
+<p><strong>In short: Inertial mass is how much an object resists being pushed or pulled.</strong></p>
+</section>
+<hr class="docutils" />
+<section id="gravitational-mass-m-g">
+<h2>Gravitational Mass (<span class="math notranslate nohighlight">\(m_g\)</span>)<a class="headerlink" href="#gravitational-mass-m-g" title="Link to this heading">#</a></h2>
+<p>Gravitational mass is a measure of how strongly an object interacts with the force of gravity. It actually plays two distinct but related roles.</p>
 <ul>
-<li><p><strong>Equation</strong>:</p>
+<li><p><strong>Core Concept:</strong> The source of, and response to, gravity.</p></li>
+<li><p><strong>Governing Law:</strong> This is the mass that appears in <strong>Newton’s Law of Universal Gravitation</strong>:</p>
 <div class="math notranslate nohighlight">
-\[
-  \frac{\partial \rho}{\partial t} + \nabla \cdot \mathbf{J} = 0
-  \]</div>
-<ul class="simple">
-<li><p><strong><span class="math notranslate nohighlight">\(\rho\)</span></strong>: Electric charge density.</p></li>
-<li><p><strong><span class="math notranslate nohighlight">\(\mathbf{J}\)</span></strong>: Electric current density vector.</p></li>
-</ul>
+\[F_g = G \frac{M_g \cdot m_g}{r^2}\]</div>
+<p>(Gravitational Force = Gravitational Constant × (Gravitational Mass 1 × Gravitational Mass 2) / (distance squared))</p>
 </li>
 </ul>
-<p><strong>Implication</strong>: Charge cannot be created or destroyed; it can only move from one place to another.</p>
+<p><strong>Detailed Explanation:</strong>
+Gravitational mass determines the strength of the gravitational force.</p>
+<ol class="arabic simple">
+<li><p><strong>Active Gravitational Mass:</strong> This is the property that allows an object to <em>create</em> a gravitational field. The massive Sun creates a powerful gravitational field that holds the Earth in orbit. The Sun’s ability to warp the space around it is due to its huge active gravitational mass.</p></li>
+<li><p><strong>Passive Gravitational Mass:</strong> This is the property that allows an object to <em>respond</em> to a gravitational field. The Earth’s passive gravitational mass is what causes it to be pulled by the Sun’s field. Your body’s passive gravitational mass is what causes you to be pulled towards the center of the Earth, which you feel as your weight.</p></li>
+</ol>
+<p>When you step on a bathroom scale, you are measuring the gravitational force between you and the Earth. The scale is measuring the effect of the Earth’s gravitational field on your <strong>passive gravitational mass</strong>.</p>
+<p><strong>In short: Gravitational mass is how strongly an object attracts, and is attracted by, other objects.</strong></p>
+</section>
 <hr class="docutils" />
-<p><strong>Why It’s Important</strong></p>
+<section id="the-big-question-why-are-they-the-same">
+<h2>The Big Question: Why Are They The Same?<a class="headerlink" href="#the-big-question-why-are-they-the-same" title="Link to this heading">#</a></h2>
+<p>At first glance, there is no obvious reason why an object’s “stubbornness” (inertial mass) should be perfectly proportional to its “gravitational attractiveness” (gravitational mass). This was a deep puzzle for centuries. The conclusion that they are the same is one of the most fundamental principles of modern physics, known as the <strong>Equivalence Principle</strong>.</p>
+<p>Here’s the logical progression from observation to profound theory.</p>
+<section id="step-1-the-observation-galileo-s-insight">
+<h3>Step 1: The Observation (Galileo’s Insight)<a class="headerlink" href="#step-1-the-observation-galileo-s-insight" title="Link to this heading">#</a></h3>
+<p>The story of Galileo dropping objects from the Leaning Tower of Pisa (whether it happened or not) illustrates the key observation: <strong>In the absence of air resistance, all objects fall at the same rate.</strong></p>
+<p>Let’s see what this implies using the two definitions of mass:</p>
 <ul class="simple">
-<li><p><strong>Predictive Power</strong>: Allows physicists and engineers to predict how a conserved quantity will behave over time and space.</p></li>
-<li><p><strong>Fundamental Conservation Laws</strong>: Underpins many of the fundamental laws of physics, including conservation of mass, charge, and energy.</p></li>
-<li><p><strong>Engineering Applications</strong>: Essential for designing systems involving fluid flow, electrical circuits, and more.</p></li>
+<li><p>The force of gravity pulling an object down is determined by its <strong>gravitational mass</strong>: <span class="math notranslate nohighlight">\(F_g = m_g \cdot g\)</span> (where <em>g</em> is the local gravitational acceleration).</p></li>
+<li><p>The force required to make the object accelerate is determined by its <strong>inertial mass</strong>: <span class="math notranslate nohighlight">\(F = m_i \cdot a\)</span>.</p></li>
 </ul>
-<hr class="docutils" />
-<p><strong>Visualization</strong></p>
-<p>Imagine a crowd of people (representing the conserved quantity) moving through a hallway (space):</p>
+<p>Since the only force acting on the falling object is gravity, we can set these two equations equal to each other:</p>
+<div class="math notranslate nohighlight">
+\[m_i \cdot a = m_g \cdot g\]</div>
+<p>Now, let’s solve for the acceleration (<em>a</em>) of the falling object:</p>
+<div class="math notranslate nohighlight">
+\[a = (\frac{m_g}{m_i}) \cdot g\]</div>
+<p>Look closely at this equation. The observation is that the acceleration (<em>a</em>) is the same for <em>every single object</em> — a feather, a cannonball, anything. The only way this can be universally true is if the ratio (<span class="math notranslate nohighlight">\(m_g / m_i\)</span>) is the same constant value for all objects. By choosing our units of measurement conveniently, we can make this constant equal to 1.</p>
+<p>Therefore, for the laws of physics to match what we observe, it must be that:</p>
+<p><span class="math notranslate nohighlight">\(m_g = m_i\)</span></p>
+<p>For Isaac Newton, this was a remarkable but unexplained coincidence. He tested it with pendulums and found it to be true to a high degree of accuracy, but he didn’t have a fundamental reason for <em>why</em> it was true.</p>
+</section>
+<section id="step-2-the-explanation-einstein-s-leap-of-genius">
+<h3>Step 2: The Explanation (Einstein’s Leap of Genius)<a class="headerlink" href="#step-2-the-explanation-einstein-s-leap-of-genius" title="Link to this heading">#</a></h3>
+<p>Albert Einstein took this “coincidence” and elevated it to a fundamental principle of the universe. This became the foundation of his <strong>General Theory of Relativity</strong>.</p>
+<p>He proposed the <strong>Equivalence Principle</strong> through a famous thought experiment:</p>
+<ol class="arabic simple">
+<li><p><strong>Scenario A:</strong> Imagine you are in a sealed, windowless room (an elevator) sitting on the surface of the Earth. If you drop a ball, it will accelerate towards the floor at 9.8 m/s². You feel your normal weight pushing you into your chair.</p></li>
+<li><p><strong>Scenario B:</strong> Now, imagine the same sealed room is in deep space, far from any gravity. A rocket attached to the room begins to accelerate “upwards” at a constant 9.8 m/s².</p>
 <ul class="simple">
-<li><p><strong>Density (<span class="math notranslate nohighlight">\(\rho\)</span>)</strong>: How crowded the hallway is at a point.</p></li>
-<li><p><strong>Flux (<span class="math notranslate nohighlight">\(\mathbf{J}\)</span>)</strong>: How fast and in what direction people are moving.</p></li>
-<li><p><strong>Continuity Equation</strong>: Tells us that if more people are entering a section of the hallway than leaving, the crowd density in that section will increase, and vice versa.</p></li>
+<li><p>If you drop a ball, from your perspective inside the room, the floor will rush up to meet the ball at an acceleration of 9.8 m/s². To you, it will look <em>exactly</em> as if the ball is falling.</p></li>
+<li><p>The floor of the rocket will be pushing on you to make you accelerate along with it. This push will feel <em>indistinguishable</em> from the force of gravity (your weight).</p></li>
 </ul>
-<hr class="docutils" />
-<p><strong>Conclusion</strong></p>
-<p>The continuity equation is a mathematical expression of a fundamental physical principle: conservation. It provides a powerful tool for analyzing and understanding the dynamic behavior of conserved quantities in various physical systems, from fluid flow to electrical currents.</p>
-<hr class="docutils" />
-<p><strong>Remember</strong>: At its core, the continuity equation ensures that what goes in must come out unless there’s a change within the system itself.</p>
-<hr class="docutils" />
-<p><strong>Additional Resources</strong></p>
-<p><a class="reference external" href="https://en.wikipedia.org/wiki/Continuity_equation">https://en.wikipedia.org/wiki/Continuity_equation</a></p>
+</li>
+</ol>
+<p><strong>Einstein’s conclusion was revolutionary:</strong> There is no experiment you could perform inside the sealed room to determine whether you are at rest in a uniform gravitational field or are in a uniformly accelerating reference frame.</p>
+<p>This equivalence between gravity and acceleration is only possible if <strong>inertial mass and gravitational mass are precisely the same thing</strong>. If they were different, an object with a high gravitational-to-inertial mass ratio would fall “differently” in the gravitational field than it would “appear to fall” in the accelerating rocket, and you could tell the difference.</p>
+<p>Einstein’s theory re-contextualized the entire concept. He proposed that gravity is not a “force” in the Newtonian sense. Instead, <strong>mass and energy curve the fabric of spacetime</strong>. Objects simply follow the straightest possible path (called a geodesic) through this curved spacetime.</p>
+<ul class="simple">
+<li><p>The mass that tells spacetime how to curve is <strong>gravitational mass</strong>.</p></li>
+<li><p>The path the object follows through that curved spacetime is its <strong>inertia</strong>.</p></li>
+</ul>
+<p>In this new picture, the two concepts are fused into a single idea. The distinction between them dissolves.</p>
+<p><strong>Experimental Confirmation:</strong> The equivalence of inertial and gravitational mass has been tested to extraordinary precision. Experiments, such as the Eötvös experiment and modern satellite tests like MICROSCOPE, have confirmed they are the same to within one part in a quadrillion (1 in 10¹⁵), making it one of the most accurately verified principles in all of physics.</p>
+</section>
 </section>
 </section>
 
@@ -636,22 +577,13 @@ Q(t) = \int_V \rho(\mathbf{r}, t) \, dV
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../math/odr-code.html"
+       href="microcanonical-ensemble.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ODR - Code Examples</p>
+        <p class="prev-next-title">Microcanonical Ensemble</p>
       </div>
-    </a>
-    <a class="right-next"
-       href="continuity-equation-02.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">The Continuity Equation: One-Dimensional Advection of a Density Profile</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -669,7 +601,13 @@ Q(t) = \int_V \rho(\mathbf{r}, t) \, dV
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-overview">Derivation Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inertial-mass-m-i">Inertial Mass (<span class="math notranslate nohighlight">\(m_i\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gravitational-mass-m-g">Gravitational Mass (<span class="math notranslate nohighlight">\(m_g\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-big-question-why-are-they-the-same">The Big Question: Why Are They The Same?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-the-observation-galileo-s-insight">Step 1: The Observation (Galileo’s Insight)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-the-explanation-einstein-s-leap-of-genius">Step 2: The Explanation (Einstein’s Leap of Genius)</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

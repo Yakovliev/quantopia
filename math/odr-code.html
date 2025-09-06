@@ -207,6 +207,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
 </ul>
 
     </div>
@@ -751,8 +752,7 @@ Reduced Chi-squared (manual calculation): 0.7533
 <span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
 
-<span class="c1"># A simplified log-likelihood for ODR, based on the chi-squared value.</span>
-<span class="c1"># This is a good approximation for comparison purposes.</span>
+<span class="c1"># A log-likelihood for ODR, based on the chi-squared value.</span>
 <span class="n">llf</span> <span class="o">=</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span>
 
 <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
@@ -861,8 +861,7 @@ AICC: 36.49682771762673
     <span class="n">n</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_observations&#39;</span><span class="p">]</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;number_of_parameters&#39;</span><span class="p">]</span>
 
-    <span class="c1"># A simplified log-likelihood for ODR, based on the chi-squared value.</span>
-    <span class="c1"># This is a good approximation for comparison purposes.</span>
+    <span class="c1"># A log-likelihood for ODR, based on the chi-squared value.</span>
     <span class="n">llf</span> <span class="o">=</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;chi_squared_odr&#39;</span><span class="p">]</span>
 
     <span class="n">aic</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">llf</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span>
@@ -1001,9 +1000,7 @@ AICC: 36.49682771762673
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Beta: [5.67694275e+01 9.88335260e-03]
+Beta: [5.67694275e+01 9.88335260e-03]
 Beta Std Error: [4.26741666e-01 2.63972932e-04]
 Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
  [-1.18588964e-04  9.25007382e-08]]
@@ -1033,25 +1030,6 @@ Maximum Log-Likelihood: -14.7484
 AIC (Akaike Information Criterion): 33.4968
 BIC (Bayesian Information Criterion): 33.3886
 AICc (Corrected AIC): 36.4968
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">odr_results</span><span class="p">[</span><span class="s1">&#39;odr_output&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pprint</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Beta: [5.67694275e+01 9.88335260e-03]
-Beta Std Error: [4.26741666e-01 2.63972932e-04]
-Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
- [-1.18588964e-04  9.25007382e-08]]
-Residual Variance: 0.7533097575791786
-Inverse Condition #: 0.17698951436366908
-Reason(s) for Halting:
-  Sum of squares convergence
 </pre></div>
 </div>
 </div>
