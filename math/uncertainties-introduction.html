@@ -1,0 +1,729 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Experimental Errors and Significant Figures &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/uncertainties-introduction';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Least Squares Regression, RSS, RMSE, R-squared" href="least-squares-regression.html" />
+    <link rel="prev" title="Fourier Transform" href="fourier-transform-01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/math/uncertainties-introduction.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/uncertainties-introduction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/uncertainties-introduction.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Experimental Errors and Significant Figures</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-convention">Standard Convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-experimental-errors">Types of Experimental Errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-significant-figures">The Role of Significant Figures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-significant-figures-in-calculations">Handling Significant Figures in Calculations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="experimental-errors-and-significant-figures">
+<h1>Experimental Errors and Significant Figures<a class="headerlink" href="#experimental-errors-and-significant-figures" title="Link to this heading">#</a></h1>
+<section id="standard-convention">
+<h2>Standard Convention<a class="headerlink" href="#standard-convention" title="Link to this heading">#</a></h2>
+<p>When we measure a physical quantity, we are attempting to determine its <em>true value</em>. However, in reality, it is impossible to know this true value with absolute certainty. Every measurement is subject to limitations and fluctuations stemming from our instruments, the environment, and even ourselves. This inherent lack of perfection in measurement is not a mistake in the colloquial sense, but rather a fundamental aspect of experimental science.</p>
+<p>The term <strong>error</strong>, in a scientific context, refers to the difference between a measured value and the true value. Since the true value is often unknown, we use the concept of <strong>uncertainty</strong> to quantify the doubt or margin of error in our measurement. Uncertainty is a quantitative estimate of the error that is present in our data. Properly reporting our result with its associated uncertainty allows others to judge the quality of our experiment and to make meaningful comparisons with other results or theoretical predictions.</p>
+<p>A complete measurement is therefore reported in two parts: the <strong>best estimate</strong> of the quantity and the <strong>uncertainty</strong> associated with that estimate.</p>
+<p>The standard convention for reporting a measurement is to state our best estimate of the value, followed by the uncertainty. This format represents the <strong>probable range</strong> within which we are confident the true value lies.</p>
+<p>In general, we can write the result of any measurement of a quantity <span class="math notranslate nohighlight">\(x\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[ x = x_{\text{best}} \pm \delta x \]</div>
+<p>where <span class="math notranslate nohighlight">\(x_{\text{best}}\)</span> is the best estimate of a quantity <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(\delta x\)</span> is called the <strong>uncertainty</strong>, or <strong>error</strong>, or <strong>margin of error</strong> in the measurement of <span class="math notranslate nohighlight">\(x\)</span>. This formula mean that we’re confident or reasonably certain that the <span class="math notranslate nohighlight">\(x\)</span> quantity lies somewhere between <span class="math notranslate nohighlight">\(x_{\text{best}} - \delta x\)</span> and <span class="math notranslate nohighlight">\(x_{\text{best}} + \delta x\)</span>. However, to be more precise, we need to state a percent confidence of the uncertainty. We will return to this question after we consider the statistical laws that lead the process of measurement.</p>
+</section>
+<hr class="docutils" />
+<section id="types-of-experimental-errors">
+<h2>Types of Experimental Errors<a class="headerlink" href="#types-of-experimental-errors" title="Link to this heading">#</a></h2>
+<p>Experimental uncertainties are generated through two main types of errors: systematic error and random error. It is crucial to understand the difference between them, as they affect our results in different ways and are handled differently.</p>
+<blockquote>
+<div><p><strong>Systematic error</strong> is a consistent, repeatable error that is often caused by a flaw in the experimental setup or a faulty instrument. This type of error skews measurements in a predictable and consistent direction, either always higher or always lower than the true value. Because of this consistent bias, systematic errors primarily affect the <strong>accuracy</strong> of a measurement, which is how close the measurement is to the true value.</p>
+</div></blockquote>
+<p><strong>Examples of Systematic Error:</strong></p>
+<ul class="simple">
+<li><p>A miscalibrated scale that consistently reads 0.05 grams higher than the actual mass. Every measurement taken with this scale will be biased upwards by 0.05 g.</p></li>
+<li><p>Forgetting to account for the thickness of a ruler’s end when measuring from the zero mark. This would cause all length measurements to be systematically shorter than they truly are.</p></li>
+<li><p>An observer consistently reading a meter stick from an angle (parallax error), which would systematically shift the reading.</p></li>
+</ul>
+<p>A key feature of systematic error is that it cannot be reduced by simply repeating the measurement multiple times and averaging the results. To reduce systematic error, we must identify its source and eliminate it by, for example, calibrating our instruments, refining our experimental technique, or applying a correction factor.</p>
+<blockquote>
+<div><p><strong>Random error</strong> consists of unpredictable fluctuations in measurements. These errors arise from uncontrollable factors that change from one measurement to the next. Unlike systematic errors, random errors cause measurements to be scattered around the true value, with some being too high and some being too low. For this reason, random error primarily affects the <strong>precision</strong> of a measurement, which is the degree of agreement among repeated measurements of the same quantity.</p>
+</div></blockquote>
+<p><strong>Examples of Random Error:</strong></p>
+<ul class="simple">
+<li><p>Fluctuations in room temperature or air currents that slightly affect the reading of a sensitive balance.</p></li>
+<li><p>The experimenter’s reaction time when starting and stopping a stopwatch.</p></li>
+<li><p>Slight variations in how an instrument is read each time.</p></li>
+</ul>
+<p>Random errors are an inherent part of any measurement process and can never be completely eliminated. However, their effect can be minimized. The most common method to reduce the impact of random error is to take multiple measurements of the same quantity and calculate the average. The random fluctuations will tend to cancel each other out, and the average will provide a more reliable estimate of the true value.</p>
+</section>
+<hr class="docutils" />
+<section id="the-role-of-significant-figures">
+<h2>The Role of Significant Figures<a class="headerlink" href="#the-role-of-significant-figures" title="Link to this heading">#</a></h2>
+<p>When we report a measured value, we must be careful to only include digits that are known with some degree of reliability.</p>
+<blockquote>
+<div><p><strong>Significant figures (or significant digits)</strong> are the digits in a number that are meaningful in terms of its precision. They include all digits known with certainty, plus one final digit that is estimated or uncertain. The number of significant figures in a result implies a certain level of precision.</p>
+</div></blockquote>
+<p>To correctly report and interpret measurements, we must follow a standard set of rules for determining which digits are significant:</p>
+<ol class="arabic simple">
+<li><p><strong>All non-zero digits are significant.</strong></p>
+<ul class="simple">
+<li><p>Example: 1.234 has 4 significant figures.</p></li>
+</ul>
+</li>
+<li><p><strong>Zeros between non-zero digits are significant.</strong></p>
+<ul class="simple">
+<li><p>Example: 50.081 has 5 significant figures.</p></li>
+</ul>
+</li>
+<li><p><strong>Leading zeros (zeros to the left of the first non-zero digit) are not significant.</strong> They only serve to locate the decimal point.</p>
+<ul class="simple">
+<li><p>Example: 0.0075 has 2 significant figures (7 and 5).</p></li>
+</ul>
+</li>
+<li><p><strong>Trailing zeros (zeros at the end of a number) are significant if the number contains a decimal point.</strong></p>
+<ul class="simple">
+<li><p>Example: 35.00 has 4 significant figures. 7.10 has 3 significant figures. 7.100 has 4 significant figures.</p></li>
+</ul>
+</li>
+<li><p><strong>Trailing zeros in a whole number without a decimal point are ambiguous.</strong></p>
+<ul class="simple">
+<li><p>Example: The number 5200 could have 2, 3, or 4 significant figures.</p></li>
+</ul>
+</li>
+</ol>
+<p>To avoid this ambiguity, we use <strong>scientific notation</strong>.</p>
+<p>Scientific notation removes any ambiguity regarding trailing zeros. The number is expressed as a coefficient multiplied by a power of 10. All digits in the coefficient are considered significant.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(5.2 \cdot 10^3\)</span> has 2 significant figures.</p></li>
+<li><p><span class="math notranslate nohighlight">\(5.20 \cdot 10^3\)</span> has 3 significant figures.</p></li>
+<li><p><span class="math notranslate nohighlight">\(5.200 \cdot 10^3\)</span> has 4 significant figures.</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Rule:</strong> Experimental uncertainties should usually be quoted to only one or two significant figures, as more precision is unlikely to be reliable or meaningful.</p>
+</div></blockquote>
+<p><strong>Examples</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(2.89 \pm 0.08\)</span> is correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(2.89 \pm 0.78\)</span> is correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(2.89 \pm 1.78\)</span> is not correct  because the uncertainty has three significant figures</p></li>
+</ul>
+<blockquote>
+<div><p><strong>Rule:</strong> When reporting a measurement or calculation the last significant figure in the best estimate answer should usually be the same order of magnitude (in the same decimal position) as the last significant figure of the uncertainty. This rule also has one small exception. If the last digit in the uncertainty is small (for example, 1 or, perhaps, 2), adding one extra digit in the final answer may be appropriate.</p>
+</div></blockquote>
+<p><strong>Examples</strong>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(2.80 \pm 0.08\)</span> is correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(2.89 \pm 0.78\)</span> is correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(2.895 \pm 0.78\)</span> is not correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(85.6 \pm 3\)</span> is not correct</p></li>
+<li><p><span class="math notranslate nohighlight">\(4.7 \pm 1\)</span> is correct because this is an exception from the aforementioned rule. One could argue that rounding it to <span class="math notranslate nohighlight">\(5 \pm 1\)</span> would waste information.</p></li>
+<li><p><span class="math notranslate nohighlight">\(85.6 \pm 2\)</span> may be correct also as an exception.</p></li>
+<li><p><span class="math notranslate nohighlight">\(85.64 \pm 2\)</span> is not correct</p></li>
+</ul>
+<p><strong>Example of the combination of both rules</strong>. Let’s say we measure a voltage and our detailed analysis gives a best estimate of <span class="math notranslate nohighlight">\(\bar{U} = 1.4827\)</span> V and an uncertainty of <span class="math notranslate nohighlight">\(\delta U = 0.0346\)</span> V.</p>
+<ol class="arabic simple">
+<li><p><strong>Round the uncertainty:</strong> Following our rule, we round the uncertainty to two significant figures: <span class="math notranslate nohighlight">\(\delta U \approx 0.035\)</span> V.</p></li>
+<li><p><strong>Round the best estimate:</strong> The uncertainty is in the thousandths place. Therefore, our best estimate must also be rounded to the thousandths place: <span class="math notranslate nohighlight">\(\bar{U} \approx 1.483\)</span> V.</p></li>
+<li><p><strong>State the final answer:</strong> The correct way to report this result is <span class="math notranslate nohighlight">\(U = 1.483 \pm 0.035\)</span> V.</p></li>
+</ol>
+<p>Stating the result as <span class="math notranslate nohighlight">\(1.4827 \pm 0.035\)</span> V would be incorrect because the digit 7 is completely swamped by the uncertainty of 5 in the thousandths place. It is meaningless.</p>
+<section id="handling-significant-figures-in-calculations">
+<h3>Handling Significant Figures in Calculations<a class="headerlink" href="#handling-significant-figures-in-calculations" title="Link to this heading">#</a></h3>
+<p>A common question arises when using measured values in subsequent calculations: how should significant figures be handled during intermediate steps? If you round your intermediate results to the correct number of significant figures at each step, you can introduce <strong>rounding error</strong>. This error can accumulate through the calculation and make your final answer less accurate than it should be.</p>
+<p>To avoid this, it is crucial to retain at least one or two extra, non-significant digits during all intermediate calculations if possible. These are often called “<a class="reference external" href="https://en.wikipedia.org/wiki/Guard_digit">guard digits</a>”. <strong>The best practice is to carry the full, unrounded numbers through all steps in your calculator and only apply the rules of significant figures once, at the very end, to determine the precision of your final reported answer</strong>.</p>
+<p><strong>Example: The Impact of Premature Rounding</strong></p>
+<p>Suppose you need to calculate the result of <span class="math notranslate nohighlight">\((4.58 \times 2.3) / 3.885\)</span>. The final answer should be reported to two significant figures, limited by the precision of the number 2.1.</p>
+<ul class="simple">
+<li><p><strong>Incorrect Method (Premature Rounding):</strong></p>
+<ol class="arabic simple">
+<li><p>First, calculate the intermediate step: <span class="math notranslate nohighlight">\(4.52 \times 2.3 = 10.534\)</span>.</p></li>
+<li><p>Rounding this intermediate result to two significant figures gives 11.</p></li>
+<li><p>Now, perform the final step: <span class="math notranslate nohighlight">\(11 / 3.885 \approx 2.8314...\)</span></p></li>
+<li><p>Rounding this final result to two significant figures gives 2.8.</p></li>
+</ol>
+</li>
+<li><p><strong>Correct Method (Rounding Only at the End):</strong></p>
+<ol class="arabic simple">
+<li><p>First, calculate the intermediate step and keep extra digits: <span class="math notranslate nohighlight">\(4.58 \times 2.3 = 10.534\)</span>.</p></li>
+<li><p>Use this more precise value in the final calculation: <span class="math notranslate nohighlight">\(10.534 / 3.885 \approx 2.71145...\)</span></p></li>
+<li><p>Rounding this final result to two significant figures gives 2.7.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="additional-materials">
+<h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>John R. Taylor. Introduction to Error Analysis: The Study of Uncertainties in Physical Measurements. Second Edition. 1997 by University Science Books.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Significant_figures">https://en.wikipedia.org/wiki/Significant_figures</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Guard_digit">https://en.wikipedia.org/wiki/Guard_digit</a></p></li>
+<li><p>University of North Carolina’s Measurement and Uncertainty Analysis Guide. <a class="reference external" href="https://users.physics.unc.edu/~deardorf/uncertainty/UNCguide.pdf">https://users.physics.unc.edu/~deardorf/uncertainty/UNCguide.pdf</a></p></li>
+<li><p><a class="reference external" href="https://phys.libretexts.org/Courses/Georgia_State_University/GSU-TM-Physics_I_(2211)/01%3A_Introduction_to_Physics_Measurements_and_Mathematics_Tools/1.03%3A_Measurements_Uncertainty_and_Significant_Figures">https://phys.libretexts.org/Courses/Georgia_State_University/GSU-TM-Physics_I_(2211)/01%3A_Introduction_to_Physics_Measurements_and_Mathematics_Tools/1.03%3A_Measurements_Uncertainty_and_Significant_Figures</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fourier-transform-01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Fourier Transform</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="least-squares-regression.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Least Squares Regression, RSS, RMSE, R-squared</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-convention">Standard Convention</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-experimental-errors">Types of Experimental Errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-significant-figures">The Role of Significant Figures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-significant-figures-in-calculations">Handling Significant Figures in Calculations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional Materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
