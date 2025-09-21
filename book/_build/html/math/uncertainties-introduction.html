@@ -569,11 +569,11 @@ document.write(`
 <p>A common question arises when using measured values in subsequent calculations: how should significant figures be handled during intermediate steps? If you round your intermediate results to the correct number of significant figures at each step, you can introduce <strong>rounding error</strong>. This error can accumulate through the calculation and make your final answer less accurate than it should be.</p>
 <p>To avoid this, it is crucial to retain at least one or two extra, non-significant digits during all intermediate calculations if possible. These are often called “<a class="reference external" href="https://en.wikipedia.org/wiki/Guard_digit">guard digits</a>”. <strong>The best practice is to carry the full, unrounded numbers through all steps in your calculator and only apply the rules of significant figures once, at the very end, to determine the precision of your final reported answer</strong>.</p>
 <p><strong>Example: The Impact of Premature Rounding</strong></p>
-<p>Suppose you need to calculate the result of <span class="math notranslate nohighlight">\((4.58 \times 2.3) / 3.885\)</span>. The final answer should be reported to two significant figures, limited by the precision of the number 2.1.</p>
+<p>Suppose you need to calculate the result of <span class="math notranslate nohighlight">\((4.58 \times 2.3) / 3.885\)</span>. The final answer should be reported to two significant figures, limited by the precision of the number 2.3.</p>
 <ul class="simple">
 <li><p><strong>Incorrect Method (Premature Rounding):</strong></p>
 <ol class="arabic simple">
-<li><p>First, calculate the intermediate step: <span class="math notranslate nohighlight">\(4.52 \times 2.3 = 10.534\)</span>.</p></li>
+<li><p>First, calculate the intermediate step: <span class="math notranslate nohighlight">\(4.58 \times 2.3 = 10.534\)</span>.</p></li>
 <li><p>Rounding this intermediate result to two significant figures gives 11.</p></li>
 <li><p>Now, perform the final step: <span class="math notranslate nohighlight">\(11 / 3.885 \approx 2.8314...\)</span></p></li>
 <li><p>Rounding this final result to two significant figures gives 2.8.</p></li>
