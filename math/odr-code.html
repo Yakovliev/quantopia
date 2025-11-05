@@ -445,12 +445,12 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-3">Usage of Methods. Dataset 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1-part-1">Usage of Methods. Dataset 1. Part 1.</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1">Usage of Methods. Dataset 1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-model-function">Improved model function</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-than-2-parameters-in-the-non-linear-model">More than 2 parameters in the non-linear model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-2">Dataset 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-2">Usage of Methods. Dataset 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
 </ul>
             </nav>
@@ -1203,8 +1203,8 @@ AICc (Corrected AIC): 41.0114
 </div>
 </div>
 </section>
-<section id="usage-of-methods-dataset-1-part-1">
-<h2>Usage of Methods. Dataset 1. Part 1.<a class="headerlink" href="#usage-of-methods-dataset-1-part-1" title="Link to this heading">#</a></h2>
+<section id="usage-of-methods-dataset-1">
+<h2>Usage of Methods. Dataset 1<a class="headerlink" href="#usage-of-methods-dataset-1" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -1479,7 +1479,7 @@ AICc (Corrected AIC): 39.3080
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
 <span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
 <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
 <span class="c1"># Analyze the curve fit and get results using ODR</span>
@@ -1498,20 +1498,20 @@ AICc (Corrected AIC): 39.3080
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-Beta: [5.66455646e+01 3.31064937e-02]
-Beta Std Error: [1.70869523 0.00388607]
-Beta Covariance: [[ 2.52930312e+00 -4.76804323e-03]
- [-4.76804323e-03  1.30825979e-05]]
-Residual Variance: 1.1543256178977583
-Inverse Condition #: 0.04785494385177525
+Beta: [5.64837483e+01 3.34000206e-02]
+Beta Std Error: [1.85220408 0.00404159]
+Beta Covariance: [[ 1.37387692e+00 -2.48458954e-03]
+ [-2.48458954e-03  6.54144342e-06]]
+Residual Variance: 2.497064990325722
+Inverse Condition #: 0.04982581594705908
 Reason(s) for Halting:
   Sum of squares convergence
 
 --- Summary of Results ---
-Parameter A: 56.64556 +/- 1.70870
-  T-value: 33.15135640, P-value: 0.00000047
-Parameter B: 0.03311 +/- 0.00389
-  T-value: 8.51926296, P-value: 0.00036663
+Parameter A: 56.48375 +/- 1.85220
+  T-value: 30.49542373, P-value: 0.00000071
+Parameter B: 0.03340 +/- 0.00404
+  T-value: 8.26408960, P-value: 0.00042316
 
 --- Model Fit Statistics ---
 
@@ -1520,29 +1520,29 @@ Number of Parameters (p): 2
 Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
-Chi-Squared (from ODR): 5.7716
-Reduced Chi-Squared (from ODR): 1.1543
+Chi-Squared (from ODR): 12.4853
+Reduced Chi-Squared (from ODR): 2.4971
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -18.5892
-AIC (Akaike Information Criterion): 41.1784
-BIC (Bayesian Information Criterion): 41.0702
-AICc (Corrected AIC): 44.1784
+Maximum Log-Likelihood: -19.1078
+AIC (Akaike Information Criterion): 42.2156
+BIC (Bayesian Information Criterion): 42.1074
+AICc (Corrected AIC): 45.2156
 
 --- Comparison of Original and Predicted Data Points ---
   Original X    Predicted X (x_plus)    Original Y    Predicted Y (fit)
 ------------  ----------------------  ------------  -------------------
       0.0000                  0.0000      100.0000             100.0000
-      5.0000                  9.4270       79.7000              79.7653
-     25.0000                 28.5745       51.3000              51.3863
-     34.0000                 34.9116       44.6000              44.6256
-     42.0000                 40.1690       39.8000              39.7418
-     57.0000                 53.4045       29.9000              29.7466
-     97.0000                 97.8832       10.3000              10.3856
+      5.0000                  9.3481       79.7000              79.8436
+     25.0000                 28.4156       51.3000              51.4850
+     34.0000                 34.8140       44.6000              44.6515
+     42.0000                 40.1873       39.8000              39.6698
+     57.0000                 53.6460       29.9000              29.5748
+     97.0000                 97.8532       10.3000              10.4870
 </pre></div>
 </div>
-<img alt="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" src="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" />
-<img alt="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" src="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" />
+<img alt="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" src="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" />
+<img alt="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" src="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" />
 </div>
 </div>
 <p>After changing the model function, we obtained reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> value which is close to the case where we used previous model function and excluded second point as outlier.</p>
@@ -1856,9 +1856,9 @@ AICc (Corrected AIC): 38.4141
     <span class="c1"># Plot the fitted curve</span>
     <span class="n">label_text</span> <span class="o">=</span> <span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;ODR Fitted Curve</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;A=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;B=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;C=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;$A_1$=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;A=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;B=</span><span class="si">{</span><span class="n">popt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> ± </span><span class="si">{</span><span class="n">perr</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_plot</span><span class="p">,</span> <span class="n">y_plot</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_text</span><span class="p">)</span>
 
@@ -1967,14 +1967,14 @@ AICc (Corrected AIC): 40.1071
      97.0000                 97.1901       10.3000              10.3302
 </pre></div>
 </div>
-<img alt="../_images/d01dafaaedf5ef3314952d7a0595d86af0ea05f7e0b583785d2d9f6087b4dc34.png" src="../_images/d01dafaaedf5ef3314952d7a0595d86af0ea05f7e0b583785d2d9f6087b4dc34.png" />
+<img alt="../_images/1c18555f3219288ea5f0025e72ef5b4b2a189a7abfb570161e739b6dc1a460a9.png" src="../_images/1c18555f3219288ea5f0025e72ef5b4b2a189a7abfb570161e739b6dc1a460a9.png" />
 <img alt="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" src="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" />
 </div>
 </div>
 </section>
 </section>
-<section id="dataset-2">
-<h2>Dataset 2<a class="headerlink" href="#dataset-2" title="Link to this heading">#</a></h2>
+<section id="usage-of-methods-dataset-2">
+<h2>Usage of Methods. Dataset 2<a class="headerlink" href="#usage-of-methods-dataset-2" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -2066,7 +2066,7 @@ AICc (Corrected AIC): 63.3194
     391.0000                390.6172       20.1000              19.8516
 </pre></div>
 </div>
-<img alt="../_images/ebf38a9d3c6cadd59a78821f16d7bb2f3297a515e968193feb330cbec6775e90.png" src="../_images/ebf38a9d3c6cadd59a78821f16d7bb2f3297a515e968193feb330cbec6775e90.png" />
+<img alt="../_images/76ebc20ae112f760c395c419cc009a92757dbd6901ea125247e03e0781927e15.png" src="../_images/76ebc20ae112f760c395c419cc009a92757dbd6901ea125247e03e0781927e15.png" />
 <img alt="../_images/d98367262516bf2103a6cb552366bfa2a8293e1c67bb782efa057448afdeeee4.png" src="../_images/d98367262516bf2103a6cb552366bfa2a8293e1c67bb782efa057448afdeeee4.png" />
 </div>
 </div>
@@ -2319,12 +2319,12 @@ AICc (Corrected AIC): 53.3800
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-3">Usage of Methods. Dataset 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1-part-1">Usage of Methods. Dataset 1. Part 1.</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1">Usage of Methods. Dataset 1</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-model-function">Improved model function</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-than-2-parameters-in-the-non-linear-model">More than 2 parameters in the non-linear model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-2">Dataset 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-2">Usage of Methods. Dataset 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
 </ul>
   </nav></div>
