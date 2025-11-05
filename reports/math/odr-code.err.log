@@ -1,0 +1,127 @@
+Traceback (most recent call last):
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\jupyter_core\utils\__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\Vladyslav\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "E:\Python\physics-python-and-pi\venv\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+def model_function(beta, x):
+    """
+    The custom function to approximate the data.
+    f(x; A, B) = A * (np.exp(-B * x) - 1) + 100
+    Note: The signature is now (beta, x) for scipy.odr.
+    """
+
+    A_1 = 56.769
+    B_1 = 0.00988
+
+    A, B = beta
+    
+    return A_1 * (np.exp(-B_1 * x) - 1) + A * (np.exp(-B * x) - 1) + 100
+
+# Dataset 1
+x = np.array([0, 5, 25, 34, 42, 57, 97])
+y_obs = np.array([100, 79.7, 51.3, 44.6, 39.8, 29.9, 10.3])
+
+# Dataset 2
+# x = np.array([0, 19, 45, 104, 191, 294, 391])
+# y_obs = np.array([100, 80.4, 66.4, 50.1, 41.2, 28.5, 20.1])
+sigma_y = np.full_like(y_obs, 1.0, dtype=float)
+sigma_x = np.full_like(x, 3.0, dtype=float)
+initial_guess = [50, 0.01]
+
+# Analyze the curve fit and get results using ODR
+odr_results = analyze_odr(x, y_obs, sigma_x, sigma_y, model_function, initial_guess)
+
+# Print the metrics
+print_metrics(odr_results)
+
+# Draw the curve fit plot
+draw_curve_fit_odr(odr_results, model_function)
+------------------
+
+----- stdout -----
+--- ODR Fit Results ---
+Beta: [5.62756354e+01 3.37856894e-02]
+Beta Std Error: [2.01225938 0.00423834]
+Beta Covariance: [[ 3.84235651e+00 -6.72589726e-03]
+ [-6.72589726e-03  1.70459194e-05]]
+Residual Variance: 1.0538292845024835
+Inverse Condition #: 0.05122048290906237
+Reason(s) for Halting:
+  Sum of squares convergence
+
+--- Summary of Results ---
+Parameter A: 56.27564 +/- 2.01226
+  T-value: 27.96639236, P-value: 0.00000109
+Parameter B: 0.03379 +/- 0.00424
+  T-value: 7.97145206, P-value: 0.00050124
+
+--- Model Fit Statistics ---
+
+Number of Observations (n): 7
+Number of Parameters (p): 2
+Degrees of Freedom (n-p): 5
+
+--- Goodness-of-Fit & Error Metrics ---
+Chi-Squared (from ODR): 5.2691
+Reduced Chi-Squared (from ODR): 1.0538
+
+--- Information Criteria ---
+Maximum Log-Likelihood: -23.1900
+AIC (Akaike Information Criterion): 50.3800
+BIC (Bayesian Information Criterion): 50.2718
+AICc (Corrected AIC): 53.3800
+
+--- Comparison of Original and Predicted Data Points ---
+  Original X    Predicted X (x_plus)    Original Y    Predicted Y (fit)
+------------  ----------------------  ------------  -------------------
+      0.0000                  0.0000      100.0000             100.0000
+      5.0000                  9.2447       79.7000              79.9478
+     25.0000                 28.2134       51.3000              51.6085
+     34.0000                 34.6941       44.6000              44.6781
+     42.0000                 40.2175       39.8000              39.5712
+     57.0000                 53.9433       29.9000              29.3664
+     97.0000                 97.8134       10.3000              10.6191
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[27][39m[32m, line 33[39m
+[32m     30[39m print_metrics(odr_results)
+[32m     32[39m [38;5;66;03m# Draw the curve fit plot[39;00m
+[32m---> [39m[32m33[39m [43mdraw_curve_fit_odr[49m(odr_results, model_function)
+
+[31mNameError[39m: name 'draw_curve_fit_odr' is not defined
+
