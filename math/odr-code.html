@@ -446,12 +446,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-3">Usage of Methods. Dataset 3</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1-part-1">Usage of Methods. Dataset 1. Part 1.</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-model-function">Another model function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-model-function">Improved model function</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-than-2-parameters-in-the-non-linear-model">More than 2 parameters in the non-linear model</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-2">Dataset 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>
 </ul>
             </nav>
         </div>
@@ -1135,8 +1135,8 @@ AICC: 36.49682771762673
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
 <span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
 <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># sigma_x = np.full_like(x, 3.0, dtype=float)</span>
+<span class="c1"># sigma_x = np.full_like(x, 2.0, dtype=float)</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
 <span class="c1"># Analyze the curve fit and get results using ODR</span>
@@ -1155,20 +1155,20 @@ AICC: 36.49682771762673
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-Beta: [5.67694275e+01 9.88335260e-03]
-Beta Std Error: [4.26741666e-01 2.63972932e-04]
-Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
- [-1.18588964e-04  9.25007382e-08]]
-Residual Variance: 0.7533097575791786
-Inverse Condition #: 0.17698951436366908
+Beta: [5.67471826e+01 9.91153159e-03]
+Beta Std Error: [3.73741090e-01 2.58479394e-04]
+Beta Covariance: [[ 2.68145384e-01 -1.48447716e-04]
+ [-1.48447716e-04  1.28256824e-07]]
+Residual Variance: 0.520920405677155
+Inverse Condition #: 0.15743721227613128
 Reason(s) for Halting:
   Sum of squares convergence
 
 --- Summary of Results ---
-Parameter A: 56.76943 +/- 0.42674
-  T-value: 133.02996178, P-value: 0.00000000
-Parameter B: 0.00988 +/- 0.00026
-  T-value: 37.44078054, P-value: 0.00000026
+Parameter A: 56.74718 +/- 0.37374
+  T-value: 151.83554632, P-value: 0.00000000
+Parameter B: 0.00991 +/- 0.00026
+  T-value: 38.34553867, P-value: 0.00000023
 
 --- Model Fit Statistics ---
 
@@ -1177,29 +1177,29 @@ Number of Parameters (p): 2
 Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
-Chi-Squared (from ODR): 3.7665
-Reduced Chi-Squared (from ODR): 0.7533
+Chi-Squared (from ODR): 2.6046
+Reduced Chi-Squared (from ODR): 0.5209
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -14.7484
-AIC (Akaike Information Criterion): 33.4968
-BIC (Bayesian Information Criterion): 33.3886
-AICc (Corrected AIC): 36.4968
+Maximum Log-Likelihood: -17.0057
+AIC (Akaike Information Criterion): 38.0114
+BIC (Bayesian Information Criterion): 37.9032
+AICc (Corrected AIC): 41.0114
 
 --- Comparison of Original and Predicted Data Points ---
   Original X    Predicted X (x_plus)    Original Y    Predicted Y (fit)
 ------------  ----------------------  ------------  -------------------
       0.0000                  0.0000      100.0000             100.0000
-     23.0000                 24.1213       87.8000              87.9585
-     51.0000                 52.0005       77.0000              77.1863
-     98.0000                 96.1748       65.7000              65.1740
-    196.0000                196.5966       50.9000              51.3639
-    292.0000                291.9499       46.5000              46.4000
-    401.0000                400.9846       44.4000              44.3095
+     23.0000                 24.2449       87.8000              87.8782
+     51.0000                 52.1504       77.0000              77.0953
+     98.0000                 95.1882       65.7000              65.3433
+    196.0000                197.1337       50.9000              51.2951
+    292.0000                291.8845       46.5000              46.3971
+    401.0000                400.9693       44.4000              44.3193
 </pre></div>
 </div>
-<img alt="../_images/cf409d832dfb4f790be76427367f8e0d9f90b3c2a4e9a5ec375218a6e622824a.png" src="../_images/cf409d832dfb4f790be76427367f8e0d9f90b3c2a4e9a5ec375218a6e622824a.png" />
-<img alt="../_images/b4b344a680859e9af19998aae9c7761a51b7270acf95d50796402059ceb53490.png" src="../_images/b4b344a680859e9af19998aae9c7761a51b7270acf95d50796402059ceb53490.png" />
+<img alt="../_images/2d017049566f52270efaf971113736f7bd4f54096455a21364a5a16b5b6f02bb.png" src="../_images/2d017049566f52270efaf971113736f7bd4f54096455a21364a5a16b5b6f02bb.png" />
+<img alt="../_images/059c217b88c368f80f37ecb33c7d3ca1cd6f177e927cce7fa79b3dc503e7003d.png" src="../_images/059c217b88c368f80f37ecb33c7d3ca1cd6f177e927cce7fa79b3dc503e7003d.png" />
 </div>
 </div>
 </section>
@@ -1450,8 +1450,8 @@ AICc (Corrected AIC): 39.3080
 </div>
 </div>
 <p>This is also an interesting result. Reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> is lower and close to 1.0 which is very good. <code class="docutils literal notranslate"><span class="pre">A</span></code> value remains to be greater than 100, which means that at some specific x-value, the function can reach zero y-value, which will be an important result for us.</p>
-<section id="another-model-function">
-<h3>Another model function<a class="headerlink" href="#another-model-function" title="Link to this heading">#</a></h3>
+<section id="improved-model-function">
+<h3>Improved model function<a class="headerlink" href="#improved-model-function" title="Link to this heading">#</a></h3>
 <p>Let’s start from scratch and try to connect to the results from Dataset 3, so our function will be</p>
 <div class="math notranslate nohighlight">
 \[f(x, A, B) = A_1 (\exp (-B_1 x) - 1) + A (\exp(-B x) - 1) + 100 \]</div>
@@ -1465,8 +1465,11 @@ AICc (Corrected AIC): 39.3080
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -1476,7 +1479,7 @@ AICc (Corrected AIC): 39.3080
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
 <span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
 <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
 <span class="c1"># Analyze the curve fit and get results using ODR</span>
@@ -1495,20 +1498,20 @@ AICc (Corrected AIC): 39.3080
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-Beta: [5.64837483e+01 3.34000206e-02]
-Beta Std Error: [1.85220408 0.00404159]
-Beta Covariance: [[ 1.37387692e+00 -2.48458954e-03]
- [-2.48458954e-03  6.54144342e-06]]
-Residual Variance: 2.497064990325722
-Inverse Condition #: 0.04982581594705908
+Beta: [5.66455646e+01 3.31064937e-02]
+Beta Std Error: [1.70869523 0.00388607]
+Beta Covariance: [[ 2.52930312e+00 -4.76804323e-03]
+ [-4.76804323e-03  1.30825979e-05]]
+Residual Variance: 1.1543256178977583
+Inverse Condition #: 0.04785494385177525
 Reason(s) for Halting:
   Sum of squares convergence
 
 --- Summary of Results ---
-Parameter A: 56.48375 +/- 1.85220
-  T-value: 30.49542373, P-value: 0.00000071
-Parameter B: 0.03340 +/- 0.00404
-  T-value: 8.26408960, P-value: 0.00042316
+Parameter A: 56.64556 +/- 1.70870
+  T-value: 33.15135640, P-value: 0.00000047
+Parameter B: 0.03311 +/- 0.00389
+  T-value: 8.51926296, P-value: 0.00036663
 
 --- Model Fit Statistics ---
 
@@ -1517,29 +1520,29 @@ Number of Parameters (p): 2
 Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
-Chi-Squared (from ODR): 12.4853
-Reduced Chi-Squared (from ODR): 2.4971
+Chi-Squared (from ODR): 5.7716
+Reduced Chi-Squared (from ODR): 1.1543
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -19.1078
-AIC (Akaike Information Criterion): 42.2156
-BIC (Bayesian Information Criterion): 42.1074
-AICc (Corrected AIC): 45.2156
+Maximum Log-Likelihood: -18.5892
+AIC (Akaike Information Criterion): 41.1784
+BIC (Bayesian Information Criterion): 41.0702
+AICc (Corrected AIC): 44.1784
 
 --- Comparison of Original and Predicted Data Points ---
   Original X    Predicted X (x_plus)    Original Y    Predicted Y (fit)
 ------------  ----------------------  ------------  -------------------
       0.0000                  0.0000      100.0000             100.0000
-      5.0000                  9.3481       79.7000              79.8436
-     25.0000                 28.4156       51.3000              51.4850
-     34.0000                 34.8140       44.6000              44.6515
-     42.0000                 40.1873       39.8000              39.6698
-     57.0000                 53.6460       29.9000              29.5748
-     97.0000                 97.8532       10.3000              10.4870
+      5.0000                  9.4270       79.7000              79.7653
+     25.0000                 28.5745       51.3000              51.3863
+     34.0000                 34.9116       44.6000              44.6256
+     42.0000                 40.1690       39.8000              39.7418
+     57.0000                 53.4045       29.9000              29.7466
+     97.0000                 97.8832       10.3000              10.3856
 </pre></div>
 </div>
-<img alt="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" src="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" />
-<img alt="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" src="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" />
+<img alt="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" src="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" />
+<img alt="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" src="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" />
 </div>
 </div>
 <p>After changing the model function, we obtained reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> value which is close to the case where we used previous model function and excluded second point as outlier.</p>
@@ -1553,8 +1556,11 @@ AICc (Corrected AIC): 45.2156
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -1641,8 +1647,11 @@ AICc (Corrected AIC): 44.1784
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -1726,8 +1735,11 @@ AICc (Corrected AIC): 37.5388
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -1876,8 +1888,11 @@ AICc (Corrected AIC): 38.4141
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># A_1 = 56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="c1"># A_1 = 56.769 # obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A_1</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -1956,6 +1971,10 @@ AICc (Corrected AIC): 40.1071
 <img alt="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" src="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" />
 </div>
 </div>
+</section>
+</section>
+<section id="dataset-2">
+<h2>Dataset 2<a class="headerlink" href="#dataset-2" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">model_function</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
@@ -1965,8 +1984,11 @@ AICc (Corrected AIC): 40.1071
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># A_1 = 56.769</span>
-    <span class="c1"># B_1 = 0.00988</span>
+    <span class="c1"># A_1 = 56.769 # obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00988 # obtained from Dataset 3 with sigma_x = 2.0, sigma_y = 0.5</span>
+
+    <span class="c1"># A_1 = 56.747 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
+    <span class="c1"># B_1 = 0.00991 # obtained from Dataset 3 with sigma_x = 3.0, sigma_y = 0.5</span>
 
     <span class="n">A_1</span><span class="p">,</span> <span class="n">B_1</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -2057,8 +2079,8 @@ AICc (Corrected AIC): 63.3194
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># sigma_x = 2.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -2135,7 +2157,6 @@ AICc (Corrected AIC): 90.4274
 </div>
 </div>
 </section>
-</section>
 <section id="code-3">
 <h2>Code 3<a class="headerlink" href="#code-3" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -2147,8 +2168,8 @@ AICc (Corrected AIC): 90.4274
 <span class="sd">    Note: The signature is now (beta, x) for scipy.odr.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span>
-    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span>
+    <span class="n">A_1</span> <span class="o">=</span> <span class="mf">56.769</span> <span class="c1"># sigma_x = 2.0, sigma_y = 0.5</span>
+    <span class="n">B_1</span> <span class="o">=</span> <span class="mf">0.00988</span> <span class="c1"># sigma_x = 2.0, sigma_y = 0.5</span>
 
     <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">beta</span>
     
@@ -2172,7 +2193,7 @@ AICc (Corrected AIC): 90.4274
 <span class="n">print_metrics</span><span class="p">(</span><span class="n">odr_results</span><span class="p">)</span>
 
 <span class="c1"># Draw the curve fit plot</span>
-<span class="n">draw_curve_fit_odr</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
+<span class="c1"># draw_curve_fit_odr(odr_results, model_function)</span>
 </pre></div>
 </div>
 </div>
@@ -2221,109 +2242,6 @@ AICc (Corrected AIC): 53.3800
      97.0000                 97.8134       10.3000              10.6191
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">31</span><span class="p">],</span> <span class="n">line</span> <span class="mi">33</span>
-<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">print_metrics</span><span class="p">(</span><span class="n">odr_results</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="c1"># Draw the curve fit plot</span>
-<span class="ne">---&gt; </span><span class="mi">33</span> <span class="n">draw_curve_fit_odr</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;draw_curve_fit_odr&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="code-4">
-<h2>Code 4<a class="headerlink" href="#code-4" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dataset 1</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">97</span><span class="p">])</span>
-<span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">79.7</span><span class="p">,</span> <span class="mf">51.3</span><span class="p">,</span> <span class="mf">44.6</span><span class="p">,</span> <span class="mf">39.8</span><span class="p">,</span> <span class="mf">29.9</span><span class="p">,</span> <span class="mf">10.3</span><span class="p">])</span>
-<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>  <span class="c1"># X uncertainties = 2.0</span>
-<span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>  <span class="c1"># Y uncertainties = 0.5</span>
-<span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== ORTHOGONAL DISTANCE REGRESSION (ODR) ANALYSIS ===&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;X uncertainties (sigma_x): </span><span class="si">{</span><span class="n">sigma_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Y uncertainties (sigma_y): </span><span class="si">{</span><span class="n">sigma_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Analyze the curve fit using ODR and get results</span>
-<span class="n">fit_results_odr</span> <span class="o">=</span> <span class="n">analyze_curve_fit_odr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_obs</span><span class="p">,</span> <span class="n">sigma_x</span><span class="p">,</span> <span class="n">sigma_y</span><span class="p">,</span> <span class="n">odr_model_function</span><span class="p">,</span> <span class="n">initial_guess</span><span class="p">)</span>
-
-<span class="c1"># Print the metrics</span>
-<span class="n">print_metrics_odr</span><span class="p">(</span><span class="n">fit_results_odr</span><span class="p">)</span>
-
-<span class="c1"># Draw the curve fit plot</span>
-<span class="n">draw_curve_fit_odr</span><span class="p">(</span><span class="n">fit_results_odr</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== ORTHOGONAL DISTANCE REGRESSION (ODR) ANALYSIS ===
-X uncertainties (sigma_x): 2.0
-Y uncertainties (sigma_y): 0.5
-=== ODR CURVE FIT ANALYSIS ===
-
---- ODR Output Information ---
-ODR Info Code: 1
-ODR Stopping Reason: [&#39;Sum of squares convergence&#39;]
-
---- Fitted Parameters ---
-Parameter A: 56.48375 +/- 1.85220
-  T-value: 30.49542373, P-value: 0.00000071
-Parameter B: 0.03340 +/- 0.00404
-  T-value: 8.26408960, P-value: 0.00042316
-
---- Model Fit Statistics ---
-Number of Observations (n): 7
-Number of Parameters (p): 2
-Degrees of Freedom (n-p): 5
-Condition Number: 6.7078e+05
-
---- ODR Specific Metrics ---
-Sum of Squares (S_min) from ODR: 12.485325
-Sum of Squared Delta (residuals): 11.624443
-Sum of Squared Epsilon (y-residuals): 0.860882
-
---- Chi-Squared Comparison ---
-Chi-Squared (ODR): 12.485325
-Chi-Squared (Manual): 529.367893
-Reduced Chi-Squared (ODR): 2.497065
-Reduced Chi-Squared (Manual): 105.873579
-
---- Goodness-of-Fit Metrics (Y-direction) ---
-Unweighted R-squared: 0.9806
-Weighted R-squared: 0.9806
-Unweighted Adjusted R-squared: 0.9767
-Weighted Adjusted R-squared: 0.9767
-
---- Error Metrics ---
-Unweighted RMSE: 3.9065
-Weighted RMSE: 3.9065
-Unweighted SER: 4.6222
-Weighted SER: 9.2444
-
---- Sum of Squares ---
-Unweighted RSS: 106.8248
-Weighted RSS: 427.2990
-Unweighted ESS: 6208.7577
-Weighted ESS: 24835.0307
-Unweighted TSS: 5492.6000
-Weighted TSS: 21970.4000
-
---- Information Criteria ---
-Maximum Log-Likelihood: -12.6752
-AIC (Akaike Information Criterion): 29.3505
-BIC (Bayesian Information Criterion): 29.2423
-AICc (Corrected AIC): 32.3505
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1200x800 with 0 Axes&gt;
-</pre></div>
-</div>
-<img alt="../_images/27ca7423c41cd8f97730e523e3898d86531ee3f9607fbbfc6b4ecdd202677429.png" src="../_images/27ca7423c41cd8f97730e523e3898d86531ee3f9607fbbfc6b4ecdd202677429.png" />
 </div>
 </div>
 </section>
@@ -2402,12 +2320,12 @@ AICc (Corrected AIC): 32.3505
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-methods-for-odr-analysis">General Methods for ODR Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-3">Usage of Methods. Dataset 3</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage-of-methods-dataset-1-part-1">Usage of Methods. Dataset 1. Part 1.</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-model-function">Another model function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improved-model-function">Improved model function</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#more-than-2-parameters-in-the-non-linear-model">More than 2 parameters in the non-linear model</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-2">Dataset 2</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-3">Code 3</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-4">Code 4</a></li>
 </ul>
   </nav></div>
 
