@@ -803,6 +803,7 @@ AICC: 36.49682771762673
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">fsolve</span>
 </pre></div>
 </div>
 </div>
@@ -1120,6 +1121,53 @@ AICC: 36.49682771762673
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">find_y_intercept</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the x-value where the fitted model function intersects the y=0 line.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        results (dict): The dictionary returned by the analyze_odr function.</span>
+<span class="sd">        model_function (callable): The model function used for the fit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Extract the fitted parameters</span>
+    <span class="n">fit_params</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fit_params&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fit_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: &#39;fit_params&#39; not found in the results dictionary.&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Define the function for which we want to find the root (i.e., where model_function(x) = 0)</span>
+    <span class="n">func_to_solve</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">model_function</span><span class="p">(</span><span class="n">fit_params</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Provide an initial guess for the root-finding algorithm.</span>
+    <span class="n">initial_guess_x</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;original_x&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Use fsolve to find the root</span>
+    <span class="n">x_intercept</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">ier</span><span class="p">,</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">func_to_solve</span><span class="p">,</span> <span class="n">initial_guess_x</span><span class="p">,</span> <span class="n">full_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Check if a solution was found (ier=1 indicates success)</span>
+    <span class="k">if</span> <span class="n">ier</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">y_at_intercept</span> <span class="o">=</span> <span class="n">func_to_solve</span><span class="p">(</span><span class="n">x_intercept</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">y_at_intercept</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Y=0 Intercept Analysis ---&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The model function intersects the y=0 line at x = </span><span class="si">{</span><span class="n">x_intercept</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">x_intercept</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Y=0 Intercept Analysis ---&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A solution was found, but the y-value at this x is not close to 0.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x = </span><span class="si">{</span><span class="n">x_intercept</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, y = </span><span class="si">{</span><span class="n">y_at_intercept</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Y=0 Intercept Analysis ---&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The root-finding algorithm did not converge to a solution.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message from fsolve: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="usage-of-methods-dataset-3">
 <h2>Usage of Methods. Dataset 3<a class="headerlink" href="#usage-of-methods-dataset-3" title="Link to this heading">#</a></h2>
@@ -1138,8 +1186,8 @@ AICC: 36.49682771762673
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">292</span><span class="p">,</span> <span class="mi">401</span><span class="p">])</span>
 <span class="n">y_obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mf">87.8</span><span class="p">,</span> <span class="mi">77</span><span class="p">,</span> <span class="mf">65.7</span><span class="p">,</span> <span class="mf">50.9</span><span class="p">,</span> <span class="mf">46.5</span><span class="p">,</span> <span class="mf">44.4</span><span class="p">])</span>
 <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">y_obs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-<span class="c1"># sigma_x = np.full_like(x, 2.0, dtype=float)</span>
-<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">sigma_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">initial_guess</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>
 
 <span class="c1"># Analyze the curve fit and get results using ODR</span>
@@ -1153,25 +1201,28 @@ AICC: 36.49682771762673
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- ODR Fit Results ---
-Beta: [5.67471826e+01 9.91153159e-03]
-Beta Std Error: [3.73741090e-01 2.58479394e-04]
-Beta Covariance: [[ 2.68145384e-01 -1.48447716e-04]
- [-1.48447716e-04  1.28256824e-07]]
-Residual Variance: 0.520920405677155
-Inverse Condition #: 0.15743721227613128
+Beta: [5.67694275e+01 9.88335260e-03]
+Beta Std Error: [4.26741666e-01 2.63972932e-04]
+Beta Covariance: [[ 2.41744445e-01 -1.18588964e-04]
+ [-1.18588964e-04  9.25007382e-08]]
+Residual Variance: 0.7533097575791786
+Inverse Condition #: 0.17698951436366908
 Reason(s) for Halting:
   Sum of squares convergence
 
 --- Summary of Results ---
-Parameter A: 56.74718 +/- 0.37374
-  T-value: 151.83554632, P-value: 0.00000000
-Parameter B: 0.00991 +/- 0.00026
-  T-value: 38.34553867, P-value: 0.00000023
+Parameter A: 56.76943 +/- 0.42674
+  T-value: 133.02996178, P-value: 0.00000000
+Parameter B: 0.00988 +/- 0.00026
+  T-value: 37.44078054, P-value: 0.00000026
 
 --- Model Fit Statistics ---
 
@@ -1180,29 +1231,35 @@ Number of Parameters (p): 2
 Degrees of Freedom (n-p): 5
 
 --- Goodness-of-Fit &amp; Error Metrics ---
-Chi-Squared (from ODR): 2.6046
-Reduced Chi-Squared (from ODR): 0.5209
+Chi-Squared (from ODR): 3.7665
+Reduced Chi-Squared (from ODR): 0.7533
 
 --- Information Criteria ---
-Maximum Log-Likelihood: -17.0057
-AIC (Akaike Information Criterion): 38.0114
-BIC (Bayesian Information Criterion): 37.9032
-AICc (Corrected AIC): 41.0114
+Maximum Log-Likelihood: -14.7484
+AIC (Akaike Information Criterion): 33.4968
+BIC (Bayesian Information Criterion): 33.3886
+AICc (Corrected AIC): 36.4968
 
 --- Comparison of Original and Predicted Data Points ---
   Original X    Predicted X (x_plus)    Original Y    Predicted Y (fit)
 ------------  ----------------------  ------------  -------------------
       0.0000                  0.0000      100.0000             100.0000
-     23.0000                 24.2449       87.8000              87.8782
-     51.0000                 52.1504       77.0000              77.0953
-     98.0000                 95.1882       65.7000              65.3433
-    196.0000                197.1337       50.9000              51.2951
-    292.0000                291.8845       46.5000              46.3971
-    401.0000                400.9693       44.4000              44.3193
+     23.0000                 24.1213       87.8000              87.9585
+     51.0000                 52.0005       77.0000              77.1863
+     98.0000                 96.1748       65.7000              65.1740
+    196.0000                196.5966       50.9000              51.3639
+    292.0000                291.9499       46.5000              46.4000
+    401.0000                400.9846       44.4000              44.3095
 </pre></div>
 </div>
-<img alt="../_images/2d017049566f52270efaf971113736f7bd4f54096455a21364a5a16b5b6f02bb.png" src="../_images/2d017049566f52270efaf971113736f7bd4f54096455a21364a5a16b5b6f02bb.png" />
-<img alt="../_images/059c217b88c368f80f37ecb33c7d3ca1cd6f177e927cce7fa79b3dc503e7003d.png" src="../_images/059c217b88c368f80f37ecb33c7d3ca1cd6f177e927cce7fa79b3dc503e7003d.png" />
+<img alt="../_images/cf409d832dfb4f790be76427367f8e0d9f90b3c2a4e9a5ec375218a6e622824a.png" src="../_images/cf409d832dfb4f790be76427367f8e0d9f90b3c2a4e9a5ec375218a6e622824a.png" />
+<img alt="../_images/b4b344a680859e9af19998aae9c7761a51b7270acf95d50796402059ceb53490.png" src="../_images/b4b344a680859e9af19998aae9c7761a51b7270acf95d50796402059ceb53490.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -1237,6 +1294,9 @@ AICc (Corrected AIC): 41.0114
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1287,6 +1347,13 @@ AICc (Corrected AIC): 48.3620
 </div>
 <img alt="../_images/6517a316da2ca14b0ea5598cc1450269fa1ba0ee00880196e435620b85122723.png" src="../_images/6517a316da2ca14b0ea5598cc1450269fa1ba0ee00880196e435620b85122723.png" />
 <img alt="../_images/aeb2999b2e4f6b8a6f145480f8d772e2c0680833acd410e4cb70e2286ace3463.png" src="../_images/aeb2999b2e4f6b8a6f145480f8d772e2c0680833acd410e4cb70e2286ace3463.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 227.9297
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(227.92966183998524)
+</pre></div>
+</div>
 </div>
 </div>
 <p>NOTE: Second point in the dataset 1 looks like an outlier. Let’s try to get rid of it and see what happends</p>
@@ -1319,6 +1386,9 @@ AICc (Corrected AIC): 48.3620
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1368,6 +1438,13 @@ AICc (Corrected AIC): 39.5084
 </div>
 <img alt="../_images/a229565e2916a61160644a43472bf6c67d99d55553b1aadc94b0e327fcd15257.png" src="../_images/a229565e2916a61160644a43472bf6c67d99d55553b1aadc94b0e327fcd15257.png" />
 <img alt="../_images/7fd0660f65aaf63781e271568bf2375b473c83b5d3bd3006ae626db48ba14dbb.png" src="../_images/7fd0660f65aaf63781e271568bf2375b473c83b5d3bd3006ae626db48ba14dbb.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 198.5096
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(198.50961230212994)
+</pre></div>
+</div>
 </div>
 </div>
 <p>This is an interesting result. Reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> is lower than before. Also, <code class="docutils literal notranslate"><span class="pre">A</span></code> value is greater than 100, which means that at some specific x-value, the function can reach zero y-value, which will be an important result for us.</p>
@@ -1401,6 +1478,9 @@ AICc (Corrected AIC): 39.5084
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1450,6 +1530,13 @@ AICc (Corrected AIC): 39.3080
 </div>
 <img alt="../_images/f9fb8f7db779cbada4a9bca05ca34142d182d071ac5ef19380920ed1beae89a7.png" src="../_images/f9fb8f7db779cbada4a9bca05ca34142d182d071ac5ef19380920ed1beae89a7.png" />
 <img alt="../_images/f79cd7199536752d05398c894ef76c07003e02e38b9248931f450ba148cef187.png" src="../_images/f79cd7199536752d05398c894ef76c07003e02e38b9248931f450ba148cef187.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 193.3045
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(193.30447235609964)
+</pre></div>
+</div>
 </div>
 </div>
 <p>This is also an interesting result. Reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> is lower and close to 1.0 which is very good. <code class="docutils literal notranslate"><span class="pre">A</span></code> value remains to be greater than 100, which means that at some specific x-value, the function can reach zero y-value, which will be an important result for us.</p>
@@ -1496,6 +1583,9 @@ AICc (Corrected AIC): 39.3080
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1546,6 +1636,13 @@ AICc (Corrected AIC): 45.2156
 </div>
 <img alt="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" src="../_images/8a819174c93580380886aaac2b38a24d6740d01b14838f39a062148f83dcf9b3.png" />
 <img alt="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" src="../_images/e6bae6820b511f32b716245c61e8f18fc673ee53800122cee73b54471ff52440.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 150.1501
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(150.15007331599014)
+</pre></div>
+</div>
 </div>
 </div>
 <p>After changing the model function, we obtained reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> value which is close to the case where we used previous model function and excluded second point as outlier.</p>
@@ -1587,6 +1684,9 @@ AICc (Corrected AIC): 45.2156
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1637,6 +1737,13 @@ AICc (Corrected AIC): 44.1784
 </div>
 <img alt="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" src="../_images/ebfbddafe63fe3a6ad8498548955c066252892a3f7f1cad5f4dd43bd59b53a4c.png" />
 <img alt="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" src="../_images/1014d4468c2aef14ebfb6e6668550405d96848c56fdce05f6971a63d9989d746.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 149.1310
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(149.13097676212672)
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s increase the value of <code class="docutils literal notranslate"><span class="pre">sigma_y</span></code> from 0.5 to 1.0 and test this with <code class="docutils literal notranslate"><span class="pre">sigma_x</span></code> = 2.0 and 3.0.</p>
@@ -1677,6 +1784,9 @@ AICc (Corrected AIC): 44.1784
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1727,6 +1837,13 @@ AICc (Corrected AIC): 52.8435
 </div>
 <img alt="../_images/b7327b6c058615b0a88715f358b6663ef6c25817af49e6f67c1dfd8a2722cc20.png" src="../_images/b7327b6c058615b0a88715f358b6663ef6c25817af49e6f67c1dfd8a2722cc20.png" />
 <img alt="../_images/b151c65f153fdf52d60f4635be8f9c062159c695d0ab18894e035ed580a63997.png" src="../_images/b151c65f153fdf52d60f4635be8f9c062159c695d0ab18894e035ed580a63997.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 154.8617
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(154.86168906836295)
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1766,6 +1883,9 @@ AICc (Corrected AIC): 52.8435
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1816,6 +1936,13 @@ AICc (Corrected AIC): 53.3800
 </div>
 <img alt="../_images/dfa9903eb9f23d8d3cd86e32dcc2aea702702a60d423ed1e33e98e05d22d7635.png" src="../_images/dfa9903eb9f23d8d3cd86e32dcc2aea702702a60d423ed1e33e98e05d22d7635.png" />
 <img alt="../_images/26ac67fbd1e84ea3ab2a68468b830d990f91f92e46669ec3c9d4f499d7f9a257.png" src="../_images/26ac67fbd1e84ea3ab2a68468b830d990f91f92e46669ec3c9d4f499d7f9a257.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 151.4955
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(151.4955015859515)
+</pre></div>
+</div>
 </div>
 </div>
 <p>Reduced <span class="math notranslate nohighlight">\(\chi^2\)</span> is close to 1 which is pretty good.</p>
@@ -1857,6 +1984,9 @@ AICc (Corrected AIC): 53.3800
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1906,6 +2036,13 @@ AICc (Corrected AIC): 37.5388
 </div>
 <img alt="../_images/8351f5fe91211fb8c40426f8ecbccf72fc6aa28e36560c2ada0fd11830f33d90.png" src="../_images/8351f5fe91211fb8c40426f8ecbccf72fc6aa28e36560c2ada0fd11830f33d90.png" />
 <img alt="../_images/52b5c841f168f81e8f0e9b7fce0b9064d500f6964abe480ad910dd8b0823aff7.png" src="../_images/52b5c841f168f81e8f0e9b7fce0b9064d500f6964abe480ad910dd8b0823aff7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 148.0654
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(148.0654075694521)
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1945,6 +2082,9 @@ AICc (Corrected AIC): 37.5388
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1994,6 +2134,13 @@ AICc (Corrected AIC): 38.4141
 </div>
 <img alt="../_images/125d936a2b276555b6cab2bb449b35b4320a3a88fb7147c515d41c9122fcbeda.png" src="../_images/125d936a2b276555b6cab2bb449b35b4320a3a88fb7147c515d41c9122fcbeda.png" />
 <img alt="../_images/a26a7f4ee0ddd3581befbebe6f09e9d0e84ea5b09b66e989b2fd492a83ce2cb0.png" src="../_images/a26a7f4ee0ddd3581befbebe6f09e9d0e84ea5b09b66e989b2fd492a83ce2cb0.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 147.3301
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(147.33014035453778)
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -2098,6 +2245,9 @@ AICc (Corrected AIC): 38.4141
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2151,6 +2301,13 @@ AICc (Corrected AIC): 40.1071
 </div>
 <img alt="../_images/1c18555f3219288ea5f0025e72ef5b4b2a189a7abfb570161e739b6dc1a460a9.png" src="../_images/1c18555f3219288ea5f0025e72ef5b4b2a189a7abfb570161e739b6dc1a460a9.png" />
 <img alt="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" src="../_images/4bf64bc14a87c7483ad0cb2bda4d95008d4254ca43c9019caec7963988a8bff6.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The model function intersects the y=0 line at x = 127.6333
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(127.63333736206178)
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -2186,6 +2343,9 @@ AICc (Corrected AIC): 40.1071
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2236,6 +2396,12 @@ AICc (Corrected AIC): 288.3761
 </div>
 <img alt="../_images/5e16a097ddf0da66963ae168b138c6201d5b5655d7eaaf7678a71d58b9383a77.png" src="../_images/5e16a097ddf0da66963ae168b138c6201d5b5655d7eaaf7678a71d58b9383a77.png" />
 <img alt="../_images/d54b07498fd6a9b2412020dc1af9acb734c6a7ea54b2813b96a650aab1702d79.png" src="../_images/d54b07498fd6a9b2412020dc1af9acb734c6a7ea54b2813b96a650aab1702d79.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s change <code class="docutils literal notranslate"><span class="pre">sigma_x</span></code> to 3.0.</p>
@@ -2268,6 +2434,9 @@ AICc (Corrected AIC): 288.3761
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2318,6 +2487,12 @@ AICc (Corrected AIC): 208.8608
 </div>
 <img alt="../_images/aadc2b83ea0ee83167587a67adb23660f76e70243d450de720f8b4981ab85132.png" src="../_images/aadc2b83ea0ee83167587a67adb23660f76e70243d450de720f8b4981ab85132.png" />
 <img alt="../_images/1cfb3474025a662bf65570417f96faac821dd8377cba287a7f8319b8b2227b46.png" src="../_images/1cfb3474025a662bf65570417f96faac821dd8377cba287a7f8319b8b2227b46.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s exclude Point 5 as a potential outlier and change <code class="docutils literal notranslate"><span class="pre">sigma_y</span></code> to 1.0.</p>
@@ -2350,6 +2525,9 @@ AICc (Corrected AIC): 208.8608
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2399,6 +2577,12 @@ AICc (Corrected AIC): 75.8706
 </div>
 <img alt="../_images/e8ea97620c8aa7c838f11b78ee19e61a03c24c127179bbadb91eb0c7c9a3f768.png" src="../_images/e8ea97620c8aa7c838f11b78ee19e61a03c24c127179bbadb91eb0c7c9a3f768.png" />
 <img alt="../_images/e7e5159e167eab2041dcdb2e4973cf9afcba464cdb682b7badcc49c205705a34.png" src="../_images/e7e5159e167eab2041dcdb2e4973cf9afcba464cdb682b7badcc49c205705a34.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <section id="id1">
@@ -2444,6 +2628,9 @@ AICc (Corrected AIC): 75.8706
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2494,6 +2681,12 @@ AICc (Corrected AIC): 264.7404
 </div>
 <img alt="../_images/92e834811005b4f0eb32e81ded609903d5bdc0d7a187f069ad4af9af77058c5e.png" src="../_images/92e834811005b4f0eb32e81ded609903d5bdc0d7a187f069ad4af9af77058c5e.png" />
 <img alt="../_images/13028c51f419ae764780964c339a6323e6f33bd67e9705dab4412933cf619620.png" src="../_images/13028c51f419ae764780964c339a6323e6f33bd67e9705dab4412933cf619620.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s change <code class="docutils literal notranslate"><span class="pre">sigma_x</span></code> to 3.0.</p>
@@ -2534,6 +2727,9 @@ AICc (Corrected AIC): 264.7404
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2584,6 +2780,12 @@ AICc (Corrected AIC): 180.2793
 </div>
 <img alt="../_images/aa2f887779e513b8935ef8f319d95c177adf07d9fe67043b861660e2ee60ebad.png" src="../_images/aa2f887779e513b8935ef8f319d95c177adf07d9fe67043b861660e2ee60ebad.png" />
 <img alt="../_images/699bd175eb89620a61a58b59411d6bcf80482e70adb11d49cff4034a7061a9e7.png" src="../_images/699bd175eb89620a61a58b59411d6bcf80482e70adb11d49cff4034a7061a9e7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s change <code class="docutils literal notranslate"><span class="pre">sigma_y</span></code> to 1.0.</p>
@@ -2624,6 +2826,9 @@ AICc (Corrected AIC): 180.2793
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2674,6 +2879,12 @@ AICc (Corrected AIC): 123.8614
 </div>
 <img alt="../_images/ddd851a0945cb07dabd313847d4a4539eb67152db115d9536f44e2225e51734c.png" src="../_images/ddd851a0945cb07dabd313847d4a4539eb67152db115d9536f44e2225e51734c.png" />
 <img alt="../_images/6d7b7ba66ed0d1ac7a80479d14bc5082661ce88f936ec89a012aef3e26af910f.png" src="../_images/6d7b7ba66ed0d1ac7a80479d14bc5082661ce88f936ec89a012aef3e26af910f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s exclude Point 5 as a potential outlier.</p>
@@ -2714,6 +2925,9 @@ AICc (Corrected AIC): 123.8614
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2763,6 +2977,12 @@ AICc (Corrected AIC): 139.0444
 </div>
 <img alt="../_images/2050ecfe6e8cefa65742ab5b3ab135e12a2ba3f89b3c567bba097ba4c1a6859e.png" src="../_images/2050ecfe6e8cefa65742ab5b3ab135e12a2ba3f89b3c567bba097ba4c1a6859e.png" />
 <img alt="../_images/5e50a57f50c73ea0a1b105af199076626ea19c2ed42bf786d4f90e8a11e57eba.png" src="../_images/5e50a57f50c73ea0a1b105af199076626ea19c2ed42bf786d4f90e8a11e57eba.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 <p>Let’s change <code class="docutils literal notranslate"><span class="pre">sigma_x</span></code> to 3.0 and <code class="docutils literal notranslate"><span class="pre">sigma_y</span></code> to 1.0</p>
@@ -2803,6 +3023,9 @@ AICc (Corrected AIC): 139.0444
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2852,6 +3075,12 @@ AICc (Corrected AIC): 75.2527
 </div>
 <img alt="../_images/c5f132056314702acbcbd2fc3201473ebb4de71896bc2f73f14c9a2bd55bed0c.png" src="../_images/c5f132056314702acbcbd2fc3201473ebb4de71896bc2f73f14c9a2bd55bed0c.png" />
 <img alt="../_images/bdb68ddb381df93f9be5fec9c9f6eba1a9b2ef1032fe68a3eaadffd5d7c3709f.png" src="../_images/bdb68ddb381df93f9be5fec9c9f6eba1a9b2ef1032fe68a3eaadffd5d7c3709f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 </section>
@@ -2895,6 +3124,9 @@ AICc (Corrected AIC): 75.2527
 
 <span class="c1"># Plot predicted vs observed values</span>
 <span class="n">plot_predicted_vs_observed</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">show_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Find the y=0 intercept</span>
+<span class="n">find_y_intercept</span><span class="p">(</span><span class="n">odr_results</span><span class="p">,</span> <span class="n">model_function</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2948,6 +3180,12 @@ AICc (Corrected AIC): 134.6485
 </div>
 <img alt="../_images/7eb10eee9686c471d12258bb89ddf2f876fe597d56f666af11a2190db9e24288.png" src="../_images/7eb10eee9686c471d12258bb89ddf2f876fe597d56f666af11a2190db9e24288.png" />
 <img alt="../_images/5f37d91721285de70e9a5065bb3cea58db8cde8e5b2410155bffb0cfeda454ad.png" src="../_images/5f37d91721285de70e9a5065bb3cea58db8cde8e5b2410155bffb0cfeda454ad.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- Y=0 Intercept Analysis ---
+The root-finding algorithm did not converge to a solution.
+Message from fsolve: The iteration is not making good progress, as measured by the 
+ improvement from the last ten iterations.
+</pre></div>
+</div>
 </div>
 </div>
 </section>
