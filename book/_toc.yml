@@ -39,6 +39,9 @@ parts:
       # - file: physics/microcanonical-ensemble-code
       # - file: physics/fokker-planck-equation-example
 
+  - caption: DATA ANALYSIS
+    chapters:
+      - file: data-analysis/extended-internal-rate-of-return
   
   # - caption: DATA SCIENCE AND MACHINE LEARNING
     # chapters:
