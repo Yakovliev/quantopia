@@ -1,0 +1,1844 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV) &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'data-analysis/rate-of-return-metrics';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Mass: Inertial vs. Gravitational" href="../physics/inertial_vs_gravitational_mass.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../math/gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA ANALYSIS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Yakovliev/quantopia/blob/main/book/data-analysis/rate-of-return-metrics.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fdata-analysis/rate-of-return-metrics.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/data-analysis/rate-of-return-metrics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-the-time-value-of-money-tvm">Introduction: The Time Value of Money (TVM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-blocks-present-value-pv-and-future-value-fv">Building Blocks: Present Value (PV) and Future Value (FV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#future-value-fv">Future Value (FV)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#present-value-pv-discounting">Present Value (PV) - Discounting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#net-present-value-npv">Net Present Value (NPV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-rate-of-return-irr">Internal Rate of Return (IRR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#npv-vs-irr-a-comparative-perspective">NPV vs. IRR: A Comparative Perspective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-limitations-extended-internal-rate-of-return-xirr">Addressing Limitations: Extended Internal Rate of Return (XIRR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xirr-function-in-google-sheets">XIRR Function in Google Sheets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-in-google-sheets">Example in Google Sheets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-considerations-for-xirr">Important Considerations for XIRR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-net-present-value-xnpv">Extended Net Present Value (XNPV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-xnpv">Example of XNPV</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-limitations-modified-internal-rate-of-return-mirr">Addressing Limitations: Modified Internal Rate of Return (MIRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-formula">Derivation and Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-mirr">Example of MIRR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirr-limitations">MIRR limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-modified-internal-rate-of-return-xmirr">Extended Modified Internal Rate of Return (XMIRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Derivation and Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-xmirr">Example of XMIRR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-and-interpretation-of-xmirr">Advantages and Interpretation of XMIRR</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-metrics">Comparison of Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="advanced-rate-of-return-metrics-irr-xirr-mirr-xmirr-pv-fv-npv-xnpv">
+<h1>Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)<a class="headerlink" href="#advanced-rate-of-return-metrics-irr-xirr-mirr-xmirr-pv-fv-npv-xnpv" title="Link to this heading">#</a></h1>
+<section id="introduction-the-time-value-of-money-tvm">
+<h2>Introduction: The Time Value of Money (TVM)<a class="headerlink" href="#introduction-the-time-value-of-money-tvm" title="Link to this heading">#</a></h2>
+<p>The <strong>Time Value of Money (TVM)</strong> is a foundational principle in finance. It posits that a sum of money available today is inherently worth more than the same sum promised at a future date. This is due to its potential earning capacity. In essence, a dollar in hand today can be invested and grow, whereas a dollar received tomorrow has missed that opportunity.</p>
+<p><strong>Why is TVM important?</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Inflation:</strong> Over time, the purchasing power of money tends to erode due to inflation. A fixed sum of money will buy less in the future than it does today.</p></li>
+<li><p><strong>Opportunity Cost:</strong> Money available today can be invested or used to generate returns. Delaying the receipt of money means foregoing these potential earnings or opportunities. This foregone return is the opportunity cost.</p></li>
+<li><p><strong>Risk/Uncertainty:</strong> There is always a degree of risk that future payments might not be received as expected, or that the entity promising them might default. Money in hand today carries less uncertainty than a future promise.</p></li>
+</ol>
+<p>Understanding TVM is paramount for making financial decisions, from evaluating investment projects and calculating loan payments to personal financial planning. It forms the bedrock for all discounted cash flow (DCF) analyses.</p>
+</section>
+<section id="building-blocks-present-value-pv-and-future-value-fv">
+<h2>Building Blocks: Present Value (PV) and Future Value (FV)<a class="headerlink" href="#building-blocks-present-value-pv-and-future-value-fv" title="Link to this heading">#</a></h2>
+<p>To quantify the Time Value of Money, we use two inverse but related concepts: Future Value (FV) and Present Value (PV).</p>
+<section id="future-value-fv">
+<h3>Future Value (FV)<a class="headerlink" href="#future-value-fv" title="Link to this heading">#</a></h3>
+<p>The <strong>Future Value (FV)</strong> is the value of a current asset at a future date, assuming a specific rate of growth or interest. It answers the question: “What will my money be worth in the future if I invest it today?”</p>
+<p>Let’s start with a simple question: If you invest <span class="math notranslate nohighlight">\(PV\)</span> dollars today at an interest rate of <span class="math notranslate nohighlight">\(r\)</span> per period, how much will you have after <span class="math notranslate nohighlight">\(n\)</span> periods? This process is called <strong>compounding</strong>.</p>
+<ul>
+<li><p><strong>After 1 period:</strong> You’ll have your initial principal plus the interest earned.</p>
+<div class="math notranslate nohighlight">
+\[FV_1 = PV + (PV \cdot r) = PV \cdot (1+r)\]</div>
+</li>
+<li><p><strong>After 2 periods:</strong> You’ll earn interest on the new, larger amount (<span class="math notranslate nohighlight">\(FV_1\)</span>). This is the magic of compounding.</p>
+<div class="math notranslate nohighlight">
+\[FV_2 = FV_1 \cdot (1+r) = [PV \cdot (1+r)] \cdot (1+r) = PV \cdot (1+r)^2\]</div>
+</li>
+<li><p><strong>After n periods:</strong> Following the pattern, the general formula for Future Value is:</p>
+<div class="math notranslate nohighlight">
+\[ FV = PV \cdot (1+r)^n \]</div>
+</li>
+</ul>
+<p><strong>Example:</strong> You invest 1,000 today (<span class="math notranslate nohighlight">\(PV\)</span>) at an annual interest rate of 8% (<span class="math notranslate nohighlight">\(r\)</span>) for 5 years (<span class="math notranslate nohighlight">\(n\)</span>).</p>
+<p><span class="math notranslate nohighlight">\(FV = 1000 \cdot (1+0.08)^5 = 1000 \cdot (1.4693) = 1,469.33\)</span></p>
+<p>Thus, the final formula is</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[FV = PV \times (1 + r)^n\]</div>
+</div></blockquote>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(FV\)</span>: Future Value (the amount of money at the end of the investment period)</p></li>
+<li><p><span class="math notranslate nohighlight">\(PV\)</span>: Present Value (the initial amount of money invested today)</p></li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span>: The annual interest rate, growth rate, or rate of return (expressed as a decimal)</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: The number of periods (typically years) over which the money is invested</p></li>
+</ul>
+</section>
+<section id="present-value-pv-discounting">
+<h3>Present Value (PV) - Discounting<a class="headerlink" href="#present-value-pv-discounting" title="Link to this heading">#</a></h3>
+<p>Now let’s ask the reverse question: If you are promised <span class="math notranslate nohighlight">\(FV\)</span> dollars in <span class="math notranslate nohighlight">\(n\)</span> periods, what is the value of that promise <em>today</em>, given an interest rate of <span class="math notranslate nohighlight">\(r\)</span>? This process is called <strong>discounting</strong>, and it’s crucial for everything that follows.</p>
+<p>We can derive the PV formula simply by rearranging the FV formula. From <span class="math notranslate nohighlight">\(FV = PV \cdot (1+r)^n\)</span>, we solve for <span class="math notranslate nohighlight">\(PV\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ PV = \frac{FV}{(1+r)^n} \quad \text{or} \quad PV = FV \cdot (1+r)^{-n} \]</div>
+<p>Here, <span class="math notranslate nohighlight">\(r\)</span> is often called the <strong>discount rate</strong>. It’s the rate you use to discount future cash flows back to their present value.</p>
+<p><strong>Example:</strong> You will receive 10,000 in 5 years. If your personal discount rate (the return you could get elsewhere) is 8%, what is that $10,000 worth to you today?</p>
+<div class="math notranslate nohighlight">
+\[PV = \frac{10000}{(1+0.08)^5} = \frac{10000}{1.4693} = 6,805.83\]</div>
+<p>This means you would be indifferent between receiving <span class="math notranslate nohighlight">\(6,805.83 today and receiving \)</span>10,000 in 5 years, assuming an 8% rate of return.</p>
+<p>The <strong>Present Value (PV)</strong> is the current worth of a future sum of money or a stream of future cash flows, given a specified rate of return.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="net-present-value-npv">
+<h2>Net Present Value (NPV)<a class="headerlink" href="#net-present-value-npv" title="Link to this heading">#</a></h2>
+<p>When evaluating an investment project, we rarely deal with a single future sum but rather a series of cash flows occurring at different times. For example, you might invest money today (an outflow), and then receive a series of returns in the following years (inflows). The <strong>Net Present Value (NPV)</strong> is a powerful and fundamental tool in capital budgeting that uses the concept of Present Value to assess the profitability and attractiveness of such a project.</p>
+<p><strong>Net Present Value (NPV)</strong> is the difference between the present value of all cash inflows and the present value of all cash outflows associated with a project over its entire life.</p>
+<p><strong>Convention:</strong></p>
+<ul class="simple">
+<li><p><strong>Cash Outflows (Investments):</strong> Represented as negative numbers.</p></li>
+<li><p><strong>Cash Inflows (Returns):</strong> Represented as positive numbers.</p></li>
+</ul>
+<p>The initial investment at “time 0” is denoted as <span class="math notranslate nohighlight">\(CF_0\)</span> and is almost always negative.</p>
+<p>Essentially, it converts all future cash flows (both positive, representing income, and negative, representing expenses or investments) into their equivalent value today, using a specified discount rate. The initial investment (<span class="math notranslate nohighlight">\(CF_0\)</span>) is typically a cash outflow and thus negative.</p>
+<p>The general formula for NPV is:</p>
+<div class="math notranslate nohighlight">
+\[NPV = \sum_{t=0}^{n} \frac{CF_t}{(1 + r)^t}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(CF_t\)</span>: The net cash flow (cash inflow minus cash outflow) at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(CF_0\)</span> represents the initial investment at time <span class="math notranslate nohighlight">\(t=0\)</span>, which is almost always an outflow and thus a negative value.</p></li>
+</ul>
+</li>
+<li><p><span class="math notranslate nohighlight">\(r\)</span>: The discount rate (also known as the hurdle rate, required rate of return, or cost of capital). This rate is of paramount importance as it represents the minimum acceptable rate of return for the project, often reflecting the company’s cost of financing (e.g., weighted average cost of capital), the risk profile of the project, and the opportunity cost of investing elsewhere.</p></li>
+<li><p><span class="math notranslate nohighlight">\(t\)</span>: The time period (e.g., year) when the cash flow occurs. The first cash flow is typically at <span class="math notranslate nohighlight">\(t=0\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: The total number of periods over the project’s life.</p></li>
+</ul>
+<hr class="docutils" />
+<p>In simple terms, the cost of capital is the minimum return a company must earn on a project or investment to make it worthwhile. It’s essentially the cost of the money a company uses to fund its operations, whether that money comes from borrowing or from investors.</p>
+<p>Think of it like this: if you borrow money from a bank to start a business, the interest you pay on that loan is a cost. Your business needs to make at least enough profit to cover that interest. The cost of capital is a similar idea, but it also includes the “cost” of money from investors who expect a return on their investment.</p>
+<p>Companies use the cost of capital as a benchmark to decide if a new project is a good idea. If the expected return from the project is higher than the cost of capital, the project is likely to be profitable. If it’s lower, the company will probably lose money on it.</p>
+<p><strong>The Two Main Ingredients: Debt and Equity</strong></p>
+<p>A company’s capital usually comes from two main sources: debt and equity.</p>
+<p><strong>1. Cost of Debt:</strong> This is the easier one to understand. It’s the interest a company pays on its loans. For example, if a company takes out a $100,000 loan with a 5% interest rate, its cost of debt is 5%. Because interest payments are usually tax-deductible, the actual cost of debt is often lower than the interest rate.</p>
+<p><strong>2. Cost of Equity:</strong> This is the return that shareholders expect for investing in a company. Unlike the fixed interest payments on a loan, there’s no set payment for equity investors. However, they still expect to be compensated for the risk they are taking by investing their money in the company. This return comes in the form of dividends and an increase in the stock’s value. The cost of equity is generally higher than the cost of debt because shareholders are paid last if a company goes bankrupt.</p>
+<p><strong>Putting It All Together: The Weighted Average Cost of Capital (WACC)</strong></p>
+<p>Most companies use a mix of both debt and equity to finance their operations. To find the overall cost of capital, they calculate the <strong>Weighted Average Cost of Capital (WACC)</strong>. This calculation takes into account the proportion of debt and equity a company uses and their respective costs.</p>
+<p>The formula might look complicated, but the concept is straightforward: it’s the average cost of all the capital a company has, weighted by how much of each type of capital it uses.</p>
+<p><strong>A Simple Example</strong></p>
+<p>Let’s say a company, “Creative Innovations Inc.,” is funded in the following way:</p>
+<ul class="simple">
+<li><p><strong>60% from equity</strong> (investors) who expect a <strong>10%</strong> return.</p></li>
+<li><p><strong>40% from debt</strong> (a bank loan) with an after-tax interest rate of <strong>4%</strong>.</p></li>
+</ul>
+<p>Here’s how to calculate the WACC for Creative Innovations Inc.:</p>
+<ol class="arabic simple">
+<li><p><strong>Multiply the weight of equity by its cost:</strong> 60% * 10% = 6.0%</p></li>
+<li><p><strong>Multiply the weight of debt by its cost:</strong> 40% * 4% = 1.6%</p></li>
+<li><p><strong>Add the two together:</strong> 6.0% + 1.6% = <strong>7.6%</strong></p></li>
+</ol>
+<p>So, the WACC for Creative Innovations Inc. is <strong>7.6%</strong>.</p>
+<p>This means that for any new project the company considers, it must expect a return of at least 7.6% to be profitable and create value for its investors. If a project is expected to return 12%, it’s a great investment. If it’s only expected to return 5%, the company would be better off not pursuing it.</p>
+<hr class="docutils" />
+<p><strong>Explanation of the summation:</strong></p>
+<p>The formula <span class="math notranslate nohighlight">\(NPV = \sum_{t=0}^{n} \frac{CF_t}{(1 + r)^t}\)</span> means you calculate the present value of each individual cash flow and then sum them up:</p>
+<div class="math notranslate nohighlight">
+\[NPV = \frac{CF_0}{(1 + r)^0} + \frac{CF_1}{(1 + r)^1} + \frac{CF_2}{(1 + r)^2} + \dots + \frac{CF_n}{(1 + r)^n}\]</div>
+<p>Since any non-zero number raised to the power of <span class="math notranslate nohighlight">\(0\)</span> is <span class="math notranslate nohighlight">\(1\)</span>, the first term simplifies to <span class="math notranslate nohighlight">\(CF_0\)</span>.</p>
+<p><strong>Interpretation</strong></p>
+<p>The decision rule for NPV is straightforward and unambiguous:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(NPV &gt; 0\)</span>: The project is expected to generate more cash than the cost of capital, after accounting for the time value of money. This means the project will increase the wealth of the shareholders. <strong>Accept</strong> the project.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(NPV &lt; 0\)</span>: The project is expected to generate less cash than the cost of capital, indicating it will destroy shareholder wealth. <strong>Reject</strong> the project.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(NPV = 0\)</span>: The project is expected to break even, covering the cost of capital exactly. The investor is indifferent between undertaking the project and not.</p></li>
+</ul>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
+<p><strong>Example 1:</strong> A project requires an initial investment of <span class="math notranslate nohighlight">\(10.000\)</span> today (<span class="math notranslate nohighlight">\(CF_0 = -10,000\)</span>). It is expected to generate cash inflows of <span class="math notranslate nohighlight">\(4,000\)</span> at the end of Year 1 (<span class="math notranslate nohighlight">\(CF_1\)</span>), <span class="math notranslate nohighlight">\(5,000\)</span> at the end of Year 2 (<span class="math notranslate nohighlight">\(CF_2\)</span>), and <span class="math notranslate nohighlight">\(6,000\)</span> at the end of Year 3 (<span class="math notranslate nohighlight">\(CF_3\)</span>). Assume a discount rate (<span class="math notranslate nohighlight">\(r\)</span>) of <span class="math notranslate nohighlight">\(10\%\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(NPV = \frac{-10,000}{(1 + 0.10)^0} + \frac{4,000}{(1 + 0.10)^1} + \frac{5,000}{(1 + 0.10)^2} + \frac{6,000}{(1 + 0.10)^3}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -10,000 + \frac{4,000}{1.10} + \frac{5,000}{1.21} + \frac{6,000}{1.331}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -10,000 + 3,636.36 + 4,132.23 + 4,507.89\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = 2276.48\)</span></p>
+<p>Since <span class="math notranslate nohighlight">\(NPV &gt; 0\)</span>, this project would be accepted.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.10</span>  <span class="c1"># 10%</span>
+
+<span class="c1"># The npv function calculates the NPV of cash flows from year 1 onwards</span>
+<span class="c1"># So we need to calculate it and then add the initial investment (CF0)</span>
+<span class="c1"># Note: npf.npv(rate, values) takes the rate and then a list of values from CF1, CF2...</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 10.00% is: $2276.4838
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">npv</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.10</span>  <span class="c1"># 10%</span>
+
+<span class="c1"># pyxirr&#39;s npv function includes all cash flows (CF0, CF1, CF2, ...)</span>
+<span class="c1"># So we pass the entire cash_flows list directly</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 10.00% is: $2276.4838
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Example 2:</strong> A project requires an initial investment of <span class="math notranslate nohighlight">\(10.000\)</span> today (<span class="math notranslate nohighlight">\(CF_0 = -10,000\)</span>). It is expected to generate cash inflows of <span class="math notranslate nohighlight">\(4,000\)</span> at the end of Year 1 (<span class="math notranslate nohighlight">\(CF_1\)</span>), <span class="math notranslate nohighlight">\(5,000\)</span> at the end of Year 2 (<span class="math notranslate nohighlight">\(CF_2\)</span>), and <span class="math notranslate nohighlight">\(6,000\)</span> at the end of Year 3 (<span class="math notranslate nohighlight">\(CF_3\)</span>). Assume a discount rate (<span class="math notranslate nohighlight">\(r\)</span>) of <span class="math notranslate nohighlight">\(25\%\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(NPV = \frac{-10,000}{(1 + 0.25)^0} + \frac{4,000}{(1 + 0.25)^1} + \frac{5,000}{(1 + 0.25)^2} + \frac{6,000}{(1 + 0.25)^3}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -10,000 + \frac{4,000}{1.25} + \frac{5,000}{1.5625} + \frac{6,000}{1.953125}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -10,000 + 3,200.00 + 3,200.00 + 3,072.00\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -528.00\)</span></p>
+<p>Since the NPV is negative, this project is not a good investment at a 25% discount rate. It fails to generate enough return to justify the cost.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c1"># 25%</span>
+
+<span class="c1"># The npv function calculates the NPV of cash flows from year 1 onwards</span>
+<span class="c1"># So we need to calculate it and then add the initial investment (CF0)</span>
+<span class="c1"># Note: npf.npv(rate, values) takes the rate and then a list of values from CF1, CF2...</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 25.00% is: $-528.0000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">npv</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c1"># 25%</span>
+
+<span class="c1"># pyxirr&#39;s npv function includes all cash flows (CF0, CF1, CF2, ...)</span>
+<span class="c1"># So we pass the entire cash_flows list directly</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 25.00% is: $-528.0000
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Example 3:</strong> Consider a project with a required rate of return (discount rate) of 10% (<span class="math notranslate nohighlight">\(r=0.10\)</span>).</p>
+<ul class="simple">
+<li><p>Initial Investment (<span class="math notranslate nohighlight">\(CF_0\)</span>): -$100,000</p></li>
+<li><p>Year 1 Inflow (<span class="math notranslate nohighlight">\(CF_1\)</span>): +$30,000</p></li>
+<li><p>Year 2 Inflow (<span class="math notranslate nohighlight">\(CF_2\)</span>): +$40,000</p></li>
+<li><p>Year 3 Inflow (<span class="math notranslate nohighlight">\(CF_3\)</span>): +$50,000</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(NPV = -100000 + \frac{30000}{(1+0.10)^1} + \frac{40000}{(1+0.10)^2} + \frac{50000}{(1+0.10)^3}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -100000 + \frac{30000}{1.10} + \frac{40000}{1.21} + \frac{50000}{1.331}\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -100000 + 27272.73 + 33057.85 + 37565.74\)</span></p>
+<p><span class="math notranslate nohighlight">\(NPV = -2103.68\)</span></p>
+<p>Since the NPV is negative, this project is not a good investment at a 10% discount rate. It fails to generate enough return to justify the cost.</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># 10%</span>
+
+<span class="c1"># The npv function calculates the NPV of cash flows from year 1 onwards</span>
+<span class="c1"># So we need to calculate it and then add the initial investment (CF0)</span>
+<span class="c1"># Note: npf.npv(rate, values) takes the rate and then a list of values from CF1, CF2...</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 10.00% is: $-2103.6814
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">npv</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="mi">40000</span><span class="p">,</span> <span class="mi">50000</span><span class="p">]</span>
+
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># 10%</span>
+
+<span class="c1"># pyxirr&#39;s npv function includes all cash flows (CF0, CF1, CF2, ...)</span>
+<span class="c1"># So we pass the entire cash_flows list directly</span>
+<span class="n">npv_at_discount_rate</span> <span class="o">=</span> <span class="n">npv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The NPV of the project at its discount rate of </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> is: $</span><span class="si">{</span><span class="n">npv_at_discount_rate</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NPV of the project at its discount rate of 10.00% is: $-2103.6814
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="internal-rate-of-return-irr">
+<h2>Internal Rate of Return (IRR)<a class="headerlink" href="#internal-rate-of-return-irr" title="Link to this heading">#</a></h2>
+<p>The <strong>Internal Rate of Return (IRR)</strong> is another widely used metric for evaluating the attractiveness of a project or investment. While related to NPV, it provides a different perspective on profitability.</p>
+<p>NPV answers the question: “Is this a good investment at a <em>given</em> discount rate?”.</p>
+<p>The <strong>Internal Rate of Return (IRR)</strong> answers a different, but related, question: <strong>“What is the discount rate at which this investment breaks even?”</strong></p>
+<p>The <strong>IRR</strong> is the discount rate that makes the Net Present Value (NPV) of all cash flows from a particular project exactly equal to zero. In simpler terms, it is the rate of return an investment is expected to generate. It’s the maximum effective interest rate an investment can have before it starts losing money (i.e., having a negative NPV).</p>
+<p><strong>Formula (Implicit)</strong></p>
+<p>Unlike NPV, there is no direct algebraic formula to explicitly calculate IRR. Instead, IRR is the specific value of <span class="math notranslate nohighlight">\(IRR\)</span> that satisfies the following equation:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{t=0}^{n} \frac{CF_t}{(1 + IRR)^t}\]</div>
+<div class="math notranslate nohighlight">
+\[ 0 = CF_0 + \frac{CF_1}{(1+r_{IRR})^1} + \frac{CF_2}{(1+r_{IRR})^2} + \dots + \frac{CF_n}{(1+r_{IRR})^n} \]</div>
+<p>This is essentially the NPV formula, but with the NPV set to zero and <span class="math notranslate nohighlight">\(IRR\)</span> as the unknown discount rate we are solving for.</p>
+<p>Because <span class="math notranslate nohighlight">\(IRR\)</span> appears in the denominator and as an exponent, this equation is not algebraically solvable for most projects (especially those with more than two cash flows). We need to employ iterative numerical methods (such as the Newton-Raphson method, which we will discuss for XIRR) to efficiently find the IRR.</p>
+<p><strong>Interpretation</strong></p>
+<p>The decision rule for IRR is:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(IRR &gt; r\)</span>: Where <span class="math notranslate nohighlight">\(r\)</span> is the required rate of return (hurdle rate or cost of capital), the project’s expected return exceeds the minimum acceptable return. <strong>Accept</strong> the project.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(IRR &lt; r\)</span>: The project’s expected return is less than the cost of capital. <strong>Reject</strong> the project.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(IRR = r\)</span>: The project’s expected return exactly equals the cost of capital. The investor is indifferent.</p></li>
+</ul>
+<p><strong>Example (continued from NPV example):</strong> For the project with <span class="math notranslate nohighlight">\(CF_0 = -10,000\)</span>, <span class="math notranslate nohighlight">\(CF_1 = 4,000\)</span>, <span class="math notranslate nohighlight">\(CF_2 = 5,000\)</span>, and <span class="math notranslate nohighlight">\(CF_3 = 6,000\)</span>. We need to find the <span class="math notranslate nohighlight">\(IRR\)</span> such that:</p>
+<p><span class="math notranslate nohighlight">\(0 = \frac{-10,000}{(1 + IRR)^0} + \frac{4,000}{(1 + IRR)^1} + \frac{5,000}{(1 + IRR)^2} + \frac{6,000}{(1 + IRR)^3}\)</span></p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">numpy_financial</span></code> library (see example below), the <span class="math notranslate nohighlight">\(IRR\)</span> for this project is approximately <span class="math notranslate nohighlight">\(21.65\%\)</span>.
+If our required rate of return (<span class="math notranslate nohighlight">\(r\)</span>) is <span class="math notranslate nohighlight">\(10\%\)</span>, then since <span class="math notranslate nohighlight">\(21.65\% &gt; 10\%\)</span>, we would accept the project.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="c1"># Define the cash flows</span>
+<span class="c1"># CF0 = -10,000 (initial investment)</span>
+<span class="c1"># CF1 = +4,000</span>
+<span class="c1"># CF2 = +5,000</span>
+<span class="c1"># CF3 = +6,000</span>
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="c1"># Calculate the Internal Rate of Return (IRR)</span>
+<span class="n">irr_value</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">irr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="c1"># Print the result in a readable format</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The project&#39;s cash flows are: </span><span class="si">{</span><span class="n">cash_flows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated IRR is: </span><span class="si">{</span><span class="n">irr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;As a percentage, the IRR is: </span><span class="si">{</span><span class="n">irr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The project&#39;s cash flows are: [-10000, 4000, 5000, 6000]
+The calculated IRR is: 0.2165
+As a percentage, the IRR is: 21.65%
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">irr</span>
+
+<span class="c1"># Define the cash flows</span>
+<span class="c1"># CF0 = -10,000 (initial investment)</span>
+<span class="c1"># CF1 = +4,000</span>
+<span class="c1"># CF2 = +5,000</span>
+<span class="c1"># CF3 = +6,000</span>
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+
+<span class="c1"># Calculate the Internal Rate of Return (IRR)</span>
+<span class="n">irr_value</span> <span class="o">=</span> <span class="n">irr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="c1"># Print the result in a readable format</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The project&#39;s cash flows are: </span><span class="si">{</span><span class="n">cash_flows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated IRR is: </span><span class="si">{</span><span class="n">irr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;As a percentage, the IRR is: </span><span class="si">{</span><span class="n">irr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The project&#39;s cash flows are: [-10000, 4000, 5000, 6000]
+The calculated IRR is: 0.2165
+As a percentage, the IRR is: 21.65%
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Limitations of IRR</strong></p>
+<p>While intuitive, IRR has several limitations that can make it less reliable than NPV in certain situations:</p>
+<ol class="arabic simple">
+<li><p><strong>Assumes Regular Intervals:</strong> The standard IRR formula implicitly assumes that all cash flows occur at equally spaced intervals (e.g., annually, semi-annually). This is often an unrealistic simplification in real-world projects. What if you invest on Jan 5th, get a dividend on March 20th, invest more on Sep 1st, and sell everything two years later on Dec 18th? For this, we need a more flexible tool.</p></li>
+<li><p><strong>Reinvestment Assumption:</strong> IRR implicitly assumes that all intermediate positive cash flows generated by the project are reinvested at the <em>calculated IRR itself</em> until the end of the project’s life. This can be a highly unrealistic assumption, especially if the calculated IRR is very high or very low, as it’s unlikely that a firm can consistently find other projects with the exact same rate of return to reinvest these funds.</p></li>
+<li><p><strong>Multiple IRRs:</strong> For projects with “non-conventional” cash flow patterns (i.e., cash flows that switch signs more than once, e.g., an initial outflow, followed by inflows, then another outflow), it’s mathematically possible to have multiple real IRRs, making the interpretation ambiguous and the decision rule unreliable.</p></li>
+<li><p><strong>Mutually Exclusive Projects:</strong> When comparing mutually exclusive projects (where choosing one automatically precludes choosing the others), IRR can sometimes lead to different decisions than NPV, especially when projects differ significantly in scale, project life, or the timing of cash flows. In such cases, NPV is generally preferred because it directly measures the absolute increase in firm value.</p></li>
+</ol>
+</section>
+<section id="npv-vs-irr-a-comparative-perspective">
+<h2>NPV vs. IRR: A Comparative Perspective<a class="headerlink" href="#npv-vs-irr-a-comparative-perspective" title="Link to this heading">#</a></h2>
+<p>Both NPV and IRR are powerful tools for capital budgeting, and for independent projects (where accepting one doesn’t affect the decision to accept another), they generally lead to the same accept/reject decision. However, conflicts can arise, particularly with mutually exclusive projects, and it’s crucial to understand their differences.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Feature</p></th>
+<th class="head text-left"><p>Net Present Value (NPV)</p></th>
+<th class="head text-left"><p>Internal Rate of Return (IRR)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Output</strong></p></td>
+<td class="text-left"><p>A dollar amount (absolute value)</p></td>
+<td class="text-left"><p>A percentage (rate of return)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Reinvestment</strong></p></td>
+<td class="text-left"><p>Assumes cash flows are reinvested at the specified discount rate (<span class="math notranslate nohighlight">\(r\)</span>, typically the cost of capital). This is generally a more realistic assumption.</p></td>
+<td class="text-left"><p>Assumes cash flows are reinvested at the calculated IRR itself. This can be an unrealistic assumption.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Consistency</strong></p></td>
+<td class="text-left"><p>Always consistent with the goal of maximizing shareholder wealth.</p></td>
+<td class="text-left"><p>Can conflict with NPV for mutually exclusive projects or non-conventional cash flows.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Multiple Rates</strong></p></td>
+<td class="text-left"><p>Always a unique NPV for a given discount rate.</p></td>
+<td class="text-left"><p>Can have multiple IRRs with non-conventional cash flows, leading to ambiguity.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Decision Rule</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(NPV &gt; 0 \implies\)</span> Accept</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(IRR &gt; r \implies\)</span> Accept</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Primary Use</strong></p></td>
+<td class="text-left"><p>Most reliable and theoretically sound for capital budgeting decisions, especially for comparing and ranking mutually exclusive projects.</p></td>
+<td class="text-left"><p>Intuitive for managers (as a percentage return); good for communicating project returns when no conflicts arise.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Why NPV is generally preferred for mutually exclusive projects:</strong></p>
+<p>When choosing among mutually exclusive projects, the goal is to select the project that adds the most value to the firm. NPV directly measures this absolute increase in wealth. A project with a higher IRR might not necessarily have the highest NPV if it’s a smaller project or if its cash flows are front-loaded, leading to a higher percentage return on a smaller base.</p>
+<p>For example, consider two projects with a cost of capital of <strong>10%</strong>:</p>
+<ul class="simple">
+<li><p><strong>Project A:</strong> Initial investment <span class="math notranslate nohighlight">\(-1,000\)</span>, Year 1 cash flow <span class="math notranslate nohighlight">\(1,500\)</span>. IRR = 50%, and <span class="math notranslate nohighlight">\(NPV = 363.64\)</span> (calculation is 1500/(1+0.1) - 1000).</p></li>
+<li><p><strong>Project B:</strong> Initial investment <span class="math notranslate nohighlight">\(-10,000\)</span>, Year 1 cash flow <span class="math notranslate nohighlight">\(12,000\)</span>. IRR = 20%, and <span class="math notranslate nohighlight">\(NPV = 909.09\)</span> (calculation is 12000/(1+0.1) - 10000).</p></li>
+</ul>
+<p>Project A has a much higher IRR, but Project B has a significantly higher NPV. If these are mutually exclusive, Project B should be chosen because it adds more absolute value to the firm, despite its lower percentage return. The discrepancy often arises from the differing reinvestment rate assumptions (IRR assumes reinvestment at the project’s own rate, while NPV assumes reinvestment at the cost of capital). Therefore, for choosing among alternatives that cannot all be undertaken, NPV is the superior metric.</p>
+</section>
+<section id="addressing-limitations-extended-internal-rate-of-return-xirr">
+<h2>Addressing Limitations: Extended Internal Rate of Return (XIRR)<a class="headerlink" href="#addressing-limitations-extended-internal-rate-of-return-xirr" title="Link to this heading">#</a></h2>
+<p>The primary limitation that the <strong>Extended Internal Rate of Return (XIRR)</strong> addresses is the assumption of regularly spaced cash flows inherent in the standard IRR calculation.</p>
+<p>Many real-world investments and projects do not have cash flows that occur at precise, equally spaced intervals (e.g., exactly annually or semi-annually). Examples include:</p>
+<ul class="simple">
+<li><p>Irregular contributions or withdrawals from an investment portfolio.</p></li>
+<li><p>Project expenses or revenues that occur on specific, non-annual dates.</p></li>
+<li><p>Private equity investments with multiple capital calls and distributions over varying timeframes.</p></li>
+</ul>
+<p>Standard IRR would require approximations or complex adjustments to handle such irregular timings, leading to inaccuracies. XIRR provides a robust solution by incorporating the <strong>exact dates</strong> of each cash flow.</p>
+<p>The <strong>Extended Internal Rate of Return (XIRR)</strong> is a financial metric used to calculate the annualized internal rate of return for a series of cash flows that are not necessarily periodic. It accounts for the actual, specific dates of each cash flow, providing a more accurate annualized rate of return for investments with irregular timings. Like IRR, XIRR is the discount rate that makes the Net Present Value (NPV) of a series of cash flows equal to zero.</p>
+<p>The XIRR is the value of <span class="math notranslate nohighlight">\(r\)</span> that satisfies the equation:</p>
+<div class="math notranslate nohighlight">
+\[0 = \sum_{i=1}^{N} \frac{C_i}{(1 + r)^{(D_i - D_1)/365}}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(C_i\)</span>: The <span class="math notranslate nohighlight">\(i\)</span>-th cash flow amount. This series must include at least one negative cash flow (typically an initial investment or contribution) and at least one positive cash flow (a return or distribution).</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_i\)</span>: The date of the <span class="math notranslate nohighlight">\(i\)</span>-th cash flow. These dates must be actual calendar dates.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_1\)</span>: The date of the <strong>earliest</strong> cash flow in the series. This date serves as the reference point (effectively “time <span class="math notranslate nohighlight">\(t=0\)</span>”) for all other cash flows in the calculation.</p></li>
+<li><p><span class="math notranslate nohighlight">\((D_i - D_1)\)</span>: Represents the number of days between the <span class="math notranslate nohighlight">\(i\)</span>-th cash flow date and the first (earliest) cash flow date.</p></li>
+<li><p><span class="math notranslate nohighlight">\(/365\)</span>: Divides the number of days by <span class="math notranslate nohighlight">\(365\)</span> to convert the time difference into a fractional number of years. This uses a common <strong>day count convention</strong> known as “Actual/365 Fixed” (or “Actual/365”). In this convention, the actual number of days between two dates is used in the numerator, and a fixed denominator of 365 days is used for annualization, regardless of whether it’s a leap year. This simplification ensures consistency across calculations, though other day count conventions (like Actual/Actual or 30/360) are used in specific financial markets (e.g., bond pricing). Some models use 365.25 for leap years, but 365 is standard in most spreadsheet functions.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N\)</span>: The total number of cash flows in the series.</p></li>
+</ul>
+<p><strong>Important Note on Indexing:</strong> When applying this formula, the first cash flow <span class="math notranslate nohighlight">\(C_1\)</span> (corresponding to date <span class="math notranslate nohighlight">\(D_1\)</span>) will have an exponent of <span class="math notranslate nohighlight">\((D_1 - D_1)/365 = 0\)</span>. Consequently, its term in the summation will be <span class="math notranslate nohighlight">\(C_1 / (1+r)^0 = C_1\)</span>. All subsequent cash flows are then discounted back to this initial reference date <span class="math notranslate nohighlight">\(D_1\)</span>.</p>
+<p><strong>How XIRR is Solved (Numerical Method)</strong></p>
+<p>Similar to the standard IRR, XIRR cannot be solved directly with a simple algebraic formula. This is because the rate <span class="math notranslate nohighlight">\(r\)</span> appears in the exponent of multiple terms, and these exponents are now fractional and often irregular. Instead, XIRR is solved using <strong>iterative numerical methods</strong>.</p>
+<p>A commonly employed method is the <strong>Newton-Raphson method</strong>. This algorithm works by iteratively refining an initial guess for <span class="math notranslate nohighlight">\(r\)</span> until the NPV of the cash flows (calculated using the XIRR formula) is sufficiently close to zero.</p>
+<p>Let <span class="math notranslate nohighlight">\(f(r) = \sum_{i=1}^{N} \frac{C_i}{(1 + r)^{(D_i - D_1)/365}}\)</span>. Our objective is to find <span class="math notranslate nohighlight">\(r\)</span> such that <span class="math notranslate nohighlight">\(f(r) = 0\)</span>.</p>
+<p>The Newton-Raphson iteration formula is:</p>
+<div class="math notranslate nohighlight">
+\[r_{new} = r_{old} - \frac{f(r_{old})}{f'(r_{old})}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(f'(r)\)</span> is the first derivative of <span class="math notranslate nohighlight">\(f(r)\)</span> with respect to <span class="math notranslate nohighlight">\(r\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f'(r) = \sum_{i=1}^{N} C_i \times \left( -\frac{D_i - D_1}{365} \right) \times (1 + r)^{-\left(\frac{D_i - D_1}{365} + 1\right)}\]</div>
+<p>The algorithm starts with an initial guess (<span class="math notranslate nohighlight">\(r_{old}\)</span>), calculates a new estimate (<span class="math notranslate nohighlight">\(r_{new}\)</span>), and repeats this process. The iteration continues until the absolute difference between <span class="math notranslate nohighlight">\(r_{new}\)</span> and <span class="math notranslate nohighlight">\(r_{old}\)</span> becomes very small, or until the value of <span class="math notranslate nohighlight">\(f(r_{new})\)</span> is extremely close to zero, indicating convergence to a solution.</p>
+</section>
+<section id="xirr-function-in-google-sheets">
+<h2>XIRR Function in Google Sheets<a class="headerlink" href="#xirr-function-in-google-sheets" title="Link to this heading">#</a></h2>
+<p>Google Sheets provides a convenient built-in function to calculate XIRR, abstracting away the complex numerical iteration process.</p>
+<p>The syntax for the XIRR function in Google Sheets is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">=XIRR(cash_flow_amounts,</span> <span class="pre">cash_flow_dates,</span> <span class="pre">[guess])</span></code></p>
+<p>Arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cash_flow_amounts</span></code>: This is a required argument. It is a range or array containing the numerical values of the cash flows.</p>
+<ul>
+<li><p>It must include at least one negative value (representing an investment, outflow, or cost) and at least one positive value (representing a return, inflow, or revenue).</p></li>
+<li><p>The order of cash flow amounts must directly correspond to the order of their respective dates.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cash_flow_dates</span></code>: This is also a required argument. It is a range or array containing the dates corresponding to each cash flow amount.</p>
+<ul>
+<li><p>These dates must be valid Google Sheets date formats (e.g., entered as <code class="docutils literal notranslate"><span class="pre">DATE(YYYY,MM,DD)</span></code>, <code class="docutils literal notranslate"><span class="pre">MM/DD/YYYY</span></code>, or recognized date serial numbers).</p></li>
+<li><p>For clarity and to prevent potential internal sorting issues, it is best practice to provide the dates in chronological order, although the function often handles unsorted dates by implicitly sorting them.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[guess]</span></code>: This is an optional argument. It is an estimate for the XIRR, expressed as a decimal (e.g., <span class="math notranslate nohighlight">\(0.1\)</span> for <span class="math notranslate nohighlight">\(10\%\)</span>).</p>
+<ul>
+<li><p>If omitted, Google Sheets uses a default guess (typically <span class="math notranslate nohighlight">\(0.1\)</span> or <span class="math notranslate nohighlight">\(10\%\)</span>).</p></li>
+<li><p>Providing a reasonable guess can be critically important. It helps the iterative numerical algorithm converge faster and, more importantly, helps to find the most economically meaningful solution, especially in cases of unusual or complex cash flow patterns where multiple mathematical solutions (IRRs) might exist. If the function returns an error (e.g., <code class="docutils literal notranslate"><span class="pre">#NUM!</span></code>) or an unexpected result, trying a different <code class="docutils literal notranslate"><span class="pre">guess</span></code> is often the first troubleshooting step.</p></li>
+</ul>
+</li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">XIRR</span></code> function in Google Sheets calculates the <strong>annualized effective yield</strong> (or rate of return) of an investment that has an irregular series of cash flows. It achieves this by finding the discount rate that sets the Net Present Value of these irregularly timed cash flows to zero. The output is always an annualized percentage.</p>
+<section id="example-in-google-sheets">
+<h3>Example in Google Sheets<a class="headerlink" href="#example-in-google-sheets" title="Link to this heading">#</a></h3>
+<p>Let’s assume you have the following cash flows and dates in your Google Sheet:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Date</p></th>
+<th class="head text-left"><p>Cash Flow Amount</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-01-15</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-10000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-06-01</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-2000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2023-03-10</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-07-22</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-12-31</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">3000</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If these dates are in cells <code class="docutils literal notranslate"><span class="pre">A2:A6</span></code> and the amounts are in <code class="docutils literal notranslate"><span class="pre">B2:B6</span></code>, you would use the formula:</p>
+<p><code class="docutils literal notranslate"><span class="pre">=XIRR(B2:B6,</span> <span class="pre">A2:A6)</span></code></p>
+<p>The result would be approximately <strong>0.2124</strong>.</p>
+<p><strong>Interpreting the Result:</strong> If you format this cell as a percentage, it will display <strong>21.24%</strong>. This means that this specific sequence of investments and returns is equivalent to putting your money in a bank account that pays a <strong>21.24% annualized interest rate</strong>. It’s a powerful and accurate way to measure the true performance of your investments.</p>
+<p>If you wanted to provide a guess, say <span class="math notranslate nohighlight">\(15\%\)</span> (or <span class="math notranslate nohighlight">\(0.15\)</span>), you could use: <code class="docutils literal notranslate"><span class="pre">=XIRR(B2:B6,</span> <span class="pre">A2:A6,</span> <span class="pre">0.15)</span></code></p>
+<p>Here is a Python program which calculates the same example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">xirr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+
+<span class="c1"># Define the dates and cash flows</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="o">-</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">]</span>
+
+<span class="c1"># Calculate the XIRR (Internal Rate of Return for irregular intervals)</span>
+<span class="n">xirr_value</span> <span class="o">=</span> <span class="n">xirr</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="c1"># Print the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Date</span><span class="se">\t\t\t</span><span class="s2">Cash Flow&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">cf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="se">\t\t</span><span class="si">{</span><span class="n">cf</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The calculated XIRR is: </span><span class="si">{</span><span class="n">xirr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;As a percentage, the XIRR is: </span><span class="si">{</span><span class="n">xirr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date			Cash Flow
+----------------------------------------
+2022-01-15		  -10000
+2022-06-01		   -2000
+2023-03-10		    5000
+2024-07-22		   10000
+2024-12-31		    3000
+----------------------------------------
+
+The calculated XIRR is: 0.2124
+As a percentage, the XIRR is: 21.24%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="important-considerations-for-xirr">
+<h2>Important Considerations for XIRR<a class="headerlink" href="#important-considerations-for-xirr" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Annualized Rate:</strong> XIRR always returns an annualized rate, regardless of the frequency of cash flows or the total duration of the investment. This is a key feature, allowing for direct comparison with other annualized investment returns (e.g., bond yields, stock market returns).</p></li>
+<li><p><strong>Reinvestment Assumption:</strong> Like standard IRR, XIRR implicitly assumes that all positive cash flows generated by the project are reinvested at the <em>calculated XIRR rate</em> until the end of the project. This can be a strong and often unrealistic assumption, as finding consistent reinvestment opportunities at the project’s exact rate of return can be challenging.</p>
+<ul class="simple">
+<li><p><strong>Addressing the Reinvestment Assumption: Modified Internal Rate of Return (MIRR):</strong> To overcome the unrealistic reinvestment assumption of IRR/XIRR, the <strong>Modified Internal Rate of Return (MIRR)</strong> was developed. MIRR assumes that all positive cash flows are reinvested at a more realistic rate, typically the firm’s cost of capital or a specific finance rate. All negative cash flows are discounted to the present at the firm’s finance rate, while positive cash flows are compounded to the project’s end at the reinvestment rate, resulting in a terminal value. This terminal value is then discounted back to the present at the cost of capital to find a single, more realistic rate of return.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Quality:</strong> The accuracy and reliability of the XIRR calculation are critically dependent on the accuracy of both the cash flow amounts and, especially, their corresponding dates. Even minor errors in dates can significantly distort the resulting XIRR.</p></li>
+<li><p><strong>At Least One Negative and One Positive Cash Flow:</strong> The XIRR function requires a mix of cash flow signs (at least one negative and at least one positive) to find a meaningful rate. If all cash flows are positive (e.g., just receiving money without an initial investment) or all are negative (e.g., only making investments without any return), XIRR will typically return an error (e.g., <code class="docutils literal notranslate"><span class="pre">#NUM!</span></code> in Google Sheets) or an undefined result, as a rate of return cannot be calculated in such scenarios.</p></li>
+<li><p><strong>Chronological Order of Dates:</strong> While spreadsheet functions like Google Sheets’ XIRR might internally sort the provided dates, it is always best practice to arrange your cash flow dates and corresponding amounts in strict chronological order. This improves readability, ensures clarity, and helps prevent potential unexpected behavior or errors in complex datasets.</p></li>
+<li><p><strong>Multiple Solutions / No Real Solution:</strong> For unusual cash flow patterns that involve multiple sign changes (e.g., initial outflow, then inflows, then another outflow, and then more inflows), it is theoretically possible for the underlying XIRR equation to have multiple real solutions or, in some cases, no real solution. This is where the optional <code class="docutils literal notranslate"><span class="pre">[guess]</span></code> argument becomes particularly important. By providing a reasonable <code class="docutils literal notranslate"><span class="pre">guess</span></code>, you can help the numerical algorithm converge to the most appropriate or economically meaningful solution, or even find a solution when the default guess might fail.</p></li>
+<li><p><strong>Day Count Convention (Actual/365 Fixed):</strong> As discussed, the XIRR formula’s use of <code class="docutils literal notranslate"><span class="pre">/365</span></code> implies the “Actual/365 Fixed” day count convention. This means the numerator uses the exact number of days between two dates, while the denominator is a fixed 365 days for annualization, ignoring leap years. This convention is common in many financial calculations for simplicity and consistency.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="extended-net-present-value-xnpv">
+<h2>Extended Net Present Value (XNPV)<a class="headerlink" href="#extended-net-present-value-xnpv" title="Link to this heading">#</a></h2>
+<p>Just as XIRR addresses the limitation of fixed time periods in the standard IRR calculation, the <strong>Extended Net Present Value (XNPV)</strong> provides a more precise valuation when cash flows occur at irregular intervals.</p>
+<p>While the standard NPV formula is robust, it assumes that each cash flow (<span class="math notranslate nohighlight">\(CF_t\)</span>) occurs at the end of a regular, equal-length period (e.g., exactly one year, two years, etc., from the start). In reality, project cash flows often don’t adhere to such a strict schedule. An investment might be made mid-month, with returns occurring on various dates throughout the subsequent years. Using the standard NPV formula in such cases requires approximating the timing, which can lead to inaccuracies.</p>
+<p>The <strong>Extended Net Present Value (XNPV)</strong> is a financial metric that calculates the net present value of a series of cash flows occurring at specific, irregular dates. By using the actual date of each cash flow, XNPV provides a more accurate valuation than the standard NPV function, which assumes periodic cash flows.</p>
+<p>The XNPV formula discounts each individual cash flow from its specific date back to the start date of the investment. It is an application of the fundamental discounting principle, now applied over a more precise time frame measured in days rather than whole periods.</p>
+<p>The formula for XNPV is:</p>
+<div class="math notranslate nohighlight">
+\[XNPV = \sum_{i=1}^{N} \frac{C_i}{(1 + r)^{(D_i - D_1)/365}}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><strong><span class="math notranslate nohighlight">\(C_i\)</span></strong>: The i-th cash flow amount.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(D_i\)</span></strong>: The date of the i-th cash flow.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(D_1\)</span></strong>: The date of the first cash flow, which serves as the initial reference point.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(r\)</span></strong>: The annual discount rate.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\((D_i - D_1)/365\)</span></strong>: This term calculates the exact number of years (including fractions of a year) between each cash flow and the very first cash flow. This precise time measurement is what distinguishes XNPV from NPV.</p></li>
+</ul>
+<p>The interpretation of the XNPV result is identical to the standard NPV:</p>
+<ul class="simple">
+<li><p><strong>If XNPV &gt; 0</strong>: The investment is expected to be profitable and add value. <strong>Accept</strong> the project.</p></li>
+<li><p><strong>If XNPV &lt; 0</strong>: The investment is expected to be unprofitable and destroy value. <strong>Reject</strong> the project.</p></li>
+<li><p><strong>If XNPV = 0</strong>: The investment is expected to break even.</p></li>
+</ul>
+<section id="example-of-xnpv">
+<h3>Example of XNPV<a class="headerlink" href="#example-of-xnpv" title="Link to this heading">#</a></h3>
+<p>Let’s adapt the XIRR example to calculate the XNPV. Assume your required rate of return (discount rate) is 10%.</p>
+<p>The cash flows are as follows:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Date</p></th>
+<th class="head text-left"><p>Cash Flow Amount</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-01-15</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-10000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-06-01</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-2000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2023-03-10</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-07-22</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-12-31</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">3000</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Calculation Breakdown:</strong></p>
+<ul class="simple">
+<li><p><strong>Discount Rate (r):</strong> 10% or 0.10</p></li>
+<li><p><strong>First Date (D1):</strong> Jan 15, 2022</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyxirr</span><span class="w"> </span><span class="kn">import</span> <span class="n">xnpv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+
+<span class="c1"># Define the dates and cash flows</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="o">-</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">]</span>
+
+<span class="c1"># Define the discount rate</span>
+<span class="n">discount_rate</span> <span class="o">=</span> <span class="mf">0.10</span>  <span class="c1"># 10%</span>
+
+<span class="c1"># Calculate the XNPV</span>
+<span class="n">xnpv_value</span> <span class="o">=</span> <span class="n">xnpv</span><span class="p">(</span><span class="n">discount_rate</span><span class="p">,</span> <span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated XNPV at a </span><span class="si">{</span><span class="n">discount_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> discount rate is: $</span><span class="si">{</span><span class="n">xnpv_value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The calculated XNPV at a 10.00% discount rate is: $2680.79
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result of this calculation is <strong>$2,680.79</strong>. Since the XNPV is positive, this investment would be considered financially attractive at a 10% discount rate.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="addressing-limitations-modified-internal-rate-of-return-mirr">
+<h2>Addressing Limitations: Modified Internal Rate of Return (MIRR)<a class="headerlink" href="#addressing-limitations-modified-internal-rate-of-return-mirr" title="Link to this heading">#</a></h2>
+<p>As noted earlier, one of the most significant drawbacks of the standard IRR (and XIRR) is its <strong>reinvestment assumption</strong>. It implicitly assumes that all positive cash flows generated by a project are reinvested at the IRR itself. This can be unrealistic, especially if the IRR is very high. It’s unlikely a company can consistently find new investment opportunities that yield the exact same high rate of return.</p>
+<p>The <strong>Modified Internal Rate of Return (MIRR)</strong> was developed to address this issue by providing a more realistic measure of a project’s profitability. MIRR allows for the specification of a different, more practical reinvestment rate for the positive cash flows.</p>
+<p><strong>Key Differences from IRR:</strong></p>
+<ul class="simple">
+<li><p><strong>IRR Assumption:</strong> Intermediate cash flows are reinvested at the IRR.</p></li>
+<li><p><strong>MIRR Assumption:</strong> Intermediate cash flows are reinvested at a rate that reflects the firm’s actual investment opportunities, typically the cost of capital.</p></li>
+</ul>
+<section id="derivation-and-formula">
+<h3>Derivation and Formula<a class="headerlink" href="#derivation-and-formula" title="Link to this heading">#</a></h3>
+<p>The calculation of MIRR involves three main steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate the Present Value (PV) of all negative cash flows (outflows).</strong> All investment costs are discounted to their value at time t=0 using a <strong>finance rate</strong>. This rate is typically the firm’s cost of capital or the specific cost of borrowing funds for the project.</p></li>
+<li><p><strong>Calculate the Future Value (FV) (not Present value) of all positive cash flows (inflows).</strong> All returns are compounded forward to the end of the project’s life (time t=n) using a <strong>reinvestment rate</strong>. This rate should reflect the return the company expects to earn on reinvesting these funds (e.g., the weighted average cost of capital). This single compounded sum is known as the <strong>Terminal Value</strong>.</p></li>
+<li><p><strong>Calculate the MIRR.</strong> The MIRR is the discount rate that equates the present value of the outflows with the present value of the Terminal Value. In other words, it’s the rate of return that makes the future value of the initial investments grow to the Terminal Value over the project’s life.</p></li>
+</ol>
+<p>The formula for MIRR is expressed as:</p>
+<div class="math notranslate nohighlight">
+\[ MIRR = \left( \frac{\text{FV of Positive Cash Flows (at Reinvestment Rate)}}{\text{PV of Negative Cash Flows (at finance rate)}} \right)^{\frac{1}{n}} - 1 \]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the number of periods.</p>
+<p>This formula is derived from the following:</p>
+<div class="math notranslate nohighlight">
+\[ \text{PV of Negative Cash Flows (at finance rate)} = \frac{\text{FV of Positive Cash Flows (at Reinvestment Rate)}}{(1 + MIRR)^n}\]</div>
+</section>
+<section id="example-of-mirr">
+<h3>Example of MIRR<a class="headerlink" href="#example-of-mirr" title="Link to this heading">#</a></h3>
+<p>Let’s use our familiar cash flow series: an initial investment of 10,000 followed by inflows of 4,000, 5,000, and 6,000 over three years.</p>
+<ul class="simple">
+<li><p><strong>Cash Flows:</strong> <code class="docutils literal notranslate"><span class="pre">[-10000,</span> <span class="pre">4000,</span> <span class="pre">5000,</span> <span class="pre">6000]</span></code></p></li>
+<li><p>Assume the <strong>finance rate</strong> (cost to borrow the initial 10,000) is 10%.</p></li>
+<li><p>Assume the <strong>Reinvestment Rate</strong> (the rate at which you can reinvest the inflows) is 12%.</p></li>
+</ul>
+<p><strong>Step-by-Step Calculation:</strong></p>
+<ol class="arabic">
+<li><p><strong>Present Value of Negative Cash Flows:</strong></p>
+<p>There is only one negative cash flow, the initial investment of 10,000 at t=0. Its present value is simply <strong>10,000</strong>.</p>
+</li>
+<li><p><strong>Future Value of Positive Cash Flows (Terminal Value):</strong></p>
+<p>We need to compound each inflow to the end of Year 3 at the 12% reinvestment rate.</p>
+<ul class="simple">
+<li><p>The 4,000 from Year 1 will be reinvested for 2 years: <span class="math notranslate nohighlight">\(FV = 4,000 \times (1 + 0.12)^2 = 4,000 \times 1.2544 = 5,017.60\)</span></p></li>
+<li><p>The 5,000 from Year 2 will be reinvested for 1 year: <span class="math notranslate nohighlight">\(FV = 5,000 \times (1 + 0.12)^1 = 5,000 \times 1.12 = 5,600.00\)</span></p></li>
+<li><p>The 6,000 from Year 3 is already at the end, so its future value is <strong>6,000.00</strong>.</p></li>
+<li><p><strong>Terminal Value</strong> = 5,017.60 + 5,600.00 + 6,000.00 = <strong>16,617.60</strong></p></li>
+</ul>
+</li>
+<li><p><strong>Calculate the MIRR:</strong></p>
+<p>Now we find the rate that makes the initial $10,000 investment grow to the 16,617.60 Terminal Value in 3 years.</p>
+<div class="math notranslate nohighlight">
+\[ MIRR = \left( \frac{16617.60}{10000} \right)^{\frac{1}{3}} - 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ MIRR = (1.66176)^{\frac{1}{3}} - 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ MIRR = 1.1845 - 1 = 0.1845 \]</div>
+</li>
+</ol>
+<p>The MIRR is <strong>18.45%</strong>.</p>
+<p>Notice this is lower than the previously calculated IRR of <strong>21.65%</strong>. This is because the MIRR uses a more conservative and realistic reinvestment rate (12%) compared to the IRR’s implicit assumption of reinvesting at 21.65%. This makes MIRR a more trustworthy metric for project evaluation, especially when comparing projects of different scales and durations.</p>
+<p>Let’s also consider some details regarding reinvestment rate and MIRR:</p>
+<ul class="simple">
+<li><p>The reinvestment rate $12% is just one assumption of how positive cash flows will be utilized externally to the project. The MIRR is the calculated overall performance of the entire project considering that 12% assumption.</p></li>
+<li><p>The 18.45% MIRR is a measure of the project’s actual profitability over three years (effective annual yield of the project), taking into account the magnitude and timing of the 4000, 5000 and 6000$ inflows. A project with the same reinvestment rate but different cash flows would have a different MIRR.</p></li>
+<li><p>The reinvestment rate only addresses what happens to positive cash flows. The MIRR also explicitly includes the cost of financing the initial investment (the 10% finance rate) in its calculation, providing a more holistic picture of the project’s true cost and return.</p></li>
+</ul>
+<p>Here is a Python program to calculate this example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+<span class="n">financing_rate</span> <span class="o">=</span> <span class="mf">0.10</span>
+<span class="n">reinvestment_rate</span> <span class="o">=</span> <span class="mf">0.12</span>
+
+<span class="n">mirr_value</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">mirr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">,</span> <span class="n">financing_rate</span><span class="p">,</span> <span class="n">reinvestment_rate</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The project&#39;s cash flows are: </span><span class="si">{</span><span class="n">cash_flows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finance Rate: </span><span class="si">{</span><span class="n">financing_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reinvestment Rate: </span><span class="si">{</span><span class="n">reinvestment_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated MIRR is: </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The project&#39;s cash flows are: [-10000, 4000, 5000, 6000]
+Finance Rate: 10.00%
+Reinvestment Rate: 12.00%
+The calculated MIRR is: 0.1845 or 18.45%
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s consider the same example, but assume that we did not borrow money, this is just our money we’re going to invest (let’s assume that the finance rate is zero).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+<span class="n">financing_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">reinvestment_rate</span> <span class="o">=</span> <span class="mf">0.12</span>
+
+<span class="n">mirr_value</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">mirr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">,</span> <span class="n">financing_rate</span><span class="p">,</span> <span class="n">reinvestment_rate</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The project&#39;s cash flows are: </span><span class="si">{</span><span class="n">cash_flows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finance Rate: </span><span class="si">{</span><span class="n">financing_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reinvestment Rate: </span><span class="si">{</span><span class="n">reinvestment_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated MIRR is: </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The project&#39;s cash flows are: [-10000, 4000, 5000, 6000]
+Finance Rate: 0.00%
+Reinvestment Rate: 12.00%
+The calculated MIRR is: 0.1845 or 18.45%
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, the result is totally the same as with finance rate 10% because the outflow is related to the period number ‘zero’ which is present date, thus the present value of outflow in such a case it’s just an outflow itself.</p>
+<p>Then, let’s assume that we’re not going to reinvest inflows. Let’s see what happens.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy_financial</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npf</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">6000</span><span class="p">]</span>
+<span class="n">financing_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">reinvestment_rate</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">mirr_value</span> <span class="o">=</span> <span class="n">npf</span><span class="o">.</span><span class="n">mirr</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">,</span> <span class="n">financing_rate</span><span class="p">,</span> <span class="n">reinvestment_rate</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The project&#39;s cash flows are: </span><span class="si">{</span><span class="n">cash_flows</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finance Rate: </span><span class="si">{</span><span class="n">financing_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reinvestment Rate: </span><span class="si">{</span><span class="n">reinvestment_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated MIRR is: </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> or </span><span class="si">{</span><span class="n">mirr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The project&#39;s cash flows are: [-10000, 4000, 5000, 6000]
+Finance Rate: 0.00%
+Reinvestment Rate: 0.00%
+The calculated MIRR is: 0.1447 or 14.47%
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we do not reinvest inflows, then</p>
+<ul class="simple">
+<li><p>Total cash inflows = 4000 + 5000 + 6000 = 15000</p></li>
+<li><p>Total net profit = 15000 - 10000 = 5000</p></li>
+<li><p>Holding Period Return (HPR) is the return on an asset or portfolio over the whole period during which it was held. In our case it is 5000/10000 = 0.5 or 50%. Thus, our investment generated a total return of 50%.</p></li>
+<li><p>The 50% is the return over 3 years in our example. To compare it with other annual investments, we can calculate a simple, non-compounded annual return: 50% / 3 years = 16.67 per year.</p></li>
+</ul>
+<p>It is important to note that this is a simple average and does not account for the time value of money (TVM) within the holding period.</p>
+<p><strong>Why MIRR with 0% Reinvestment is Not a Simple Average</strong></p>
+<p>In the last example, we set the reinvestment rate to 0% and found that the <code class="docutils literal notranslate"><span class="pre">numpy_financial.mirr</span></code> function returned <strong>14.47%</strong>. However, a simple calculation of the average annual return gave us a higher figure of <strong>16.67%</strong>.</p>
+<p>Let’s break down this apparent inconsistency. This is a critical learning point that reveals the core strength of MIRR and other discounted cash flow methods over simple arithmetic averages.</p>
+<p><strong>The Root of the Discrepancy: Time Value of Money (TVM)</strong></p>
+<p>The simple average calculation we performed is as follows:</p>
+<ul class="simple">
+<li><p><strong>Total Return (Holding Period Return):</strong> (15,000 - 10,000) / 10,000 = 50%</p></li>
+<li><p><strong>Simple Average Annual Return:</strong> 50% / 3 years = 16.67% per year</p></li>
+</ul>
+<p>This calculation is misleading because it <strong>ignores the time value of money</strong>. It implicitly assumes that the timing of the cash inflows (4000 in Year 1, 5000 in Year 2, and 6000 in Year 3) does not matter. It treats the entire 15,000 as if it were received at a single point in time.</p>
+<p>However, in finance, we know that money received sooner is more valuable than money received later. The MIRR calculation, even with a 0% reinvestment rate, still respects this fundamental principle.</p>
+<p><strong>How MIRR Arrives at 14.47%</strong></p>
+<p>Let’s manually re-calculate the MIRR with a 0% reinvestment rate. This will demonstrate precisely how the time value of money is incorporated.</p>
+<ul class="simple">
+<li><p><strong>Cash Flows:</strong> <code class="docutils literal notranslate"><span class="pre">[-10000,</span> <span class="pre">4000,</span> <span class="pre">5000,</span> <span class="pre">6000]</span></code></p></li>
+<li><p><strong>Finance Rate:</strong> 0%</p></li>
+<li><p><strong>Reinvestment Rate:</strong> 0%</p></li>
+</ul>
+<p><strong>Step 1: Present Value of Negative Cash Flows</strong></p>
+<p>The initial investment of 10,000 is already at its present value (t=0).</p>
+<ul class="simple">
+<li><p><strong>PV of Outflows = 10000</strong></p></li>
+</ul>
+<p><strong>Step 2: Future Value of Positive Cash Flows (Terminal Value)</strong></p>
+<p>With a reinvestment rate of 0%, the cash inflows do not earn any additional return. They are simply held until the end of the project’s life.</p>
+<ul class="simple">
+<li><p>The 4000 from Year 1 is held for 2 years: FV = 4000 * (1 + 0.00)² = 4000</p></li>
+<li><p>The 5000 from Year 2 is held for 1 year: FV = 5000 * (1 + 0.00)¹ = 5000</p></li>
+<li><p>The 6000 from Year 3 is already at the end, so its value is 6000.</p></li>
+<li><p><strong>Terminal Value</strong> = 4000 + 5000 + 6000 = <strong>15000</strong></p></li>
+</ul>
+<p><strong>Step 3: Calculate the MIRR</strong></p>
+<p>The MIRR is the single rate of return that equates the initial investment to the terminal value over the project’s life. It answers the question: “At what constant annual rate must my 10000 investment grow to become 15000 in 3 years?”</p>
+<div class="math notranslate nohighlight">
+\[ MIRR = \left( \frac{\text{Terminal Value}}{\text{PV of Outflows}} \right)^{\frac{1}{n}} - 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ MIRR = \left( \frac{15,000}{10,000} \right)^{\frac{1}{3}} - 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ MIRR = (1.5)^{\frac{1}{3}} - 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ MIRR = 1.1447 - 1 = 0.1447 \]</div>
+<p>The MIRR is <strong>14.47%</strong>.</p>
+<p><strong>Conclusion: The Meaning of the Two Percentages</strong></p>
+<ul class="simple">
+<li><p><strong>16.67% (Simple Average):</strong> This is the <strong>arithmetic average</strong> return per year. It is a simple, non-compounded rate that incorrectly assumes the total profit of 5000 (15000 / 3 years) was generated evenly over the three years, ignoring the timing of the cash flows.</p></li>
+<li><p><strong>14.47% (MIRR):</strong> This is the <strong>compounded annual growth rate (CAGR)</strong> of the investment. It is the true, annualized, time-value-of-money-adjusted rate of return. It accurately reflects that the cash inflows are spread out over time. Because not all profits are received immediately, the effective compounded return is lower than the simple average.</p></li>
+</ul>
+</section>
+<section id="mirr-limitations">
+<h3>MIRR limitations<a class="headerlink" href="#mirr-limitations" title="Link to this heading">#</a></h3>
+<p>The standard MIRR formula has the same limitation as the standard IRR formula: it assumes that all cash flows occur at regular, equally spaced intervals (e.g., annually, monthly, etc.).</p>
+<p>The formula for MIRR, which involves raising a value to the power of <code class="docutils literal notranslate"><span class="pre">1/n</span></code>, explicitly uses <code class="docutils literal notranslate"><span class="pre">n</span></code> as the number of <em>periods</em>. This structure inherently requires those periods to be of equal length for the calculation to be mathematically sound.</p>
+<p>Just as XIRR was developed to handle the irregular timing of cash flows for an internal rate of return calculation, a similar logic is needed for MIRR when dealing with real-world, date-specific cash flows.</p>
+<p>While not a standard built-in function in most software like Excel or Google Sheets, financial modelers and analysts have developed a concept often called <strong>XMIRR (Extended Modified Internal Rate of Return)</strong>.</p>
+</section>
+</section>
+<section id="extended-modified-internal-rate-of-return-xmirr">
+<h2>Extended Modified Internal Rate of Return (XMIRR)<a class="headerlink" href="#extended-modified-internal-rate-of-return-xmirr" title="Link to this heading">#</a></h2>
+<p>As previously established, the <strong>Modified Internal Rate of Return (MIRR)</strong> represents a significant advancement over the standard IRR by addressing its most critical limitation: the unrealistic assumption that all intermediate cash flows are reinvested at the project’s own internal rate of return. MIRR rectifies this by allowing the specification of a more practical and market-reflective reinvestment rate for positive cash flows and a finance rate for negative cash flows.</p>
+<p>However, the conventional MIRR, much like the standard IRR, still operates under the implicit assumption that all cash flows occur at regular, equally spaced intervals (e.g., precisely annually or monthly). In the complex reality of financial projects and investments, cash flows rarely adhere to such strict, periodic schedules. Investment contributions, operational expenses, capital calls, and revenue streams often occur on specific, irregular calendar dates.</p>
+<p>To bridge this gap and provide an even more accurate and robust measure of project profitability, we use the <strong>Extended Modified Internal Rate of Return (XMIRR)</strong>. XMIRR integrates the date-specific precision of XIRR (which handles irregular cash flow timings) with the realistic reinvestment and finance rate assumptions of MIRR. This combination makes XMIRR a powerful and comprehensive metric for evaluating projects with complex, real-world cash flow patterns.</p>
+<p>The <strong>Extended Modified Internal Rate of Return (XMIRR)</strong> is an annualized rate of return that accounts for irregular cash flow dates, a specified finance rate for outflows, and a specified reinvestment rate for inflows. It represents the single, constant growth rate that equates the present value of all project outflows (discounted at the finance rate) to the present value of the terminal value of all project inflows (compounded at the reinvestment rate) over the exact duration of the project.</p>
+<section id="id1">
+<h3>Derivation and Formula<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>The calculation of XMIRR systematically extends the three-step process of MIRR by incorporating the precise dates of each cash flow. This approach is superior because it explicitly separates the treatment of cash outflows (investments or costs) and cash inflows (returns or revenues), using distinct rates that better reflect the firm’s actual cost of capital and its opportunities to generate returns.</p>
+<p>Let <span class="math notranslate nohighlight">\(D_1\)</span> be the earliest date of any cash flow in the series, and <span class="math notranslate nohighlight">\(D_n\)</span> be the latest date of any cash flow in the series.
+Let <span class="math notranslate nohighlight">\(r_f\)</span> be the finance rate, and <span class="math notranslate nohighlight">\(r_r\)</span> be the reinvestment rate.</p>
+<ol class="arabic">
+<li><p><strong>Calculate the Present Value (PV) of all Negative Cash Flows (Outflows) at the Earliest Date (<span class="math notranslate nohighlight">\(D_1\)</span>).</strong>
+Each negative cash flow (representing an investment, expense, or capital outflow) is discounted from its actual occurrence date back to the earliest date of the project (<span class="math notranslate nohighlight">\(D_1\)</span>) using the specified <strong>finance rate (<span class="math notranslate nohighlight">\(r_f\)</span>)</strong>. The absolute value of these discounted outflows is then summed.</p>
+<div class="math notranslate nohighlight">
+\[PV_{Outflows} = \sum_{C_i &lt; 0} \frac{|C_i|}{(1 + r_f)^{(D_i - D_1)/365}}\]</div>
+<ul class="simple">
+<li><p><strong>Reasoning:</strong> This step accurately captures the total cost of all initial and subsequent investments (outflows) at a single, consistent reference point (the effective start of the project). The use of the finance rate (<span class="math notranslate nohighlight">\(r_f\)</span>) realistically reflects the actual cost of funds, which is often the firm’s cost of capital, the specific cost of borrowing for the project, or the weighted average cost of capital (WACC). The term <span class="math notranslate nohighlight">\((D_i - D_1)/365\)</span> ensures precise, date-specific discounting, even for fractional years, rather than assuming fixed periodic intervals.</p></li>
+</ul>
+</li>
+<li><p><strong>Calculate the Future Value (FV) of all Positive Cash Flows (Inflows) at the Latest Date (<span class="math notranslate nohighlight">\(D_n\)</span>).</strong>
+Each positive cash flow (representing a return, revenue, or capital inflow) is compounded forward from its actual occurrence date to the latest date (<span class="math notranslate nohighlight">\(D_n\)</span>) of the entire project using the specified <strong>reinvestment rate (<span class="math notranslate nohighlight">\(r_r\)</span>)</strong>. The sum of these compounded values is known as the <strong>Terminal Value (TV)</strong>.</p>
+<div class="math notranslate nohighlight">
+\[\text{Terminal Value} = \sum_{C_i &gt; 0} C_i \times (1 + r_r)^{(D_n - D_i)/365}\]</div>
+<ul class="simple">
+<li><p><strong>Reasoning:</strong> This step realistically aggregates the value of all positive returns (inflows) at the end of the project’s life, assuming they are reinvested at a practical, market-determined rate. The reinvestment rate (<span class="math notranslate nohighlight">\(r_r\)</span>) typically reflects the average rate of return the company expects to earn on alternative investments of similar risk, or its overall cost of capital. The <span class="math notranslate nohighlight">\((D_n - D_i)/365\)</span> term ensures precise, date-specific compounding over fractional years.</p></li>
+</ul>
+</li>
+<li><p><strong>Calculate the XMIRR.</strong>
+The XMIRR is the annualized discount rate that equates the present value of the aggregated outflows (calculated in Step 1) with the present value of the Terminal Value (calculated in Step 2), over the entire duration of the project (from <span class="math notranslate nohighlight">\(D_1\)</span> to <span class="math notranslate nohighlight">\(D_n\)</span>). In essence, it finds the single, constant annualized growth rate that transforms the total initial investment (in PV terms) into the total accumulated returns (in TV terms) over the exact project life.</p>
+<p>The relationship is established as:</p>
+<div class="math notranslate nohighlight">
+\[PV_{Outflows} = \frac{\text{Terminal Value}}{(1 + XMIRR)^{(D_n - D_1)/365}}\]</div>
+<p>Solving for XMIRR, we get the explicit formula:</p>
+<div class="math notranslate nohighlight">
+\[XMIRR = \left( \frac{\text{Terminal Value}}{PV_{Outflows}} \right)^{\frac{1}{(D_n - D_1)/365}} - 1\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(C_i\)</span>: The <span class="math notranslate nohighlight">\(i\)</span>-th cash flow amount.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_i\)</span>: The date of the <span class="math notranslate nohighlight">\(i\)</span>-th cash flow.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_1\)</span>: The date of the <strong>earliest</strong> cash flow in the series, serving as the common reference point for discounting outflows.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D_n\)</span>: The date of the <strong>latest</strong> cash flow in the series, serving as the common reference point for compounding inflows.</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_f\)</span>: The annual finance rate (used for discounting negative cash flows).</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_r\)</span>: The annual reinvestment rate (used for compounding positive cash flows).</p></li>
+<li><p><span class="math notranslate nohighlight">\(/365\)</span>: Implies the <strong>“Actual/365 Fixed” day count convention</strong>. This means the numerator uses the exact number of calendar days between two dates, while the denominator is a fixed 365 days for annualization, regardless of whether it’s a leap year. This convention is standard in many financial functions (like Excel’s XIRR/XNPV) for consistency and simplicity.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="example-of-xmirr">
+<h3>Example of XMIRR<a class="headerlink" href="#example-of-xmirr" title="Link to this heading">#</a></h3>
+<p>To demonstrate the power and precision of XMIRR, let’s use the same irregular cash flow series from our XIRR and XNPV examples and apply a more realistic set of financing and reinvestment assumptions.</p>
+<p><strong>Scenario:</strong></p>
+<ul class="simple">
+<li><p><strong>Finance Rate (<span class="math notranslate nohighlight">\(r_f\)</span>):</strong> 8% (This is the annual rate at which the company borrows funds or its overall cost of capital for financing the project’s outflows).</p></li>
+<li><p><strong>Reinvestment Rate (<span class="math notranslate nohighlight">\(r_r\)</span>):</strong> 12% (This is the annual rate at which the company can realistically reinvest the positive cash flows generated by the project).</p></li>
+</ul>
+<p><strong>Cash Flows and Dates:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Date</p></th>
+<th class="head text-left"><p>Cash Flow Amount (<span class="math notranslate nohighlight">\(C_i\)</span>)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-01-15</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-10000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2022-06-01</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">-2000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2023-03-10</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">5000</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-07-22</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">10000</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">2024-12-31</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">3000</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><strong>Earliest Date (<span class="math notranslate nohighlight">\(D_1\)</span>):</strong> Jan 15, 2022</p></li>
+<li><p><strong>Latest Date (<span class="math notranslate nohighlight">\(D_n\)</span>):</strong> Dec 31, 2024</p></li>
+</ul>
+<p><strong>Step-by-Step Calculation:</strong></p>
+<ol class="arabic">
+<li><p><strong>Calculate the Present Value (PV) of Negative Cash Flows at the Earliest Date (<span class="math notranslate nohighlight">\(D_1\)</span>).</strong>
+We discount the two outflows back to Jan 15, 2022, using the <strong>8% finance rate</strong>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(PV(\text{Outflow 1}) = \frac{|-10000|}{(1 + 0.08)^{(Jan 15, 2022 - Jan 15, 2022)/365}} = \frac{10000}{(1.08)^0} = 10,000.00\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(PV(\text{Outflow 2}) = \frac{|-2000|}{(1 + 0.08)^{(Jun 1, 2022 - Jan 15, 2022)/365}} = \frac{2000}{(1.08)^{(137/365)}} = \frac{2000}{1.0293} = 1943.05\)</span></p></li>
+<li><p><strong>Total <span class="math notranslate nohighlight">\(PV_{Outflows}\)</span> = 10000.00 + 1943.05 = 11943.05</strong></p></li>
+</ul>
+</li>
+<li><p><strong>Calculate the Future Value (FV) of Positive Cash Flows at the Latest Date (<span class="math notranslate nohighlight">\(D_n\)</span>).</strong>
+We compound the three inflows forward to Dec 31, 2024, using the <strong>12% reinvestment rate</strong>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(FV(\text{Inflow 1}) = 5000 \times (1 + 0.12)^{(Dec 31, 2024 - Mar 10, 2023)/365} = 5000 \times (1.12)^{(662/365)} = 5000 \times 1.2282 = 6140.97\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(FV(\text{Inflow 2}) = 10000 \times (1 + 0.12)^{(Dec 31, 2024 - Jul 22, 2024)/365} = 10000 \times (1.12)^{(162/365)} = 10000 \times 1.0516 = 10515.86\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(FV(\text{Inflow 3}) = 3000 \times (1 + 0.12)^{(Dec 31, 2024 - Dec 31, 2024)/365} = 3000 \times (1.12)^0 = 3000.00\)</span></p></li>
+<li><p><strong>Terminal Value = 6140.97 + 10515.86 + 3000.00 = 19656.83</strong></p></li>
+</ul>
+</li>
+<li><p><strong>Calculate the XMIRR.</strong>
+Now, we find the single annualized rate that makes the initial investment (<span class="math notranslate nohighlight">\(PV_{Outflows}\)</span>) grow to the final accumulated returns (Terminal Value) over the project’s total duration.</p>
+<ul class="simple">
+<li><p><strong>Total Duration (in days):</strong> Dec 31, 2024 - Jan 15, 2022 = 1081 days</p></li>
+<li><p><strong>Total Duration (in years):</strong> 1081 / 365 = 2.9616 years</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[XMIRR = \left( \frac{19656.83}{11943.05} \right)^{\frac{1}{2.9616}} - 1\]</div>
+<div class="math notranslate nohighlight">
+\[XMIRR = (1.6459)^{\frac{1}{2.9616}} - 1\]</div>
+<div class="math notranslate nohighlight">
+\[XMIRR = 1.1832 - 1 = 0.1832\]</div>
+</li>
+</ol>
+<p>The XMIRR is <strong>18.32%</strong>.</p>
+<p>This result provides a more nuanced and realistic performance measure than the 21.24% XIRR calculated earlier, as it accounts for the distinct costs of financing and the actual opportunities for reinvesting returns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">xmirr</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">,</span> <span class="n">finance_rate</span><span class="p">,</span> <span class="n">reinvest_rate</span><span class="p">,</span> <span class="n">day_count_convention</span><span class="o">=</span><span class="mi">365</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate Extended Modified Internal Rate of Return (XMIRR)</span>
+<span class="sd">    for irregular cash flows with dates.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    - dates: list of datetime.date objects</span>
+<span class="sd">    - cash_flows: list of cash flows (negative for investments, positive for returns)</span>
+<span class="sd">    - finance_rate: annual financing rate for negative cash flows</span>
+<span class="sd">    - reinvest_rate: annual reinvestment rate for positive cash flows</span>
+<span class="sd">    - day_count_convention: number of days in a year for calculations (default 365)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    - XMIRR as a decimal (e.g., 0.15 for 15%)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cash_flows</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dates and cash flows must have the same length&quot;</span><span class="p">)</span>
+    
+    <span class="n">start_date</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+    <span class="n">total_days</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_date</span> <span class="o">-</span> <span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+    
+    <span class="k">if</span> <span class="n">total_days</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All dates are the same&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate present value of negative cash flows (investments)</span>
+    <span class="n">pv_negative</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">cf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cf</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">years_from_start</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">-</span> <span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="n">day_count_convention</span>
+            <span class="n">pv_negative</span> <span class="o">+=</span> <span class="n">cf</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">finance_rate</span><span class="p">)</span> <span class="o">**</span> <span class="n">years_from_start</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate future value of positive cash flows (returns)</span>
+    <span class="n">fv_positive</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">cf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cf</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">years_to_end</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_date</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">days</span> <span class="o">/</span> <span class="n">day_count_convention</span>
+            <span class="n">fv_positive</span> <span class="o">+=</span> <span class="n">cf</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">reinvest_rate</span><span class="p">)</span> <span class="o">**</span> <span class="n">years_to_end</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">pv_negative</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No negative cash flows found&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fv_positive</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No positive cash flows found&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate XMIRR</span>
+    <span class="n">years_total</span> <span class="o">=</span> <span class="n">total_days</span> <span class="o">/</span> <span class="n">day_count_convention</span>
+    <span class="n">xmirr</span> <span class="o">=</span> <span class="p">(</span><span class="n">fv_positive</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">pv_negative</span><span class="p">))</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">years_total</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">xmirr</span>
+
+
+<span class="c1"># Your example</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+    <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">cash_flows</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">10000</span><span class="p">,</span> <span class="o">-</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">]</span>
+
+<span class="n">financing_rate</span> <span class="o">=</span> <span class="mf">0.08</span>
+<span class="n">reinvestment_rate</span> <span class="o">=</span> <span class="mf">0.12</span>
+
+<span class="n">xmirr_value</span> <span class="o">=</span> <span class="n">xmirr</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">,</span> <span class="n">financing_rate</span><span class="p">,</span> <span class="n">reinvestment_rate</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Date</span><span class="se">\t\t\t</span><span class="s2">Cash Flow&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">cf</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">cash_flows</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="se">\t\t</span><span class="si">{</span><span class="n">cf</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Financing Rate: </span><span class="si">{</span><span class="n">financing_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reinvestment Rate: </span><span class="si">{</span><span class="n">reinvestment_rate</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The calculated XMIRR is: </span><span class="si">{</span><span class="n">xmirr_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;As a percentage: </span><span class="si">{</span><span class="n">xmirr_value</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date			Cash Flow
+----------------------------------------
+2022-01-15		  -10000
+2022-06-01		   -2000
+2023-03-10		    5000
+2024-07-22		   10000
+2024-12-31		    3000
+----------------------------------------
+
+Financing Rate: 8.00%
+Reinvestment Rate: 12.00%
+The calculated XMIRR is: 0.1832
+As a percentage: 18.32%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="advantages-and-interpretation-of-xmirr">
+<h3>Advantages and Interpretation of XMIRR<a class="headerlink" href="#advantages-and-interpretation-of-xmirr" title="Link to this heading">#</a></h3>
+<p>XMIRR offers significant advantages over simpler metrics, making it particularly valuable for sophisticated capital budgeting and investment analysis in complex scenarios:</p>
+<ol class="arabic simple">
+<li><p><strong>Realistic Reinvestment and Financing Assumptions:</strong> This is the primary strength of XMIRR. By allowing distinct, user-defined reinvestment and finance rates, XMIRR directly addresses the unrealistic implicit reinvestment assumption of IRR/XIRR. It provides an economically plausible and defensible measure of return that reflects the firm’s actual cost of capital and its opportunities to reinvest positive cash flows at prevailing market rates or its average cost of capital.</p></li>
+<li><p><strong>Accurate Handling of Irregular Cash Flows:</strong> XMIRR precisely accounts for the exact timing of cash flows using fractional year exponents based on actual calendar dates. This makes it robust for real-world projects where investments and returns do not occur at fixed, periodic intervals, providing a more accurate reflection of the economic exposure over time.</p></li>
+<li><p><strong>Unique and Unambiguous Solution:</strong> Unlike IRR/XIRR, which can lead to multiple real solutions (or no real solution) when dealing with “non-conventional” cash flow patterns (i.e., cash flows that switch signs more than once), XMIRR generally provides a unique and unambiguous solution. This is because it transforms the problem into equating a single present value of outflows with a single future value (terminal value) of inflows, thereby avoiding the complex polynomial root-finding problem inherent in traditional IRR calculations.</p></li>
+<li><p><strong>Strong Consistency with NPV:</strong> XMIRR exhibits strong theoretical consistency with the Net Present Value (NPV) criterion, especially when both the finance rate (<span class="math notranslate nohighlight">\(r_f\)</span>) and the reinvestment rate (<span class="math notranslate nohighlight">\(r_r\)</span>) are set equal to the project’s cost of capital (which is typically the discount rate ‘r’ used for NPV). Under these conditions, XMIRR will generally lead to the same accept/reject decision as NPV for independent projects. Furthermore, it tends to be more consistent with NPV than IRR when evaluating mutually exclusive projects, which is critical because NPV is theoretically superior for maximizing shareholder wealth.</p></li>
+<li><p><strong>Comprehensive Economic View:</strong> By integrating both the cost of financing (for outflows) and the expected return from reinvestment (for inflows), XMIRR offers a holistic and economically sound perspective on a project’s profitability over its entire irregular timeline. This makes it a powerful tool for managers making critical investment decisions.</p></li>
+<li><p><strong>Annualized Rate for Comparison:</strong> Like XIRR, XMIRR always returns an annualized rate, facilitating direct comparison with other annualized investment returns (e.g., bond yields, stock market returns, or a company’s WACC).</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="comparison-of-metrics">
+<h2>Comparison of Metrics<a class="headerlink" href="#comparison-of-metrics" title="Link to this heading">#</a></h2>
+<p>To consolidate the concepts discussed, the following table provides a comparative overview of all the advanced rate of return metrics. This summary helps in selecting the most appropriate tool for a given financial analysis scenario.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Metric</p></th>
+<th class="head text-left"><p>Measures…</p></th>
+<th class="head text-left"><p>Key Assumption for Intermediate Cash Flows</p></th>
+<th class="head text-left"><p>Handles Irregular Timings?</p></th>
+<th class="head text-left"><p>Best Used For…</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>NPV</strong></p></td>
+<td class="text-left"><p>The absolute <strong>dollar value</strong> a project adds to the firm (Present Value of Inflows - PV of Outflows).</p></td>
+<td class="text-left"><p>Reinvested at the <strong>discount rate</strong> (cost of capital). This is generally realistic.</p></td>
+<td class="text-left"><p>No</p></td>
+<td class="text-left"><p>The gold standard for capital budgeting, especially when comparing mutually exclusive projects of different scales or durations.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>XNPV</strong></p></td>
+<td class="text-left"><p>The absolute <strong>dollar value</strong> a project adds, accounting for the <strong>exact dates</strong> of cash flows.</p></td>
+<td class="text-left"><p>Reinvested at the <strong>discount rate</strong>.</p></td>
+<td class="text-left"><p>Yes</p></td>
+<td class="text-left"><p>Precise valuation of projects where cash flows do not occur at regular yearly or monthly intervals. The most accurate valuation tool.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>IRR</strong></p></td>
+<td class="text-left"><p>The <strong>percentage rate of return</strong> at which the project’s NPV equals zero.</p></td>
+<td class="text-left"><p>Reinvested at the <strong>calculated IRR itself</strong>. This can be highly unrealistic.</p></td>
+<td class="text-left"><p>No</p></td>
+<td class="text-left"><p>Quickly assessing the potential return of a simple project with regular cash flows. Good for communicating returns as a percentage.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>XIRR</strong></p></td>
+<td class="text-left"><p>The <strong>annualized percentage rate of return</strong> for a series of cash flows occurring on <strong>irregular dates</strong>.</p></td>
+<td class="text-left"><p>Reinvested at the <strong>calculated XIRR itself</strong>. Still an unrealistic assumption.</p></td>
+<td class="text-left"><p>Yes</p></td>
+<td class="text-left"><p>Accurately measuring the annualized performance of investments with irregular contributions and withdrawals (e.g., personal portfolios).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>MIRR</strong></p></td>
+<td class="text-left"><p>A modified <strong>percentage rate of return</strong> that addresses IRR’s reinvestment flaw.</p></td>
+<td class="text-left"><p>Reinvested at a <strong>user-defined rate</strong> (e.g., cost of capital). This is realistic.</p></td>
+<td class="text-left"><p>No</p></td>
+<td class="text-left"><p>Providing a more reliable and theoretically sound rate of return than IRR for projects with regular cash flows.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>XMIRR</strong></p></td>
+<td class="text-left"><p>The most robust <strong>annualized percentage rate of return</strong>, combining date precision and realistic reinvestment.</p></td>
+<td class="text-left"><p>Reinvested at a <strong>user-defined rate</strong> and financed at a <strong>user-defined rate</strong>.</p></td>
+<td class="text-left"><p>Yes</p></td>
+<td class="text-left"><p>The most comprehensive analysis for complex, real-world projects with irregular cash flows and varying costs of capital/reinvestment opportunities.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="additional-materials">
+<h2>Additional materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Cost_of_capital">https://en.wikipedia.org/wiki/Cost_of_capital</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Weighted_average_cost_of_capital">https://en.wikipedia.org/wiki/Weighted_average_cost_of_capital</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Time_value_of_money">https://en.wikipedia.org/wiki/Time_value_of_money</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Present_value">https://en.wikipedia.org/wiki/Present_value</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Future_value">https://en.wikipedia.org/wiki/Future_value</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Minimum_acceptable_rate_of_return">https://en.wikipedia.org/wiki/Minimum_acceptable_rate_of_return</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Holding_period_return">https://en.wikipedia.org/wiki/Holding_period_return</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Net_present_value">https://en.wikipedia.org/wiki/Net_present_value</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Internal_rate_of_return">https://en.wikipedia.org/wiki/Internal_rate_of_return</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Discounted_cash_flow">https://en.wikipedia.org/wiki/Discounted_cash_flow</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Modified_internal_rate_of_return">https://en.wikipedia.org/wiki/Modified_internal_rate_of_return</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Capital_budgeting">https://en.wikipedia.org/wiki/Capital_budgeting</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Discounting">https://en.wikipedia.org/wiki/Discounting</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Compound_interest">https://en.wikipedia.org/wiki/Compound_interest</a></p></li>
+<li><p>Youtube: Modified Internal Rate of Return (MIRR) - Basics, Formula, Calculations in Excel (Step by Step) <a class="reference external" href="https://www.youtube.com/watch?v=lCaOyFJC_Po">https://www.youtube.com/watch?v=lCaOyFJC_Po</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./data-analysis"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../physics/inertial_vs_gravitational_mass.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Mass: Inertial vs. Gravitational</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-the-time-value-of-money-tvm">Introduction: The Time Value of Money (TVM)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-blocks-present-value-pv-and-future-value-fv">Building Blocks: Present Value (PV) and Future Value (FV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#future-value-fv">Future Value (FV)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#present-value-pv-discounting">Present Value (PV) - Discounting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#net-present-value-npv">Net Present Value (NPV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-rate-of-return-irr">Internal Rate of Return (IRR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#npv-vs-irr-a-comparative-perspective">NPV vs. IRR: A Comparative Perspective</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-limitations-extended-internal-rate-of-return-xirr">Addressing Limitations: Extended Internal Rate of Return (XIRR)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xirr-function-in-google-sheets">XIRR Function in Google Sheets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-in-google-sheets">Example in Google Sheets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-considerations-for-xirr">Important Considerations for XIRR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-net-present-value-xnpv">Extended Net Present Value (XNPV)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-xnpv">Example of XNPV</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#addressing-limitations-modified-internal-rate-of-return-mirr">Addressing Limitations: Modified Internal Rate of Return (MIRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-and-formula">Derivation and Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-mirr">Example of MIRR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirr-limitations">MIRR limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extended-modified-internal-rate-of-return-xmirr">Extended Modified Internal Rate of Return (XMIRR)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Derivation and Formula</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-xmirr">Example of XMIRR</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-and-interpretation-of-xmirr">Advantages and Interpretation of XMIRR</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-metrics">Comparison of Metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
