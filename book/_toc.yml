@@ -41,7 +41,7 @@ parts:
 
   - caption: DATA ANALYSIS
     chapters:
-      - file: data-analysis/extended-internal-rate-of-return
+      - file: data-analysis/rate-of-return-metrics
   
   # - caption: DATA SCIENCE AND MACHINE LEARNING
     # chapters:
