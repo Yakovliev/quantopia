@@ -20,6 +20,7 @@ parts:
       - file: math/ordinary-least-squares
       - file: math/ordinary-least-squares-code
       - file: math/variance-covariance
+      - file: math/variance-covariance-code
       - file: math/weighted-least-squares
       - file: math/weighted-least-squares-code-1
       - file: math/weighted-least-squares-code-2
