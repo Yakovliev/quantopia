@@ -431,6 +431,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-variance-and-standard-deviation">Interpretation and Limitations of Variance and Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-variance">Properties of Variance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
@@ -442,6 +443,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-covariance-and-correlation">Interpretation and Limitations of Covariance and Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-covariance">Properties of Covariance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
@@ -710,6 +712,34 @@ We calculated the mean <span class="math notranslate nohighlight">\(\mu \approx 
 Fig. Example of samples from two populations with the same mean but different variances. The red population has mean 100 and variance 100 (SD=10) while the blue population has mean 100 and variance 2500 (SD=50) where SD stands for Standard Deviation.
 By <a href="https://commons.wikimedia.org/w/index.php?title=User:JRBrown&amp;action=edit&amp;redlink=1" class="new" title="User:JRBrown (page does not exist)">JRBrown</a> - <span class="int-own-work" lang="en">Own work</span>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=10777712">Link</a>. <a href="https://en.wikipedia.org/wiki/Variance">Wikipedia</a></p>
 </section>
+<section id="properties-of-variance">
+<h3>Properties of Variance<a class="headerlink" href="#properties-of-variance" title="Link to this heading">#</a></h3>
+<p>Understanding the mathematical properties of variance can simplify calculations and provide deeper insight into its behavior.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a random variable and <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> be constants.</p>
+<ol class="arabic">
+<li><p><strong>Variance of a Constant</strong>: The variance of a constant is zero. A constant does not vary, so its spread is zero.</p>
+<div class="math notranslate nohighlight">
+\[Var(a) = 0\]</div>
+</li>
+<li><p><strong>Non-Negativity</strong>: Variance is always non-negative. Since it is an average of squared values, it cannot be negative.</p>
+<div class="math notranslate nohighlight">
+\[Var(X) \ge 0\]</div>
+</li>
+<li><p><strong>Effect of a Constant Multiplier</strong>: If you scale a random variable by a constant <span class="math notranslate nohighlight">\(a\)</span>, the variance is scaled by <span class="math notranslate nohighlight">\(a^2\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Var(aX) = a^2 Var(X)\]</div>
+<p><em>This is because the deviation from the mean <span class="math notranslate nohighlight">\((ax_i - a\mu)\)</span> becomes <span class="math notranslate nohighlight">\(a(x_i - \mu)\)</span>, and squaring this term gives <span class="math notranslate nohighlight">\(a^2(x_i - \mu)^2\)</span>.</em></p>
+</li>
+<li><p><strong>Effect of an Added Constant</strong>: Adding a constant to every data point shifts the mean by that constant, but it does not change the spread of the data. The variance remains unchanged.</p>
+<div class="math notranslate nohighlight">
+\[Var(X + b) = Var(X)\]</div>
+</li>
+<li><p><strong>Variance of a Sum of <em>Independent</em> Random Variables</strong>: If two random variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> are independent, the variance of their sum is the sum of their variances.</p>
+<div class="math notranslate nohighlight">
+\[Var(X + Y) = Var(X) + Var(Y)\]</div>
+</li>
+</ol>
+</section>
 </section>
 <hr class="docutils" />
 <section id="covariance">
@@ -836,6 +866,36 @@ By <a href="https://commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&a
 <li><p><strong>Correlation Does Not Imply Causation (A Critical Distinction):</strong> This is arguably the most crucial cautionary point in statistics. A strong correlation between two variables does not automatically mean that one causes the other. The observed relationship might be due to a confounding variable (a third, unobserved factor influencing both), pure coincidence, or even reverse causation. For example, ice cream sales and drowning incidents often increase at the same time, but ice cream doesn’t cause drowning; a third variable (temperature) influences both. Always be wary of inferring causation from correlation alone; controlled experiments or advanced causal inference techniques are required to establish causation.</p></li>
 <li><p><strong>Relationship to Moments:</strong> For advanced readers, covariance is the <strong>second mixed central moment</strong> between two random variables, extending the concept of variance to multivariate settings.</p></li>
 </ul>
+</section>
+<section id="properties-of-covariance">
+<h3>Properties of Covariance<a class="headerlink" href="#properties-of-covariance" title="Link to this heading">#</a></h3>
+<p>Covariance also has several important properties. Let <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y\)</span>, and <span class="math notranslate nohighlight">\(Z\)</span> be random variables and <span class="math notranslate nohighlight">\(a, b, c, d\)</span> be constants.</p>
+<ol class="arabic">
+<li><p><strong>Symmetry</strong>: The covariance of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> is the same as the covariance of <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Cov(X, Y) = Cov(Y, X)\]</div>
+</li>
+<li><p><strong>Covariance with a Constant</strong>: The covariance of a random variable with a constant is zero. A constant has no variability to share.</p>
+<div class="math notranslate nohighlight">
+\[Cov(X, a) = 0\]</div>
+</li>
+<li><p><strong>Covariance with Itself</strong>: The covariance of a random variable with itself is its variance.</p>
+<div class="math notranslate nohighlight">
+\[Cov(X, X) = Var(X)\]</div>
+</li>
+<li><p><strong>Effect of Scaling and Shifting</strong>:</p>
+<div class="math notranslate nohighlight">
+\[Cov(aX + b, cY + d) = ac \cdot Cov(X, Y)\]</div>
+</li>
+<li><p><strong>Distributive Property</strong>:</p>
+<div class="math notranslate nohighlight">
+\[Cov(X + Y, Z) = Cov(X, Z) + Cov(Y, Z)\]</div>
+</li>
+<li><p><strong>Variance of a Sum of <em>Dependent</em> Random Variables</strong>: The property for the variance of a sum can be generalized for dependent variables using covariance.</p>
+<div class="math notranslate nohighlight">
+\[Var(X + Y) = Var(X) + Var(Y) + 2Cov(X, Y)\]</div>
+</li>
+</ol>
 </section>
 </section>
 <hr class="docutils" />
@@ -1175,6 +1235,7 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-variance-and-standard-deviation">Interpretation and Limitations of Variance and Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-variance">Properties of Variance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
@@ -1186,6 +1247,7 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-covariance-and-correlation">Interpretation and Limitations of Covariance and Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-covariance">Properties of Covariance</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
