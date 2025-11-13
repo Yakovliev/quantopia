@@ -411,15 +411,37 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-variance-and-covariance-matter-a-foundation-for-data-understanding">Why Variance and Covariance Matter: A Foundation for Data Understanding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-the-mean">Example: Calculating the Mean</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-standard-deviation-sigma">Population Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-standard-deviation-s">Sample Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-variance-and-standard-deviation">Example: Calculating Variance and Standard Deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-calculation-using-definitional-formula">Step-by-step Calculation using Definitional Formula:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2-and-standard-deviation-sigma">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2-and-standard-deviation-s">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-variance-and-standard-deviation">Interpretation and Limitations of Variance and Standard Deviation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-covariance-text-cov-x-y-or-sigma-xy">Population Covariance (<span class="math notranslate nohighlight">\(\text{Cov}(X, Y)\)</span> or <span class="math notranslate nohighlight">\(\sigma_{XY}\)</span>)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-covariance-s-xy">Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-coefficient-pearson-s-r">Correlation Coefficient (Pearson’s r)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-correlation-coefficient-rho">Population Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-correlation-coefficient-r">Sample Correlation Coefficient (<span class="math notranslate nohighlight">\(r\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-covariance-and-correlation">Interpretation and Limitations of Covariance and Correlation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
@@ -445,6 +467,34 @@ document.write(`
 <blockquote>
 <div><p>In statistics, we often use uppercase letters (e.g., <span class="math notranslate nohighlight">\(X\)</span>) to denote a <strong>random variable</strong>, which represents the abstract concept or process being measured (like the height of a person). Lowercase letters with an index (e.g., <span class="math notranslate nohighlight">\(x_i\)</span>) represent the specific <strong>observations</strong> or actual data points collected for that variable (e.g., <span class="math notranslate nohighlight">\(x_1 = 175\text{cm}\)</span>, <span class="math notranslate nohighlight">\(x_2 = 182\text{cm}\)</span>, etc.). While this document will primarily use the lowercase notation for calculations, it is helpful to remember this distinction.</p>
 </div></blockquote>
+<section id="why-variance-and-covariance-matter-a-foundation-for-data-understanding">
+<h2>Why Variance and Covariance Matter: A Foundation for Data Understanding<a class="headerlink" href="#why-variance-and-covariance-matter-a-foundation-for-data-understanding" title="Link to this heading">#</a></h2>
+<p>Variance and covariance are more than just statistical formulas; they are fundamental building blocks in statistics, data science, and quantitative analysis, offering profound insights into the nature of data. Mastering these concepts is indispensable for anyone working with data.</p>
+<ul class="simple">
+<li><p><strong>Quantifying Uncertainty and Dispersion (Variance &amp; Standard Deviation):</strong>
+Variance, and its more interpretable cousin, standard deviation, quantify the spread, dispersion, or volatility of a single variable. This is critical in diverse fields for:</p>
+<ul>
+<li><p><strong>Finance:</strong> Measuring the risk or volatility of an investment portfolio.</p></li>
+<li><p><strong>Quality Control:</strong> Assessing the consistency and precision of a manufacturing process to ensure product standards.</p></li>
+<li><p><strong>Scientific Research:</strong> Understanding the inherent variability within experimental results and the reliability of measurements.</p></li>
+<li><p><strong>Sports Analytics:</strong> Evaluating the consistency of athlete performance.</p></li>
+<li><p><strong>Machine Learning:</strong> Informing feature scaling, understanding data distribution for model assumptions, and anomaly detection.</p></li>
+</ul>
+</li>
+<li><p><strong>Revealing Relationships and Dependencies (Covariance &amp; Correlation):</strong>
+Covariance and its standardized counterpart, the correlation coefficient, quantify how two variables move together. This understanding is vital for:</p>
+<ul>
+<li><p><strong>Economics:</strong> Analyzing the relationship between economic indicators like interest rates and inflation, or supply and demand.</p></li>
+<li><p><strong>Healthcare:</strong> Investigating associations between lifestyle factors (e.g., diet, exercise) and health outcomes (e.g., disease incidence).</p></li>
+<li><p><strong>Portfolio Management:</strong> Diversifying investments by selecting assets with low or negative covariance to reduce overall risk.</p></li>
+<li><p><strong>Predictive Modeling:</strong> Identifying influential features in regression analysis, understanding multicollinearity, and building more robust predictive models.</p></li>
+<li><p><strong>Social Sciences:</strong> Studying how different demographic factors relate to social behaviors or outcomes.</p></li>
+</ul>
+</li>
+</ul>
+<p>These measures form the bedrock for more advanced statistical concepts, including hypothesis testing, confidence intervals, linear regression, principal component analysis (PCA), factor analysis, and time series modeling. A deep understanding of variance and covariance empowers analysts to make informed decisions, draw valid conclusions, and build effective models from data.</p>
+</section>
+<hr class="docutils" />
 <section id="mean-average">
 <h2>Mean (Average)<a class="headerlink" href="#mean-average" title="Link to this heading">#</a></h2>
 <p>Before diving into variance and covariance, we need to understand the concept of the mean, also known as the average. The mean is a measure of central tendency, representing the typical value in a dataset.</p>
@@ -456,7 +506,24 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}\]</div>
 <p>where <span class="math notranslate nohighlight">\(n\)</span> is the number of observations in the sample.</p>
+<section id="example-calculating-the-mean">
+<h3>Example: Calculating the Mean<a class="headerlink" href="#example-calculating-the-mean" title="Link to this heading">#</a></h3>
+<p>Let’s consider a small dataset of daily high temperatures (in Celsius) for a particular week: <span class="math notranslate nohighlight">\(x = \{20, 22, 19, 23, 21, 20, 24\}\)</span>.</p>
+<p><strong>Calculation Steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Sum of observations:</strong> <span class="math notranslate nohighlight">\(\sum_{i=1}^{7} x_i = 20 + 22 + 19 + 23 + 21 + 20 + 24 = 149\)</span></p></li>
+<li><p><strong>Number of observations:</strong> <span class="math notranslate nohighlight">\(N = 7\)</span> (if we consider this the entire population of temperatures for <em>that specific week</em>) or <span class="math notranslate nohighlight">\(n = 7\)</span> (if this is a sample from a larger set of daily temperatures).</p></li>
+</ol>
+<p><strong>Population Mean (<span class="math notranslate nohighlight">\(\mu\)</span>):</strong>
+If this represents the entire population of interest (e.g., the high temperatures for <em>that exact week</em>), the population mean is:
+$<span class="math notranslate nohighlight">\(\mu = \frac{\sum_{i=1}^{N} x_i}{N} = \frac{149}{7} \approx 21.286 \text{ C}\)</span>$</p>
+<p><strong>Sample Mean (<span class="math notranslate nohighlight">\(\bar{x}\)</span>):</strong>
+If we treat these 7 days as a <em>sample</em> drawn from a larger population (e.g., temperatures throughout a whole month or season), the sample mean is calculated identically:
+$<span class="math notranslate nohighlight">\(\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{149}{7} \approx 21.286 \text{ C}\)</span>$
+In this specific numerical example, the result for population and sample mean is the same because the calculation formula is identical. The distinction lies in the statistical context of whether the data represents the <em>entire</em> group or a <em>subset</em>.</p>
 </section>
+</section>
+<hr class="docutils" />
 <section id="variance">
 <h2>Variance<a class="headerlink" href="#variance" title="Link to this heading">#</a></h2>
 <p>Variance is a measure of how spread out a set of data is. It quantifies the average of the squared differences from the mean. A high variance indicates that data points are spread far from the mean and from each other, while a low variance indicates that data points are clustered closely around the mean.</p>
@@ -465,6 +532,28 @@ document.write(`
 <li><p><strong>To avoid cancellation:</strong> If we just summed the deviations <span class="math notranslate nohighlight">\((x_i - \mu)\)</span>, positive and negative deviations would cancel out, potentially leading to a sum of zero even for widely dispersed data.</p></li>
 <li><p><strong>To penalize larger deviations more:</strong> Squaring exaggerates larger differences, giving more weight to data points that are further from the mean.</p></li>
 </ul>
+<p><strong>Units of Variance:</strong></p>
+<p>It’s crucial to note that variance is always expressed in <strong>squared units</strong> of the original data. For example, if your data points represent measurements in meters (m), the variance will be in square meters (<span class="math notranslate nohighlight">\(m^2\)</span>). This squaring often makes variance less intuitive for direct interpretation in the context of the original measurements, which naturally leads us to the standard deviation.</p>
+<section id="standard-deviation">
+<h3>Standard Deviation<a class="headerlink" href="#standard-deviation" title="Link to this heading">#</a></h3>
+<p>While variance provides a numerical value for data spread, its squared units can be difficult to relate directly to the original data. The <strong>standard deviation</strong> is defined as the <strong>square root of the variance</strong> and is expressed in the <strong>same units</strong> as the original data. This makes it a much more interpretable, intuitive, and widely used measure of data dispersion.</p>
+<ul class="simple">
+<li><p>A <strong>low standard deviation</strong> indicates that data points tend to be clustered closely around the mean, implying high consistency or low variability.</p></li>
+<li><p>A <strong>high standard deviation</strong> indicates that data points are spread out over a wider range of values, implying greater variability or dispersion.</p></li>
+</ul>
+<section id="population-standard-deviation-sigma">
+<h4>Population Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)<a class="headerlink" href="#population-standard-deviation-sigma" title="Link to this heading">#</a></h4>
+<p>The population standard deviation is the square root of the population variance. It is typically denoted by the lowercase Greek letter sigma (<span class="math notranslate nohighlight">\(\sigma\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{\sigma^2} = \sqrt{\frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}}\]</div>
+</section>
+<section id="sample-standard-deviation-s">
+<h4>Sample Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)<a class="headerlink" href="#sample-standard-deviation-s" title="Link to this heading">#</a></h4>
+<p>The sample standard deviation is the square root of the sample variance. It is typically denoted by the lowercase Latin letter <span class="math notranslate nohighlight">\(s\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[s = \sqrt{s^2} = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}}\]</div>
+</section>
+</section>
 <section id="population-variance-sigma-2">
 <h3>Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)<a class="headerlink" href="#population-variance-sigma-2" title="Link to this heading">#</a></h3>
 <p>The population variance is the true variance of an entire population. The population variance is the average of the squared differences between each data point and the population mean.</p>
@@ -479,7 +568,7 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\]</div>
 <p><strong>Alternative Form (Computational Formula)</strong>:</p>
-<p>This form can sometimes simplify calculations.</p>
+<p>So, here is our main formula:</p>
 <div class="math notranslate nohighlight">
 \[\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}\]</div>
 <p>Expand the squared term:</p>
@@ -538,7 +627,91 @@ document.write(`
 \[s^2 = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - n\bar{x}^2 \right)\]</div>
 <p>This is another common form for calculation.</p>
 </section>
+<section id="example-calculating-variance-and-standard-deviation">
+<h3>Example: Calculating Variance and Standard Deviation<a class="headerlink" href="#example-calculating-variance-and-standard-deviation" title="Link to this heading">#</a></h3>
+<p>Let’s use the same dataset of daily high temperatures (in Celsius) from our mean example: <span class="math notranslate nohighlight">\(x = \{20, 22, 19, 23, 21, 20, 24\}\)</span>.
+We calculated the mean <span class="math notranslate nohighlight">\(\mu \approx \bar{x} \approx 21.286 \, ^{\circ}\text{C}\)</span>.</p>
+<section id="step-by-step-calculation-using-definitional-formula">
+<h4>Step-by-step Calculation using Definitional Formula:<a class="headerlink" href="#step-by-step-calculation-using-definitional-formula" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p><span class="math notranslate nohighlight">\(x_i\)</span></p></th>
+<th class="head text-left"><p><span class="math notranslate nohighlight">\((x_i - \bar{x})\)</span></p></th>
+<th class="head text-left"><p><span class="math notranslate nohighlight">\((x_i - \bar{x})^2\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>20</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(20 - 21.286 = -1.286\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((-1.286)^2 \approx 1.654\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>22</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(22 - 21.286 = 0.714\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((0.714)^2 \approx 0.510\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>19</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(19 - 21.286 = -2.286\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((-2.286)^2 \approx 5.226\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>23</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(23 - 21.286 = 1.714\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((1.714)^2 \approx 2.938\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>21</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(21 - 21.286 = -0.286\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((-0.286)^2 \approx 0.082\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>20</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(20 - 21.286 = -1.286\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((-1.286)^2 \approx 1.654\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>24</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(24 - 21.286 = 2.714\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((2.714)^2 \approx 7.366\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p></p></td>
+<td class="text-left"><p><strong>Sum:</strong> <span class="math notranslate nohighlight">\(\approx 0\)</span></p></td>
+<td class="text-left"><p><strong>Sum of Squared Deviations:</strong> <span class="math notranslate nohighlight">\(\sum (x_i - \bar{x})^2 \approx 19.43\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><em>Note: Slight difference in sum of squared deviations compared to previous calculation due to carrying more decimal places for the mean.</em></p>
 </section>
+<section id="population-variance-sigma-2-and-standard-deviation-sigma">
+<h4>Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)<a class="headerlink" href="#population-variance-sigma-2-and-standard-deviation-sigma" title="Link to this heading">#</a></h4>
+<p>If this dataset represents the entire population (<span class="math notranslate nohighlight">\(N=7\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N} = \frac{19.43}{7} \approx 2.776 \, ^{\circ}\text{C}^2\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma = \sqrt{2.776} \approx 1.666 \, ^{\circ}\text{C}\]</div>
+</section>
+<section id="sample-variance-s-2-and-standard-deviation-s">
+<h4>Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)<a class="headerlink" href="#sample-variance-s-2-and-standard-deviation-s" title="Link to this heading">#</a></h4>
+<p>If this dataset is a sample from a larger population (<span class="math notranslate nohighlight">\(n=7\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1} = \frac{19.43}{7-1} = \frac{19.43}{6} \approx 3.283 \, ^{\circ}\text{C}^2\]</div>
+<div class="math notranslate nohighlight">
+\[s = \sqrt{3.283} \approx 1.812 \, ^{\circ}\text{C}\]</div>
+<p>Notice that the sample variance and standard deviation are slightly larger than their population counterparts due to Bessel’s correction, providing an unbiased estimate.</p>
+</section>
+</section>
+<section id="interpretation-and-limitations-of-variance-and-standard-deviation">
+<h3>Interpretation and Limitations of Variance and Standard Deviation<a class="headerlink" href="#interpretation-and-limitations-of-variance-and-standard-deviation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Interpretation of Magnitude:</strong> A larger variance or standard deviation signifies greater variability or dispersion in the data. For instance, a high standard deviation in daily stock returns implies greater volatility and risk, whereas a low standard deviation in manufactured product weights suggests high precision and consistent quality.</p></li>
+<li><p><strong>Units and Intuition:</strong> Standard deviation is in the original units, making it directly comparable to the mean. This allows for more intuitive statements like “most data points fall within <span class="math notranslate nohighlight">\(\pm 1\)</span> standard deviation of the mean” (especially true for normally distributed data), which is crucial for constructing confidence intervals and understanding data distribution.</p></li>
+<li><p><strong>Sensitivity to Outliers:</strong> Both variance and standard deviation involve squaring deviations. This mathematical property means they are highly sensitive to outliers. A single extreme value can disproportionately inflate these measures, potentially misrepresenting the spread of the majority of the data.</p></li>
+<li><p><strong>Comparison:</strong> Standard deviation is generally preferred over variance for describing the spread of data because its units align with the data itself, making it more intuitive and practical for direct interpretation and communication. Variance, however, is mathematically more convenient for certain theoretical derivations and statistical tests (e.g., ANOVA).</p></li>
+<li><p><strong>Relationship to Moments:</strong> For advanced readers, variance is formally the <strong>second central moment</strong> of a probability distribution, providing a fundamental measure of the distribution’s spread around its mean.</p></li>
+</ul>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Comparison_standard_deviations.svg" alt="Comparison standard deviations.svg" height="453" width="612">
+<br>
+Fig. Example of samples from two populations with the same mean but different variances. The red population has mean 100 and variance 100 (SD=10) while the blue population has mean 100 and variance 2500 (SD=50) where SD stands for Standard Deviation.
+By <a href="https://commons.wikimedia.org/w/index.php?title=User:JRBrown&amp;action=edit&amp;redlink=1" class="new" title="User:JRBrown (page does not exist)">JRBrown</a> - <span class="int-own-work" lang="en">Own work</span>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=10777712">Link</a>. <a href="https://en.wikipedia.org/wiki/Variance">Wikipedia</a></p>
+</section>
+</section>
+<hr class="docutils" />
 <section id="covariance">
 <h2>Covariance<a class="headerlink" href="#covariance" title="Link to this heading">#</a></h2>
 <p>While variance measures the spread of a single variable, <strong>covariance</strong> measures the <strong>joint variability</strong> of two random variables. In other words, it tells us how two variables change together.</p>
@@ -583,6 +756,10 @@ document.write(`
 \[\text{Cov}(X, Y) = \frac{1}{N} \left( \sum_{i=1}^{N} x_i y_i - N\mu_X \mu_Y \right)\]</div>
 <div class="math notranslate nohighlight">
 \[\text{Cov}(X, Y) = \frac{\sum_{i=1}^{N} x_i y_i}{N} - \mu_X \mu_Y\]</div>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Covariance_trends.svg" alt="Covariance trends.svg" height="800" width="266.7">
+<br>
+Fig. The sign of the covariance of two random variables X and Y.
+By <a href="https://commons.wikimedia.org/wiki/User:Cmglee" title="User:Cmglee">Cmglee</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" title="Creative Commons Attribution-Share Alike 4.0">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=90452334">Link</a>. <a href="https://en.wikipedia.org/wiki/Covariance">Wikipedia</a></p>
 </section>
 <section id="sample-covariance-s-xy">
 <h3>Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)<a class="headerlink" href="#sample-covariance-s-xy" title="Link to this heading">#</a></h3>
@@ -620,7 +797,48 @@ document.write(`
 <div class="math notranslate nohighlight">
 \[s_{XY} = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} \right)\]</div>
 </section>
+<section id="correlation-coefficient-pearson-s-r">
+<h3>Correlation Coefficient (Pearson’s r)<a class="headerlink" href="#correlation-coefficient-pearson-s-r" title="Link to this heading">#</a></h3>
+<p>The units of covariance are the product of the units of the two variables involved. For example, if variable <span class="math notranslate nohighlight">\(X\)</span> is measured in kilograms (kg) and variable <span class="math notranslate nohighlight">\(Y\)</span> in centimeters (cm), then <span class="math notranslate nohighlight">\(\text{Cov}(X,Y)\)</span> will be in <span class="math notranslate nohighlight">\(\text{kg} \cdot \text{cm}\)</span>. This property makes the <em>magnitude</em> of covariance difficult to interpret on its own, as it depends entirely on the scales and units of <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>. It prevents direct comparison of the strength of relationships across different datasets or variable pairs. This limitation leads us to a more standardized measure: the correlation coefficient.</p>
+<p>While covariance effectively indicates the <em>direction</em> (positive, negative, or none) of a linear relationship between two variables, its unstandardized magnitude makes it difficult to assess the <em>strength</em> of that relationship. The <strong>Pearson Correlation Coefficient (or Pearson’s r)</strong> is a standardized version of covariance that measures both the <strong>strength</strong> and <strong>direction</strong> of a <em>linear</em> relationship between two variables.</p>
+<p>The Pearson correlation coefficient always ranges between -1 and +1, making it universally interpretable:</p>
+<ul class="simple">
+<li><p><strong>+1:</strong> Indicates a perfect positive linear relationship. As one variable increases, the other increases proportionally.</p></li>
+<li><p><strong>-1:</strong> Indicates a perfect negative linear relationship. As one variable increases, the other decreases proportionally.</p></li>
+<li><p><strong>0:</strong> Indicates no linear relationship between the two variables. This is a crucial point: it does not necessarily mean there is <em>no</em> relationship at all, just no <em>linear</em> one.</p></li>
+</ul>
+<p>Pearson’s correlation coefficient is the covariance of the two variables divided by the product of their standard deviations.</p>
+<section id="population-correlation-coefficient-rho">
+<h4>Population Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho\)</span>)<a class="headerlink" href="#population-correlation-coefficient-rho" title="Link to this heading">#</a></h4>
+<p>The population correlation coefficient, denoted by the lowercase Greek letter rho (<span class="math notranslate nohighlight">\(\rho\)</span>), is calculated by dividing the population covariance by the product of the population standard deviations of the two variables. This normalization process removes the units and standardizes the measure.</p>
+<div class="math notranslate nohighlight">
+\[\rho_{XY} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y} = \frac{\sigma_{XY}}{\sigma_X \sigma_Y}\]</div>
 </section>
+<section id="sample-correlation-coefficient-r">
+<h4>Sample Correlation Coefficient (<span class="math notranslate nohighlight">\(r\)</span>)<a class="headerlink" href="#sample-correlation-coefficient-r" title="Link to this heading">#</a></h4>
+<p>The sample correlation coefficient, denoted by the lowercase Latin letter <span class="math notranslate nohighlight">\(r\)</span>, is calculated similarly, using sample covariance and sample standard deviations.</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{s_{XY}}{s_X s_Y}\]</div>
+<p>We will review Pearson’s correlation coefficient and other correlation coefficients in a separate lecture.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg" alt="Correlation examples2.svg" height="300" width="656.7">
+<br>
+Fig. Several sets of (x, y) points, with the correlation coefficient of x and y for each set. The correlation reflects the strength and direction of a linear relationship (top row), but not the slope of that relationship (middle row), nor many aspects of nonlinear relationships (bottom row). N.B.: the figure in the center has a slope of 0 but in that case the correlation coefficient is undefined because the variance of Y is zero.
+By <a href="https://commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&amp;action=edit&amp;redlink=1" class="new" title="User:DenisBoigelot (page does not exist)">DenisBoigelot</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication">CC0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=15165296">Link</a>. <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Wikipedia</a></p>
+</section>
+</section>
+<section id="interpretation-and-limitations-of-covariance-and-correlation">
+<h3>Interpretation and Limitations of Covariance and Correlation<a class="headerlink" href="#interpretation-and-limitations-of-covariance-and-correlation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Direction vs. Strength:</strong> Covariance indicates the <em>direction</em> of a linear relationship (positive, negative, or none). Correlation, being standardized, indicates both the <em>direction</em> and the <em>strength</em> of a linear relationship (from -1 to +1). Correlation is generally preferred for assessing strength because its value is bounded and unitless.</p></li>
+<li><p><strong>Units and Comparability:</strong> Covariance has units that are the product of the units of the two variables, making its magnitude difficult to interpret or compare across different datasets. Correlation is unitless, making it universally comparable and interpretable.</p></li>
+<li><p><strong>Linear Relationships Only:</strong> Both covariance and Pearson’s correlation coefficient only measure the <em>linear</em> association between variables. A correlation coefficient close to zero does not imply the absence of <em>any</em> relationship, only the absence of a <em>linear</em> one. Strong non-linear relationships (e.g., parabolic, exponential, cyclical) will yield low Pearson correlation coefficients. For such cases, other measures like <strong>Spearman’s rank correlation</strong> (which measures monotonic relationships) or visualizations are necessary.</p></li>
+<li><p><strong>Sensitivity to Outliers:</strong> Like variance and standard deviation, both covariance and correlation are sensitive to outliers. A few extreme data points can significantly alter their values, potentially misrepresenting the overall relationship between variables.</p></li>
+<li><p><strong>Correlation Does Not Imply Causation (A Critical Distinction):</strong> This is arguably the most crucial cautionary point in statistics. A strong correlation between two variables does not automatically mean that one causes the other. The observed relationship might be due to a confounding variable (a third, unobserved factor influencing both), pure coincidence, or even reverse causation. For example, ice cream sales and drowning incidents often increase at the same time, but ice cream doesn’t cause drowning; a third variable (temperature) influences both. Always be wary of inferring causation from correlation alone; controlled experiments or advanced causal inference techniques are required to establish causation.</p></li>
+<li><p><strong>Relationship to Moments:</strong> For advanced readers, covariance is the <strong>second mixed central moment</strong> between two random variables, extending the concept of variance to multivariate settings.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
 <section id="bessel-s-correction">
 <h2>Bessel’s Correction<a class="headerlink" href="#bessel-s-correction" title="Link to this heading">#</a></h2>
 <p>The use of <span class="math notranslate nohighlight">\(n-1\)</span> in the denominator for sample variance (and sample covariance) is not just a convention; it’s a crucial mathematical adjustment known as <strong>Bessel’s Correction</strong>. Its purpose is to ensure that the sample variance is an <strong>unbiased estimator</strong> of the population variance.</p>
@@ -802,6 +1020,7 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 <div class="math notranslate nohighlight">
 \[Var(\bar{X}) = \frac{\sigma^2}{n}\]</div>
 <p>This result is incredibly important because it quantifies how the precision of our estimate of the mean improves as we increase our sample size. A larger sample size (<span class="math notranslate nohighlight">\(n\)</span>) leads to a smaller variance for the sample mean, meaning <span class="math notranslate nohighlight">\(\bar{X}\)</span> is more likely to be closer to the true population mean <span class="math notranslate nohighlight">\(\mu\)</span>. This is the mathematical basis for why larger samples give more reliable estimates.</p>
+<p><strong>Proof for Bessel’s Correction:</strong></p>
 <p>Now, let’s consider the “biased” sample variance, <span class="math notranslate nohighlight">\(s^2_{\text{biased}} = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2\)</span>. We want to find its expected value:</p>
 <div class="math notranslate nohighlight">
 \[E[s^2_{\text{biased}}] = E\left[ \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X})^2 \right] = \frac{1}{n} E\left[ \sum_{i=1}^n (X_i - \bar{X})^2 \right]\]</div>
@@ -850,14 +1069,24 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
 <p>This mathematical derivation shows that by dividing by <span class="math notranslate nohighlight">\(n-1\)</span>, the sample variance (<span class="math notranslate nohighlight">\(s^2\)</span>) indeed becomes an unbiased estimator of the population variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>). If we had divided by <span class="math notranslate nohighlight">\(n\)</span>, the expected value would have been <span class="math notranslate nohighlight">\(\frac{n-1}{n}\sigma^2\)</span>, confirming the downward bias.</p>
 </section>
 </section>
+<hr class="docutils" />
 <section id="additional-materials">
 <h2>Additional Materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Variance">https://en.wikipedia.org/wiki/Variance</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Covariance">https://en.wikipedia.org/wiki/Covariance</a></p></li>
 <li><p><a class="reference external" href="https://www.ncl.ac.uk/webtemplate/ask-assets/external/maths-resources/statistics/descriptive-statistics/variance-and-standard-deviation.html">https://www.ncl.ac.uk/webtemplate/ask-assets/external/maths-resources/statistics/descriptive-statistics/variance-and-standard-deviation.html</a></p></li>
 <li><p><a class="reference external" href="https://mathsathome.com/variance/">https://mathsathome.com/variance/</a></p></li>
-<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Covariance">https://en.wikipedia.org/wiki/Covariance</a></p></li>
 <li><p><a class="reference external" href="https://online.stat.psu.edu/stat505/book/export/html/643">https://online.stat.psu.edu/stat505/book/export/html/643</a></p></li>
 <li><p><a class="reference external" href="https://online.stat.psu.edu/stat505/book/export/html/653">https://online.stat.psu.edu/stat505/book/export/html/653</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Covariance_matrix">https://en.wikipedia.org/wiki/Covariance_matrix</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mean">https://en.wikipedia.org/wiki/Mean</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Standard_deviation">https://en.wikipedia.org/wiki/Standard_deviation</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Sample_mean_and_covariance">https://en.wikipedia.org/wiki/Sample_mean_and_covariance</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Statistical_population">https://en.wikipedia.org/wiki/Statistical_population</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bessel%27s_correction">https://en.wikipedia.org/wiki/Bessel’s_correction</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)">https://en.wikipedia.org/wiki/Degrees_of_freedom_(statistics)</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">https://en.wikipedia.org/wiki/Pearson_correlation_coefficient</a></p></li>
 </ul>
 </section>
 </section>
@@ -926,15 +1155,37 @@ $<span class="math notranslate nohighlight">\(\sum_{i=1}^{n} Var(X_i) = \sum_{i=
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-variance-and-covariance-matter-a-foundation-for-data-understanding">Why Variance and Covariance Matter: A Foundation for Data Understanding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-average">Mean (Average)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-the-mean">Example: Calculating the Mean</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-standard-deviation-sigma">Population Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-standard-deviation-s">Sample Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-calculating-variance-and-standard-deviation">Example: Calculating Variance and Standard Deviation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-by-step-calculation-using-definitional-formula">Step-by-step Calculation using Definitional Formula:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-variance-sigma-2-and-standard-deviation-sigma">Population Variance (<span class="math notranslate nohighlight">\(\sigma^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(\sigma\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-variance-s-2-and-standard-deviation-s">Sample Variance (<span class="math notranslate nohighlight">\(s^2\)</span>) and Standard Deviation (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-variance-and-standard-deviation">Interpretation and Limitations of Variance and Standard Deviation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance">Covariance</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#population-covariance-text-cov-x-y-or-sigma-xy">Population Covariance (<span class="math notranslate nohighlight">\(\text{Cov}(X, Y)\)</span> or <span class="math notranslate nohighlight">\(\sigma_{XY}\)</span>)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-covariance-s-xy">Sample Covariance (<span class="math notranslate nohighlight">\(s_{XY}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-coefficient-pearson-s-r">Correlation Coefficient (Pearson’s r)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-correlation-coefficient-rho">Population Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-correlation-coefficient-r">Sample Correlation Coefficient (<span class="math notranslate nohighlight">\(r\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation-and-limitations-of-covariance-and-correlation">Interpretation and Limitations of Covariance and Correlation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bessel-s-correction">Bessel’s Correction</a><ul class="nav section-nav flex-column">
