@@ -236,6 +236,34 @@ Notice that the sample variance and standard deviation are slightly larger than 
 Fig. Example of samples from two populations with the same mean but different variances. The red population has mean 100 and variance 100 (SD=10) while the blue population has mean 100 and variance 2500 (SD=50) where SD stands for Standard Deviation.
 By <a href="https://commons.wikimedia.org/w/index.php?title=User:JRBrown&amp;action=edit&amp;redlink=1" class="new" title="User:JRBrown (page does not exist)">JRBrown</a> - <span class="int-own-work" lang="en">Own work</span>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=10777712">Link</a>. <a href="https://en.wikipedia.org/wiki/Variance">Wikipedia</a></p>
 
+### Properties of Variance
+
+Understanding the mathematical properties of variance can simplify calculations and provide deeper insight into its behavior.
+
+Let $X$ be a random variable and $a$ and $b$ be constants.
+
+1.  **Variance of a Constant**: The variance of a constant is zero. A constant does not vary, so its spread is zero.
+
+    $$Var(a) = 0$$
+
+2.  **Non-Negativity**: Variance is always non-negative. Since it is an average of squared values, it cannot be negative.
+
+    $$Var(X) \ge 0$$
+
+3.  **Effect of a Constant Multiplier**: If you scale a random variable by a constant $a$, the variance is scaled by $a^2$.
+
+    $$Var(aX) = a^2 Var(X)$$
+
+    *This is because the deviation from the mean $(ax_i - a\mu)$ becomes $a(x_i - \mu)$, and squaring this term gives $a^2(x_i - \mu)^2$.*
+
+4.  **Effect of an Added Constant**: Adding a constant to every data point shifts the mean by that constant, but it does not change the spread of the data. The variance remains unchanged.
+
+    $$Var(X + b) = Var(X)$$
+
+5.  **Variance of a Sum of *Independent* Random Variables**: If two random variables $X$ and $Y$ are independent, the variance of their sum is the sum of their variances.
+
+    $$Var(X + Y) = Var(X) + Var(Y)$$
+
 ---
 
 ## Covariance
@@ -380,6 +408,34 @@ By <a href="https://commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&a
 *   **Sensitivity to Outliers:** Like variance and standard deviation, both covariance and correlation are sensitive to outliers. A few extreme data points can significantly alter their values, potentially misrepresenting the overall relationship between variables.
 *   **Correlation Does Not Imply Causation (A Critical Distinction):** This is arguably the most crucial cautionary point in statistics. A strong correlation between two variables does not automatically mean that one causes the other. The observed relationship might be due to a confounding variable (a third, unobserved factor influencing both), pure coincidence, or even reverse causation. For example, ice cream sales and drowning incidents often increase at the same time, but ice cream doesn't cause drowning; a third variable (temperature) influences both. Always be wary of inferring causation from correlation alone; controlled experiments or advanced causal inference techniques are required to establish causation.
 *   **Relationship to Moments:** For advanced readers, covariance is the **second mixed central moment** between two random variables, extending the concept of variance to multivariate settings.
+
+### Properties of Covariance
+
+Covariance also has several important properties. Let $X$, $Y$, and $Z$ be random variables and $a, b, c, d$ be constants.
+
+1.  **Symmetry**: The covariance of $X$ and $Y$ is the same as the covariance of $Y$ and $X$.
+
+    $$Cov(X, Y) = Cov(Y, X)$$
+
+2.  **Covariance with a Constant**: The covariance of a random variable with a constant is zero. A constant has no variability to share.
+
+    $$Cov(X, a) = 0$$
+
+3.  **Covariance with Itself**: The covariance of a random variable with itself is its variance.
+
+    $$Cov(X, X) = Var(X)$$
+
+4.  **Effect of Scaling and Shifting**:
+
+    $$Cov(aX + b, cY + d) = ac \cdot Cov(X, Y)$$
+
+5.  **Distributive Property**:
+
+    $$Cov(X + Y, Z) = Cov(X, Z) + Cov(Y, Z)$$
+
+6.  **Variance of a Sum of *Dependent* Random Variables**: The property for the variance of a sum can be generalized for dependent variables using covariance.
+
+    $$Var(X + Y) = Var(X) + Var(Y) + 2Cov(X, Y)$$
 
 ---
 
