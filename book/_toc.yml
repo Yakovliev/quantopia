@@ -21,6 +21,8 @@ parts:
       - file: math/ordinary-least-squares-code
       - file: math/variance-covariance
       - file: math/variance-covariance-code
+      - file: math/correlation-coefficients
+      - file: math/correlation-coefficients-code
       - file: math/weighted-least-squares
       - file: math/weighted-least-squares-code-1
       - file: math/weighted-least-squares-code-2
