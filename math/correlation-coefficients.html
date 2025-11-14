@@ -1,0 +1,1229 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Correlation Coefficients &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/correlation-coefficients';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Correlation Coefficients - Code Examples" href="correlation-coefficients-code.html" />
+    <link rel="prev" title="Variance and Covariance - Code Examples" href="variance-covariance-code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance-code.html">Variance and Covariance - Code Examples</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Correlation Coefficients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients-code.html">Correlation Coefficients - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA ANALYSIS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-analysis/rate-of-return-metrics.html">Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/correlation-coefficients.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/correlation-coefficients.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Correlation Coefficients</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pearson-correlation-coefficient">Pearson Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-purpose">Definition and Purpose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas-for-pearson-s-correlation-coefficient">Formulas for Pearson’s Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-pearson-correlation-coefficient-rho-xy">Population Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho_{XY}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-pearson-correlation-coefficient-r-xy">Sample Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{XY}\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-standardization-why-pearson-s-r-is-bounded-between-1-and-1">Derivation of Standardization: Why Pearson’s <span class="math notranslate nohighlight">\(r\)</span> is bounded between -1 and +1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-raw-score-computational-formula-for-sample-pearson-correlation-coefficient">Derivation of the Raw-Score Computational Formula for Sample Pearson Correlation Coefficient</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-and-limitations">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spearman-s-rank-correlation-coefficient">Spearman’s Rank Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept-of-ranks">Concept of Ranks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula">Formula</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-simplified-formula-for-no-ties">Derivation of the Simplified Formula (for no ties)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-rank-correlation-coefficient-kendall-s-tau">Kendall Rank Correlation Coefficient (Kendall’s Tau)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept-of-concordant-and-discordant-pairs">Concept of Concordant and Discordant Pairs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas-for-kendall-s-tau">Formulas for Kendall’s Tau</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-s-tau-a-no-ties">Kendall’s Tau-a (no ties)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-kendall-s-tau-a">Derivation of Kendall’s Tau-a</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-s-tau-b-with-ties">Kendall’s Tau-b (with ties)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-methods-to-investigate-correlation">Other Methods to Investigate Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#point-biserial-correlation-coefficient-r-pb">1. Point-Biserial Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{pb}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phi-coefficient-phi">2. Phi Coefficient (<span class="math notranslate nohighlight">\(\phi\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cramer-s-v">3. Cramer’s V</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-correlation">4. Distance Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mutual-information">5. Mutual Information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goodman-and-kruskal-s-gamma-gamma">6. Goodman and Kruskal’s Gamma (<span class="math notranslate nohighlight">\(\gamma\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetrachoric-correlation">7. Tetrachoric Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polychoric-correlation">8. Polychoric Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eta-squared-eta-2-and-partial-eta-squared-eta-p-2">9. Eta-squared (<span class="math notranslate nohighlight">\(\eta^2\)</span>) and Partial Eta-squared (<span class="math notranslate nohighlight">\(\eta_p^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximal-information-coefficient-mic">Maximal Information Coefficient (MIC)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-does-not-imply-causation">Correlation does not imply causation!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="correlation-coefficients">
+<h1>Correlation Coefficients<a class="headerlink" href="#correlation-coefficients" title="Link to this heading">#</a></h1>
+<p>Correlation coefficients are statistical measures that quantify the extent to which two variables are related. They transform covariance into a standardized, interpretable value, typically ranging from -1 to +1. This standardization allows us to compare the strength of relationships across different datasets and variable types.</p>
+<section id="pearson-correlation-coefficient">
+<h2>Pearson Correlation Coefficient<a class="headerlink" href="#pearson-correlation-coefficient" title="Link to this heading">#</a></h2>
+<p>The Pearson Product-Moment Correlation Coefficient, often denoted as <span class="math notranslate nohighlight">\(r\)</span> for a sample and <span class="math notranslate nohighlight">\(\rho\)</span> (rho) for a population, is the most widely used measure of correlation. It quantifies the <strong>strength</strong> and <strong>direction</strong> of a <strong>linear relationship</strong> between two continuous variables.</p>
+<section id="definition-and-purpose">
+<h3>Definition and Purpose<a class="headerlink" href="#definition-and-purpose" title="Link to this heading">#</a></h3>
+<p>Pearson’s correlation coefficient is a standardized version of the covariance. By dividing the covariance by the product of the standard deviations of the two variables, we normalize the measure, removing the influence of their scales and units. This results in a dimensionless value that always falls between -1 and +1.</p>
+<p>Let’s recall the definitions of covariance and standard deviation that we covered <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">previously</span></a>.</p>
+<ul class="simple">
+<li><p><strong>Population Covariance:</strong> <span class="math notranslate nohighlight">\(\text{Cov}(X, Y) = \sigma_{XY} = \frac{\sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)}{N}\)</span></p></li>
+<li><p><strong>Population Standard Deviation for X:</strong> <span class="math notranslate nohighlight">\(\sigma_X = \sqrt{\frac{\sum_{i=1}^{N} (x_i - \mu_X)^2}{N}}\)</span></p></li>
+<li><p><strong>Population Standard Deviation for Y:</strong> <span class="math notranslate nohighlight">\(\sigma_Y = \sqrt{\frac{\sum_{i=1}^{N} (y_i - \mu_Y)^2}{N}}\)</span></p></li>
+</ul>
+<p>Similarly, for a sample:</p>
+<ul class="simple">
+<li><p><strong>Sample Covariance:</strong> <span class="math notranslate nohighlight">\(s_{XY} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{n-1}\)</span></p></li>
+<li><p><strong>Sample Standard Deviation for X:</strong> <span class="math notranslate nohighlight">\(s_X = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}}\)</span></p></li>
+<li><p><strong>Sample Standard Deviation for Y:</strong> <span class="math notranslate nohighlight">\(s_Y = \sqrt{\frac{\sum_{i=1}^{n} (y_i - \bar{y})^2}{n-1}}\)</span></p></li>
+</ul>
+</section>
+<section id="formulas-for-pearson-s-correlation-coefficient">
+<h3>Formulas for Pearson’s Correlation Coefficient<a class="headerlink" href="#formulas-for-pearson-s-correlation-coefficient" title="Link to this heading">#</a></h3>
+<section id="population-pearson-correlation-coefficient-rho-xy">
+<h4>Population Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho_{XY}\)</span>)<a class="headerlink" href="#population-pearson-correlation-coefficient-rho-xy" title="Link to this heading">#</a></h4>
+<p>The population Pearson correlation coefficient is given by:</p>
+<div class="math notranslate nohighlight">
+\[\rho_{XY} = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y}\]</div>
+<p>Substituting the formulas for population covariance and standard deviations, we get:</p>
+<div class="math notranslate nohighlight">
+\[\rho_{XY} = \frac{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)}{\sqrt{\frac{1}{N} \sum_{i=1}^{N} (x_i - \mu_X)^2} \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \mu_Y)^2}}\]</div>
+<p>Simplifying the <span class="math notranslate nohighlight">\(N\)</span> terms in the denominator and numerator:</p>
+<div class="math notranslate nohighlight">
+\[\rho_{XY} = \frac{\sum_{i=1}^{N} (x_i - \mu_X)(y_i - \mu_Y)}{\sqrt{\sum_{i=1}^{N} (x_i - \mu_X)^2} \sqrt{\sum_{i=1}^{N} (y_i - \mu_Y)^2}}\]</div>
+</section>
+<section id="sample-pearson-correlation-coefficient-r-xy">
+<h4>Sample Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{XY}\)</span>)<a class="headerlink" href="#sample-pearson-correlation-coefficient-r-xy" title="Link to this heading">#</a></h4>
+<p>The sample Pearson correlation coefficient is given by:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{s_{XY}}{s_X s_Y}\]</div>
+<p>Substituting the formulas for sample covariance and standard deviations, and remembering Bessel’s correction <span class="math notranslate nohighlight">\((n-1)\)</span> for sample estimates:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (y_i - \bar{y})^2}}\]</div>
+<p>Simplifying the <span class="math notranslate nohighlight">\((n-1)\)</span> terms in the numerator and denominator:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}\]</div>
+<p>It is important to note that while Bessel’s correction (dividing by <span class="math notranslate nohighlight">\(n-1\)</span>) is crucial for making <span class="math notranslate nohighlight">\(s_X^2\)</span>, <span class="math notranslate nohighlight">\(s_Y^2\)</span>, and <span class="math notranslate nohighlight">\(s_{XY}\)</span> <em>unbiased estimators</em> of their population counterparts, the <span class="math notranslate nohighlight">\(n-1\)</span> terms cancel out in the calculation of <span class="math notranslate nohighlight">\(r_{XY}\)</span>. This means that the sample Pearson correlation coefficient <span class="math notranslate nohighlight">\(r_{XY}\)</span> itself is generally <strong>not an unbiased estimator</strong> of the population correlation coefficient <span class="math notranslate nohighlight">\(\rho_{XY}\)</span>, especially for small sample sizes. However, it remains a consistent estimator, meaning it converges to the true population value as the sample size increases.</p>
+</section>
+</section>
+<section id="derivation-of-standardization-why-pearson-s-r-is-bounded-between-1-and-1">
+<h3>Derivation of Standardization: Why Pearson’s <span class="math notranslate nohighlight">\(r\)</span> is bounded between -1 and +1<a class="headerlink" href="#derivation-of-standardization-why-pearson-s-r-is-bounded-between-1-and-1" title="Link to this heading">#</a></h3>
+<p>The property that Pearson’s correlation coefficient always lies between -1 and +1 is not arbitrary; it stems directly from a fundamental mathematical inequality known as the <strong>Cauchy-Schwarz Inequality</strong>. This inequality provides the rigorous mathematical basis for the standardization.</p>
+<p>The Cauchy-Schwarz Inequality states that for any real numbers <span class="math notranslate nohighlight">\(a_1, \ldots, a_n\)</span> and <span class="math notranslate nohighlight">\(b_1, \ldots, b_n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \left( \sum_{i=1}^n a_i b_i \right)^2 \le \left( \sum_{i=1}^n a_i^2 \right) \left( \sum_{i=1}^n b_i^2 \right) \]</div>
+<p>Let’s apply this to the components of our Pearson correlation coefficient.
+For the sample Pearson correlation coefficient, let:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(a_i = (x_i - \bar{x})\)</span> (the deviation of each <span class="math notranslate nohighlight">\(x\)</span> value from its mean)</p></li>
+<li><p><span class="math notranslate nohighlight">\(b_i = (y_i - \bar{y})\)</span> (the deviation of each <span class="math notranslate nohighlight">\(y\)</span> value from its mean)</p></li>
+</ul>
+<p>Substituting these into the Cauchy-Schwarz inequality, we get:</p>
+<div class="math notranslate nohighlight">
+\[ \left( \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}) \right)^2 \le \left( \sum_{i=1}^n (x_i - \bar{x})^2 \right) \left( \sum_{i=1}^n (y_i - \bar{y})^2 \right) \]</div>
+<p>Now, take the square root of both sides. Remember that <span class="math notranslate nohighlight">\(\sqrt{A^2} = |A|\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \left| \sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y}) \right| \le \sqrt{\sum_{i=1}^n (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^n (y_i - \bar{y})^2} \]</div>
+<p>Finally, divide both sides by the term on the right (which is always non-negative, assuming not all <span class="math notranslate nohighlight">\(x_i\)</span> or all <span class="math notranslate nohighlight">\(y_i\)</span> are identical, which would lead to zero standard deviation):</p>
+<div class="math notranslate nohighlight">
+\[ \left| \frac{\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^n (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^n (y_i - \bar{y})^2}} \right| \le 1 \]</div>
+<p>The expression inside the absolute value is precisely the formula for the sample Pearson correlation coefficient, <span class="math notranslate nohighlight">\(r_{XY}\)</span>. Therefore, we have:</p>
+<div class="math notranslate nohighlight">
+\[ |r_{XY}| \le 1 \]</div>
+<p>This inequality mathematically demonstrates that the absolute value of Pearson’s <span class="math notranslate nohighlight">\(r_{XY}\)</span> (and similarly for <span class="math notranslate nohighlight">\(\rho_{XY}\)</span>) must be less than or equal to 1. This means <span class="math notranslate nohighlight">\(r_{XY}\)</span> must lie in the range <span class="math notranslate nohighlight">\([-1, +1]\)</span>.</p>
+<p>The equality <span class="math notranslate nohighlight">\(|r_{XY}| = 1\)</span> holds if and only if there is a perfect linear relationship between the deviations, i.e., <span class="math notranslate nohighlight">\((y_i - \bar{y}) = k(x_i - \bar{x})\)</span> for some non-zero constant <span class="math notranslate nohighlight">\(k\)</span>. If <span class="math notranslate nohighlight">\(k &gt; 0\)</span>, <span class="math notranslate nohighlight">\(r_{XY} = +1\)</span>; if <span class="math notranslate nohighlight">\(k &lt; 0\)</span>, <span class="math notranslate nohighlight">\(r_{XY} = -1\)</span>. Geometrically, this means the two mean-centered data vectors are perfectly collinear.</p>
+</section>
+<section id="derivation-of-the-raw-score-computational-formula-for-sample-pearson-correlation-coefficient">
+<h3>Derivation of the Raw-Score Computational Formula for Sample Pearson Correlation Coefficient<a class="headerlink" href="#derivation-of-the-raw-score-computational-formula-for-sample-pearson-correlation-coefficient" title="Link to this heading">#</a></h3>
+<p>While the definitional formula is clear, for practical computation, especially before the widespread use of statistical software, a raw-score formula was often preferred to minimize intermediate calculations and rounding errors. Let’s derive this form.</p>
+<p>We start with the definitional formula for the sample Pearson correlation coefficient:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}\]</div>
+<p>We will expand the numerator and each term in the denominator separately using the computational formulas for sum of products of deviations and sum of squared deviations.</p>
+<p><strong>1. Expanding the Numerator:</strong></p>
+<p>Recall the alternative form for the sum of products of deviations (we derived a similar equation <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a> during the derivation of the alternative form of sample covariance formula):</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y} \]</div>
+<p>Now, substitute the definitions of the sample means <span class="math notranslate nohighlight">\(\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}\)</span> and <span class="math notranslate nohighlight">\(\bar{y} = \frac{\sum_{i=1}^{n} y_i}{n}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \sum_{i=1}^{n} x_i y_i - n \left( \frac{\sum_{i=1}^{n} x_i}{n} \right) \left( \frac{\sum_{i=1}^{n} y_i}{n} \right) \]</div>
+<div class="math notranslate nohighlight">
+\[ = \sum_{i=1}^{n} x_i y_i - \frac{(\sum_{i=1}^{n} x_i)(\sum_{i=1}^{n} y_i)}{n} \]</div>
+<p>To combine these terms, we can find a common denominator:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y}) = \frac{n \sum_{i=1}^{n} x_i y_i - (\sum_{i=1}^{n} x_i)(\sum_{i=1}^{n} y_i)}{n} \]</div>
+<p><strong>2. Expanding the Denominator Terms:</strong></p>
+<p>Recall the alternative form for the sum of squared deviations for variable <span class="math notranslate nohighlight">\(X\)</span> (we derived a similar equation <a class="reference internal" href="variance-covariance.html"><span class="std std-doc">here</span></a> during the derivation of the alternative form of sample variance formula):</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (x_i - \bar{x})^2 = \sum_{i=1}^{n} x_i^2 - n\bar{x}^2 \]</div>
+<p>Substitute <span class="math notranslate nohighlight">\(\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (x_i - \bar{x})^2 = \sum_{i=1}^{n} x_i^2 - n \left( \frac{\sum_{i=1}^{n} x_i}{n} \right)^2 \]</div>
+<div class="math notranslate nohighlight">
+\[ = \sum_{i=1}^{n} x_i^2 - n \frac{(\sum_{i=1}^{n} x_i)^2}{n^2} \]</div>
+<div class="math notranslate nohighlight">
+\[ = \sum_{i=1}^{n} x_i^2 - \frac{(\sum_{i=1}^{n} x_i)^2}{n} \]</div>
+<p>Combining with a common denominator:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{n \sum_{i=1}^{n} x_i^2 - (\sum_{i=1}^{n} x_i)^2}{n} \]</div>
+<p>Similarly, for variable <span class="math notranslate nohighlight">\(Y\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{i=1}^{n} (y_i - \bar{y})^2 = \frac{n \sum_{i=1}^{n} y_i^2 - (\sum_{i=1}^{n} y_i)^2}{n} \]</div>
+<p><strong>3. Substituting into the Full Formula:</strong>
+Now, substitute these expanded forms back into the formula for <span class="math notranslate nohighlight">\(r_{XY}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\frac{n \sum_{i=1}^{n} x_i y_i - \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i}{n}}{\sqrt{\left( \frac{n \sum_{i=1}^{n} x_i^2 - (\sum_{i=1}^{n} x_i)^2}{n} \right) \left( \frac{n \sum_{i=1}^{n} y_i^2 - (\sum_{i=1}^{n} y_i)^2}{n} \right)}}\]</div>
+<p>Let’s simplify the denominator. The <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span> terms under the square root can be pulled out:
+$<span class="math notranslate nohighlight">\( \sqrt{\frac{1}{n^2} \left( n \sum_{i=1}^{n} x_i^2 - (\sum_{i=1}^{n} x_i)^2 \right) \left( n \sum_{i=1}^{n} y_i^2 - (\sum_{i=1}^{n} y_i)^2 \right)} \)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( = \frac{1}{n} \sqrt{\left( n \sum_{i=1}^{n} x_i^2 - (\sum_{i=1}^{n} x_i)^2 \right) \left( n \sum_{i=1}^{n} y_i^2 - (\sum_{i=1}^{n} y_i)^2 \right)} \)</span>$</p>
+<p>So, the full expression becomes:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\frac{n \sum_{i=1}^{n} x_i y_i - \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i}{n}}{\frac{1}{n} \sqrt{\left( n \sum_{i=1}^{n} x_i^2 - \left( \sum_{i=1}^{n} x_i \right)^2 \right) \left( n \sum_{i=1}^{n} y_i^2 - \left( \sum_{i=1}^{n} y_i \right)^2 \right)}}\]</div>
+<p>The <span class="math notranslate nohighlight">\(\frac{1}{n}\)</span> terms in the main numerator and denominator cancel out, leaving us with the raw-score computational formula for Pearson’s <span class="math notranslate nohighlight">\(r\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{n \sum_{i=1}^{n} x_i y_i - \sum_{i=1}^{n} x_i \sum_{i=1}^{n} y_i}{\sqrt{\left( n \sum_{i=1}^{n} x_i^2 - \left( \sum_{i=1}^{n} x_i \right)^2 \right) \left( n \sum_{i=1}^{n} y_i^2 - \left( \sum_{i=1}^{n} y_i \right)^2 \right)}}\]</div>
+<p>This form is particularly useful for calculations when raw sums of <span class="math notranslate nohighlight">\(x_i\)</span>, <span class="math notranslate nohighlight">\(y_i\)</span>, <span class="math notranslate nohighlight">\(x_i^2\)</span>, <span class="math notranslate nohighlight">\(y_i^2\)</span>, and <span class="math notranslate nohighlight">\(x_i y_i\)</span> are readily available or easier to compute directly. We can also write this form:</p>
+<div class="math notranslate nohighlight">
+\[r_{XY} = \frac{\sum_{i=1}^{n} x_i y_i - n\bar{x}\bar{y}}{\sqrt{\left( \sum_{i=1}^{n} x_i^2 - n\bar{x}^2 \right) \left( \sum_{i=1}^{n} y_i^2 - n\bar{y}^2 \right)}}\]</div>
+<p>This is another common and useful computational form for Pearson’s <span class="math notranslate nohighlight">\(r\)</span>, often preferred for manual calculation as it avoids intermediate calculation of individual deviations.</p>
+</section>
+<section id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Link to this heading">#</a></h3>
+<p>The value of Pearson’s <span class="math notranslate nohighlight">\(r\)</span> (or <span class="math notranslate nohighlight">\(\rho\)</span>) tells us two things about the linear relationship between <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>:</p>
+<ul class="simple">
+<li><p><strong>Direction:</strong></p>
+<ul>
+<li><p><strong>Positive values (<span class="math notranslate nohighlight">\(r &gt; 0\)</span>):</strong> Indicate a positive linear relationship. As <span class="math notranslate nohighlight">\(X\)</span> increases, <span class="math notranslate nohighlight">\(Y\)</span> tends to increase.</p></li>
+<li><p><strong>Negative values (<span class="math notranslate nohighlight">\(r &lt; 0\)</span>):</strong> Indicate a negative linear relationship. As <span class="math notranslate nohighlight">\(X\)</span> increases, <span class="math notranslate nohighlight">\(Y\)</span> tends to decrease.</p></li>
+<li><p><strong>Zero value (<span class="math notranslate nohighlight">\(r = 0\)</span>):</strong> Indicates no linear relationship.</p></li>
+</ul>
+</li>
+<li><p><strong>Strength (magnitude of the absolute value):</strong></p>
+<ul>
+<li><p><strong><span class="math notranslate nohighlight">\(|r| = 1\)</span>:</strong> Perfect linear relationship. All data points fall exactly on a straight line.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(0.7 \le |r| &lt; 1\)</span>:</strong> Strong linear relationship.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(0.3 \le |r| &lt; 0.7\)</span>:</strong> Moderate linear relationship.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(0 &lt; |r| &lt; 0.3\)</span>:</strong> Weak linear relationship.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(|r| = 0\)</span>:</strong> No linear relationship.</p></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg" alt="Correlation examples2.svg" height="300" width="656.7">
+<br>
+Fig. Several sets of (x, y) points, with the Pearson correlation coefficient of x and y for each set. The correlation reflects the strength and direction of a linear relationship (top row), but not the slope of that relationship (middle row), nor many aspects of nonlinear relationships (bottom row). N.B.: the figure in the center has a slope of 0 but in that case the correlation coefficient is undefined because the variance of Y is zero.
+By <a href="https://commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&amp;action=edit&amp;redlink=1" class="new" title="User:DenisBoigelot (page does not exist)">DenisBoigelot</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication">CC0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=15165296">Link</a>. <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Wikipedia</a></p>
+</section>
+<section id="assumptions-and-limitations">
+<h3>Assumptions and Limitations<a class="headerlink" href="#assumptions-and-limitations" title="Link to this heading">#</a></h3>
+<p>For Pearson’s correlation coefficient to be an appropriate and reliable measure, we typically assume:</p>
+<ol class="arabic simple">
+<li><p><strong>Linearity:</strong> The relationship between the two variables must be linear. If the relationship is non-linear (e.g., U-shaped, exponential), Pearson’s <span class="math notranslate nohighlight">\(r\)</span> will underestimate the true strength of the association or even suggest no relationship. It’s crucial to visualize the data (e.g., with a scatter plot) to confirm linearity before relying on Pearson’s <span class="math notranslate nohighlight">\(r\)</span>. Sometimes, non-linear transformations (like logarithmic or square root) can linearize a relationship, making Pearson’s <span class="math notranslate nohighlight">\(r\)</span> applicable to the transformed variables.</p></li>
+<li><p><strong>Continuous Variables:</strong> Both variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> should be measured on an interval or ratio scale (i.e., continuous).</p></li>
+<li><p><strong>No Significant Outliers:</strong> Pearson’s <span class="math notranslate nohighlight">\(r\)</span> is highly sensitive to outliers. A single extreme data point can significantly inflate or deflate the coefficient, potentially misrepresenting the overall relationship for the majority of data points. While outliers can be problematic (e.g., data entry errors), sometimes they represent crucial, high-impact events that should not be simply dismissed. A “robust” measure might overlook these critical data points, so understanding the nature of outliers is key.</p></li>
+<li><p><strong>Homoscedasticity (for inferential statistics)</strong>: For each value of <span class="math notranslate nohighlight">\(X\)</span>, the variance of <span class="math notranslate nohighlight">\(Y\)</span> should be constant, and vice versa. This is more relevant for linear regression assumptions but contributes to the validity of statistical inferences about correlation.</p></li>
+<li><p><strong>Bivariate Normality (for inferential statistics)</strong>: If we want to perform hypothesis testing or construct confidence intervals for Pearson’s <span class="math notranslate nohighlight">\(r\)</span>, the data should ideally come from a bivariate normal distribution. This means that for any given value of <span class="math notranslate nohighlight">\(X\)</span>, the corresponding values of <span class="math notranslate nohighlight">\(Y\)</span> are normally distributed, and vice-versa. For descriptive purposes, this assumption is less critical.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="spearman-s-rank-correlation-coefficient">
+<h2>Spearman’s Rank Correlation Coefficient<a class="headerlink" href="#spearman-s-rank-correlation-coefficient" title="Link to this heading">#</a></h2>
+<p>Spearman’s rank correlation coefficient, often denoted as <span class="math notranslate nohighlight">\(r_s\)</span> or <span class="math notranslate nohighlight">\(\rho_s\)</span>, is a non-parametric measure of the strength and direction of a <strong>monotonic relationship</strong> between two ranked variables. It is particularly useful when:</p>
+<ul class="simple">
+<li><p>The data are ordinal (ranks, ratings).</p></li>
+<li><p>The data are continuous but do not meet the normality assumption for Pearson’s <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p>The relationship is monotonic but not necessarily linear (e.g., an exponential curve).</p></li>
+<li><p>The data contain outliers that would disproportionately influence Pearson’s <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+</ul>
+<section id="concept-of-ranks">
+<h3>Concept of Ranks<a class="headerlink" href="#concept-of-ranks" title="Link to this heading">#</a></h3>
+<p>The core idea behind Spearman’s correlation is to transform the original data into ranks and then calculate Pearson’s correlation coefficient on these ranks. By using ranks, we focus on the <em>relative order</em> of data points rather than the raw magnitudes of differences, making it robust to non-linear monotonic transformations and outliers.</p>
+<p>For each variable <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Assign ranks to <span class="math notranslate nohighlight">\(X\)</span> values:</strong> The smallest <span class="math notranslate nohighlight">\(X\)</span> value gets rank 1, the next smallest gets rank 2, and so on, up to <span class="math notranslate nohighlight">\(n\)</span> for the largest value.</p></li>
+<li><p><strong>Assign ranks to <span class="math notranslate nohighlight">\(Y\)</span> values:</strong> Similarly, the smallest <span class="math notranslate nohighlight">\(Y\)</span> value gets rank 1, the next smallest gets rank 2, etc.</p></li>
+<li><p><strong>Handle Ties:</strong> If two or more values are identical (a “tie”), we assign them the average of the ranks they would have received. For example, if two values are tied for the 3rd and 4th position, they both get a rank of <span class="math notranslate nohighlight">\((3+4)/2 = 3.5\)</span>.</p></li>
+</ol>
+</section>
+<section id="formula">
+<h3>Formula<a class="headerlink" href="#formula" title="Link to this heading">#</a></h3>
+<p>Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> can be calculated in two ways:</p>
+<ol class="arabic">
+<li><p><strong>Using Pearson’s formula on ranks:</strong> This is the fundamental definition. If <span class="math notranslate nohighlight">\(R_X\)</span> and <span class="math notranslate nohighlight">\(R_Y\)</span> are the ranks of the variables <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>, then:</p>
+<div class="math notranslate nohighlight">
+\[r_s = \frac{\text{Cov}(R_X, R_Y)}{s_{R_X} s_{R_Y}}\]</div>
+<p>This means we apply the Pearson correlation formula directly to the ranked data.</p>
+</li>
+<li><p><strong>Simplified Formula (for no ties):</strong> When there are no tied ranks in either variable, a simpler computational formula can be used:</p>
+<div class="math notranslate nohighlight">
+\[r_s = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(d_i = R_{X_i} - R_{Y_i}\)</span> is the difference between the ranks of each observation <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span> is the number of observations.</p></li>
+</ul>
+</li>
+</ol>
+<section id="derivation-of-the-simplified-formula-for-no-ties">
+<h4>Derivation of the Simplified Formula (for no ties)<a class="headerlink" href="#derivation-of-the-simplified-formula-for-no-ties" title="Link to this heading">#</a></h4>
+<p>Let’s derive the simplified formula for Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> when there are no ties. We start with Pearson’s formula applied to ranks:</p>
+<div class="math notranslate nohighlight">
+\[r_s = \frac{\sum_{i=1}^{n} (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y})}{\sqrt{\sum_{i=1}^{n} (R_{X_i} - \overline{R_X})^2} \sqrt{\sum_{i=1}^{n} (R_{Y_i} - \overline{R_Y})^2}}\]</div>
+<p>When we have <span class="math notranslate nohighlight">\(n\)</span> distinct ranks (from 1 to <span class="math notranslate nohighlight">\(n\)</span>), the sum of ranks is <span class="math notranslate nohighlight">\(\sum_{i=1}^n i = \frac{n(n+1)}{2}\)</span>.</p>
+<p>The mean of these ranks is <span class="math notranslate nohighlight">\(\overline{R_X} = \overline{R_Y} = \frac{\sum_{i=1}^n i}{n} = \frac{n(n+1)/2}{n} = \frac{n+1}{2}\)</span>.</p>
+<p>Now, let’s consider the sum of squared deviations for ranks. The sum of squares of the first <span class="math notranslate nohighlight">\(n\)</span> integers is <span class="math notranslate nohighlight">\(\sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6}\)</span>.</p>
+<p>The sum of squared deviations from the mean for ranks is:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (R_i - \overline{R})^2 = \sum_{i=1}^n R_i^2 - n(\overline{R})^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n+1)(2n+1)}{6} - n\left(\frac{n+1}{2}\right)^2\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n+1)(2n+1)}{6} - \frac{n(n+1)^2}{4}\]</div>
+<p>To simplify, we find a common denominator (12) and factor out common terms:</p>
+<div class="math notranslate nohighlight">
+\[= \frac{2n(n+1)(2n+1) - 3n(n+1)^2}{12}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n+1) [2(2n+1) - 3(n+1)]}{12}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n+1) [4n+2 - 3n-3]}{12}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n+1)(n-1)}{12}\]</div>
+<div class="math notranslate nohighlight">
+\[= \frac{n(n^2-1)}{12}\]</div>
+<p>So, for both <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> ranks (assuming no ties), we have:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (R_{X_i} - \overline{R_X})^2 = \frac{n(n^2-1)}{12}\]</div>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n} (R_{Y_i} - \overline{R_Y})^2 = \frac{n(n^2-1)}{12}\]</div>
+<p>Now, let <span class="math notranslate nohighlight">\(d_i = R_{X_i} - R_{Y_i}\)</span>. We know that <span class="math notranslate nohighlight">\(\sum d_i = \sum (R_{X_i} - R_{Y_i}) = \sum R_{X_i} - \sum R_{Y_i} = n\overline{R_X} - n\overline{R_Y} = 0\)</span>.</p>
+<p>Consider the sum of squared differences:</p>
+<p><span class="math notranslate nohighlight">\(\sum d_i^2 = \sum (R_{X_i} - R_{Y_i})^2 =\)</span></p>
+<p>We can rewrite this using the property <span class="math notranslate nohighlight">\((a-b)^2 = a^2 - 2ab + b^2\)</span>:</p>
+<p><span class="math notranslate nohighlight">\(= \sum [(R_{X_i} - \overline{R_X}) - (R_{Y_i} - \overline{R_Y})]^2\)</span> (since <span class="math notranslate nohighlight">\(\overline{R_X} = \overline{R_Y}\)</span>)
+<span class="math notranslate nohighlight">\(= \sum (R_{X_i} - \overline{R_X})^2 - 2 \sum (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y}) + \sum (R_{Y_i} - \overline{R_Y})^2 = \sum d_i^2\)</span></p>
+<p>We can rearrange this equation to solve for the numerator of Pearson’s formula on ranks:</p>
+<div class="math notranslate nohighlight">
+\[2 \sum (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y}) = \sum (R_{X_i} - \overline{R_X})^2 + \sum (R_{Y_i} - \overline{R_Y})^2 - \sum d_i^2\]</div>
+<p>Substitute the sum of squared deviations for ranks:</p>
+<div class="math notranslate nohighlight">
+\[2 \sum (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y}) = \frac{n(n^2-1)}{12} + \frac{n(n^2-1)}{12} - \sum d_i^2\]</div>
+<div class="math notranslate nohighlight">
+\[2 \sum (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y}) = \frac{2n(n^2-1)}{12} - \sum d_i^2\]</div>
+<div class="math notranslate nohighlight">
+\[\sum (R_{X_i} - \overline{R_X})(R_{Y_i} - \overline{R_Y}) = \frac{n(n^2-1)}{12} - \frac{1}{2} \sum d_i^2\]</div>
+<p>Now substitute this back into the Pearson’s formula for ranks, where the denominator is <span class="math notranslate nohighlight">\(\sqrt{\frac{n(n^2-1)}{12} \cdot \frac{n(n^2-1)}{12}} = \frac{n(n^2-1)}{12}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[r_s = \frac{\frac{n(n^2-1)}{12} - \frac{1}{2} \sum d_i^2}{\frac{n(n^2-1)}{12}}\]</div>
+<div class="math notranslate nohighlight">
+\[r_s = 1 - \frac{\frac{1}{2} \sum d_i^2}{\frac{n(n^2-1)}{12}}\]</div>
+<div class="math notranslate nohighlight">
+\[r_s = 1 - \frac{6 \sum d_i^2}{n(n^2-1)}\]</div>
+<p>This completes the derivation of the simplified formula for Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> when there are no ties. If ties are present, the formula using Pearson’s coefficient on the ranks (with average ranks for ties) should be used, as the simplified formula can become inaccurate.</p>
+</section>
+</section>
+<section id="id1">
+<h3>Interpretation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> also ranges from -1 to +1, with interpretations similar to Pearson’s <span class="math notranslate nohighlight">\(r\)</span>, but specifically for <strong>monotonic relationships</strong>:</p>
+<ul class="simple">
+<li><p><strong>+1:</strong> Perfect positive monotonic relationship. As one variable increases, the other also consistently increases (not necessarily at a constant rate or linearly).</p></li>
+<li><p><strong>-1:</strong> Perfect negative monotonic relationship. As one variable increases, the other consistently decreases.</p></li>
+<li><p><strong>0:</strong> No monotonic relationship.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Assumptions and Limitations<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Monotonicity:</strong> The relationship between the variables should be monotonic (consistently increasing or consistently decreasing). If the relationship is non-monotonic (e.g., U-shaped), Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> will be close to zero, just like Pearson’s <span class="math notranslate nohighlight">\(r\)</span>.</p></li>
+<li><p><strong>Ordinal Data or Ranked Continuous Data:</strong> Suitable for ordinal variables or when continuous variables are converted to ranks. By using ranks, we lose information about the <em>magnitude</em> of differences between values. For example, a large difference in raw scores might result in the same rank difference as a small difference, which can sometimes obscure important distinctions.</p></li>
+<li><p><strong>Robust to Outliers:</strong> Because it uses ranks, it is less sensitive to outliers than Pearson’s <span class="math notranslate nohighlight">\(r\)</span>. An outlier might change its rank by only a small amount, rather than disproportionately affecting the squared differences. This can be beneficial, but if outliers represent critical information, this robustness might hide their impact.</p></li>
+<li><p><strong>Less Powerful than Pearson’s <span class="math notranslate nohighlight">\(r\)</span> for Linear Relationships:</strong> If the relationship is truly linear and the data meet Pearson’s assumptions, Pearson’s <span class="math notranslate nohighlight">\(r\)</span> is generally more powerful (i.e., more likely to detect a significant relationship and provide a more precise estimate).</p></li>
+<li><p><strong>Sensitivity to Tied Ranks:</strong> While tie-handling rules (average ranks) exist, a large number of ties can still affect the accuracy and interpretation of Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span>. With very small sample sizes, achieving perfect (+1 or -1) Spearman correlations is more likely by chance than with Pearson’s <span class="math notranslate nohighlight">\(r\)</span>, potentially leading to spurious conclusions.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="kendall-rank-correlation-coefficient-kendall-s-tau">
+<h2>Kendall Rank Correlation Coefficient (Kendall’s Tau)<a class="headerlink" href="#kendall-rank-correlation-coefficient-kendall-s-tau" title="Link to this heading">#</a></h2>
+<p>Kendall’s Tau (<span class="math notranslate nohighlight">\(\tau\)</span>) is another non-parametric measure of the strength and direction of association between two ranked variables. It is an alternative to Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> and is particularly useful for assessing monotonic relationships with ordinal data. While Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> is based on the differences in ranks, Kendall’s Tau is based on the number of <strong>concordant and discordant pairs</strong> of observations. Kendall’s Tau is often considered more robust than Spearman’s <span class="math notranslate nohighlight">\(\rho_S\)</span> in the presence of ties and for smaller sample sizes.</p>
+<section id="concept-of-concordant-and-discordant-pairs">
+<h3>Concept of Concordant and Discordant Pairs<a class="headerlink" href="#concept-of-concordant-and-discordant-pairs" title="Link to this heading">#</a></h3>
+<p>To understand Kendall’s Tau, we need to consider pairs of observations. For any two distinct observations <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> from our dataset, we compare their values on both variables, <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and <span class="math notranslate nohighlight">\((x_j, y_j)\)</span>.</p>
+<p>For simplicity in counting, we typically sort the data based on <span class="math notranslate nohighlight">\(X\)</span> in ascending order. If <span class="math notranslate nohighlight">\(X_i = X_j\)</span>, we then sort by <span class="math notranslate nohighlight">\(Y\)</span>. Then for any pair of observations <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and <span class="math notranslate nohighlight">\((x_j, y_j)\)</span> with <span class="math notranslate nohighlight">\(x_i &lt; x_j\)</span>:</p>
+<ul class="simple">
+<li><p><strong>Concordant Pair (<span class="math notranslate nohighlight">\(N_c\)</span>):</strong> If <span class="math notranslate nohighlight">\(y_i &lt; y_j\)</span>, the ranks for both variables move in the same direction (both increase). This pair contributes +1 to <span class="math notranslate nohighlight">\(N_c\)</span>.</p></li>
+<li><p><strong>Discordant Pair (<span class="math notranslate nohighlight">\(N_d\)</span>):</strong> If <span class="math notranslate nohighlight">\(y_i &gt; y_j\)</span>, the ranks for the variables move in opposite directions (X increases, Y decreases). This pair contributes +1 to <span class="math notranslate nohighlight">\(N_d\)</span>.</p></li>
+<li><p><strong>Tied Pair:</strong> If <span class="math notranslate nohighlight">\(x_i = x_j\)</span> (tie in X) or <span class="math notranslate nohighlight">\(y_i = y_j\)</span> (tie in Y), the pair is considered a tie. Tied pairs are handled differently depending on the specific Tau variant.</p></li>
+</ul>
+<p>Kendall’s Tau essentially measures the “probability of concordance minus the probability of discordance.”</p>
+</section>
+<section id="formulas-for-kendall-s-tau">
+<h3>Formulas for Kendall’s Tau<a class="headerlink" href="#formulas-for-kendall-s-tau" title="Link to this heading">#</a></h3>
+<p>There are several versions of Kendall’s Tau (Tau-a, Tau-b, Tau-c), primarily differing in how they handle ties. <strong>Kendall’s Tau-b (<span class="math notranslate nohighlight">\(\tau_b\)</span>)</strong> is the most commonly used version when ties are present.</p>
+<section id="kendall-s-tau-a-no-ties">
+<h4>Kendall’s Tau-a (no ties)<a class="headerlink" href="#kendall-s-tau-a-no-ties" title="Link to this heading">#</a></h4>
+<p>For data without any ties:</p>
+<div class="math notranslate nohighlight">
+\[\tau_a = \frac{N_c - N_d}{\frac{n(n-1)}{2}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_c\)</span> is the number of concordant pairs, <span class="math notranslate nohighlight">\(N_d\)</span> is the number of discordant pairs, and <span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> is the total number of distinct pairs possible from <span class="math notranslate nohighlight">\(n\)</span> observations.</p>
+</section>
+<section id="derivation-of-kendall-s-tau-a">
+<h4>Derivation of Kendall’s Tau-a<a class="headerlink" href="#derivation-of-kendall-s-tau-a" title="Link to this heading">#</a></h4>
+<p>Let’s derive the formula for Kendall’s Tau-a.</p>
+<p>The total number of unique pairs of observations we can form from <span class="math notranslate nohighlight">\(n\)</span> data points is given by the combination formula “n choose 2”:</p>
+<div class="math notranslate nohighlight">
+\[ \text{Total Pairs} = \binom{n}{2} = \frac{n(n-1)}{2} \]</div>
+<p>Each of these pairs can be classified as either concordant, discordant, or tied. For Kendall’s Tau-a, we assume no ties, so every pair is either concordant or discordant.</p>
+<p>Thus, the total number of pairs is simply the sum of concordant and discordant pairs:
+$<span class="math notranslate nohighlight">\( \text{Total Pairs} = N_c + N_d \)</span><span class="math notranslate nohighlight">\(
+Therefore,
+\)</span><span class="math notranslate nohighlight">\( N_c + N_d = \frac{n(n-1)}{2} \)</span>$</p>
+<p>Kendall’s Tau-a is defined as the difference between the number of concordant pairs and the number of discordant pairs, normalized by the total number of possible pairs. This normalization ensures the value falls between -1 and +1.</p>
+<div class="math notranslate nohighlight">
+\[ \tau_a = \frac{N_c - N_d}{\text{Total Pairs}} \]</div>
+<p>Substituting the expression for the total number of pairs:</p>
+<div class="math notranslate nohighlight">
+\[ \tau_a = \frac{N_c - N_d}{\frac{n(n-1)}{2}} \]</div>
+<p>This derivation clearly shows how the formula for Kendall’s Tau-a is constructed directly from the counts of concordant and discordant pairs and the total number of possible comparisons.</p>
+</section>
+<section id="kendall-s-tau-b-with-ties">
+<h4>Kendall’s Tau-b (with ties)<a class="headerlink" href="#kendall-s-tau-b-with-ties" title="Link to this heading">#</a></h4>
+<p>When ties are present, we adjust the denominator to account for them. Tied pairs cannot be definitively classified as concordant or discordant in the same way.</p>
+<div class="math notranslate nohighlight">
+\[\tau_b = \frac{N_c - N_d}{\sqrt{\left(\frac{n(n-1)}{2} - N_x\right)\left(\frac{n(n-1)}{2} - N_y\right)}}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(N_c\)</span> is the number of concordant pairs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N_d\)</span> is the number of discordant pairs.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\frac{n(n-1)}{2}\)</span> is the total number of possible pairs of observations (combinations of <span class="math notranslate nohighlight">\(n\)</span> items taken 2 at a time)</p></li>
+<li><p><span class="math notranslate nohighlight">\(N_x = \sum_{j=1}^{g_x} \frac{t_j(t_j-1)}{2}\)</span> is a correction for ties in variable <span class="math notranslate nohighlight">\(X\)</span>. Here, <span class="math notranslate nohighlight">\(g_x\)</span> is the <strong>number of groups</strong> of tied ranks in <span class="math notranslate nohighlight">\(X\)</span>, and <span class="math notranslate nohighlight">\(t_j\)</span> is the number of tied observations within the <strong><span class="math notranslate nohighlight">\(j\)</span>-th group</strong>. This sum represents the number of pairs that are tied on <span class="math notranslate nohighlight">\(X\)</span> but not necessarily on <span class="math notranslate nohighlight">\(Y\)</span>. These pairs are excluded from the denominator’s calculation of “comparable” pairs because their relationship cannot be determined solely by <span class="math notranslate nohighlight">\(X\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N_y = \sum_{k=1}^{g_y} \frac{u_k(u_k-1)}{2}\)</span> is a similar correction for ties in variable <span class="math notranslate nohighlight">\(Y\)</span>. <span class="math notranslate nohighlight">\(g_y\)</span> is the <strong>number of groups</strong> of tied ranks in <span class="math notranslate nohighlight">\(Y\)</span>, and <span class="math notranslate nohighlight">\(u_k\)</span> is the number of tied observations in the <strong><span class="math notranslate nohighlight">\(k\)</span>-th group</strong>. This sum represents the number of pairs that are tied on <span class="math notranslate nohighlight">\(Y\)</span> but not necessarily on <span class="math notranslate nohighlight">\(X\)</span>. These pairs are also excluded from the denominator’s “comparable” pairs for similar reasons.</p></li>
+</ul>
+<p>The denominator in <span class="math notranslate nohighlight">\(\tau_b\)</span> effectively removes pairs that are tied on either <span class="math notranslate nohighlight">\(X\)</span> or <span class="math notranslate nohighlight">\(Y\)</span> from the total pool of comparable pairs, ensuring that the denominator only includes pairs that are truly comparable for evaluating concordance or discordance.</p>
+</section>
+</section>
+<section id="id3">
+<h3>Interpretation<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Kendall’s Tau also ranges from -1 to +1:</p>
+<ul class="simple">
+<li><p><strong>+1:</strong> Perfect positive monotonic association.</p></li>
+<li><p><strong>-1:</strong> Perfect negative monotonic association.</p></li>
+<li><p><strong>0:</strong> No monotonic association.</p></li>
+</ul>
+<p>The interpretation of the magnitude of Kendall’s Tau is often less intuitive than Pearson’s <span class="math notranslate nohighlight">\(r\)</span> or Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span>. It can be thought of as the difference between the probability that two randomly chosen observations will be in the same order (concordant) and the probability that they will be in a different order (discordant). Values of Kendall’s Tau tend to be smaller in magnitude than Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span> for the same data, even though both measure monotonic relationships. This is because they quantify different aspects of rank agreement.</p>
+</section>
+<section id="id4">
+<h3>Assumptions and Limitations<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Monotonicity:</strong> The relationship between the variables should be monotonic.</p></li>
+<li><p><strong>Ordinal Data:</strong> The variables can be measured on an ordinal scale, or their values can be meaningfully ranked.</p></li>
+<li><p><strong>Robust to Outliers:</strong> Like Spearman’s <span class="math notranslate nohighlight">\(r_s\)</span>, Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span> is less sensitive to outliers than Pearson’s <span class="math notranslate nohighlight">\(r\)</span> due to its reliance on ranks and pair comparisons.</p></li>
+<li><p><strong>Computational Complexity:</strong> For large datasets, counting all pairs can be computationally intensive, as it generally involves <span class="math notranslate nohighlight">\(O(n^2)\)</span> comparisons (though optimized algorithms exist).</p></li>
+<li><p><strong>Nuance of Tie Handling:</strong> While <span class="math notranslate nohighlight">\(\tau_b\)</span> accounts for ties, different methods of handling ties (e.g., using Kendall’s Tau-c) exist, and the choice can subtly influence the result, highlighting that there’s no single perfect way to deal with ambiguity arising from ties.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="other-methods-to-investigate-correlation">
+<h2>Other Methods to Investigate Correlation<a class="headerlink" href="#other-methods-to-investigate-correlation" title="Link to this heading">#</a></h2>
+<p>While Pearson, Spearman, and Kendall are widely used, they don’t cover all types of relationships or data types. Here, we’ll briefly explore a few other methods that are valuable in specific contexts, moving beyond strictly linear or monotonic relationships to more general forms of dependency.</p>
+<section id="point-biserial-correlation-coefficient-r-pb">
+<h3>1. Point-Biserial Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{pb}\)</span>)<a class="headerlink" href="#point-biserial-correlation-coefficient-r-pb" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Measures the strength and direction of the linear association between two variables when one is a <strong>continuous (interval or ratio) variable</strong> and the other is a <strong>dichotomous nominal variable</strong> (a categorical variable with exactly two categories, typically coded as 0 and 1).</p></li>
+<li><p><strong>Conceptual Basis</strong>: The point-biserial correlation coefficient is mathematically equivalent to Pearson’s <span class="math notranslate nohighlight">\(r\)</span> where one variable is dichotomous. It can also be understood as a way to quantify the standardized difference between the means of the continuous variable for the two groups defined by the dichotomous variable.</p></li>
+<li><p><strong>Formula</strong>:
+$<span class="math notranslate nohighlight">\(r_{pb} = \frac{\bar{X}_1 - \bar{X}_0}{s_X} \sqrt{\frac{n_1 n_0}{n^2}}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\bar{X}_1<span class="math notranslate nohighlight">\( and \)</span>\bar{X}_0<span class="math notranslate nohighlight">\( are the means of the continuous variable for category 1 and 0 respectively, \)</span>s_X<span class="math notranslate nohighlight">\( is the pooled standard deviation of the continuous variable, \)</span>n_1<span class="math notranslate nohighlight">\( and \)</span>n_0<span class="math notranslate nohighlight">\( are the number of observations in each category, and \)</span>n$ is the total number of observations.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from -1 to +1. A positive value implies higher values of the continuous variable are associated with one category, and negative with the other.</p></li>
+<li><p><strong>Example</strong>: Correlation between “exam score” (continuous) and “passed/failed a prerequisite course” (dichotomous: 0=failed, 1=passed).</p></li>
+</ul>
+</section>
+<section id="phi-coefficient-phi">
+<h3>2. Phi Coefficient (<span class="math notranslate nohighlight">\(\phi\)</span>)<a class="headerlink" href="#phi-coefficient-phi" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Purpose</strong>: Measures the association between <strong>two dichotomous nominal variables</strong>. It is typically used for data presented in a <span class="math notranslate nohighlight">\(2 \times 2\)</span> contingency table.</p></li>
+<li><p><strong>Conceptual Basis</strong>: Similar to the point-biserial correlation, the phi coefficient is also a special case of Pearson’s <span class="math notranslate nohighlight">\(r\)</span> applied to two dichotomous variables. It is also closely related to the chi-squared statistic.</p></li>
+<li><p><strong>Formula</strong>: For a <span class="math notranslate nohighlight">\(2 \times 2\)</span> table with cell counts <span class="math notranslate nohighlight">\(a, b, c, d\)</span>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p><span class="math notranslate nohighlight">\(Y_1\)</span></p></th>
+<th class="head text-left"><p><span class="math notranslate nohighlight">\(Y_2\)</span></p></th>
+<th class="head text-left"><p>Total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><span class="math notranslate nohighlight">\(X_1\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(a\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(b\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(a+b\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><span class="math notranslate nohighlight">\(X_2\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(c\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(d\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(c+d\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Total</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(a+c\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(b+d\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>$<span class="math notranslate nohighlight">\(\phi = \frac{ad - bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}\)</span>$</p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p><strong>Interpretation</strong>: Ranges from -1 to +1. A positive value indicates a positive association, a negative value indicates a negative association, and 0 indicates no association.</p></li>
+<li><p><strong>Example:</strong> Correlation between “pass/fail status” on Exam A (pass/fail) and “pass/fail status” on Exam B (pass/fail). For sparse contingency tables (many zero counts), <span class="math notranslate nohighlight">\(\phi\)</span> can be unstable.</p></li>
+</ul>
+</section>
+<section id="cramer-s-v">
+<h3>3. Cramer’s V<a class="headerlink" href="#cramer-s-v" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Measures the association between <strong>two nominal variables</strong> when at least one of the variables has more than two categories (i.e., for <span class="math notranslate nohighlight">\(r \times c\)</span> contingency tables where <span class="math notranslate nohighlight">\(r\)</span> or <span class="math notranslate nohighlight">\(c\)</span> is greater than 2).</p></li>
+<li><p><strong>Conceptual Basis</strong>: Cramer’s V is a chi-square based measure of association, adjusting the chi-square statistic to range from 0 to 1, making it suitable for comparing associations across tables of different sizes.</p></li>
+<li><p><strong>Formula</strong>:
+$<span class="math notranslate nohighlight">\(V = \sqrt{\frac{\chi^2}{n \cdot \min(k-1, r-1)}}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>\chi^2<span class="math notranslate nohighlight">\( is the Pearson chi-squared statistic, \)</span>n<span class="math notranslate nohighlight">\( is the total number of observations, \)</span>k<span class="math notranslate nohighlight">\( is the number of columns, and \)</span>r$ is the number of rows.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from 0 to +1. 0 indicates no association, and 1 indicates a perfect association. It does not provide information about the direction of the relationship, only its strength.</p></li>
+<li><p><strong>Example</strong>: Association between “favorite color” (red, blue, green) and “city of residence” (City A, City B, City C).</p></li>
+</ul>
+</section>
+<section id="distance-correlation">
+<h3>4. Distance Correlation<a class="headerlink" href="#distance-correlation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose:</strong> Measures the strength of dependence between two random variables or two random vectors of arbitrary dimension. A key advantage is that <strong>distance correlation is zero if and only if the random vectors are independent</strong>. This is a much stronger property than Pearson’s <span class="math notranslate nohighlight">\(r\)</span>, which only detects linear dependence.</p></li>
+<li><p><strong>Concept:</strong> It’s based on comparing the characteristic functions of the joint distribution and the product of the marginal distributions. Essentially, it quantifies how similar the joint distribution is to what it would be if the variables were independent.</p></li>
+<li><p><strong>Strengths:</strong> Can detect non-linear and complex dependencies that Pearson’s <span class="math notranslate nohighlight">\(r\)</span> would miss. For example, if <span class="math notranslate nohighlight">\(Y = X^2\)</span> or if <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> have a circular relationship (<span class="math notranslate nohighlight">\(X=\cos(\theta), Y=\sin(\theta)\)</span>), Pearson’s <span class="math notranslate nohighlight">\(r\)</span> would be low or zero, but distance correlation would correctly report a high value, indicating strong dependence.</p></li>
+<li><p><strong>Limitations:</strong> Computationally more intensive for large datasets. Interpretation of the magnitude (e.g., a value of 0.5) is less intuitive than traditional correlation coefficients, and it can be sensitive to noise, especially in high dimensions.</p></li>
+<li><p><strong>Example:</strong> Detecting a U-shaped or parabolic relationship that Pearson’s <span class="math notranslate nohighlight">\(r\)</span> would incorrectly report as weak or non-existent.</p></li>
+<li><p><strong>Example 2</strong>: Detecting complex dependencies between gene expression levels and disease progression, where the relationship might not be linear or easily visualized.</p></li>
+</ul>
+</section>
+<section id="mutual-information">
+<h3>5. Mutual Information<a class="headerlink" href="#mutual-information" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose:</strong> A concept from information theory that quantifies the <strong>amount of information obtained about one random variable by observing another random variable</strong>. It measures general statistical dependence, including non-linear and non-monotonic relationships.</p></li>
+<li><p><strong>Concept:</strong> It’s based on the entropy of the individual variables and their joint entropy. It calculates how much the uncertainty about one variable is reduced when the other variable is known.</p></li>
+<li><p><strong>Formula (conceptual):</strong> For discrete variables, <span class="math notranslate nohighlight">\(I(X;Y) = \sum_{y \in Y} \sum_{x \in X} p(x,y) \log \left(\frac{p(x,y)}{p(x)p(y)}\right)\)</span>. For continuous variables, this becomes an integral involving probability density functions. In practice, continuous variables are often discretized into bins or kernel density estimation is used to approximate the distributions, which can introduce sensitivity to bin choices or kernel parameters.</p></li>
+<li><p><strong>Strengths:</strong> Very powerful for detecting any form of statistical dependency. It is always non-negative, with 0 indicating independence. It doesn’t assume any specific type of relationship or data distribution.</p></li>
+<li><p><strong>Limitations:</strong> The values are not bounded between -1 and +1, making direct comparisons of strength across different variable pairs less straightforward than with correlation coefficients. Requires estimation of probability distributions, which can be challenging for continuous variables.</p></li>
+<li><p><strong>Example:</strong> Understanding how much information about a person’s “political affiliation” can be gained by knowing their “income bracket,” even if the relationship is highly complex and non-linear.</p></li>
+</ul>
+</section>
+<section id="goodman-and-kruskal-s-gamma-gamma">
+<h3>6. Goodman and Kruskal’s Gamma (<span class="math notranslate nohighlight">\(\gamma\)</span>)<a class="headerlink" href="#goodman-and-kruskal-s-gamma-gamma" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose:</strong> Another non-parametric measure for <strong>ordinal variables</strong>, similar to Kendall’s Tau. It is particularly useful when dealing with a large number of ties.</p></li>
+<li><p><strong>Concept:</strong> It is based purely on the number of concordant and discordant pairs, but unlike Kendall’s Tau, it <em>completely ignores</em> tied pairs in its denominator.</p></li>
+<li><p><strong>Formula (conceptual):</strong> <span class="math notranslate nohighlight">\(\gamma = \frac{N_c - N_d}{N_c + N_d}\)</span></p></li>
+<li><p><strong>Interpretation:</strong> Ranges from -1 to +1. It measures the probability that a random pair of observations will have the same rank order on both variables, minus the probability that they will have different rank orders, <em>among those pairs that are not tied on either variable</em>. Because it ignores ties, Gamma often produces a higher magnitude correlation estimate than Tau for the same data, which might be misleading if ties are numerous and meaningful.</p></li>
+<li><p><strong>Example:</strong> Correlation between “satisfaction level” (low, medium, high) and “service quality rating” (poor, average, good, excellent).</p></li>
+</ul>
+</section>
+<section id="tetrachoric-correlation">
+<h3>7. Tetrachoric Correlation<a class="headerlink" href="#tetrachoric-correlation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Measures the correlation between <strong>two underlying continuous variables</strong> that have both been artificially dichotomized (reduced to two categories). It estimates what the Pearson correlation would be if we could observe the continuous variables.</p></li>
+<li><p><strong>Concept</strong>: Assumes the underlying continuous variables are bivariate normally distributed. This is a strong assumption that is often untestable and might not hold in reality, potentially leading to misleading results. It’s often estimated using maximum likelihood.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from -1 to +1.</p></li>
+<li><p><strong>Example</strong>: Estimating the correlation between “true mathematical ability” and “true verbal ability” based on pass/fail outcomes on two tests.</p></li>
+</ul>
+</section>
+<section id="polychoric-correlation">
+<h3>8. Polychoric Correlation<a class="headerlink" href="#polychoric-correlation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: A generalization of tetrachoric correlation. It measures the correlation between <strong>two underlying continuous variables</strong> that have both been artificially categorized into multiple ordered categories (ordinal variables).</p></li>
+<li><p><strong>Concept</strong>: Similar to tetrachoric, it assumes underlying bivariate normality and estimates the Pearson correlation from the observed ordinal data. The same strong assumptions about underlying continuous, normally distributed variables apply.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from -1 to +1.</p></li>
+<li><p><strong>Example</strong>: Estimating the correlation between “true job satisfaction” and “true work-life balance” from survey responses on a 5-point Likert scale for both.</p></li>
+</ul>
+</section>
+<section id="eta-squared-eta-2-and-partial-eta-squared-eta-p-2">
+<h3>9. Eta-squared (<span class="math notranslate nohighlight">\(\eta^2\)</span>) and Partial Eta-squared (<span class="math notranslate nohighlight">\(\eta_p^2\)</span>)<a class="headerlink" href="#eta-squared-eta-2-and-partial-eta-squared-eta-p-2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Primarily used in <strong>ANOVA (Analysis of Variance)</strong> to measure the proportion of variance in a <strong>dependent interval/ratio variable</strong> that is explained by one or more <strong>nominal (categorical) independent variables</strong>. They are measures of effect size.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from 0 to 1. A value of 0.01 indicates a small effect, 0.06 a moderate effect, and 0.14 a large effect (Cohen’s conventions).</p></li>
+<li><p><strong>Example</strong>: How much of the variance in “exam scores” (continuous) can be explained by “teaching method” (categorical: Method A, Method B, Method C).</p></li>
+</ul>
+</section>
+<section id="maximal-information-coefficient-mic">
+<h3>Maximal Information Coefficient (MIC)<a class="headerlink" href="#maximal-information-coefficient-mic" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: A measure of <strong>general dependence</strong> between two variables, capable of capturing a wide range of functional and non-functional relationships. It is part of the Maximal Information-based Nonparametric Exploration (MINE) family of statistics.</p></li>
+<li><p><strong>Conceptual Basis</strong>: MIC is based on the concept of mutual information from information theory. It estimates the maximum mutual information over all possible grids that can be drawn on the scatterplot of the data, normalizing it to a value between 0 and 1. Its calculation is computationally intensive, making a full derivation beyond the scope of this lecture.</p></li>
+<li><p><strong>Interpretation</strong>: Ranges from 0 to 1. A higher value indicates a stronger relationship.</p></li>
+<li><p><strong>Example</strong>: Identifying complex associations in large biological datasets or social network analysis, where relationships are often intricate and non-linear.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="correlation-does-not-imply-causation">
+<h2>Correlation does not imply causation!<a class="headerlink" href="#correlation-does-not-imply-causation" title="Link to this heading">#</a></h2>
+<p>A critical takeaway that we must always remember, regardless of the coefficient used, is the mantra: <strong>“Correlation does not imply causation.”</strong> A strong statistical association between two variables indicates that they tend to vary together, but it does not, by itself, tell us that one variable causes the other. The observed relationship might be due to a confounding variable, pure coincidence, or even reverse causation. Establishing causation often requires rigorous experimental design. However, it’s important to recognize that in many fields where randomized controlled trials are impractical or unethical, advanced observational causal inference techniques (e.g., instrumental variables, regression discontinuity, propensity score matching) are employed to move closer to causal claims. Furthermore, sometimes correlation <em>is</em> sufficient for actionable insights (e.g., “if X and Y correlate, we can use X to predict Y, even if we don’t know why”). Correlation coefficients are powerful descriptive and exploratory tools, forming a fundamental part of our data analysis toolkit, and they serve as valuable starting points for generating hypotheses about potential causal links.</p>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Coefficient / Concept</p></th>
+<th class="head text-left"><p>Description &amp; Use Case</p></th>
+<th class="head text-left"><p>Formula(s) &amp; Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Pearson Correlation</strong> (<span class="math notranslate nohighlight">\(r\)</span>, <span class="math notranslate nohighlight">\(\rho\)</span>)</p></td>
+<td class="text-left"><p>Measures the strength and direction of a <strong>linear relationship</strong> between two <strong>continuous</strong> variables. It is sensitive to outliers.</p></td>
+<td class="text-left"><p><strong>Sample Formula</strong> <span class="math notranslate nohighlight">\(r_{XY} = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}}\)</span> <br> <strong>Computational Formula</strong> <span class="math notranslate nohighlight">\(r_{XY} = \frac{n \sum x_i y_i - (\sum x_i)(\sum y_i)}{\sqrt{[n \sum x_i^2 - (\sum x_i)^2][n \sum y_i^2 - (\sum y_i)^2]}}\)</span> <br> <strong>Interpretation:</strong> Ranges from -1 (perfect negative linear) to +1 (perfect positive linear). 0 indicates no linear relationship.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Spearman’s Rank Correlation</strong> (<span class="math notranslate nohighlight">\(r_s\)</span>)</p></td>
+<td class="text-left"><p>A non-parametric measure of a <strong>monotonic relationship</strong> between two ranked variables. It is robust to outliers and does not assume a linear relationship.</p></td>
+<td class="text-left"><p><strong>Definitional Formula</strong> <span class="math notranslate nohighlight">\(r_s = \frac{\text{Cov}(R_X, R_Y)}{s_{R_X} s_{R_Y}}\)</span> <br> <strong>Simplified (no ties)</strong> <span class="math notranslate nohighlight">\(r_s = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}\)</span> <br> <strong>Interpretation:</strong> Ranges from -1 (perfect negative monotonic) to +1 (perfect positive monotonic). 0 indicates no monotonic relationship.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Kendall’s Rank Correlation</strong> (<span class="math notranslate nohighlight">\(\tau\)</span>)</p></td>
+<td class="text-left"><p>Another non-parametric measure of a <strong>monotonic relationship</strong>. It is based on counting concordant and discordant pairs and is particularly robust with ties and small samples.</p></td>
+<td class="text-left"><p><strong>Tau-a (no ties)</strong> <span class="math notranslate nohighlight">\(\tau_a = \frac{N_c - N_d}{n(n-1)/2}\)</span> <br> <strong>Tau-b (with ties)</strong> <span class="math notranslate nohighlight">\(\tau_b = \frac{N_c - N_d}{\sqrt{(\frac{n(n-1)}{2} - N_x)(\frac{n(n-1)}{2} - N_y)}}\)</span> <br> <strong>Interpretation:</strong> Ranges from -1 to +1. Represents the difference between the probability of concordance and discordance.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Point-Biserial Correlation</strong> (<span class="math notranslate nohighlight">\(r_{pb}\)</span>)</p></td>
+<td class="text-left"><p>Measures the association between one <strong>continuous</strong> variable and one <strong>dichotomous</strong> (two-category) variable.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(r_{pb} = \frac{\bar{X}_1 - \bar{X}_0}{s_X} \sqrt{\frac{n_1 n_0}{n^2}}\)</span> <br> <strong>Interpretation:</strong> Ranges from -1 to +1, similar to Pearson’s r.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Phi Coefficient</strong> (<span class="math notranslate nohighlight">\(\phi\)</span>)</p></td>
+<td class="text-left"><p>Measures the association between <strong>two dichotomous</strong> variables, typically from a 2x2 contingency table.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\phi = \frac{ad - bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}\)</span> <br> <strong>Interpretation:</strong> Ranges from -1 to +1.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Cramer’s V</strong></p></td>
+<td class="text-left"><p>Measures the strength of association between <strong>two nominal</strong> variables where at least one has more than two categories.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(V = \sqrt{\frac{\chi^2}{n \cdot \min(k-1, r-1)}}\)</span> <br> <strong>Interpretation:</strong> Ranges from 0 (no association) to +1 (perfect association). Does not show direction.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Distance Correlation</strong></p></td>
+<td class="text-left"><p>A powerful measure that detects both <strong>linear and non-linear</strong> dependencies between variables.</p></td>
+<td class="text-left"><p><em>Based on characteristic functions; no simple formula.</em> <br> <strong>Interpretation:</strong> Is 0 if and only if the variables are independent. A value greater than 0 indicates dependence.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Mutual Information</strong> <span class="math notranslate nohighlight">\(I(X;Y)\)</span></p></td>
+<td class="text-left"><p>A measure from information theory that quantifies any kind of <strong>statistical dependence</strong> by measuring the reduction in uncertainty.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(I(X;Y) = \sum \sum p(x,y) \log (\frac{p(x,y)}{p(x)p(y)})\)</span> <br> <strong>Interpretation:</strong> Is always non-negative. 0 indicates independence. Values are not capped at 1.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Fundamental Principle</strong></p></td>
+<td class="text-left"><p><strong>Correlation does not imply causation.</strong></p></td>
+<td class="text-left"><p>A strong statistical relationship between two variables does not prove that one causes the other. The association may be due to coincidence, reverse causation, or a third, confounding variable.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="additional-materials">
+<h2>Additional materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_does_not_imply_causation">https://en.wikipedia.org/wiki/Correlation_does_not_imply_causation</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Correlation">https://en.wikipedia.org/wiki/Correlation</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Causality">https://en.wikipedia.org/wiki/Causality</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Correlation_coefficient">https://en.wikipedia.org/wiki/Correlation_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">https://en.wikipedia.org/wiki/Pearson_correlation_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">https://en.wikipedia.org/wiki/Spearman’s_rank_correlation_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient">https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Ordinal_data">https://en.wikipedia.org/wiki/Ordinal_data</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Contingency_table">https://en.wikipedia.org/wiki/Contingency_table</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Phi_coefficient">https://en.wikipedia.org/wiki/Phi_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Distance_correlation">https://en.wikipedia.org/wiki/Distance_correlation</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mutual_information">https://en.wikipedia.org/wiki/Mutual_information</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Information_theory">https://en.wikipedia.org/wiki/Information_theory</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="variance-covariance-code.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Variance and Covariance - Code Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="correlation-coefficients-code.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Correlation Coefficients - Code Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pearson-correlation-coefficient">Pearson Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-and-purpose">Definition and Purpose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas-for-pearson-s-correlation-coefficient">Formulas for Pearson’s Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#population-pearson-correlation-coefficient-rho-xy">Population Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(\rho_{XY}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-pearson-correlation-coefficient-r-xy">Sample Pearson Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{XY}\)</span>)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-standardization-why-pearson-s-r-is-bounded-between-1-and-1">Derivation of Standardization: Why Pearson’s <span class="math notranslate nohighlight">\(r\)</span> is bounded between -1 and +1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-raw-score-computational-formula-for-sample-pearson-correlation-coefficient">Derivation of the Raw-Score Computational Formula for Sample Pearson Correlation Coefficient</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-and-limitations">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spearman-s-rank-correlation-coefficient">Spearman’s Rank Correlation Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept-of-ranks">Concept of Ranks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula">Formula</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-simplified-formula-for-no-ties">Derivation of the Simplified Formula (for no ties)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-rank-correlation-coefficient-kendall-s-tau">Kendall Rank Correlation Coefficient (Kendall’s Tau)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concept-of-concordant-and-discordant-pairs">Concept of Concordant and Discordant Pairs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formulas-for-kendall-s-tau">Formulas for Kendall’s Tau</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-s-tau-a-no-ties">Kendall’s Tau-a (no ties)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-kendall-s-tau-a">Derivation of Kendall’s Tau-a</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kendall-s-tau-b-with-ties">Kendall’s Tau-b (with ties)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Interpretation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Assumptions and Limitations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-methods-to-investigate-correlation">Other Methods to Investigate Correlation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#point-biserial-correlation-coefficient-r-pb">1. Point-Biserial Correlation Coefficient (<span class="math notranslate nohighlight">\(r_{pb}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phi-coefficient-phi">2. Phi Coefficient (<span class="math notranslate nohighlight">\(\phi\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cramer-s-v">3. Cramer’s V</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-correlation">4. Distance Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mutual-information">5. Mutual Information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goodman-and-kruskal-s-gamma-gamma">6. Goodman and Kruskal’s Gamma (<span class="math notranslate nohighlight">\(\gamma\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetrachoric-correlation">7. Tetrachoric Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polychoric-correlation">8. Polychoric Correlation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eta-squared-eta-2-and-partial-eta-squared-eta-p-2">9. Eta-squared (<span class="math notranslate nohighlight">\(\eta^2\)</span>) and Partial Eta-squared (<span class="math notranslate nohighlight">\(\eta_p^2\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximal-information-coefficient-mic">Maximal Information Coefficient (MIC)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlation-does-not-imply-causation">Correlation does not imply causation!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

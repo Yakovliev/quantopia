@@ -397,7 +397,7 @@ We will review Pearson's correlation coefficient and other correlation coefficie
 
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Correlation_examples2.svg" alt="Correlation examples2.svg" height="300" width="656.7">
 <br>
-Fig. Several sets of (x, y) points, with the correlation coefficient of x and y for each set. The correlation reflects the strength and direction of a linear relationship (top row), but not the slope of that relationship (middle row), nor many aspects of nonlinear relationships (bottom row). N.B.: the figure in the center has a slope of 0 but in that case the correlation coefficient is undefined because the variance of Y is zero.
+Fig. Several sets of (x, y) points, with the Pearson correlation coefficient of x and y for each set. The correlation reflects the strength and direction of a linear relationship (top row), but not the slope of that relationship (middle row), nor many aspects of nonlinear relationships (bottom row). N.B.: the figure in the center has a slope of 0 but in that case the correlation coefficient is undefined because the variance of Y is zero.
 By <a href="https://commons.wikimedia.org/w/index.php?title=User:DenisBoigelot&amp;action=edit&amp;redlink=1" class="new" title="User:DenisBoigelot (page does not exist)">DenisBoigelot</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication">CC0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=15165296">Link</a>. <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Wikipedia</a></p>
 
 ### Interpretation and Limitations of Covariance and Correlation
