@@ -426,7 +426,9 @@ While Pearson, Spearman, and Kendall are widely used, they don't cover all types
     | $X_1$ | $a$   | $b$   | $a+b$ |
     | $X_2$ | $c$   | $d$   | $c+d$ |
     | Total | $a+c$ | $b+d$ | $n$   |
+
     $$\phi = \frac{ad - bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}$$
+
 *   **Interpretation**: Ranges from -1 to +1. A positive value indicates a positive association, a negative value indicates a negative association, and 0 indicates no association.
 *   **Example:** Correlation between "pass/fail status" on Exam A (pass/fail) and "pass/fail status" on Exam B (pass/fail). For sparse contingency tables (many zero counts), $\phi$ can be unstable.
 
@@ -435,7 +437,9 @@ While Pearson, Spearman, and Kendall are widely used, they don't cover all types
 *   **Purpose**: Measures the association between **two nominal variables** when at least one of the variables has more than two categories (i.e., for $r \times c$ contingency tables where $r$ or $c$ is greater than 2).
 *   **Conceptual Basis**: Cramer's V is a chi-square based measure of association, adjusting the chi-square statistic to range from 0 to 1, making it suitable for comparing associations across tables of different sizes.
 *   **Formula**:
+
     $$V = \sqrt{\frac{\chi^2}{n \cdot \min(k-1, r-1)}}$$
+    
     where $\chi^2$ is the Pearson chi-squared statistic, $n$ is the total number of observations, $k$ is the number of columns, and $r$ is the number of rows.
 *   **Interpretation**: Ranges from 0 to +1. 0 indicates no association, and 1 indicates a perfect association. It does not provide information about the direction of the relationship, only its strength.
 *   **Example**: Association between "favorite color" (red, blue, green) and "city of residence" (City A, City B, City C).

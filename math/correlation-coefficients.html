@@ -887,14 +887,11 @@ where \)</span>\bar{X}_1<span class="math notranslate nohighlight">\( and \)</sp
 <td class="text-left"><p><span class="math notranslate nohighlight">\(b+d\)</span></p></td>
 <td class="text-left"><p><span class="math notranslate nohighlight">\(n\)</span></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>$<span class="math notranslate nohighlight">\(\phi = \frac{ad - bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}\)</span>$</p></td>
-<td class="text-left"><p></p></td>
-<td class="text-left"><p></p></td>
-<td class="text-left"><p></p></td>
-</tr>
 </tbody>
 </table>
 </div>
+<div class="math notranslate nohighlight">
+\[\phi = \frac{ad - bc}{\sqrt{(a+b)(c+d)(a+c)(b+d)}}\]</div>
 </li>
 <li><p><strong>Interpretation</strong>: Ranges from -1 to +1. A positive value indicates a positive association, a negative value indicates a negative association, and 0 indicates no association.</p></li>
 <li><p><strong>Example:</strong> Correlation between “pass/fail status” on Exam A (pass/fail) and “pass/fail status” on Exam B (pass/fail). For sparse contingency tables (many zero counts), <span class="math notranslate nohighlight">\(\phi\)</span> can be unstable.</p></li>
@@ -902,12 +899,14 @@ where \)</span>\bar{X}_1<span class="math notranslate nohighlight">\( and \)</sp
 </section>
 <section id="cramer-s-v">
 <h3>3. Cramer’s V<a class="headerlink" href="#cramer-s-v" title="Link to this heading">#</a></h3>
-<ul class="simple">
+<ul>
 <li><p><strong>Purpose</strong>: Measures the association between <strong>two nominal variables</strong> when at least one of the variables has more than two categories (i.e., for <span class="math notranslate nohighlight">\(r \times c\)</span> contingency tables where <span class="math notranslate nohighlight">\(r\)</span> or <span class="math notranslate nohighlight">\(c\)</span> is greater than 2).</p></li>
 <li><p><strong>Conceptual Basis</strong>: Cramer’s V is a chi-square based measure of association, adjusting the chi-square statistic to range from 0 to 1, making it suitable for comparing associations across tables of different sizes.</p></li>
-<li><p><strong>Formula</strong>:
-$<span class="math notranslate nohighlight">\(V = \sqrt{\frac{\chi^2}{n \cdot \min(k-1, r-1)}}\)</span><span class="math notranslate nohighlight">\(
-where \)</span>\chi^2<span class="math notranslate nohighlight">\( is the Pearson chi-squared statistic, \)</span>n<span class="math notranslate nohighlight">\( is the total number of observations, \)</span>k<span class="math notranslate nohighlight">\( is the number of columns, and \)</span>r$ is the number of rows.</p></li>
+<li><p><strong>Formula</strong>:</p>
+<div class="math notranslate nohighlight">
+\[V = \sqrt{\frac{\chi^2}{n \cdot \min(k-1, r-1)}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\chi^2\)</span> is the Pearson chi-squared statistic, <span class="math notranslate nohighlight">\(n\)</span> is the total number of observations, <span class="math notranslate nohighlight">\(k\)</span> is the number of columns, and <span class="math notranslate nohighlight">\(r\)</span> is the number of rows.</p>
+</li>
 <li><p><strong>Interpretation</strong>: Ranges from 0 to +1. 0 indicates no association, and 1 indicates a perfect association. It does not provide information about the direction of the relationship, only its strength.</p></li>
 <li><p><strong>Example</strong>: Association between “favorite color” (red, blue, green) and “city of residence” (City A, City B, City C).</p></li>
 </ul>
