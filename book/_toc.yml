@@ -9,13 +9,14 @@ options:  # Add these options
   expand_sections: false  # This makes sections collapsed by default
 parts:
 
-  - caption: MATH 2
+  - caption: MATH
     chapters:
       - file: math/gradient-operator
       - file: math/gradient-directional-derivative
       - file: math/divergence
       - file: math/fourier-transform-01
       - file: math/pmf-pdf-cdf
+      - file: math/pmf-pdf-cdf-code
       - file: math/uncertainties-introduction
       - file: math/least-squares-regression
       - file: math/least-squares-regression-code
