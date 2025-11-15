@@ -415,3 +415,7 @@ From an information theory perspective, a probability distribution quantifies th
 ## Summary
 
 ## Additional materials
+
+* https://en.wikipedia.org/wiki/Probability_mass_function
+* https://en.wikipedia.org/wiki/Probability_density_function
+* https://en.wikipedia.org/wiki/Cumulative_distribution_function
