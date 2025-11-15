@@ -1,0 +1,1044 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/pmf-pdf-cdf';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PMF, PDF, CDF - Code Examples" href="pmf-pdf-cdf-code.html" />
+    <link rel="prev" title="Fourier Transform" href="fourier-transform-01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH 2</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf-code.html">PMF, PDF, CDF - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance-code.html">Variance and Covariance - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients.html">Correlation Coefficients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients-code.html">Correlation Coefficients - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA ANALYSIS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-analysis/rate-of-return-metrics.html">Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/pmf-pdf-cdf.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/pmf-pdf-cdf.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-random-variable">What is a Random Variable?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-random-variables">Discrete Random Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-random-variables">Continuous Random Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-pmf">What is a PMF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-pmf">Properties of a PMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construction-and-intuition">Construction and Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-pmf">Example with PMF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-density-function-pdf">Probability Density Function (PDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-p-x-x-0-for-continuous-variables">Why <span class="math notranslate nohighlight">\(P(X=x) = 0\)</span> for Continuous Variables?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-pdf">What is a PDF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-of-the-pdf">Dimensionality of the PDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-pdf">Properties of a PDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-derivation-and-intuition">Conceptual Derivation and Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-pdf">Example with PDF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-cdf">What is a CDF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-cdf">Properties of a CDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-for-discrete-random-variables">Derivation for Discrete Random Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-for-continuous-random-variables">Derivation for Continuous Random Variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-relationships-between-pmf-pdf-and-cdf">Key Relationships between PMF, PDF, and CDF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-considerations-and-deeper-insights">Advanced Considerations and Deeper Insights</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-cdf-quantile-function">Inverse CDF (Quantile Function)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-random-variables">Mixed Random Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions-as-measures-the-unifying-mathematical-view">Probability Distributions as Measures: The Unifying Mathematical View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-theoretic-perspective">Information-Theoretic Perspective</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="random-variables-probability-mass-function-probability-density-function-cumulative-distribution-function">
+<h1>Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function<a class="headerlink" href="#random-variables-probability-mass-function-probability-density-function-cumulative-distribution-function" title="Link to this heading">#</a></h1>
+<section id="what-is-a-random-variable">
+<h2>What is a Random Variable?<a class="headerlink" href="#what-is-a-random-variable" title="Link to this heading">#</a></h2>
+<p>At its heart, a <strong>random variable</strong> is a function that maps the outcomes of a random experiment to real numbers. To truly understand this from the very beginning, let’s briefly recall the formal setup of probability theory: a <strong>probability space</strong> consists of three parts:</p>
+<ol class="arabic simple">
+<li><p>A <strong>sample space</strong> <span class="math notranslate nohighlight">\(\Omega\)</span> (or <span class="math notranslate nohighlight">\(S\)</span>), which is the set of all possible outcomes of a random experiment. For example, if we flip two coins, <span class="math notranslate nohighlight">\(\Omega = \{\text{HH, HT, TH, TT}\}\)</span>.</p></li>
+<li><p>A <strong>set of events</strong> <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> (often called a sigma-algebra), which is a collection of subsets of <span class="math notranslate nohighlight">\(\Omega\)</span> to which we can assign probabilities. These events are the things we can meaningfully talk about the probability of.</p></li>
+<li><p>A <strong>probability measure</strong> <span class="math notranslate nohighlight">\(P\)</span>, which assigns a probability (a number between 0 and 1) to each event in <span class="math notranslate nohighlight">\(\mathcal{F}\)</span>.</p></li>
+</ol>
+<p>A random variable (often denoted by a capital letter like <span class="math notranslate nohighlight">\(X\)</span>, <span class="math notranslate nohighlight">\(Y\)</span>, or <span class="math notranslate nohighlight">\(Z\)</span>) is then formally defined as a function that maps each outcome <span class="math notranslate nohighlight">\(\omega\)</span> from the sample space <span class="math notranslate nohighlight">\(\Omega\)</span> to a real number.</p>
+<div class="math notranslate nohighlight">
+\[X: \Omega \to \mathbb{R}\]</div>
+<p>Crucially, for <span class="math notranslate nohighlight">\(X\)</span> to be a valid random variable, it must also satisfy a technical condition called <strong>measurability</strong>. This means that for any interval <span class="math notranslate nohighlight">\(B\)</span> on the real number line (specifically, any Borel set <span class="math notranslate nohighlight">\(B\)</span>), the set of outcomes <span class="math notranslate nohighlight">\(\omega \in \Omega\)</span> for which <span class="math notranslate nohighlight">\(X(\omega) \in B\)</span> must be an event in our set of events <span class="math notranslate nohighlight">\(\mathcal{F}\)</span>. In simpler terms, this ensures that we can actually calculate probabilities for statements like <span class="math notranslate nohighlight">\(P(X \le x)\)</span> or <span class="math notranslate nohighlight">\(P(a &lt; X &lt; b)\)</span>. For most practical data science applications, we can safely assume this condition holds for the functions we define as random variables.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Random_Variable_as_a_Function-en.svg" alt="Random Variable as a Function-en.svg" height="500" width="679.1">
+<br>
+Fig. This graph shows how a random variable is a function from all possible outcomes to real values. It also shows how a random variable is used for defining probability mass functions.
+By <a href="https://commons.wikimedia.org/wiki/User:Niyumard" title="User:Niyumard">Niyumard</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" title="Creative Commons Attribution-Share Alike 4.0">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=76473622">Link</a>. <a href="https://en.wikipedia.org/wiki/Random_variable">Wikipedia</a></p>
+<p>Why do we need them? Imagine we flip two coins. The possible outcomes are {HH, HT, TH, TT}. These are not numbers directly. However, if we are interested in the <em>number of heads</em>, we can define a random variable <span class="math notranslate nohighlight">\(X\)</span> that assigns a number to each outcome:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X(\text{HH}) = 2\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(X(\text{HT}) = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(X(\text{TH}) = 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(X(\text{TT}) = 0\)</span></p></li>
+</ul>
+<p>This mapping from the non-numerical outcomes to the numbers {0, 1, 2} is what a random variable does. It acts as a bridge, allowing us to quantify qualitative outcomes and apply powerful mathematical and statistical tools to analyze and predict the behavior of random events. We use capital letters (e.g., <span class="math notranslate nohighlight">\(X\)</span>) to denote the random variable itself, and lowercase letters (e.g., <span class="math notranslate nohighlight">\(x\)</span>) to denote the specific values that the random variable can take.</p>
+<p>Random variables are broadly categorized into two types based on the nature of the values they can take: discrete random variables and continuous random variables.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Dice_measure.svg" alt="Dice measure.svg" height="227" width="442"></p>
+<br>
+<p>Fig. Probability space for throwing a die twice in succession: The sample space <span class="math notranslate nohighlight">\(\Omega\)</span> consists of all 36 possible outcomes; three different events (colored polygons) are shown, with their respective probabilities (assuming a discrete uniform distribution).
+By <a href="https://commons.wikimedia.org/w/index.php?title=User:Sascha_Lill_95&amp;action=edit&amp;redlink=1" class="new" title="User:Sascha Lill 95 (page does not exist)">Sascha Lill 95</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" title="Creative Commons Attribution-Share Alike 4.0">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=104138014">Link</a>. <a href="https://en.wikipedia.org/wiki/Probability_space">Wikipedia</a></p>
+</section>
+<section id="discrete-random-variables">
+<h2>Discrete Random Variables<a class="headerlink" href="#discrete-random-variables" title="Link to this heading">#</a></h2>
+<p>A random variable is called a <strong>discrete random variable</strong> if its possible values are countable. This means we can list them out, even if the list is infinitely long. The values are typically integers, representing counts or categories.</p>
+<p>Examples of discrete random variables include:</p>
+<ul class="simple">
+<li><p>The number of heads when flipping a coin 3 times (possible values: 0, 1, 2, 3).</p></li>
+<li><p>The number of cars passing a specific point on a road in an hour (possible values: 0, 1, 2, …).</p></li>
+<li><p>The result of rolling a single six-sided die (possible values: 1, 2, 3, 4, 5, 6).</p></li>
+<li><p>The number of defects in a batch of 100 items (possible values: 0, 1, …, 100).</p></li>
+</ul>
+</section>
+<section id="continuous-random-variables">
+<h2>Continuous Random Variables<a class="headerlink" href="#continuous-random-variables" title="Link to this heading">#</a></h2>
+<p>In contrast, a random variable is a <strong>continuous random variable</strong> if its possible values are uncountable and typically lie within an interval (or a collection of intervals) on the real number line. For continuous variables, it doesn’t make sense to list out all possible values because there are infinitely many values between any two given values.</p>
+<p>Examples of continuous random variables include:</p>
+<ul class="simple">
+<li><p>The height of a randomly selected person (e.g., any value between 1.50 meters and 1.90 meters).</p></li>
+<li><p>The weight of an apple (e.g., any value between 100 grams and 200 grams).</p></li>
+<li><p>The time it takes for a bus to arrive (e.g., any value from 0 minutes upwards).</p></li>
+<li><p>The temperature in a room (e.g., any value between 20°C and 25°C).</p></li>
+</ul>
+<p>A crucial distinction for continuous random variables is that the probability of the variable taking on <em>any single specific value</em> is zero. We will delve deeper into why this is the case when we discuss the Probability Density Function.</p>
+</section>
+<hr class="docutils" />
+<section id="probability-mass-function-pmf">
+<h2>Probability Mass Function (PMF)<a class="headerlink" href="#probability-mass-function-pmf" title="Link to this heading">#</a></h2>
+<p>Once we have defined a discrete random variable, we need a way to describe the probabilities associated with each of its possible values. This is where the Probability Mass Function comes into play.</p>
+<section id="what-is-a-pmf">
+<h3>What is a PMF?<a class="headerlink" href="#what-is-a-pmf" title="Link to this heading">#</a></h3>
+<p>For a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>, the <strong>Probability Mass Function (PMF)</strong>, often denoted as <span class="math notranslate nohighlight">\(P(X=x)\)</span> or <span class="math notranslate nohighlight">\(p_X(x)\)</span>, provides the probability that <span class="math notranslate nohighlight">\(X\)</span> takes on a specific value <span class="math notranslate nohighlight">\(x\)</span>. In simpler terms, it tells us how the total probability “mass” of 1 is distributed among the discrete values that <span class="math notranslate nohighlight">\(X\)</span> can take.</p>
+<p>So, if we see <span class="math notranslate nohighlight">\(p_X(x) = 0.2\)</span>, it means there is a 20% chance that our random variable <span class="math notranslate nohighlight">\(X\)</span> will take on the specific value <span class="math notranslate nohighlight">\(x\)</span>. PMFs are fundamental for modeling count data, categorical outcomes, and other phenomena where outcomes are distinct and countable.</p>
+</section>
+<section id="properties-of-a-pmf">
+<h3>Properties of a PMF<a class="headerlink" href="#properties-of-a-pmf" title="Link to this heading">#</a></h3>
+<p>For a function <span class="math notranslate nohighlight">\(p_X(x)\)</span> to be a valid PMF, it must satisfy two fundamental properties, which are direct consequences of the Kolmogorov axioms of probability:</p>
+<ol class="arabic">
+<li><p><strong>Non-negativity</strong>: The probability of any specific outcome cannot be negative.</p>
+<div class="math notranslate nohighlight">
+\[p_X(x) \ge 0 \quad \text{for all possible values of } x\]</div>
+</li>
+<li><p><strong>Normalization</strong>: The sum of all probabilities for all possible values of <span class="math notranslate nohighlight">\(x\)</span> must equal 1. This reflects the certainty that the random variable must take on one of its possible values, corresponding to the axiom that the probability of the entire sample space is 1.</p>
+<div class="math notranslate nohighlight">
+\[\sum_{x} p_X(x) = 1\]</div>
+<p>where the summation is over all possible values that <span class="math notranslate nohighlight">\(X\)</span> can take.</p>
+</li>
+</ol>
+</section>
+<section id="construction-and-intuition">
+<h3>Construction and Intuition<a class="headerlink" href="#construction-and-intuition" title="Link to this heading">#</a></h3>
+<p>The concept of a PMF is quite intuitive and directly extends from our basic understanding of probability. When we define a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>, we are essentially grouping outcomes from our original sample space <span class="math notranslate nohighlight">\(\Omega\)</span> and assigning a numerical value to them. The probability of <span class="math notranslate nohighlight">\(X\)</span> taking a certain value <span class="math notranslate nohighlight">\(x\)</span> is simply the sum of the probabilities of all original sample space outcomes that map to that numerical value <span class="math notranslate nohighlight">\(x\)</span>. We are “assigning mass” to each point.</p>
+<p>For instance, if we roll a fair six-sided die, the sample space is <span class="math notranslate nohighlight">\(\Omega = \{1, 2, 3, 4, 5, 6\}\)</span>. Each outcome has a probability of <span class="math notranslate nohighlight">\(1/6\)</span>. If we define <span class="math notranslate nohighlight">\(X\)</span> as the outcome of the roll, then:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(X=1) = 1/6\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(X=2) = 1/6\)</span></p></li>
+<li><p>…</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(X=6) = 1/6\)</span></p></li>
+</ul>
+<p>This list of probabilities for each <span class="math notranslate nohighlight">\(x\)</span> value <em>is</em> our PMF. There’s no complex “derivation” in the sense of calculus; it’s a direct definition based on how probabilities are assigned to events (which are subsets of the sample space). We are simply listing the probabilities for each discrete outcome.</p>
+</section>
+<section id="example-with-pmf">
+<h3>Example with PMF<a class="headerlink" href="#example-with-pmf" title="Link to this heading">#</a></h3>
+<p>Let’s consider an experiment where we flip two fair coins. Let <span class="math notranslate nohighlight">\(X\)</span> be the discrete random variable representing the number of heads we observe.</p>
+<p>The possible outcomes of the experiment in our sample space are:</p>
+<ul class="simple">
+<li><p>HH (2 heads)</p></li>
+<li><p>HT (1 head)</p></li>
+<li><p>TH (1 head)</p></li>
+<li><p>TT (0 heads)</p></li>
+</ul>
+<p>Assuming the coins are fair, each of these four outcomes has a probability of <span class="math notranslate nohighlight">\(1/4\)</span>. Now, let’s define the PMF for <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(X=0\)</span> (TT):
+$<span class="math notranslate nohighlight">\(p_X(0) = P(X=0) = P(\text{TT}) = \frac{1}{4}\)</span>$</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(X=1\)</span> (HT or TH):
+$<span class="math notranslate nohighlight">\(p_X(1) = P(X=1) = P(\text{HT}) + P(\text{TH}) = \frac{1}{4} + \frac{1}{4} = \frac{2}{4} = \frac{1}{2}\)</span>$</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(X=2\)</span> (HH):
+$<span class="math notranslate nohighlight">\(p_X(2) = P(X=2) = P(\text{HH}) = \frac{1}{4}\)</span>$</p></li>
+<li><p>For any other value of <span class="math notranslate nohighlight">\(x\)</span> (e.g., <span class="math notranslate nohighlight">\(X=3\)</span>):
+$<span class="math notranslate nohighlight">\(p_X(x) = 0\)</span>$</p></li>
+</ul>
+<p>Let’s check the properties:</p>
+<ol class="arabic simple">
+<li><p>All <span class="math notranslate nohighlight">\(p_X(x)\)</span> values are <span class="math notranslate nohighlight">\(\ge 0\)</span>. (Yes: <span class="math notranslate nohighlight">\(1/4, 1/2, 1/4, 0\)</span>).</p></li>
+<li><p>The sum of probabilities is 1:
+$<span class="math notranslate nohighlight">\(p_X(0) + p_X(1) + p_X(2) = \frac{1}{4} + \frac{1}{2} + \frac{1}{4} = \frac{1}{4} + \frac{2}{4} + \frac{1}{4} = \frac{4}{4} = 1\)</span>$
+This confirms that our PMF is valid.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="probability-density-function-pdf">
+<h2>Probability Density Function (PDF)<a class="headerlink" href="#probability-density-function-pdf" title="Link to this heading">#</a></h2>
+<p>When we move from discrete to continuous random variables, the concept of assigning a probability to a single exact value becomes problematic. This is where the Probability Density Function (PDF) becomes essential.</p>
+<section id="why-p-x-x-0-for-continuous-variables">
+<h3>Why <span class="math notranslate nohighlight">\(P(X=x) = 0\)</span> for Continuous Variables?<a class="headerlink" href="#why-p-x-x-0-for-continuous-variables" title="Link to this heading">#</a></h3>
+<p>For a continuous random variable, the probability of <span class="math notranslate nohighlight">\(X\)</span> taking any <em>exact</em> specific value <span class="math notranslate nohighlight">\(x\)</span> is 0. This might seem counterintuitive at first. Consider a random number chosen uniformly between 0 and 1. What is the probability that it’s exactly 0.5? Since there are infinitely many real numbers between 0 and 1, the chance of hitting precisely 0.5 is infinitesimally small. If we assigned a non-zero probability (even a tiny one) to each single point, and there are infinitely many points, the sum of these probabilities would diverge to infinity, violating the normalization axiom that total probability must be 1. Therefore, for continuous variables, we must have <span class="math notranslate nohighlight">\(P(X=x) = 0\)</span>.</p>
+<p>Instead, for continuous random variables, we are interested in the probability that <span class="math notranslate nohighlight">\(X\)</span> falls within a certain <em>interval</em>. The PDF tells us how “dense” the probability is at any given point.</p>
+</section>
+<section id="what-is-a-pdf">
+<h3>What is a PDF?<a class="headerlink" href="#what-is-a-pdf" title="Link to this heading">#</a></h3>
+<p>For a continuous random variable <span class="math notranslate nohighlight">\(X\)</span>, the <strong>Probability Density Function (PDF)</strong>, often denoted as <span class="math notranslate nohighlight">\(f_X(x)\)</span>, describes the <em>relative likelihood</em> for the random variable to take on a given value. It is crucial to understand that, unlike a PMF, the value of <span class="math notranslate nohighlight">\(f_X(x)\)</span> at a specific point <span class="math notranslate nohighlight">\(x\)</span> is <em>not</em> a probability. It is a <em>density</em>. A higher value of <span class="math notranslate nohighlight">\(f_X(x)\)</span> simply means that values around <span class="math notranslate nohighlight">\(x\)</span> are more probable.</p>
+<p>The probability that <span class="math notranslate nohighlight">\(X\)</span> falls within a specific interval <span class="math notranslate nohighlight">\([a, b]\)</span> is given by the integral of the PDF over that interval:</p>
+<div class="math notranslate nohighlight">
+\[P(a \le X \le b) = \int_a^b f_X(x) dx\]</div>
+<p>Because the probability of <span class="math notranslate nohighlight">\(X\)</span> being exactly <span class="math notranslate nohighlight">\(a\)</span> or <span class="math notranslate nohighlight">\(b\)</span> is zero for continuous variables, it follows that <span class="math notranslate nohighlight">\(P(a \le X \le b) = P(a &lt; X &lt; b) = P(a \le X &lt; b) = P(a &lt; X \le b)\)</span>.</p>
+</section>
+<section id="dimensionality-of-the-pdf">
+<h3>Dimensionality of the PDF<a class="headerlink" href="#dimensionality-of-the-pdf" title="Link to this heading">#</a></h3>
+<p>It’s important to note the dimensions of the PDF. Unlike probabilities (PMF values) which are dimensionless, the Probability Density Function <span class="math notranslate nohighlight">\(f_X(x)\)</span> has dimensions of inverse of the random variable’s units.</p>
+<p>For example:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(X\)</span> represents time in seconds (s), then <span class="math notranslate nohighlight">\(f_X(x)\)</span> has units of <span class="math notranslate nohighlight">\(1/\text{s}\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(X\)</span> represents height in meters (m), then <span class="math notranslate nohighlight">\(f_X(x)\)</span> has units of <span class="math notranslate nohighlight">\(1/\text{m}\)</span>.</p></li>
+</ul>
+<p>This is because when we integrate the PDF over an interval <span class="math notranslate nohighlight">\([a, b]\)</span>, we are multiplying <span class="math notranslate nohighlight">\(f_X(x)\)</span> (units of <span class="math notranslate nohighlight">\(1/\text{unit of } X\)</span>) by <span class="math notranslate nohighlight">\(dx\)</span> (units of <span class="math notranslate nohighlight">\(\text{unit of }X\)</span>), resulting in a dimensionless probability:</p>
+<div class="math notranslate nohighlight">
+\[\int_a^b f_X(x) dx \quad \text{has units of } \left( \frac{1}{\text{unit of } X} \right) \cdot (\text{unit of } X) = \text{dimensionless probability}\]</div>
+<p>This reinforces the idea that <span class="math notranslate nohighlight">\(f_X(x)\)</span> itself is not a probability, but a <em>rate</em> or <em>density</em> of probability per unit of the random variable.</p>
+</section>
+<section id="properties-of-a-pdf">
+<h3>Properties of a PDF<a class="headerlink" href="#properties-of-a-pdf" title="Link to this heading">#</a></h3>
+<p>For a function <span class="math notranslate nohighlight">\(f_X(x)\)</span> to be a valid PDF, it must satisfy the following properties, again, stemming from the probability axioms:</p>
+<ol class="arabic simple">
+<li><p><strong>Non-negativity</strong>: The density cannot be negative. This is because probabilities cannot be negative, and the integral of <span class="math notranslate nohighlight">\(f_X(x)\)</span> gives probabilities.
+$<span class="math notranslate nohighlight">\(f_X(x) \ge 0 \quad \text{for all } x \in \mathbb{R}\)</span>$</p></li>
+<li><p><strong>Normalization</strong>: The total area under the curve of the PDF must be equal to 1. This signifies that the random variable must take on some value across its entire range, corresponding to the axiom that the probability of the entire sample space is 1.
+$<span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} f_X(x) dx = 1\)</span>$</p></li>
+</ol>
+</section>
+<section id="conceptual-derivation-and-intuition">
+<h3>Conceptual Derivation and Intuition<a class="headerlink" href="#conceptual-derivation-and-intuition" title="Link to this heading">#</a></h3>
+<p>While a formal “derivation” of a PDF in the physical sense is not typical, we can understand its mathematical definition and intuitive meaning. Formally, a PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> for a continuous random variable <span class="math notranslate nohighlight">\(X\)</span> is defined as the derivative of its Cumulative Distribution Function (CDF), which we will discuss next:</p>
+<div class="math notranslate nohighlight">
+\[f_X(x) = \frac{d}{dx} F_X(x)\]</div>
+<p>(This holds where <span class="math notranslate nohighlight">\(F_X(x)\)</span> is differentiable). This means the PDF is the <em>rate of change</em> of the cumulative probability.</p>
+<p>To build intuition, imagine we create a histogram from a very large dataset of a continuous variable. If we normalize the bars of the histogram so that the <em>total area</em> of all bars equals 1, then the height of each bar represents a “frequency density.” As the number of data points increases and the width of the bins (intervals) becomes infinitesimally small, this histogram approaches a smooth curve. This curve is the PDF.</p>
+<p>From this intuition, we can consider the probability that <span class="math notranslate nohighlight">\(X\)</span> falls into a very small interval <span class="math notranslate nohighlight">\([x, x + \Delta x]\)</span>. This probability would be approximately the height of the curve at <span class="math notranslate nohighlight">\(x\)</span> multiplied by the width of the interval:</p>
+<div class="math notranslate nohighlight">
+\[P(x \le X \le x + \Delta x) \approx f_X(x) \Delta x\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(f_X(x)\)</span> represents the “probability per unit length” or the probability density at point <span class="math notranslate nohighlight">\(x\)</span>. A higher <span class="math notranslate nohighlight">\(f_X(x)\)</span> means that values around <span class="math notranslate nohighlight">\(x\)</span> are more likely to occur.</p>
+<p>From calculus, we know that an integral can be thought of as the sum of infinitely many infinitesimally small products (like <span class="math notranslate nohighlight">\(f_X(x) \Delta x\)</span>). So, if we want the probability over a larger interval <span class="math notranslate nohighlight">\([a, b]\)</span>, we sum these tiny segments:</p>
+<div class="math notranslate nohighlight">
+\[P(a \le X \le b) = \lim_{\Delta x \to 0} \sum_{\text{intervals in } [a,b]} f_X(x_i) \Delta x_i\]</div>
+<p>As <span class="math notranslate nohighlight">\(\Delta x_i \to 0\)</span>, this sum becomes an integral:</p>
+<div class="math notranslate nohighlight">
+\[P(a \le X \le b) = \int_a^b f_X(x) dx\]</div>
+<p>Thus, the PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> represents the rate at which probability accumulates around <span class="math notranslate nohighlight">\(x\)</span>. The area under the PDF curve over an interval gives us the actual probability for <span class="math notranslate nohighlight">\(X\)</span> to fall within that interval. In data science, PDFs are crucial for modeling continuous data, performing statistical inference, and understanding the shape of data distributions.</p>
+</section>
+<section id="example-with-pdf">
+<h3>Example with PDF<a class="headerlink" href="#example-with-pdf" title="Link to this heading">#</a></h3>
+<p>Let’s consider a continuous random variable <span class="math notranslate nohighlight">\(X\)</span> that is uniformly distributed between 0 and 1. This means that any value between 0 and 1 is equally likely, and values outside this range are impossible.</p>
+<p>The PDF for such a uniform distribution is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f_X(x) = \begin{cases} c &amp; \text{for } 0 \le x \le 1 \\ 0 &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+<p>To find the constant <span class="math notranslate nohighlight">\(c\)</span>, we use the normalization property:</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^{\infty} f_X(x) dx = 1\]</div>
+<div class="math notranslate nohighlight">
+\[\int_{0}^{1} c \, dx = 1\]</div>
+<div class="math notranslate nohighlight">
+\[[cx]_{0}^{1} = 1\]</div>
+<div class="math notranslate nohighlight">
+\[c \cdot 1 - c \cdot 0 = 1\]</div>
+<div class="math notranslate nohighlight">
+\[c = 1\]</div>
+<p>So, the PDF for this uniform distribution is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}f_X(x) = \begin{cases} 1 &amp; \text{for } 0 \le x \le 1 \\ 0 &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+<p>Let’s verify its properties:</p>
+<ol class="arabic simple">
+<li><p><strong>Non-negativity</strong>: <span class="math notranslate nohighlight">\(f_X(x)\)</span> is either 1 or 0, so it’s always <span class="math notranslate nohighlight">\(\ge 0\)</span>.</p></li>
+<li><p><strong>Normalization</strong>: We already showed that <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} f_X(x) dx = 1\)</span>.
+The total area under the curve is 1, so it’s a valid PDF.</p></li>
+</ol>
+<p>Now, let’s find the probability that <span class="math notranslate nohighlight">\(X\)</span> falls between 0.2 and 0.7:</p>
+<div class="math notranslate nohighlight">
+\[P(0.2 \le X \le 0.7) = \int_{0.2}^{0.7} f_X(x) dx\]</div>
+<p>Since <span class="math notranslate nohighlight">\(f_X(x) = 1\)</span> in this interval:</p>
+<div class="math notranslate nohighlight">
+\[P(0.2 \le X \le 0.7) = \int_{0.2}^{0.7} 1 \, dx = [x]_{0.2}^{0.7} = 0.7 - 0.2 = 0.5\]</div>
+<p>This makes sense; an interval of length 0.5 within a total range of length 1 should have a probability of 0.5.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="cumulative-distribution-function-cdf">
+<h2>Cumulative Distribution Function (CDF)<a class="headerlink" href="#cumulative-distribution-function-cdf" title="Link to this heading">#</a></h2>
+<p>While PMFs and PDFs describe probabilities at specific points or densities, the <strong>Cumulative Distribution Function (CDF)</strong> offers a unified way to describe the probability distribution for <em>both</em> discrete and continuous random variables. It tells us the probability that a random variable takes on a value less than or equal to a given number.</p>
+<section id="what-is-a-cdf">
+<h3>What is a CDF?<a class="headerlink" href="#what-is-a-cdf" title="Link to this heading">#</a></h3>
+<p>The <strong>Cumulative Distribution Function (CDF)</strong>, denoted as <span class="math notranslate nohighlight">\(F_X(x)\)</span>, for any random variable <span class="math notranslate nohighlight">\(X\)</span> (discrete or continuous), gives the probability that <span class="math notranslate nohighlight">\(X\)</span> will take a value less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x)\]</div>
+<p>This function is incredibly useful because it allows us to calculate probabilities for various intervals, and it provides a complete picture of the probability distribution from <span class="math notranslate nohighlight">\(-\infty\)</span> up to any point <span class="math notranslate nohighlight">\(x\)</span>. CDFs are central to statistical inference, hypothesis testing, and understanding the overall shape and spread of a distribution.</p>
+</section>
+<section id="properties-of-a-cdf">
+<h3>Properties of a CDF<a class="headerlink" href="#properties-of-a-cdf" title="Link to this heading">#</a></h3>
+<p>Every CDF, regardless of whether the random variable is discrete or continuous, must satisfy these properties, which are derived from the basic axioms of probability:</p>
+<ol class="arabic">
+<li><p><strong>Monotonically non-decreasing</strong>: As <span class="math notranslate nohighlight">\(x\)</span> increases, the cumulative probability cannot decrease. If <span class="math notranslate nohighlight">\(x_1 \le x_2\)</span>, then <span class="math notranslate nohighlight">\(F_X(x_1) \le F_X(x_2)\)</span>.
+This is logical; as we include more possible values up to a higher <span class="math notranslate nohighlight">\(x\)</span>, the cumulative probability can only stay the same or increase. We are accumulating probability, so the total accumulated cannot go down.</p></li>
+<li><p><strong>Limits</strong>:</p>
+<ul>
+<li><p>As <span class="math notranslate nohighlight">\(x\)</span> approaches negative infinity, the cumulative probability is 0 (there are no values less than or equal to <span class="math notranslate nohighlight">\(-\infty\)</span>). This reflects the probability of an impossible event.</p>
+<div class="math notranslate nohighlight">
+\[\lim_{x \to -\infty} F_X(x) = 0\]</div>
+</li>
+<li><p>As <span class="math notranslate nohighlight">\(x\)</span> approaches positive infinity, the cumulative probability is 1 (all possible values are included). This reflects the probability of the entire sample space.</p>
+<div class="math notranslate nohighlight">
+\[\lim_{x \to \infty} F_X(x) = 1\]</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Right-continuity</strong>: The CDF is always continuous from the right. This means that for any point <span class="math notranslate nohighlight">\(x_0\)</span>, the limit of <span class="math notranslate nohighlight">\(F_X(x)\)</span> as <span class="math notranslate nohighlight">\(x\)</span> approaches <span class="math notranslate nohighlight">\(x_0\)</span> from values greater than <span class="math notranslate nohighlight">\(x_0\)</span> is equal to <span class="math notranslate nohighlight">\(F_X(x_0)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\lim_{x \to x_0^+} F_X(x) = F_X(x_0)\]</div>
+<p>This property is particularly important for discrete random variables, where the CDF exhibits “jumps” (step discontinuities) at each possible value. By defining <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x)\)</span>, we include the probability of <span class="math notranslate nohighlight">\(x\)</span> itself in the cumulative sum. For example, <span class="math notranslate nohighlight">\(F_X(x_0)\)</span> includes <span class="math notranslate nohighlight">\(P(X=x_0)\)</span>, while <span class="math notranslate nohighlight">\(F_X(x_0 - \epsilon)\)</span> for a tiny <span class="math notranslate nohighlight">\(\epsilon &gt; 0\)</span> does not. Right-continuity ensures that <span class="math notranslate nohighlight">\(F_X(x_0)\)</span> properly captures all probability up to and including <span class="math notranslate nohighlight">\(x_0\)</span>. If we were to define it as <span class="math notranslate nohighlight">\(P(X &lt; x)\)</span>, it would instead be left-continuous. The standard definition <span class="math notranslate nohighlight">\(P(X \le x)\)</span> makes it right-continuous.</p>
+</li>
+</ol>
+<p>The CDF is incredibly useful because it allows us to easily calculate the probability that <span class="math notranslate nohighlight">\(X\)</span> falls within any interval <span class="math notranslate nohighlight">\((a, b]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(a &lt; X \le b) = F_X(b) - F_X(a)\]</div>
+<p>For continuous random variables, since <span class="math notranslate nohighlight">\(P(X=a)=0\)</span>, we also have:</p>
+<div class="math notranslate nohighlight">
+\[P(a \le X \le b) = F_X(b) - F_X(a)\]</div>
+<p>This means the probability of <span class="math notranslate nohighlight">\(X\)</span> falling into any interval can always be found using the CDF.</p>
+</section>
+<section id="derivation-for-discrete-random-variables">
+<h3>Derivation for Discrete Random Variables<a class="headerlink" href="#derivation-for-discrete-random-variables" title="Link to this heading">#</a></h3>
+<p>For a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>, the CDF <span class="math notranslate nohighlight">\(F_X(x)\)</span> is found by summing the probabilities of all possible values of <span class="math notranslate nohighlight">\(X\)</span> that are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. This is a direct definition of cumulative probability from the PMF.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = \sum_{t \le x} p_X(t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(p_X(t)\)</span> is the PMF of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>The CDF for a discrete random variable will always be a step function, where the “jumps” occur at the specific values the random variable can take, and the height of each jump corresponds to the probability (PMF value) at that point.</p>
+<p>Let’s revisit our two-coin flip example where <span class="math notranslate nohighlight">\(X\)</span> is the number of heads (<span class="math notranslate nohighlight">\(p_X(0)=1/4, p_X(1)=1/2, p_X(2)=1/4\)</span>).</p>
+<ul>
+<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>: There are no possible values less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = 0\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: Only <span class="math notranslate nohighlight">\(X=0\)</span> is less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = p_X(0) = \frac{1}{4}\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(1 \le x &lt; 2\)</span>: Values <span class="math notranslate nohighlight">\(X=0\)</span> and <span class="math notranslate nohighlight">\(X=1\)</span> are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = p_X(0) + p_X(1) = \frac{1}{4} + \frac{1}{2} = \frac{3}{4}\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(x \ge 2\)</span>: Values <span class="math notranslate nohighlight">\(X=0, X=1, X=2\)</span> are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = p_X(0) + p_X(1) + p_X(2) = \frac{1}{4} + \frac{1}{2} + \frac{1}{4} = 1\]</div>
+</li>
+</ul>
+<p>So, the CDF for this discrete random variable is a step function:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}F_X(x) = \begin{cases} 0 &amp; \text{for } x &lt; 0 \\ 1/4 &amp; \text{for } 0 \le x &lt; 1 \\ 3/4 &amp; \text{for } 1 \le x &lt; 2 \\ 1 &amp; \text{for } x \ge 2 \end{cases}\end{split}\]</div>
+</section>
+<section id="derivation-for-continuous-random-variables">
+<h3>Derivation for Continuous Random Variables<a class="headerlink" href="#derivation-for-continuous-random-variables" title="Link to this heading">#</a></h3>
+<p>For a continuous random variable <span class="math notranslate nohighlight">\(X\)</span>, the CDF <span class="math notranslate nohighlight">\(F_X(x)\)</span> is found by integrating the PDF <span class="math notranslate nohighlight">\(f_X(t)\)</span> from negative infinity up to <span class="math notranslate nohighlight">\(x\)</span>. This is also a direct definition, reflecting the accumulation of probability density over a continuous range.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = \int_{-\infty}^{x} f_X(t) dt\]</div>
+<p>For continuous random variables, the CDF is always a continuous function, representing a smooth accumulation of probability.</p>
+<p>Conversely, as mentioned earlier, if the CDF <span class="math notranslate nohighlight">\(F_X(x)\)</span> is differentiable at a point <span class="math notranslate nohighlight">\(x\)</span>, then the PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> can be found by differentiating the CDF with respect to <span class="math notranslate nohighlight">\(x\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f_X(x) = \frac{d}{dx} F_X(x)\]</div>
+<p>This relationship is a fundamental theorem of calculus applied to probability. <strong>It shows that the PDF is essentially the “rate of change” of the cumulative probability.</strong> Where the PDF is high, the CDF is rising steeply, indicating a region where values of <span class="math notranslate nohighlight">\(X\)</span> are more probable.</p>
+<p>Let’s use our uniform distribution example, where <span class="math notranslate nohighlight">\(f_X(x) = 1\)</span> for <span class="math notranslate nohighlight">\(0 \le x \le 1\)</span> and <span class="math notranslate nohighlight">\(0\)</span> otherwise.</p>
+<ul>
+<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = \int_{-\infty}^{x} 0 \, dt = 0\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: We integrate from 0 to <span class="math notranslate nohighlight">\(x\)</span> because the PDF is 0 before 0.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = \int_{-\infty}^{x} f_X(t) \, dt = \int_{0}^{x} 1 \, dt = [t]_{0}^{x} = x\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(x \ge 1\)</span>: We integrate the entire non-zero part of the PDF, which accumulates to 1.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = \int_{-\infty}^{x} f_X(t) \, dt = \int_{0}^{1} 1 \, dt + \int_{1}^{x} 0 \, dt = [t]_{0}^{1} + 0 = 1 - 0 = 1\]</div>
+</li>
+</ul>
+<p>So, the CDF for the uniform random variable is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}F_X(x) = \begin{cases} 0 &amp; \text{for } x &lt; 0 \\ x &amp; \text{for } 0 \le x &lt; 1 \\ 1 &amp; \text{for } x \ge 1 \end{cases}\end{split}\]</div>
+<p>We can check that differentiating <span class="math notranslate nohighlight">\(F_X(x)\)</span> in the range <span class="math notranslate nohighlight">\(0 &lt; x &lt; 1\)</span> gives us <span class="math notranslate nohighlight">\(f_X(x)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d}{dx} (x) = 1\]</div>
+<p>which matches our PDF.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="key-relationships-between-pmf-pdf-and-cdf">
+<h2>Key Relationships between PMF, PDF, and CDF<a class="headerlink" href="#key-relationships-between-pmf-pdf-and-cdf" title="Link to this heading">#</a></h2>
+<p>The CDF serves as a central link between the PMF (for discrete variables) and the PDF (for continuous variables), providing a unified way to describe probability distributions.</p>
+<ul>
+<li><p><strong>For discrete random variables</strong>:</p>
+<ul>
+<li><p><strong>PMF to CDF</strong>: We sum the PMF values to get the CDF.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = \sum_{t \le x} p_X(t)\]</div>
+</li>
+<li><p><strong>CDF to PMF</strong>: We can find the PMF from the CDF by looking at the “jumps” in the step function.</p>
+<div class="math notranslate nohighlight">
+\[p_X(x) = F_X(x) - \lim_{t \to x^-} F_X(t)\]</div>
+<p>(This is the size of the jump at point <span class="math notranslate nohighlight">\(x\)</span>).</p>
+</li>
+</ul>
+</li>
+<li><p><strong>For continuous random variables</strong>:</p>
+<ul>
+<li><p><strong>PDF to CDF</strong>: We integrate the PDF to get the CDF.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = \int_{-\infty}^{x} f_X(t) dt\]</div>
+</li>
+<li><p><strong>CDF to PDF</strong>: We differentiate the CDF to get the PDF (where the CDF is differentiable).</p>
+<div class="math notranslate nohighlight">
+\[f_X(x) = \frac{d}{dx} F_X(x)\]</div>
+</li>
+</ul>
+</li>
+</ul>
+<p>The CDF is also incredibly useful for calculating probabilities over intervals for <em>any</em> type of random variable:</p>
+<div class="math notranslate nohighlight">
+\[P(a &lt; X \le b) = F_X(b) - F_X(a)\]</div>
+<p>For continuous random variables, since <span class="math notranslate nohighlight">\(P(X=a)=0\)</span>, we also have:</p>
+<div class="math notranslate nohighlight">
+\[P(a \le X \le b) = F_X(b) - F_X(a)\]</div>
+<p>This means the probability of <span class="math notranslate nohighlight">\(X\)</span> falling into any interval can always be found using the CDF.</p>
+</section>
+<hr class="docutils" />
+<section id="advanced-considerations-and-deeper-insights">
+<h2>Advanced Considerations and Deeper Insights<a class="headerlink" href="#advanced-considerations-and-deeper-insights" title="Link to this heading">#</a></h2>
+<p>While we have covered the foundational aspects in detail, a truly thorough understanding benefits from exploring some edge cases and more abstract interpretations.</p>
+<section id="inverse-cdf-quantile-function">
+<h3>Inverse CDF (Quantile Function)<a class="headerlink" href="#inverse-cdf-quantile-function" title="Link to this heading">#</a></h3>
+<p>An important concept related to the CDF, especially in data science and statistics, is the <strong>inverse CDF</strong>, also known as the <strong>quantile function</strong>, often denoted <span class="math notranslate nohighlight">\(F_X^{-1}(p)\)</span>. For a given probability <span class="math notranslate nohighlight">\(p \in [0, 1]\)</span>, the quantile function returns the value <span class="math notranslate nohighlight">\(x\)</span> such that <span class="math notranslate nohighlight">\(P(X \le x) = p\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X^{-1}(p) = x \quad \text{such that } F_X(x) = p\]</div>
+<p>This is how we define percentiles, quartiles, and the median of a distribution. For instance, the median is <span class="math notranslate nohighlight">\(F_X^{-1}(0.5)\)</span>. In simulations, the inverse CDF is used to generate random numbers from any distribution, given a uniform random number. This is a powerful tool for Monte Carlo methods and bootstrapping.</p>
+</section>
+<section id="mixed-random-variables">
+<h3>Mixed Random Variables<a class="headerlink" href="#mixed-random-variables" title="Link to this heading">#</a></h3>
+<p>Our discussion has largely categorized random variables as strictly discrete or strictly continuous. However, some real-world phenomena exhibit characteristics of both. These are called <strong>mixed random variables</strong>. For example, the amount of rainfall in a day might have a non-zero probability of being exactly 0 (a discrete point) and then a continuous distribution for positive amounts of rain.</p>
+<p>For mixed random variables:</p>
+<ul class="simple">
+<li><p>Neither a PMF nor a PDF alone can fully describe the distribution.</p></li>
+<li><p>The <strong>CDF remains the unifying tool</strong>, exhibiting both “jumps” (at discrete points with non-zero probability) and continuous, smoothly increasing segments.</p></li>
+<li><p>The concept of a PDF can be extended to handle discrete points using the <strong>Dirac delta function</strong> (<span class="math notranslate nohighlight">\(\delta(x)\)</span>), which is a “generalized function” with infinite density at a single point and zero elsewhere, such that its integral is 1. For a degenerate discrete variable <span class="math notranslate nohighlight">\(X=c\)</span>, its “PDF” would be <span class="math notranslate nohighlight">\(f_X(x) = \delta(x-c)\)</span>. This shows how the PDF framework can be stretched to encompass point probabilities.</p></li>
+</ul>
+</section>
+<section id="probability-distributions-as-measures-the-unifying-mathematical-view">
+<h3>Probability Distributions as Measures: The Unifying Mathematical View<a class="headerlink" href="#probability-distributions-as-measures-the-unifying-mathematical-view" title="Link to this heading">#</a></h3>
+<p>At a more abstract level, probability distributions are fundamentally <strong>probability measures</strong>. The PMF and PDF can be seen as “densities” with respect to different underlying mathematical measures:</p>
+<ul class="simple">
+<li><p>For <strong>discrete random variables</strong>, the PMF <span class="math notranslate nohighlight">\(p_X(x)\)</span> acts as a density with respect to the <strong>counting measure</strong>. Summation is essentially integration with respect to the counting measure. Counting measure is an intuitive way to put a measure on any set - the “size” of a subset is taken to be the number of elements in the subset if the subset has finitely many elements, and infinity <span class="math notranslate nohighlight">\(\infty\)</span> if the subset is infinite.</p></li>
+<li><p>For <strong>continuous random variables</strong>, the PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> acts as a density with respect to the <strong>Lebesgue measure</strong> (which corresponds to our intuitive notion of length or volume on the real line). Integration is then the standard Lebesgue integral.</p></li>
+</ul>
+<p>This powerful mathematical framework, rooted in measure theory (specifically the Radon-Nikodym theorem), formally unifies the concepts of PMF and PDF, explaining <em>why</em> we sum for discrete cases and integrate for continuous cases, rather than just stating it as a definition. The CDF then serves as a way to represent this underlying probability measure.</p>
+</section>
+<section id="information-theoretic-perspective">
+<h3>Information-Theoretic Perspective<a class="headerlink" href="#information-theoretic-perspective" title="Link to this heading">#</a></h3>
+<p>From an information theory perspective, a probability distribution quantifies the uncertainty or “surprise” associated with the outcomes of a random variable. A distribution with high probability/density concentrated around a few values implies low uncertainty, while a more spread-out (e.g., uniform) distribution implies higher uncertainty. Concepts like entropy directly build upon these distributions to measure the average information content.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+</section>
+<section id="additional-materials">
+<h2>Additional materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Random_variable">https://en.wikipedia.org/wiki/Random_variable</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_space">https://en.wikipedia.org/wiki/Probability_space</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Sample_space">https://en.wikipedia.org/wiki/Sample_space</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Event_(probability_theory)">https://en.wikipedia.org/wiki/Event_(probability_theory)</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_measure">https://en.wikipedia.org/wiki/Probability_measure</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_axioms">https://en.wikipedia.org/wiki/Probability_axioms</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_mass_function">https://en.wikipedia.org/wiki/Probability_mass_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_density_function">https://en.wikipedia.org/wiki/Probability_density_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">https://en.wikipedia.org/wiki/Cumulative_distribution_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Continuous_uniform_distribution">https://en.wikipedia.org/wiki/Continuous_uniform_distribution</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Measurable_function">https://en.wikipedia.org/wiki/Measurable_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Borel_set">https://en.wikipedia.org/wiki/Borel_set</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Quantile_function">https://en.wikipedia.org/wiki/Quantile_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dirac_delta_function">https://en.wikipedia.org/wiki/Dirac_delta_function</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Measure_(mathematics)">https://en.wikipedia.org/wiki/Measure_(mathematics)</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Counting_measure">https://en.wikipedia.org/wiki/Counting_measure</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Lebesgue_measure">https://en.wikipedia.org/wiki/Lebesgue_measure</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">https://en.wikipedia.org/wiki/Entropy_(information_theory)</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fourier-transform-01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Fourier Transform</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pmf-pdf-cdf-code.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">PMF, PDF, CDF - Code Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-random-variable">What is a Random Variable?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discrete-random-variables">Discrete Random Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-random-variables">Continuous Random Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-pmf">What is a PMF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-pmf">Properties of a PMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#construction-and-intuition">Construction and Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-pmf">Example with PMF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-density-function-pdf">Probability Density Function (PDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-p-x-x-0-for-continuous-variables">Why <span class="math notranslate nohighlight">\(P(X=x) = 0\)</span> for Continuous Variables?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-pdf">What is a PDF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dimensionality-of-the-pdf">Dimensionality of the PDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-pdf">Properties of a PDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-derivation-and-intuition">Conceptual Derivation and Intuition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-with-pdf">Example with PDF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-cdf">What is a CDF?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-a-cdf">Properties of a CDF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-for-discrete-random-variables">Derivation for Discrete Random Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-for-continuous-random-variables">Derivation for Continuous Random Variables</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-relationships-between-pmf-pdf-and-cdf">Key Relationships between PMF, PDF, and CDF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-considerations-and-deeper-insights">Advanced Considerations and Deeper Insights</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-cdf-quantile-function">Inverse CDF (Quantile Function)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mixed-random-variables">Mixed Random Variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-distributions-as-measures-the-unifying-mathematical-view">Probability Distributions as Measures: The Unifying Mathematical View</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-theoretic-perspective">Information-Theoretic Perspective</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
