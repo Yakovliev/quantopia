@@ -116,10 +116,15 @@ The **mode** of a discrete distribution is the value that occurs with the highes
 The CDF for a Bernoulli random variable $X$ is a step function. The CDF $F_X(x) = P(X \le x)$ is found by summing the probabilities from the PMF for all values less than or equal to $x$.
 
 *   For $x < 0$: No possible outcomes are less than or equal to $x$.
+
     $$F_X(x) = P(X \le x) = 0$$
+
 *   For $0 \le x < 1$: Only $X=0$ is a possible outcome less than or equal to $x$.
+
     $$F_X(x) = P(X \le x) = P(X=0) = 1-p$$
+
 *   For $x \ge 1$: Both $X=0$ and $X=1$ are possible outcomes less than or equal to $x$.
+
     $$F_X(x) = P(X \le x) = P(X=0) + P(X=1) = (1-p) + p = 1$$
 
 So, the CDF for a Bernoulli random variable is:

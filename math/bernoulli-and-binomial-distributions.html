@@ -573,13 +573,19 @@ document.write(`
 <section id="cumulative-distribution-function-cdf">
 <h3>Cumulative Distribution Function (CDF)<a class="headerlink" href="#cumulative-distribution-function-cdf" title="Link to this heading">#</a></h3>
 <p>The CDF for a Bernoulli random variable <span class="math notranslate nohighlight">\(X\)</span> is a step function. The CDF <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x)\)</span> is found by summing the probabilities from the PMF for all values less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<ul class="simple">
-<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>: No possible outcomes are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
-$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = 0\)</span>$</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: Only <span class="math notranslate nohighlight">\(X=0\)</span> is a possible outcome less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
-$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) = 1-p\)</span>$</p></li>
-<li><p>For <span class="math notranslate nohighlight">\(x \ge 1\)</span>: Both <span class="math notranslate nohighlight">\(X=0\)</span> and <span class="math notranslate nohighlight">\(X=1\)</span> are possible outcomes less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
-$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) + P(X=1) = (1-p) + p = 1\)</span>$</p></li>
+<ul>
+<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>: No possible outcomes are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = 0\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: Only <span class="math notranslate nohighlight">\(X=0\)</span> is a possible outcome less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = P(X=0) = 1-p\]</div>
+</li>
+<li><p>For <span class="math notranslate nohighlight">\(x \ge 1\)</span>: Both <span class="math notranslate nohighlight">\(X=0\)</span> and <span class="math notranslate nohighlight">\(X=1\)</span> are possible outcomes less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = P(X=0) + P(X=1) = (1-p) + p = 1\]</div>
+</li>
 </ul>
 <p>So, the CDF for a Bernoulli random variable is:</p>
 <div class="math notranslate nohighlight">
