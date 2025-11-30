@@ -62,7 +62,7 @@
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Experimental Errors and Significant Figures" href="uncertainties-introduction.html" />
+    <link rel="next" title="Bernoulli Distribution and Binomial Distributions" href="bernoulli-and-binomial-distributions.html" />
     <link rel="prev" title="Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function" href="pmf-pdf-cdf.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -181,7 +181,7 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH 2</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
@@ -189,6 +189,8 @@
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf.html">Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">PMF, PDF, CDF - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions.html">Bernoulli Distribution and Binomial Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions-code.html">Bernoulli Distribution and Binomial Distributions - Code Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
 <li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
@@ -478,7 +480,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/7faabdd466ffac66b72da4a8ce69eda0e8392007a0ed7743409c7a93ed5bc9bb.png" src="../_images/7faabdd466ffac66b72da4a8ce69eda0e8392007a0ed7743409c7a93ed5bc9bb.png" />
+<img alt="../_images/70953fce3224d337cf8f413d3be67c8174147336f77c1a1e6830ca3666527915.png" src="../_images/70953fce3224d337cf8f413d3be67c8174147336f77c1a1e6830ca3666527915.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -500,7 +502,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e705dea7c6ab9f94580d5c4ac1f601a4ae48ac73466639483805f9501d91704d.png" src="../_images/e705dea7c6ab9f94580d5c4ac1f601a4ae48ac73466639483805f9501d91704d.png" />
+<img alt="../_images/c15fab7ac8f641f9cc454abd662afb1e61406fe8a247ccacbe23ecbe0d1df7ae.png" src="../_images/c15fab7ac8f641f9cc454abd662afb1e61406fe8a247ccacbe23ecbe0d1df7ae.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -550,7 +552,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/d6ecdee715b917ec3500f7f18fd3f9f17485b075962442f08e2ce0b23c7f05c4.png" src="../_images/d6ecdee715b917ec3500f7f18fd3f9f17485b075962442f08e2ce0b23c7f05c4.png" />
+<img alt="../_images/1dcd6dce506c258faa6652910f4f51bc1dfd30e828d88b49bf8f676f15426e9b.png" src="../_images/1dcd6dce506c258faa6652910f4f51bc1dfd30e828d88b49bf8f676f15426e9b.png" />
 </div>
 </div>
 <p>Using Seaborn: Seaborn’s <code class="docutils literal notranslate"><span class="pre">ecdfplot</span></code> provides a direct way to plot the Empirical Cumulative Distribution Function (ECDF).[8][11]</p>
@@ -573,7 +575,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/cffb19fc125d8b62206f280da58dce4fdb8827f34c7e15eb619b68fcdbb377ad.png" src="../_images/cffb19fc125d8b62206f280da58dce4fdb8827f34c7e15eb619b68fcdbb377ad.png" />
+<img alt="../_images/b74371d38603adff3b55faecbb5c4c6ccc1b740937bc765852f6cbd12a4af489.png" src="../_images/b74371d38603adff3b55faecbb5c4c6ccc1b740937bc765852f6cbd12a4af489.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -597,30 +599,30 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;fit..
 [distfit] &gt;transform..
-[distfit] &gt;[norm      ] [0.00 sec] [RSS: 0.0074896] [loc=10.043 scale=1.993]
-[distfit] &gt;[expon     ] [0.00 sec] [RSS: 0.3853984] [loc=3.724 scale=6.319]
-[distfit] &gt;[pareto    ] [0.00 sec] [RSS: 0.3853984] [loc=-536870908.276 scale=536870912.000]
-[distfit] &gt;[dweibull  ] [0.02 sec] [RSS: 0.0111935] [loc=10.124 scale=1.706]
-[distfit] &gt;[t         ] [0.15 sec] [RSS: 0.0074840] [loc=10.043 scale=1.992]
+[distfit] &gt;[norm      ] [0.00 sec] [RSS: 0.0044179] [loc=9.972 scale=2.051]
+[distfit] &gt;[expon     ] [0.00 sec] [RSS: 0.3337975] [loc=1.217 scale=8.754]
+[distfit] &gt;[pareto    ] [0.00 sec] [RSS: 0.3337975] [loc=-1073741822.783 scale=1073741824.000]
+[distfit] &gt;[dweibull  ] [0.02 sec] [RSS: 0.0066537] [loc=10.056 scale=1.757]
+[distfit] &gt;[t         ] [0.14 sec] [RSS: 0.0044181] [loc=9.972 scale=2.050]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[genextreme] [0.05 sec] [RSS: 0.0084754] [loc=9.304 scale=1.978]
-[distfit] &gt;[gamma     ] [0.07 sec] [RSS: 0.0072333] [loc=-74.115 scale=0.047]
-[distfit] &gt;[lognorm   ] [0.00 sec] [RSS: 0.0072313] [loc=-115.900 scale=125.927]
-[distfit] &gt;[beta      ] [0.12 sec] [RSS: 0.0072165] [loc=-66.710 scale=8596.306]
-[distfit] &gt;[uniform   ] [0.00 sec] [RSS: 0.2595379] [loc=3.724 scale=12.956]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[genextreme] [0.07 sec] [RSS: 0.0069078] [loc=9.197 scale=2.056]
+[distfit] &gt;[gamma     ] [0.07 sec] [RSS: 0.0045813] [loc=-109.617 scale=0.035]
+[distfit] &gt;[lognorm   ] [0.00 sec] [RSS: 0.0044181] [loc=-131070.783 scale=131080.754]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[loggamma  ] [0.05 sec] [RSS: 0.0077714] [loc=-424.653 scale=62.999]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[beta      ] [0.15 sec] [RSS: 0.0042454] [loc=-131637.004 scale=131705.821]
+[distfit] &gt;[uniform   ] [0.00 sec] [RSS: 0.2401762] [loc=1.217 scale=16.330]
+[distfit] &gt;[loggamma  ] [0.04 sec] [RSS: 0.0042979] [loc=-335.788 scale=53.122]
 [distfit] &gt;Compute confidence interval [parametric]
 [distfit] &gt;plot..
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;Figure size 1000x800 with 1 Axes&gt;,
- &lt;Axes: title={&#39;center&#39;: &#39;\nbeta\na=1469.34, b=163096.95, loc=-66.71, scale=8596.31&#39;}, xlabel=&#39;Values&#39;, ylabel=&#39;Frequency&#39;&gt;)
+ &lt;Axes: title={&#39;center&#39;: &#39;\nbeta\na=1842016.31, b=823.32, loc=-131637.00, scale=131705.82&#39;}, xlabel=&#39;Values&#39;, ylabel=&#39;Frequency&#39;&gt;)
 </pre></div>
 </div>
-<img alt="../_images/2e4978590cb3af24b8c4499ec8acba6826e8889a7943220e99fdc893791a43c5.png" src="../_images/2e4978590cb3af24b8c4499ec8acba6826e8889a7943220e99fdc893791a43c5.png" />
+<img alt="../_images/000c7cc3672061a84613fcebc5bf45223b10ff74389d7facc240e51991f01d18.png" src="../_images/000c7cc3672061a84613fcebc5bf45223b10ff74389d7facc240e51991f01d18.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -634,34 +636,30 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;fit..
 [distfit] &gt;transform..
-[distfit] &gt;[norm      ] [0.00 sec] [RSS: 0.0337011] [loc=5.060 scale=5.205]
-[distfit] &gt;[expon     ] [0.00 sec] [RSS: 0.0011196] [loc=0.002 scale=5.058]
-[distfit] &gt;[pareto    ] [0.00 sec] [RSS: 0.0012155] [loc=-182.813 scale=182.815]
+[distfit] &gt;[norm      ] [0.00 sec] [RSS: 0.0390192] [loc=4.958 scale=4.856]
+[distfit] &gt;[expon     ] [0.00 sec] [RSS: 0.0005797] [loc=0.000 scale=4.958]
+[distfit] &gt;[pareto    ] [0.00 sec] [RSS: 0.0005797] [loc=-167772160.000 scale=167772160.000]
+[distfit] &gt;[dweibull  ] [0.02 sec] [RSS: 0.0317778] [loc=3.955 scale=3.577]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[dweibull  ] [0.10 sec] [RSS: 0.0235230] [loc=3.279 scale=3.393]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[t         ] [0.18 sec] [RSS: 0.0286863] [loc=3.709 scale=3.048]
+[distfit] &gt;[genextreme] [0.08 sec] [RSS: 0.0097742] [loc=2.298 scale=2.322]
+[distfit] &gt;[gamma     ] [0.02 sec] [RSS: 0.0006165] [loc=0.000 scale=4.902]
+[distfit] &gt;[lognorm   ] [0.00 sec] [RSS: 0.0051874] [loc=-0.356 scale=3.513]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[t         ] [0.13 sec] [RSS: 0.0180819] [loc=3.405 scale=2.653]
-[distfit] &gt;[genextreme] [0.06 sec] [RSS: 0.0033189] [loc=2.336 scale=2.295]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[gamma     ] [0.07 sec] [RSS: 0.0010753] [loc=0.002 scale=5.028]
-[distfit] &gt;[lognorm   ] [0.00 sec] [RSS: 0.0011644] [loc=-0.394 scale=3.645]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[beta      ] [0.12 sec] [RSS: 0.0011286] [loc=0.002 scale=800.137]
-[distfit] &gt;[uniform   ] [0.00 sec] [RSS: 0.0846786] [loc=0.002 scale=46.488]
-[distfit] &gt;[loggamma  ] [0.05 sec] [RSS: 0.0348923] [loc=-2007.354 scale=259.524]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[distfit] &gt;[beta      ] [0.11 sec] [RSS: 0.0005820] [loc=0.000 scale=334.208]
+[distfit] &gt;[uniform   ] [0.00 sec] [RSS: 0.0964926] [loc=0.000 scale=38.567]
+[distfit] &gt;[loggamma  ] [0.05 sec] [RSS: 0.0397710] [loc=-1479.889 scale=200.268]
 [distfit] &gt;Compute confidence interval [parametric]
 [distfit] &gt;plot..
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&lt;Figure size 1000x800 with 1 Axes&gt;,
- &lt;Axes: title={&#39;center&#39;: &#39;\ngamma\na=1.01, loc=0.00, scale=5.03&#39;}, xlabel=&#39;Values&#39;, ylabel=&#39;Frequency&#39;&gt;)
+ &lt;Axes: title={&#39;center&#39;: &#39;\nexpon\nloc=0.00, scale=4.96&#39;}, xlabel=&#39;Values&#39;, ylabel=&#39;Frequency&#39;&gt;)
 </pre></div>
 </div>
-<img alt="../_images/0bb865c828e38bb1f3fe4ea0d29ee3165dbed93a165b7f43e29954dc0a2a4a4b.png" src="../_images/0bb865c828e38bb1f3fe4ea0d29ee3165dbed93a165b7f43e29954dc0a2a4a4b.png" />
+<img alt="../_images/a8e9fe3129e9b8b55c2bafa75ef0a62178ddd6310c0a18fbd5c051453e0f58c1.png" src="../_images/a8e9fe3129e9b8b55c2bafa75ef0a62178ddd6310c0a18fbd5c051453e0f58c1.png" />
 </div>
 </div>
 </section>
@@ -707,11 +705,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="uncertainties-introduction.html"
+       href="bernoulli-and-binomial-distributions.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Experimental Errors and Significant Figures</p>
+        <p class="prev-next-title">Bernoulli Distribution and Binomial Distributions</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

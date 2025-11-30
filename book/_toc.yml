@@ -18,6 +18,7 @@ parts:
       - file: math/pmf-pdf-cdf
       - file: math/pmf-pdf-cdf-code
       - file: math/bernoulli-and-binomial-distributions
+      - file: math/bernoulli-and-binomial-distributions-code
       # - file: math/poisson-distribution
       - file: math/uncertainties-introduction
       - file: math/least-squares-regression
