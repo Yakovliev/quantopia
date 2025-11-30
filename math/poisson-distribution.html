@@ -1,0 +1,1492 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Poisson Distribution &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/poisson-distribution';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf.html">Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf-code.html">PMF, PDF, CDF - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions.html">Bernoulli Distribution and Binomial Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions-code.html">Bernoulli Distribution and Binomial Distributions - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance-code.html">Variance and Covariance - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients.html">Correlation Coefficients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients-code.html">Correlation Coefficients - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA ANALYSIS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-analysis/rate-of-return-metrics.html">Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/poisson-distribution.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/poisson-distribution.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Poisson Distribution</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Poisson Distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-poisson-process-and-its-conditions">The Poisson Process and its Conditions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-lambda">The Parameter <span class="math notranslate nohighlight">\(\lambda\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-pmf-from-the-binomial-distribution">Derivation of the PMF from the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-pmf-validation">Properties of the PMF (Validation)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean">Expected Value (Mean)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mean">Derivation of the Mean</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-variance">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-poisson-distribution">Mode of the Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mode">Derivation of the Mode</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-and-analogies">Examples and Analogies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-website-traffic">Example: Website Traffic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-other-distributions">Relationship to Other Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-approximation-to-the-binomial-distribution">Poisson Approximation to the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-the-exponential-distribution">Relationship to the Exponential Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-approximation">Normal Approximation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-insights">Further Insights</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-of-the-poisson-pmf">Shape of the Poisson PMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-in-stochastic-processes">Applications in Stochastic Processes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-of-pmf-normalization">Verification of PMF Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean-of-a-poisson-distribution">Expected Value (Mean) of a Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Derivation of the Mean</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-of-a-poisson-distribution">Variance of a Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Cumulative Distribution Function (CDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-cdf">Derivation of the CDF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-poisson-distribution">Example of Poisson Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Poisson Distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-poisson-distribution">What is a Poisson Distribution?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-of-the-poisson-distribution">Parameters of the Poisson Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clarification-on-units-for-lambda">Clarification on Units for <span class="math notranslate nohighlight">\(\lambda\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-in-data-science">Parameter Estimation in Data Science</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-pmf-as-a-limit-of-binomial-distribution">Derivation of the PMF (as a limit of Binomial Distribution)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Expected Value (Mean)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-expected-value">Derivation of the Expected Value</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Cumulative Distribution Function (CDF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-and-analogy">Example and Analogy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#relationships-and-approximations">Relationships and Approximations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-to-poisson-approximation">Binomial to Poisson Approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-poisson-vs-binomial">When to Use Poisson vs. Binomial</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-checks-and-real-world-considerations">Diagnostic Checks and Real-World Considerations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goodness-of-fit-and-assumption-verification">Goodness-of-Fit and Assumption Verification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdispersion-in-poisson-data">Overdispersion in Poisson Data</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusion">Summary and Conclusion</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-applications-in-data-science">Advanced Applications in Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-these-basics-related-distributions">Beyond These Basics: Related Distributions</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="poisson-distribution">
+<h1>Poisson Distribution<a class="headerlink" href="#poisson-distribution" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>The <strong>Poisson distribution</strong> is a discrete probability distribution that models the probability of a given number of events occurring in a fixed interval of time or space, provided these events occur with a known constant mean rate and independently of the time since the last event. It is particularly adept at modeling <strong>rare events</strong>, or events that happen infrequently, within a given context where we are counting occurrences rather than a fixed number of trials (as in the Binomial distribution).</p>
+<p>Consider phenomena such as:</p>
+<ul class="simple">
+<li><p>The number of phone calls received by a call center in an hour.</p></li>
+<li><p>The number of typos on a page of a book.</p></li>
+<li><p>The number of radioactive decays detected by a Geiger counter in a given minute.</p></li>
+<li><p>The number of defects in a certain length of cable.</p></li>
+<li><p>The number of meteors observed in a specific area of the sky during a defined period.</p></li>
+</ul>
+<p>In all these scenarios, we are counting discrete events over a continuous interval (time, length, area, or volume). The Poisson distribution provides the framework to understand the likelihood of observing <span class="math notranslate nohighlight">\(k\)</span> such events.</p>
+</section>
+<section id="the-poisson-process-and-its-conditions">
+<h2>The Poisson Process and its Conditions<a class="headerlink" href="#the-poisson-process-and-its-conditions" title="Link to this heading">#</a></h2>
+<p>The Poisson distribution arises from a stochastic process known as the <strong>Poisson Process</strong>. A Poisson process describes a sequence of events that occur randomly and independently over time or space. For a discrete random variable <span class="math notranslate nohighlight">\(X\)</span> to follow a <strong>Poisson distribution</strong>, it must represent the number of events in a fixed interval generated by a Poisson process. The underlying conditions (often called axioms) for such a process are crucial:</p>
+<ol class="arabic simple">
+<li><p><strong>Independence of Events</strong>: The occurrence of an event in one interval (or sub-interval) does not affect the probability of another event occurring in any other non-overlapping interval. This means events happen purely by chance, without memory.</p></li>
+<li><p><strong>Constant Average Rate (Homogeneity)</strong>: The average rate at which events occur, denoted by <span class="math notranslate nohighlight">\(\lambda\)</span> (lambda), is constant over the entire interval of observation. This means the probability of an event occurring in a given small sub-interval is the same for all small sub-intervals of equal length.</p></li>
+<li><p><strong>Events are “Rare” in Infinitesimal Intervals (Non-simultaneity)</strong>: In a very small (infinitesimal) sub-interval, the probability of <em>one</em> event occurring is approximately proportional to the length of that sub-interval. Crucially, the probability of <em>two or more</em> events occurring in such an infinitesimal sub-interval is negligibly small (it approaches zero faster than the length of the sub-interval). This implies events cannot occur precisely simultaneously.</p></li>
+<li><p><strong>Number of Events are Counts</strong>: The random variable <span class="math notranslate nohighlight">\(X\)</span> represents the number of events, so its possible values are non-negative integers: <span class="math notranslate nohighlight">\(k \in \{0, 1, 2, 3, \ldots\}\)</span>.</p></li>
+</ol>
+<section id="the-parameter-lambda">
+<h3>The Parameter <span class="math notranslate nohighlight">\(\lambda\)</span><a class="headerlink" href="#the-parameter-lambda" title="Link to this heading">#</a></h3>
+<p>The single parameter that characterizes a Poisson distribution is <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> (lambda) is the <strong>average number of events</strong> occurring in the <em>fixed interval</em> under consideration. It is often referred to as the <strong>rate parameter</strong> for the interval.</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> represents a count of events. The parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, in the context of the Poisson PMF formula, represents an expected <em>count</em> (e.g., “5 calls”, “3 defects”).</p></li>
+<li><p>However, conceptually, <span class="math notranslate nohighlight">\(\lambda\)</span> is directly tied to the <em>rate</em> at which events occur. If events occur at an average rate of <span class="math notranslate nohighlight">\(R\)</span> events per unit of time (or space), and our fixed interval has a length of <span class="math notranslate nohighlight">\(T\)</span> units, then <span class="math notranslate nohighlight">\(\lambda = R \cdot T\)</span>. In this case, <span class="math notranslate nohighlight">\(R\)</span> would have units like <span class="math notranslate nohighlight">\(\text{s}^{-1}\)</span> or <span class="math notranslate nohighlight">\(\text{events}/\text{meter}\)</span>, and <span class="math notranslate nohighlight">\(T\)</span> would have units of <span class="math notranslate nohighlight">\(\text{s}\)</span> or <span class="math notranslate nohighlight">\(\text{meter}\)</span>, making <span class="math notranslate nohighlight">\(\lambda\)</span> (the average count for the interval) dimensionless. For instance, if a call center receives calls at a rate of <span class="math notranslate nohighlight">\(R = 5 \text{ calls/hour}\)</span>, and we are interested in a <span class="math notranslate nohighlight">\(T = 1 \text{ hour}\)</span> interval, then <span class="math notranslate nohighlight">\(\lambda = 5 \text{ calls}\)</span>. If we were interested in a <span class="math notranslate nohighlight">\(T = 2 \text{ hour}\)</span> interval, <span class="math notranslate nohighlight">\(\lambda = 10 \text{ calls}\)</span>.</p></li>
+</ul>
+<p>We denote a Poisson random variable as <span class="math notranslate nohighlight">\(X \sim \text{Poisson}(\lambda)\)</span>.</p>
+</section>
+</section>
+<section id="probability-mass-function-pmf">
+<h2>Probability Mass Function (PMF)<a class="headerlink" href="#probability-mass-function-pmf" title="Link to this heading">#</a></h2>
+<p>The Probability Mass Function (PMF) of a Poisson random variable <span class="math notranslate nohighlight">\(X\)</span> provides the probability of observing exactly <span class="math notranslate nohighlight">\(k\)</span> events in the given interval.</p>
+<section id="derivation-of-the-pmf-from-the-binomial-distribution">
+<h3>Derivation of the PMF from the Binomial Distribution<a class="headerlink" href="#derivation-of-the-pmf-from-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>One of the most elegant ways to derive the Poisson PMF is by considering it as a limiting case of the Binomial distribution. Recall that the Binomial distribution models the number of successes in <span class="math notranslate nohighlight">\(n\)</span> independent Bernoulli trials, each with a probability of success <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>Imagine we are observing events over a continuous interval (e.g., time). We can divide this interval into a very large number of tiny, equal sub-intervals, say <span class="math notranslate nohighlight">\(n\)</span> sub-intervals. In each of these small sub-intervals, we can conceptualize a Bernoulli trial: either an event happens (success) or it doesn’t (failure).</p>
+<p>Let:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> be the number of very small sub-intervals (trials). We let <span class="math notranslate nohighlight">\(n \to \infty\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> be the probability of an event occurring in any single small sub-interval (probability of success). We assume <span class="math notranslate nohighlight">\(p\)</span> is very small, so <span class="math notranslate nohighlight">\(p \to 0\)</span>.</p></li>
+<li><p>The average number of events in the entire interval is <span class="math notranslate nohighlight">\(\lambda\)</span>. This means that the product <span class="math notranslate nohighlight">\(np\)</span> remains constant and equal to <span class="math notranslate nohighlight">\(\lambda\)</span> as <span class="math notranslate nohighlight">\(n \to \infty\)</span> and <span class="math notranslate nohighlight">\(p \to 0\)</span>. From this, we have <span class="math notranslate nohighlight">\(p = \lambda/n\)</span>.</p></li>
+</ul>
+<p>The PMF for a Binomial random variable <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}\]</div>
+<p>Now, we substitute <span class="math notranslate nohighlight">\(p = \lambda/n\)</span> into this formula and take the limit as <span class="math notranslate nohighlight">\(n \to \infty\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \lim_{n \to \infty} \binom{n}{k} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\]</div>
+<p>Let’s break down this limit term by term:</p>
+<p><strong>Binomial Coefficient Term</strong>:</p>
+<p>We expand the binomial coefficient <span class="math notranslate nohighlight">\(\binom{n}{k}\)</span>:
+$<span class="math notranslate nohighlight">\( \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1)(n-2)\dots(n-k+1)(n-k)!}{k!(n-k)!} = \frac{n(n-1)(n-2)\dots(n-k+1)}{k!} \)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty<span class="math notranslate nohighlight">\(, for a fixed \)</span>k<span class="math notranslate nohighlight">\(, the numerator \)</span>n(n-1)\dots(n-k+1)<span class="math notranslate nohighlight">\( contains \)</span>k<span class="math notranslate nohighlight">\( terms, each approximately equal to \)</span>n<span class="math notranslate nohighlight">\(.
+More rigorously, we can write:
+\)</span><span class="math notranslate nohighlight">\( \frac{n(n-1)\dots(n-k+1)}{k!} \cdot \frac{1}{n^k} = \frac{1}{k!} \cdot \frac{n(n-1)\dots(n-k+1)}{n \cdot n \cdot \dots \cdot n} \quad (\text{k times}) \)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( = \frac{1}{k!} \cdot \left(\frac{n}{n}\right) \cdot \left(\frac{n-1}{n}\right) \cdot \dots \cdot \left(\frac{n-k+1}{n}\right) \)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\( = \frac{1}{k!} \cdot 1 \cdot \left(1-\frac{1}{n}\right) \cdot \left(1-\frac{2}{n}\right) \cdot \dots \cdot \left(1-\frac{k-1}{n}\right) \)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty<span class="math notranslate nohighlight">\(, each term \)</span>\left(1-\frac{j}{n}\right) \to 1<span class="math notranslate nohighlight">\(. Therefore, the entire expression \)</span>\lim_{n \to \infty} \frac{n(n-1)\dots(n-k+1)}{k! n^k}<span class="math notranslate nohighlight">\( approaches \)</span>\frac{1}{k!} \cdot 1 = \frac{1}{k!}$.</p>
+<p><strong>Probability of Success Term</strong>:</p>
+<p>This term is simply:
+$<span class="math notranslate nohighlight">\( \left(\frac{\lambda}{n}\right)^k = \frac{\lambda^k}{n^k} \)</span>$</p>
+<p><strong>Probability of Failure Term</strong>:</p>
+<p>This term can be split:
+$<span class="math notranslate nohighlight">\( \left(1-\frac{\lambda}{n}\right)^{n-k} = \left(1-\frac{\lambda}{n}\right)^n \left(1-\frac{\lambda}{n}\right)^{-k} \)</span>$
+Now, let’s evaluate the limit of each part:</p>
+<ul class="simple">
+<li><p>The first part is a fundamental limit definition of <span class="math notranslate nohighlight">\(e\)</span>:
+$<span class="math notranslate nohighlight">\( \lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^n = e^{-\lambda} \)</span>$</p></li>
+<li><p>The second part: As <span class="math notranslate nohighlight">\(n \to \infty\)</span>, <span class="math notranslate nohighlight">\(\frac{\lambda}{n} \to 0\)</span>, so <span class="math notranslate nohighlight">\(\left(1-\frac{\lambda}{n}\right) \to 1\)</span>. Therefore, <span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^{-k} = 1^{-k} = 1\)</span>.</p></li>
+</ul>
+<p>Now, let’s combine these limits in the expression for <span class="math notranslate nohighlight">\(P(X=k)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \lim_{n \to \infty} \left( \frac{n(n-1)\dots(n-k+1)}{k!} \right) \cdot \left( \frac{\lambda^k}{n^k} \right) \cdot \left(1-\frac{\lambda}{n}\right)^n \cdot \left(1-\frac{\lambda}{n}\right)^{-k}\]</div>
+<p>Rearranging terms to group the parts we evaluated:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \frac{\lambda^k}{k!} \cdot \lim_{n \to \infty} \left( \frac{n(n-1)\dots(n-k+1)}{n^k} \right) \cdot \lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^n \cdot \lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^{-k}\]</div>
+<p>Substituting the evaluated limits:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \frac{\lambda^k}{k!} \cdot 1 \cdot e^{-\lambda} \cdot 1\]</div>
+<p>Thus, the PMF of the Poisson distribution is:</p>
+<div class="math notranslate nohighlight">
+\[p_X(k) = P(X=k) = \frac{e^{-\lambda} \lambda^k}{k!} \quad \text{for } k \in \{0, 1, 2, \ldots\}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(e\)</span> is Euler’s number (<span class="math notranslate nohighlight">\(e \approx 2.71828\)</span>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the average number of events in the interval (<span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> is the number of events we are interested in (<span class="math notranslate nohighlight">\(k\)</span> is a non-negative integer).</p></li>
+<li><p><span class="math notranslate nohighlight">\(k!\)</span> is the factorial of <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-the-pmf-validation">
+<h3>Properties of the PMF (Validation)<a class="headerlink" href="#properties-of-the-pmf-validation" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Non-negativity</strong>: Since <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>, <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> is always positive, <span class="math notranslate nohighlight">\(\lambda^k \ge 0\)</span>, and <span class="math notranslate nohighlight">\(k!\)</span> is positive. Therefore, <span class="math notranslate nohighlight">\(p_X(k) \ge 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>. This property is satisfied.</p></li>
+<li><p><strong>Normalization</strong>: The sum of all probabilities for all possible values of <span class="math notranslate nohighlight">\(k\)</span> must equal 1.
+$<span class="math notranslate nohighlight">\(\sum_{k=0}^{\infty} p_X(k) = \sum_{k=0}^{\infty} \frac{e^{-\lambda} \lambda^k}{k!}\)</span><span class="math notranslate nohighlight">\(
+We can factor out \)</span>e^{-\lambda}<span class="math notranslate nohighlight">\( as it does not depend on \)</span>k<span class="math notranslate nohighlight">\(:
+\)</span><span class="math notranslate nohighlight">\( = e^{-\lambda} \sum_{k=0}^{\infty} \frac{\lambda^k}{k!} \)</span><span class="math notranslate nohighlight">\(
+Recall the Maclaurin series expansion for \)</span>e^x<span class="math notranslate nohighlight">\(: \)</span>e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!}<span class="math notranslate nohighlight">\(.
+Therefore, \)</span>\sum_{k=0}^{\infty} \frac{\lambda^k}{k!} = e^{\lambda}<span class="math notranslate nohighlight">\(.
+Substituting this back:
+\)</span><span class="math notranslate nohighlight">\( = e^{-\lambda} \cdot e^{\lambda} = e^0 = 1 \)</span>$
+The normalization property is satisfied, confirming this is a valid PMF.</p></li>
+</ol>
+</section>
+</section>
+<section id="expected-value-mean">
+<h2>Expected Value (Mean)<a class="headerlink" href="#expected-value-mean" title="Link to this heading">#</a></h2>
+<p>The <strong>expected value</strong> or <strong>mean</strong> of a Poisson random variable <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\(E[X]\)</span> or <span class="math notranslate nohighlight">\(\mu\)</span>, is equal to its parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda\]</div>
+<p>Since <span class="math notranslate nohighlight">\(X\)</span> is a count, its expected value <span class="math notranslate nohighlight">\(\lambda\)</span> is a dimensionless count.</p>
+<section id="derivation-of-the-mean">
+<h3>Derivation of the Mean<a class="headerlink" href="#derivation-of-the-mean" title="Link to this heading">#</a></h3>
+<p>We use the definition of the expected value for a discrete random variable:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=0}^{\infty} k \cdot P(X=k)\]</div>
+<p>Substitute the Poisson PMF:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=0}^{\infty} k \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>The term for <span class="math notranslate nohighlight">\(k=0\)</span> is <span class="math notranslate nohighlight">\(0 \cdot P(X=0) = 0\)</span>, so we can start the sum from <span class="math notranslate nohighlight">\(k=1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=1}^{\infty} k \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>Now, we use the property <span class="math notranslate nohighlight">\(k! = k \cdot (k-1)!\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=1}^{\infty} k \frac{e^{-\lambda} \lambda^k}{k(k-1)!}\]</div>
+<p>We can cancel <span class="math notranslate nohighlight">\(k\)</span> from the numerator and denominator:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=1}^{\infty} \frac{e^{-\lambda} \lambda^k}{(k-1)!}\]</div>
+<p>Factor out <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> and one <span class="math notranslate nohighlight">\(\lambda\)</span> (from <span class="math notranslate nohighlight">\(\lambda^k = \lambda \cdot \lambda^{k-1}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-1\)</span>. As <span class="math notranslate nohighlight">\(k\)</span> goes from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span>, <span class="math notranslate nohighlight">\(j\)</span> goes from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>Again, we recognize the Maclaurin series for <span class="math notranslate nohighlight">\(e^x\)</span>: <span class="math notranslate nohighlight">\(\sum_{j=0}^{\infty} \frac{\lambda^j}{j!} = e^{\lambda}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda e^{-\lambda} e^{\lambda}\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda\]</div>
+<p>This confirms that the mean of a Poisson distribution is simply its rate parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</section>
+</section>
+<section id="variance">
+<h2>Variance<a class="headerlink" href="#variance" title="Link to this heading">#</a></h2>
+<p>The <strong>variance</strong> of a Poisson random variable <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\(Var(X)\)</span> or <span class="math notranslate nohighlight">\(\sigma^2\)</span>, is also equal to its parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = \lambda\]</div>
+<p>The variance, like the expected value, is a <strong>dimensionless</strong> quantity, as it represents the dispersion of a count.</p>
+<section id="derivation-of-the-variance">
+<h3>Derivation of the Variance<a class="headerlink" href="#derivation-of-the-variance" title="Link to this heading">#</a></h3>
+<p>We use the computational formula for variance: <span class="math notranslate nohighlight">\(Var(X) = E[X^2] - (E[X])^2\)</span>.
+We already know <span class="math notranslate nohighlight">\(E[X] = \lambda\)</span>. So we need to calculate <span class="math notranslate nohighlight">\(E[X^2]\)</span>.
+A common trick is to first calculate <span class="math notranslate nohighlight">\(E[X(X-1)]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=0}^{\infty} k(k-1) P(X=k)\]</div>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=0}^{\infty} k(k-1) \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>The terms for <span class="math notranslate nohighlight">\(k=0\)</span> (where <span class="math notranslate nohighlight">\(0(0-1)=0\)</span>) and <span class="math notranslate nohighlight">\(k=1\)</span> (where <span class="math notranslate nohighlight">\(1(1-1)=0\)</span>) are both zero, so we can start the summation from <span class="math notranslate nohighlight">\(k=2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=2}^{\infty} k(k-1) \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>Use the property <span class="math notranslate nohighlight">\(k! = k(k-1)(k-2)!\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=2}^{\infty} k(k-1) \frac{e^{-\lambda} \lambda^k}{k(k-1)(k-2)!}\]</div>
+<p>Cancel <span class="math notranslate nohighlight">\(k(k-1)\)</span> from numerator and denominator:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=2}^{\infty} \frac{e^{-\lambda} \lambda^k}{(k-2)!}\]</div>
+<p>Factor out <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> and <span class="math notranslate nohighlight">\(\lambda^2\)</span> (from <span class="math notranslate nohighlight">\(\lambda^k = \lambda^2 \cdot \lambda^{k-2}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2 e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^{k-2}}{(k-2)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-2\)</span>. As <span class="math notranslate nohighlight">\(k\)</span> goes from <span class="math notranslate nohighlight">\(2\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span>, <span class="math notranslate nohighlight">\(j\)</span> goes from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\infty\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2 e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>Again, we recognize the Maclaurin series for <span class="math notranslate nohighlight">\(e^x\)</span>: <span class="math notranslate nohighlight">\(\sum_{j=0}^{\infty} \frac{\lambda^j}{j!} = e^{\lambda}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2 e^{-\lambda} e^{\lambda}\]</div>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2\]</div>
+<p>Now, we use the identity <span class="math notranslate nohighlight">\(E[X^2] = E[X(X-1)] + E[X]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X^2] = \lambda^2 + \lambda\]</div>
+<p>Finally, substitute this into the variance formula:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = E[X^2] - (E[X])^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = (\lambda^2 + \lambda) - (\lambda)^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = \lambda^2 + \lambda - \lambda^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = \lambda\]</div>
+<p>It’s a remarkable and unique property of the Poisson distribution that its mean and variance are equal to its parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</section>
+</section>
+<section id="standard-deviation">
+<h2>Standard Deviation<a class="headerlink" href="#standard-deviation" title="Link to this heading">#</a></h2>
+<p>The <strong>standard deviation</strong> of a Poisson random variable, denoted <span class="math notranslate nohighlight">\(\sigma_X\)</span>, is the square root of its variance.</p>
+<div class="math notranslate nohighlight">
+\[\sigma_X = \sqrt{\lambda}\]</div>
+<p>This is also a dimensionless quantity, as it’s a measure of spread for a count.</p>
+</section>
+<section id="mode-of-the-poisson-distribution">
+<h2>Mode of the Poisson Distribution<a class="headerlink" href="#mode-of-the-poisson-distribution" title="Link to this heading">#</a></h2>
+<p>The <strong>mode</strong> of a discrete distribution is the value that occurs with the highest probability. For a Poisson distribution with parameter <span class="math notranslate nohighlight">\(\lambda\)</span>:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\lambda\)</span> is not an integer, the mode is <span class="math notranslate nohighlight">\(\lfloor \lambda \rfloor\)</span> (the floor of <span class="math notranslate nohighlight">\(\lambda\)</span>, meaning <span class="math notranslate nohighlight">\(\lambda\)</span> rounded down to the nearest integer).</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\lambda\)</span> is an integer, then there are two modes: <span class="math notranslate nohighlight">\(\lambda - 1\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+</ul>
+<section id="derivation-of-the-mode">
+<h3>Derivation of the Mode<a class="headerlink" href="#derivation-of-the-mode" title="Link to this heading">#</a></h3>
+<p>To find the mode, we examine the ratio of consecutive probabilities, <span class="math notranslate nohighlight">\(\frac{P(X=k)}{P(X=k-1)}\)</span>. The probability <span class="math notranslate nohighlight">\(P(X=k)\)</span> will be increasing as long as this ratio is greater than 1, and decreasing when it is less than 1. The mode(s) occur where the probability is maximized.</p>
+<p>Let’s set up the ratio:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{P(X=k)}{P(X=k-1)} = \frac{\frac{e^{-\lambda} \lambda^k}{k!}}{\frac{e^{-\lambda} \lambda^{k-1}}{(k-1)!}} \]</div>
+<p>We can simplify this expression:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{e^{-\lambda} \lambda^k}{k!} \cdot \frac{(k-1)!}{e^{-\lambda} \lambda^{k-1}} \]</div>
+<p>The <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> terms cancel out. We use <span class="math notranslate nohighlight">\(k! = k \cdot (k-1)!\)</span> and <span class="math notranslate nohighlight">\(\lambda^k = \lambda \cdot \lambda^{k-1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{\lambda \cdot \lambda^{k-1}}{k \cdot (k-1)!} \cdot \frac{(k-1)!}{\lambda^{k-1}} \]</div>
+<p>Further simplification by canceling common terms:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{\lambda}{k} \]</div>
+<p>Now, we want to find <span class="math notranslate nohighlight">\(k\)</span> for which <span class="math notranslate nohighlight">\(P(X=k) \ge P(X=k-1)\)</span>, which means <span class="math notranslate nohighlight">\(\frac{P(X=k)}{P(X=k-1)} \ge 1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{\lambda}{k} \ge 1 \]</div>
+<div class="math notranslate nohighlight">
+\[ \lambda \ge k \]</div>
+<p>This inequality tells us that the probability <span class="math notranslate nohighlight">\(P(X=k)\)</span> continues to increase as long as <span class="math notranslate nohighlight">\(k\)</span> is less than or equal to <span class="math notranslate nohighlight">\(\lambda\)</span>. The mode(s) will be the largest integer(s) satisfying this condition.</p>
+<ul class="simple">
+<li><p><strong>Case 1: <span class="math notranslate nohighlight">\(\lambda\)</span> is not an integer.</strong> If, for example, <span class="math notranslate nohighlight">\(\lambda = 3.7\)</span>, then <span class="math notranslate nohighlight">\(k \le 3.7\)</span>. The largest integer <span class="math notranslate nohighlight">\(k\)</span> satisfying this is <span class="math notranslate nohighlight">\(3\)</span>. For <span class="math notranslate nohighlight">\(k=3\)</span>, <span class="math notranslate nohighlight">\(\frac{3.7}{3} &gt; 1\)</span>, so <span class="math notranslate nohighlight">\(P(X=3) &gt; P(X=2)\)</span>. For <span class="math notranslate nohighlight">\(k=4\)</span>, <span class="math notranslate nohighlight">\(\frac{3.7}{4} &lt; 1\)</span>, so <span class="math notranslate nohighlight">\(P(X=4) &lt; P(X=3)\)</span>. Thus, the unique mode is <span class="math notranslate nohighlight">\(\lfloor \lambda \rfloor = 3\)</span>.</p></li>
+<li><p><strong>Case 2: <span class="math notranslate nohighlight">\(\lambda\)</span> is an integer.</strong> If, for example, <span class="math notranslate nohighlight">\(\lambda = 5\)</span>, then <span class="math notranslate nohighlight">\(k \le 5\)</span>. The largest integer <span class="math notranslate nohighlight">\(k\)</span> satisfying this is <span class="math notranslate nohighlight">\(5\)</span>. For <span class="math notranslate nohighlight">\(k=5\)</span>, <span class="math notranslate nohighlight">\(\frac{5}{5} = 1\)</span>, which means <span class="math notranslate nohighlight">\(P(X=5) = P(X=4)\)</span>. For <span class="math notranslate nohighlight">\(k=6\)</span>, <span class="math notranslate nohighlight">\(\frac{5}{6} &lt; 1\)</span>, so <span class="math notranslate nohighlight">\(P(X=6) &lt; P(X=5)\)</span>. In this case, there are two modes: <span class="math notranslate nohighlight">\(\lambda-1\)</span> and <span class="math notranslate nohighlight">\(\lambda\)</span>, i.e., <span class="math notranslate nohighlight">\(4\)</span> and <span class="math notranslate nohighlight">\(5\)</span>.</p></li>
+</ul>
+<p>Thus, the mode of the Poisson distribution is <span class="math notranslate nohighlight">\(\lfloor \lambda \rfloor\)</span> if <span class="math notranslate nohighlight">\(\lambda\)</span> is not an integer, and <span class="math notranslate nohighlight">\(\lambda-1, \lambda\)</span> if <span class="math notranslate nohighlight">\(\lambda\)</span> is an integer.</p>
+</section>
+</section>
+<section id="cumulative-distribution-function-cdf">
+<h2>Cumulative Distribution Function (CDF)<a class="headerlink" href="#cumulative-distribution-function-cdf" title="Link to this heading">#</a></h2>
+<p>The <strong>Cumulative Distribution Function (CDF)</strong> for a Poisson random variable <span class="math notranslate nohighlight">\(X \sim \text{Poisson}(\lambda)\)</span>, denoted <span class="math notranslate nohighlight">\(F_X(x)\)</span>, gives the probability that <span class="math notranslate nohighlight">\(X\)</span> will take a value less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. Since <span class="math notranslate nohighlight">\(X\)</span> is a discrete variable, the CDF is a step function.</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = \sum_{k=0}^{\lfloor x \rfloor} \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lfloor x \rfloor\)</span> is the floor function, representing the largest integer less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. Similar to the Binomial CDF, there is no simple closed-form expression for the Poisson CDF. It is typically calculated using summation, statistical tables, or computational software.</p>
+</section>
+<section id="examples-and-analogies">
+<h2>Examples and Analogies<a class="headerlink" href="#examples-and-analogies" title="Link to this heading">#</a></h2>
+<p>The Poisson distribution is incredibly versatile for modeling counts of events in various fields:</p>
+<ul class="simple">
+<li><p><strong>Biology</strong>: The number of mutations on a strand of DNA per unit length. The number of bacteria in a given volume of liquid.</p></li>
+<li><p><strong>Physics</strong>: The number of radioactive decays per second in a sample. The number of photons arriving at a telescope from a distant star per minute.</p></li>
+<li><p><strong>Business/Operations</strong>: The number of customers arriving at a checkout counter in a 10-minute interval. The number of defects in a roll of fabric of a certain length. The number of emergency calls received by a 911 dispatch center in an hour.</p></li>
+<li><p><strong>Safety/Insurance</strong>: The number of accidents on a particular stretch of highway per month. The number of insurance claims filed in a day.</p></li>
+<li><p><strong>Ecology</strong>: The number of trees of a certain species in a defined area.</p></li>
+</ul>
+<p><strong>Analogy</strong>: Imagine a large, empty field. We are scattering individual seeds (events) onto this field entirely at random, so each seed’s landing position is independent of others. The Poisson distribution helps us predict how many seeds (events) will land in any particular small square (fixed interval) on the field, given we know the average density of seeds (<span class="math notranslate nohighlight">\(\lambda\)</span>) across the whole field. The key is that the seeds are randomly and independently scattered, and we’re looking at counts in fixed-size regions.</p>
+<section id="example-website-traffic">
+<h3>Example: Website Traffic<a class="headerlink" href="#example-website-traffic" title="Link to this heading">#</a></h3>
+<p>Suppose a popular website receives an average of 3 page views per minute during off-peak hours. We want to find the probability that the website receives exactly 5 page views in the next minute.</p>
+<p>Here, <span class="math notranslate nohighlight">\(X\)</span> is the number of page views in a minute, and it follows a Poisson distribution with <span class="math notranslate nohighlight">\(\lambda = 3\)</span>. We want to find <span class="math notranslate nohighlight">\(P(X=5)\)</span>.</p>
+<p>Using the PMF:</p>
+<div class="math notranslate nohighlight">
+\[P(X=5) = \frac{e^{-3} 3^5}{5!}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=5) = \frac{e^{-3} \cdot 243}{120}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=5) \approx \frac{0.049787 \cdot 243}{120}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=5) \approx \frac{12.098}{120}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=5) \approx 0.1008\]</div>
+<p>So, there is approximately a 10.08% chance that the website receives exactly 5 page views in the next minute.</p>
+</section>
+</section>
+<section id="relationship-to-other-distributions">
+<h2>Relationship to Other Distributions<a class="headerlink" href="#relationship-to-other-distributions" title="Link to this heading">#</a></h2>
+<section id="poisson-approximation-to-the-binomial-distribution">
+<h3>Poisson Approximation to the Binomial Distribution<a class="headerlink" href="#poisson-approximation-to-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>As we saw in its derivation, the Poisson distribution serves as an excellent approximation to the Binomial distribution under specific conditions. This occurs when:</p>
+<ul class="simple">
+<li><p>The number of trials <span class="math notranslate nohighlight">\(n\)</span> is very large (<span class="math notranslate nohighlight">\(n \to \infty\)</span>).</p></li>
+<li><p>The probability of success <span class="math notranslate nohighlight">\(p\)</span> in each trial is very small (<span class="math notranslate nohighlight">\(p \to 0\)</span>).</p></li>
+<li><p>The product <span class="math notranslate nohighlight">\(np\)</span> (which is the expected number of successes in the Binomial distribution) remains constant and is equal to <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+</ul>
+<p>This approximation is extremely useful in practice because the Poisson PMF is often simpler to calculate than the Binomial PMF for very large <span class="math notranslate nohighlight">\(n\)</span> and small <span class="math notranslate nohighlight">\(p\)</span>. For instance, if you’re looking at the number of defective items in a very large batch where the defect rate is tiny (e.g., <span class="math notranslate nohighlight">\(n=10000, p=0.0001\)</span>), a Poisson distribution with <span class="math notranslate nohighlight">\(\lambda = np = 1\)</span> can provide a good estimate without needing to calculate large binomial coefficients.</p>
+</section>
+<section id="relationship-to-the-exponential-distribution">
+<h3>Relationship to the Exponential Distribution<a class="headerlink" href="#relationship-to-the-exponential-distribution" title="Link to this heading">#</a></h3>
+<p>A crucial conceptual link exists between the Poisson distribution and the <strong>Exponential distribution</strong> (which is a continuous probability distribution we will encounter later). If the number of events occurring in a fixed interval follows a Poisson distribution with rate <span class="math notranslate nohighlight">\(\lambda\)</span>, then the <em>time between consecutive events</em> (also known as the inter-arrival time) follows an Exponential distribution with rate parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>This means:</p>
+<ul class="simple">
+<li><p>The Poisson distribution describes <strong>counts of events</strong> in a fixed interval.</p></li>
+<li><p>The Exponential distribution describes <strong>waiting times</strong> until the next event.</p></li>
+</ul>
+<p>This relationship is a direct consequence of the underlying Poisson process. The <strong>memoryless property</strong> of the Exponential distribution (the probability of an event occurring in the next interval of time is independent of how much time has already passed) directly corresponds to the independence assumption of the Poisson process. For example, if the number of phone calls per hour follows a Poisson distribution with <span class="math notranslate nohighlight">\(\lambda=5\)</span>, then the time (in hours) between any two consecutive phone calls follows an Exponential distribution with rate <span class="math notranslate nohighlight">\(\lambda=5\)</span>. This connection highlights the versatility of <span class="math notranslate nohighlight">\(\lambda\)</span> as a rate parameter, connecting discrete counts to continuous waiting times.</p>
+</section>
+<section id="normal-approximation">
+<h3>Normal Approximation<a class="headerlink" href="#normal-approximation" title="Link to this heading">#</a></h3>
+<p>For large values of <span class="math notranslate nohighlight">\(\lambda\)</span> (a common rule of thumb is <span class="math notranslate nohighlight">\(\lambda \ge 10\)</span> or <span class="math notranslate nohighlight">\(\lambda \ge 20\)</span>), the Poisson distribution can be approximated by a <strong>Normal (Gaussian) distribution</strong> (which we will cover in a later lecture).</p>
+<p>Specifically, if <span class="math notranslate nohighlight">\(X \sim \text{Poisson}(\lambda)\)</span>, then for large <span class="math notranslate nohighlight">\(\lambda\)</span>, <span class="math notranslate nohighlight">\(X\)</span> can be approximated by <span class="math notranslate nohighlight">\(X \sim N(\mu, \sigma^2)\)</span> where <span class="math notranslate nohighlight">\(\mu = \lambda\)</span> and <span class="math notranslate nohighlight">\(\sigma^2 = \lambda\)</span>. This approximation is particularly useful for statistical inference when dealing with count data with high average rates, allowing us to use the well-understood properties of the Normal distribution for hypothesis testing and confidence interval construction. A <strong>continuity correction</strong> is often applied for better accuracy when approximating a discrete distribution with a continuous one.</p>
+</section>
+</section>
+<section id="further-insights">
+<h2>Further Insights<a class="headerlink" href="#further-insights" title="Link to this heading">#</a></h2>
+<section id="shape-of-the-poisson-pmf">
+<h3>Shape of the Poisson PMF<a class="headerlink" href="#shape-of-the-poisson-pmf" title="Link to this heading">#</a></h3>
+<p>The shape of the Poisson probability mass function is determined by its single parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<ul class="simple">
+<li><p>For small <span class="math notranslate nohighlight">\(\lambda\)</span> (e.g., <span class="math notranslate nohighlight">\(\lambda=1\)</span>), the distribution is highly skewed to the right, with the highest probability at <span class="math notranslate nohighlight">\(k=0\)</span> or <span class="math notranslate nohighlight">\(k=1\)</span>.</p></li>
+<li><p>As <span class="math notranslate nohighlight">\(\lambda\)</span> increases, the distribution becomes more symmetrical and bell-shaped, gradually resembling a Normal distribution. The peak of the distribution shifts to the right, centered around <span class="math notranslate nohighlight">\(\lambda\)</span>.</p></li>
+</ul>
+</section>
+<section id="applications-in-stochastic-processes">
+<h3>Applications in Stochastic Processes<a class="headerlink" href="#applications-in-stochastic-processes" title="Link to this heading">#</a></h3>
+<p>The Poisson distribution is a cornerstone of stochastic processes and finds widespread use in:</p>
+<ul class="simple">
+<li><p><strong>Queuing Theory</strong>: Modeling customer arrivals at service points (e.g., call centers, checkout lines).</p></li>
+<li><p><strong>Reliability Engineering</strong>: Predicting the number of failures of a system over a given period.</p></li>
+<li><p><strong>Epidemiology</strong>: Modeling the number of new disease cases in a population.</p></li>
+<li><p><strong>Finance</strong>: Modeling the number of rare events like stock market jumps or insurance claims.</p></li>
+</ul>
+<p>Its fundamental nature, characterized by a single parameter <span class="math notranslate nohighlight">\(\lambda\)</span> that governs both its mean and variance, makes it a powerful and widely applicable tool for understanding random phenomena involving counts of events. It is a distribution that beautifully captures the essence of “rare events” occurring randomly over an interval.</p>
+<hr class="docutils" />
+<div class="math notranslate nohighlight">
+\[P(X=k) = \binom{n}{k} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\]</div>
+<p>Expand <span class="math notranslate nohighlight">\(\binom{n}{k} = \frac{n!}{k!(n-k)!}\)</span>:
+$<span class="math notranslate nohighlight">\(P(X=k) = \frac{n!}{k!(n-k)!} \frac{\lambda^k}{n^k} \left(1-\frac{\lambda}{n}\right)^{n-k}\)</span>$</p>
+<p>Now, let’s rearrange the terms and take the limit as <span class="math notranslate nohighlight">\(n \to \infty\)</span>:
+$<span class="math notranslate nohighlight">\(P(X=k) = \frac{\lambda^k}{k!} \cdot \frac{n!}{(n-k)! n^k} \cdot \left(1-\frac{\lambda}{n}\right)^{n-k}\)</span>$</p>
+<p>Consider each part as <span class="math notranslate nohighlight">\(n \to \infty\)</span>:</p>
+<p><strong><span class="math notranslate nohighlight">\(\frac{n!}{(n-k)! n^k}\)</span></strong>:
+$<span class="math notranslate nohighlight">\( \frac{n(n-1)(n-2)\ldots(n-k+1)}{n^k} = 1 \cdot \left(1-\frac{1}{n}\right) \cdot \left(1-\frac{2}{n}\right) \cdot \ldots \cdot \left(1-\frac{k-1}{n}\right) \)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty<span class="math notranslate nohighlight">\(, each term \)</span>\left(1-\frac{j}{n}\right) \to 1<span class="math notranslate nohighlight">\(. So, this entire expression approaches \)</span>1^k = 1$.</p>
+<p><strong><span class="math notranslate nohighlight">\(\left(1-\frac{\lambda}{n}\right)^{n-k}\)</span></strong>:
+We can rewrite this as:
+$<span class="math notranslate nohighlight">\(\left(1-\frac{\lambda}{n}\right)^{n-k} = \left(1-\frac{\lambda}{n}\right)^n \left(1-\frac{\lambda}{n}\right)^{-k}\)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty$:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^n = e^{-\lambda}\)</span> (This is a standard limit definition of <span class="math notranslate nohighlight">\(e\)</span>). ???????????????</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^{-k} = (1-0)^{-k} = 1^{-k} = 1\)</span>.</p></li>
+</ul>
+<p>Combining these limits, as <span class="math notranslate nohighlight">\(n \to \infty\)</span>:
+$<span class="math notranslate nohighlight">\(P(X=k) \to \frac{\lambda^k}{k!} \cdot 1 \cdot e^{-\lambda} \cdot 1\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>This completes the derivation of the Poisson PMF. The mode for a Poisson distribution is <span class="math notranslate nohighlight">\(\lfloor \lambda \rfloor\)</span> (if <span class="math notranslate nohighlight">\(\lambda\)</span> is not an integer) or <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\lambda-1\)</span> (if <span class="math notranslate nohighlight">\(\lambda\)</span> is an integer).</p>
+</section>
+<section id="verification-of-pmf-normalization">
+<h3>Verification of PMF Normalization<a class="headerlink" href="#verification-of-pmf-normalization" title="Link to this heading">#</a></h3>
+<p>A fundamental property of any valid Probability Mass Function is that the sum of probabilities over all possible outcomes must equal 1. Let’s verify this for the Poisson PMF. We need to show that:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{k=0}^{\infty} P(X=k) = 1\]</div>
+<p>Substitute the Poisson PMF formula:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{k=0}^{\infty} \frac{e^{-\lambda} \lambda^k}{k!} \]</div>
+<p>We can factor out <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> from the summation, as it does not depend on the index <span class="math notranslate nohighlight">\(k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ e^{-\lambda} \sum_{k=0}^{\infty} \frac{\lambda^k}{k!} \]</div>
+<p>Now, we recognize the summation <span class="math notranslate nohighlight">\(\sum_{k=0}^{\infty} \frac{\lambda^k}{k!}\)</span> as the well-known Taylor series expansion for the exponential function <span class="math notranslate nohighlight">\(e^x\)</span>, evaluated at <span class="math notranslate nohighlight">\(x=\lambda\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \sum_{k=0}^{\infty} \frac{\lambda^k}{k!} = 1 + \lambda + \frac{\lambda^2}{2!} + \frac{\lambda^3}{3!} + \ldots = e^\lambda \]</div>
+<p>Substituting this back into our expression for the sum of probabilities:</p>
+<div class="math notranslate nohighlight">
+\[ e^{-\lambda} \cdot (e^\lambda) \]</div>
+<div class="math notranslate nohighlight">
+\[ e^{-\lambda} \cdot e^\lambda = e^{(-\lambda + \lambda)} = e^0 = 1 \]</div>
+<p>Thus, the sum of all probabilities for the Poisson distribution equals 1, confirming it as a valid Probability Mass Function.</p>
+</section>
+</section>
+<section id="expected-value-mean-of-a-poisson-distribution">
+<h2>Expected Value (Mean) of a Poisson Distribution<a class="headerlink" href="#expected-value-mean-of-a-poisson-distribution" title="Link to this heading">#</a></h2>
+<p>The expected value of a Poisson distribution is <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<section id="id1">
+<h3>Derivation of the Mean<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>The expected value <span class="math notranslate nohighlight">\(E[X]\)</span> for a discrete random variable is <span class="math notranslate nohighlight">\(\sum_{k=0}^{\infty} k P(X=k)\)</span>.
+For the Poisson distribution:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=0}^{\infty} k \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>We can factor out <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> and note that the term for <span class="math notranslate nohighlight">\(k=0\)</span> is <span class="math notranslate nohighlight">\(0 \cdot P(X=0) = 0\)</span>, so we can start the sum from <span class="math notranslate nohighlight">\(k=1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \sum_{k=1}^{\infty} k \frac{\lambda^k}{k!}\]</div>
+<p>We know that <span class="math notranslate nohighlight">\(k! = k \cdot (k-1)!\)</span>. So we can simplify <span class="math notranslate nohighlight">\(k/k!\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^k}{(k-1)!}\]</div>
+<p>Let’s pull out one <span class="math notranslate nohighlight">\(\lambda\)</span> from <span class="math notranslate nohighlight">\(\lambda^k = \lambda \cdot \lambda^{k-1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \lambda \sum_{k=1}^{\infty} \frac{\lambda^{k-1}}{(k-1)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-1\)</span>. When <span class="math notranslate nohighlight">\(k=1\)</span>, <span class="math notranslate nohighlight">\(j=0\)</span>. When <span class="math notranslate nohighlight">\(k \to \infty\)</span>, <span class="math notranslate nohighlight">\(j \to \infty\)</span>. So the sum becomes:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \lambda \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>We recognize the sum <span class="math notranslate nohighlight">\(\sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\)</span> as the Taylor series expansion of <span class="math notranslate nohighlight">\(e^\lambda\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{j=0}^{\infty} \frac{\lambda^j}{j!} = e^\lambda\]</div>
+<p>Substituting this back into the expression for <span class="math notranslate nohighlight">\(E[X]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \lambda e^\lambda\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda\]</div>
+<p>The mean of a Poisson distribution is <span class="math notranslate nohighlight">\(\lambda\)</span>, the average number of events. This is consistent with its definition.</p>
+</section>
+</section>
+<section id="variance-of-a-poisson-distribution">
+<h2>Variance of a Poisson Distribution<a class="headerlink" href="#variance-of-a-poisson-distribution" title="Link to this heading">#</a></h2>
+<p>The variance of a Poisson distribution is also <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<section id="id2">
+<h3>Derivation of the Variance<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<p>The variance can be derived using the formula <span class="math notranslate nohighlight">\(Var[X] = E[X^2] - (E[X])^2\)</span>. We know <span class="math notranslate nohighlight">\(E[X] = \lambda\)</span>.
+A useful trick for Poisson distribution is to compute <span class="math notranslate nohighlight">\(E[X(X-1)]\)</span> first:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=0}^{\infty} k(k-1) \frac{e^{-\lambda} \lambda^k}{k!}\]</div>
+<p>The terms for <span class="math notranslate nohighlight">\(k=0\)</span> and <span class="math notranslate nohighlight">\(k=1\)</span> are zero (<span class="math notranslate nohighlight">\(0 \cdot (-1)=0\)</span> and <span class="math notranslate nohighlight">\(1 \cdot 0=0\)</span>). So we can start the sum from <span class="math notranslate nohighlight">\(k=2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \sum_{k=2}^{\infty} k(k-1) \frac{\lambda^k}{k(k-1)(k-2)!}\]</div>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^k}{(k-2)!}\]</div>
+<p>Let’s pull out <span class="math notranslate nohighlight">\(\lambda^2\)</span> from <span class="math notranslate nohighlight">\(\lambda^k = \lambda^2 \cdot \lambda^{k-2}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \lambda^2 \sum_{k=2}^{\infty} \frac{\lambda^{k-2}}{(k-2)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-2\)</span>. When <span class="math notranslate nohighlight">\(k=2\)</span>, <span class="math notranslate nohighlight">\(j=0\)</span>. When <span class="math notranslate nohighlight">\(k \to \infty\)</span>, <span class="math notranslate nohighlight">\(j \to \infty\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \lambda^2 \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>Again, we recognize the sum as <span class="math notranslate nohighlight">\(e^\lambda\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \lambda^2 e^\lambda\]</div>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2\]</div>
+<p>Now we use the property <span class="math notranslate nohighlight">\(E[X(X-1)] = E[X^2 - X] = E[X^2] - E[X]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\lambda^2 = E[X^2] - E[X]\]</div>
+<p>We know <span class="math notranslate nohighlight">\(E[X] = \lambda\)</span>, so:</p>
+<div class="math notranslate nohighlight">
+\[\lambda^2 = E[X^2] - \lambda\]</div>
+<div class="math notranslate nohighlight">
+\[E[X^2] = \lambda^2 + \lambda\]</div>
+<p>Finally, we calculate the variance:</p>
+<div class="math notranslate nohighlight">
+\[Var[X] = E[X^2] - (E[X])^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var[X] = (\lambda^2 + \lambda) - (\lambda)^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var[X] = \lambda^2 + \lambda - \lambda^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var[X] = \lambda\]</div>
+<p>The variance of a Poisson distribution is <span class="math notranslate nohighlight">\(\lambda\)</span>. This unique property, where the mean equals the variance (<span class="math notranslate nohighlight">\(E[X] = Var[X] = \lambda\)</span>), is a characteristic hallmark of the Poisson distribution. This mean-variance equality is often used to test if observed count data is consistent with a Poisson model. If the sample variance is significantly different from the sample mean, it suggests that a Poisson model might not be appropriate (e.g., <strong>overdispersion</strong> if variance &gt; mean, often leading to a Negative Binomial model). The standard deviation is <span class="math notranslate nohighlight">\(\sigma_X = \sqrt{\lambda}\)</span>. Both are dimensionless counts.</p>
+</section>
+</section>
+<section id="id3">
+<h2>Cumulative Distribution Function (CDF)<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>The CDF for a Poisson random variable <span class="math notranslate nohighlight">\(X\)</span> is the sum of its PMF values up to a certain point <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<section id="derivation-of-the-cdf">
+<h3>Derivation of the CDF<a class="headerlink" href="#derivation-of-the-cdf" title="Link to this heading">#</a></h3>
+<p>The CDF <span class="math notranslate nohighlight">\(F_X(k) = P(X \le k)\)</span> is defined as the sum of the probabilities of observing <span class="math notranslate nohighlight">\(0, 1, \ldots, k\)</span> events:</p>
+<div class="math notranslate nohighlight">
+\[F_X(k) = P(X \le k) = \sum_{i=0}^{k} P(X=i) = \sum_{i=0}^{k} \frac{e^{-\lambda} \lambda^i}{i!}\]</div>
+<p>This is a step function. For practical calculations, especially for larger <span class="math notranslate nohighlight">\(k\)</span>, statistical software or tables are used. For example, if <span class="math notranslate nohighlight">\(X \sim \text{Poisson}(1)\)</span>: ??????????</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(P(X=0) = \frac{e^{-1} 1^0}{0!} = e^{-1} \approx 0.3679\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(X=1) = \frac{e^{-1} 1^1}{1!} = e^{-1} \approx 0.3679\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(P(X=2) = \frac{e^{-1} 1^2}{2!} = \frac{e^{-1}}{2} \approx 0.1839\)</span></p></li>
+</ul>
+<p>Then, the CDF values are: ????????????</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>: <span class="math notranslate nohighlight">\(F_X(x) = 0\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) \approx 0.3679\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(1 \le x &lt; 2\)</span>: <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) + P(X=1) \approx 0.3679 + 0.3679 = 0.7358\)</span></p></li>
+<li><p>For <span class="math notranslate nohighlight">\(2 \le x &lt; 3\)</span>: <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X \le 1) + P(X=2) \approx 0.7358 + 0.1839 = 0.9197\)</span></p></li>
+<li><p>And so on, approaching 1 as <span class="math notranslate nohighlight">\(x \to \infty\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="example-of-poisson-distribution">
+<h2>Example of Poisson Distribution<a class="headerlink" href="#example-of-poisson-distribution" title="Link to this heading">#</a></h2>
+<p>Suppose a call center receives an average of 5 calls per hour (<span class="math notranslate nohighlight">\(\lambda=5\)</span>). We assume the calls arrive independently and at a constant rate. What is the probability that the call center receives exactly 3 calls in the next hour?</p>
+<p>Using the Poisson PMF with <span class="math notranslate nohighlight">\(\lambda=5\)</span> and <span class="math notranslate nohighlight">\(k=3\)</span>: ??????????</p>
+<div class="math notranslate nohighlight">
+\[P(X=3) = \frac{e^{-5} 5^3}{3!}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=3) = \frac{e^{-5} \cdot 125}{3 \cdot 2 \cdot 1}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=3) = \frac{0.0067379 \cdot 125}{6}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=3) = \frac{0.8422375}{6}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=3) \approx 0.1404\]</div>
+<p>So, there’s approximately a 14.04% chance of receiving exactly 3 calls in the next hour.
+The expected number of calls is <span class="math notranslate nohighlight">\(E[X] = \lambda = 5\)</span>.
+The variance of the number of calls is also <span class="math notranslate nohighlight">\(Var[X] = \lambda = 5\)</span>.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="id4">
+<h1>Poisson Distribution<a class="headerlink" href="#id4" title="Link to this heading">#</a></h1>
+<p>The Poisson distribution is another crucial discrete probability distribution, often used for modeling the number of events occurring in a fixed interval of time or space. It is particularly useful for rare events.</p>
+<section id="what-is-a-poisson-distribution">
+<h2>What is a Poisson Distribution?<a class="headerlink" href="#what-is-a-poisson-distribution" title="Link to this heading">#</a></h2>
+<p>We use the <strong>Poisson distribution</strong> to model the number of times an event occurs in a fixed interval of time or space, under the following crucial assumptions:</p>
+<ol class="arabic simple">
+<li><p><strong>Events Occur Independently:</strong> The occurrence of one event does not affect the probability of another event occurring in the interval.</p></li>
+<li><p><strong>Constant Average Rate (<span class="math notranslate nohighlight">\(\lambda\)</span>):</strong> Events occur at a constant average rate over the given interval. This rate is uniform across time or space.</p></li>
+<li><p><strong>Events Cannot Occur Simultaneously:</strong> In any infinitesimally small sub-interval, the probability of more than one event occurring is negligible.</p></li>
+<li><p><strong>Count of Events:</strong> The random variable <span class="math notranslate nohighlight">\(X\)</span> counts the number of occurrences of these events.</p></li>
+</ol>
+<p>If these assumptions are violated (e.g., events cluster together, the rate changes over time, or multiple events can happen at precisely the same instant), the Poisson distribution may not be an appropriate model. Examples include the number of phone calls received by a call center per hour, the number of defects per square meter of fabric, or the number of accidents on a particular stretch of road per month.</p>
+<section id="parameters-of-the-poisson-distribution">
+<h3>Parameters of the Poisson Distribution<a class="headerlink" href="#parameters-of-the-poisson-distribution" title="Link to this heading">#</a></h3>
+<p>The Poisson distribution is characterized by a single parameter:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> (lambda): The average rate of events occurring in the given fixed interval. <span class="math notranslate nohighlight">\(\lambda\)</span> must be a positive real number (<span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span>).</p></li>
+</ul>
+<p>A random variable <span class="math notranslate nohighlight">\(X\)</span> that follows a Poisson distribution is denoted as <span class="math notranslate nohighlight">\(X \sim \text{Poisson}(\lambda)\)</span>.
+The possible values for <span class="math notranslate nohighlight">\(X\)</span> are <span class="math notranslate nohighlight">\(0, 1, 2, \dots\)</span> (non-negative integers, potentially infinite). This infinite support is a key distinction from the Binomial distribution, which has a finite upper bound (<span class="math notranslate nohighlight">\(n\)</span>). While the probability of very large <span class="math notranslate nohighlight">\(k\)</span> values becomes infinitesimally small very quickly, there is theoretically no upper limit to the number of events that can occur.</p>
+</section>
+<section id="clarification-on-units-for-lambda">
+<h3>Clarification on Units for <span class="math notranslate nohighlight">\(\lambda\)</span><a class="headerlink" href="#clarification-on-units-for-lambda" title="Link to this heading">#</a></h3>
+<p>The parameter <span class="math notranslate nohighlight">\(\lambda\)</span> represents the <em>expected number of events</em> in the specified interval. As such, when directly used in the Poisson PMF, <span class="math notranslate nohighlight">\(\lambda\)</span> is a <strong>dimensionless count</strong>. For example, if we say “the average number of customers arriving at a store is 10 per hour,” then <span class="math notranslate nohighlight">\(\lambda = 10\)</span> for an interval of one hour.</p>
+<p>However, it’s important to understand the underlying physical rate. If we consider an average <em>rate</em> <span class="math notranslate nohighlight">\(\mu\)</span> (e.g., events per second) and an observation interval length <span class="math notranslate nohighlight">\(T\)</span> (e.g., in seconds), then <span class="math notranslate nohighlight">\(\lambda\)</span> is calculated as <span class="math notranslate nohighlight">\(\lambda = \mu T\)</span>. In this context:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span> would have units of inverse time (e.g., <span class="math notranslate nohighlight">\(1/\text{s}\)</span> or <span class="math notranslate nohighlight">\(\text{s}^{-1}\)</span> in SI units).</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> would have units of time (e.g., s in SI units).</p></li>
+<li><p>Multiplying these, <span class="math notranslate nohighlight">\(\lambda = \mu T\)</span> becomes dimensionless (<span class="math notranslate nohighlight">\(\text{s}^{-1} \cdot \text{s} = 1\)</span>).
+Therefore, in the context of the Poisson PMF, Mean, and Variance derivations, we will consistently treat <span class="math notranslate nohighlight">\(\lambda\)</span> as a dimensionless average count for the interval of interest.</p></li>
+</ul>
+</section>
+<section id="parameter-estimation-in-data-science">
+<h3>Parameter Estimation in Data Science<a class="headerlink" href="#parameter-estimation-in-data-science" title="Link to this heading">#</a></h3>
+<p>In data analysis, the average rate <span class="math notranslate nohighlight">\(\lambda\)</span> for a Poisson distribution is typically unknown and must be estimated from a sample of observed counts. The <strong>Maximum Likelihood Estimator (MLE)</strong> for <span class="math notranslate nohighlight">\(\lambda\)</span> is the sample mean of the observed counts. If we have a dataset of <span class="math notranslate nohighlight">\(N\)</span> observations <span class="math notranslate nohighlight">\(x_1, x_2, \dots, x_N\)</span> (each representing a count of events in its respective interval), the MLE for <span class="math notranslate nohighlight">\(\lambda\)</span> is <span class="math notranslate nohighlight">\(\hat{\lambda} = \bar{x} = \frac{1}{N} \sum_{i=1}^N x_i\)</span>. This estimate also corresponds to the <strong>Method of Moments</strong> estimator for <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+</section>
+<section id="id5">
+<h3>Probability Mass Function (PMF)<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<p>The PMF of a Poisson random variable <span class="math notranslate nohighlight">\(X\)</span> gives us the probability of observing exactly <span class="math notranslate nohighlight">\(k\)</span> events in the given interval.</p>
+<p>For <span class="math notranslate nohighlight">\(k \in \{0, 1, 2, \dots\}\)</span>, the PMF is defined as:</p>
+<div class="math notranslate nohighlight">
+\[p_X(k) = P(X=k) = \frac{\lambda^k e^{-\lambda}}{k!}\]</div>
+<p>where <span class="math notranslate nohighlight">\(e\)</span> is Euler’s number (the base of the natural logarithm), approximately <span class="math notranslate nohighlight">\(2.71828\)</span>. The factorial <span class="math notranslate nohighlight">\(k!\)</span> in the denominator naturally restricts <span class="math notranslate nohighlight">\(k\)</span> to be a non-negative integer.</p>
+<section id="derivation-of-the-pmf-as-a-limit-of-binomial-distribution">
+<h4>Derivation of the PMF (as a limit of Binomial Distribution)<a class="headerlink" href="#derivation-of-the-pmf-as-a-limit-of-binomial-distribution" title="Link to this heading">#</a></h4>
+<p>One of the most intuitive and powerful ways to derive the Poisson PMF is by considering it as a limiting case of the Binomial distribution. Imagine we are observing events over a continuous interval (e.g., an hour). We can divide this hour into <span class="math notranslate nohighlight">\(n\)</span> very small, equal sub-intervals.</p>
+<p>For each tiny sub-interval, an event either occurs or it doesn’t. This can be seen as a Bernoulli trial.</p>
+<ul class="simple">
+<li><p>Let <span class="math notranslate nohighlight">\(n\)</span> be the number of very small sub-intervals.</p></li>
+<li><p>Let <span class="math notranslate nohighlight">\(p\)</span> be the probability of an event occurring in any single small sub-interval.</p></li>
+</ul>
+<p>If the average rate of events over the entire interval is <span class="math notranslate nohighlight">\(\lambda\)</span>, then for each small sub-interval, the probability of an event <span class="math notranslate nohighlight">\(p\)</span> can be approximated as <span class="math notranslate nohighlight">\(\lambda/n\)</span>. This implies that the total number of events in the full interval can be modeled by a Binomial distribution <span class="math notranslate nohighlight">\(X \sim \text{Binomial}(n, p)\)</span> where <span class="math notranslate nohighlight">\(p = \lambda/n\)</span>.</p>
+<p>Now, we let the number of sub-intervals <span class="math notranslate nohighlight">\(n\)</span> become infinitely large (<span class="math notranslate nohighlight">\(n \to \infty\)</span>). As <span class="math notranslate nohighlight">\(n \to \infty\)</span>, <span class="math notranslate nohighlight">\(p = \lambda/n \to 0\)</span>, meaning the probability of an event in any single infinitesimal sub-interval becomes very small (a “rare event” in that tiny interval). The product <span class="math notranslate nohighlight">\(np = \lambda\)</span> remains constant.</p>
+<p>The Binomial PMF is <span class="math notranslate nohighlight">\(P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}\)</span>.
+Substitute <span class="math notranslate nohighlight">\(p = \lambda/n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \lim_{n \to \infty} \binom{n}{k} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k}\]</div>
+<p>Let’s break down the limit:</p>
+<ol class="arabic simple">
+<li><p><strong>Binomial coefficient term</strong>:
+$<span class="math notranslate nohighlight">\(\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1)(n-2)\dots(n-k+1)}{k!}\)</span><span class="math notranslate nohighlight">\(
+Multiply this by \)</span>\left(\frac{1}{n}\right)^k<span class="math notranslate nohighlight">\(:
+\)</span><span class="math notranslate nohighlight">\(\frac{n(n-1)(n-2)\dots(n-k+1)}{k! n^k} = \frac{1}{k!} \cdot \frac{n}{n} \cdot \frac{n-1}{n} \cdot \dots \cdot \frac{n-k+1}{n}\)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty<span class="math notranslate nohighlight">\(, each term \)</span>\frac{n-i}{n}<span class="math notranslate nohighlight">\( approaches 1. So,
+\)</span><span class="math notranslate nohighlight">\(\lim_{n \to \infty} \frac{n(n-1)\dots(n-k+1)}{k! n^k} = \frac{1}{k!} \cdot 1 \cdot 1 \cdot \dots \cdot 1 = \frac{1}{k!}\)</span>$</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\((1-p)^{n-k}\)</span> term</strong>:
+$<span class="math notranslate nohighlight">\(\left(1-\frac{\lambda}{n}\right)^{n-k} = \left(1-\frac{\lambda}{n}\right)^n \left(1-\frac{\lambda}{n}\right)^{-k}\)</span><span class="math notranslate nohighlight">\(
+As \)</span>n \to \infty$:</p>
+<ul class="simple">
+<li><p>We know that <span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1+\frac{x}{n}\right)^n = e^x\)</span>. So, <span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^n = e^{-\lambda}\)</span>.</p></li>
+<li><p>And <span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^{-k} = (1-0)^{-k} = 1^{-k} = 1\)</span>.
+So, <span class="math notranslate nohighlight">\(\lim_{n \to \infty} \left(1-\frac{\lambda}{n}\right)^{n-k} = e^{-\lambda} \cdot 1 = e^{-\lambda}\)</span>.</p></li>
+</ul>
+</li>
+<li><p><strong><span class="math notranslate nohighlight">\(\lambda^k\)</span> term</strong>:
+The <span class="math notranslate nohighlight">\(\lambda^k\)</span> part from <span class="math notranslate nohighlight">\(\left(\frac{\lambda}{n}\right)^k\)</span> remains as <span class="math notranslate nohighlight">\(\lambda^k\)</span>.</p></li>
+</ol>
+<p>Combining these parts, as <span class="math notranslate nohighlight">\(n \to \infty\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \frac{1}{k!} \cdot \lambda^k \cdot e^{-\lambda}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=k) = \frac{\lambda^k e^{-\lambda}}{k!}\]</div>
+<p>This derivation beautifully links the discrete, fixed-trial Binomial distribution to the discrete, continuous-time Poisson distribution, showing how Poisson emerges when events are rare and numerous opportunities for them exist. This is why the Poisson is often referred to as the “law of rare events.”</p>
+</section>
+</section>
+<section id="id6">
+<h3>Expected Value (Mean)<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="derivation-of-the-expected-value">
+<h4>Derivation of the Expected Value<a class="headerlink" href="#derivation-of-the-expected-value" title="Link to this heading">#</a></h4>
+<p>The expected value of a Poisson random variable can be derived directly from its PMF:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{k=0}^{\infty} k \cdot P(X=k) = \sum_{k=0}^{\infty} k \frac{\lambda^k e^{-\lambda}}{k!}\]</div>
+<p>We can factor out <span class="math notranslate nohighlight">\(e^{-\lambda}\)</span> and note that the <span class="math notranslate nohighlight">\(k=0\)</span> term is 0:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \sum_{k=1}^{\infty} k \frac{\lambda^k}{k!}\]</div>
+<p>For <span class="math notranslate nohighlight">\(k \ge 1\)</span>, we can simplify <span class="math notranslate nohighlight">\(k/k! = 1/(k-1)!\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^k}{(k-1)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-1\)</span>. When <span class="math notranslate nohighlight">\(k=1\)</span>, <span class="math notranslate nohighlight">\(j=0\)</span>. When <span class="math notranslate nohighlight">\(k \to \infty\)</span>, <span class="math notranslate nohighlight">\(j \to \infty\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j+1}}{j!}\]</div>
+<p>We can factor out <span class="math notranslate nohighlight">\(\lambda\)</span> from <span class="math notranslate nohighlight">\(\lambda^{j+1}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \lambda \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>We recognize the sum as the Taylor series expansion for <span class="math notranslate nohighlight">\(e^{\lambda}\)</span>: <span class="math notranslate nohighlight">\(\sum_{j=0}^{\infty} \frac{x^j}{j!} = e^x\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = e^{-\lambda} \lambda e^{\lambda}\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = \lambda\]</div>
+<p>The expected value of a Poisson random variable is its parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, which by definition is the average rate of events in the given interval.</p>
+</section>
+</section>
+<section id="id7">
+<h3>Variance<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h4>Derivation of the Variance<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<p>To find the variance, <span class="math notranslate nohighlight">\(Var(X) = E[X^2] - (E[X])^2\)</span>, we first need <span class="math notranslate nohighlight">\(E[X^2]\)</span>. It’s often easier to compute <span class="math notranslate nohighlight">\(E[X(X-1)]\)</span> first for distributions involving <span class="math notranslate nohighlight">\(k!\)</span> in the denominator:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \sum_{k=0}^{\infty} k(k-1) \cdot P(X=k) = \sum_{k=0}^{\infty} k(k-1) \frac{\lambda^k e^{-\lambda}}{k!}\]</div>
+<p>The terms for <span class="math notranslate nohighlight">\(k=0\)</span> and <span class="math notranslate nohighlight">\(k=1\)</span> are 0, so we can start the sum from <span class="math notranslate nohighlight">\(k=2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \sum_{k=2}^{\infty} k(k-1) \frac{\lambda^k}{k!}\]</div>
+<p>For <span class="math notranslate nohighlight">\(k \ge 2\)</span>, we can simplify <span class="math notranslate nohighlight">\(k(k-1)/k! = 1/(k-2)!\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \sum_{k=2}^{\infty} \frac{\lambda^k}{(k-2)!}\]</div>
+<p>Let <span class="math notranslate nohighlight">\(j = k-2\)</span>. When <span class="math notranslate nohighlight">\(k=2\)</span>, <span class="math notranslate nohighlight">\(j=0\)</span>. When <span class="math notranslate nohighlight">\(k \to \infty\)</span>, <span class="math notranslate nohighlight">\(j \to \infty\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \sum_{j=0}^{\infty} \frac{\lambda^{j+2}}{j!}\]</div>
+<p>Factor out <span class="math notranslate nohighlight">\(\lambda^2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \lambda^2 \sum_{j=0}^{\infty} \frac{\lambda^j}{j!}\]</div>
+<p>Again, recognizing the sum as <span class="math notranslate nohighlight">\(e^{\lambda}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = e^{-\lambda} \lambda^2 e^{\lambda}\]</div>
+<div class="math notranslate nohighlight">
+\[E[X(X-1)] = \lambda^2\]</div>
+<p>Now, we use the identity <span class="math notranslate nohighlight">\(E[X^2] = E[X(X-1)] + E[X]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X^2] = \lambda^2 + \lambda\]</div>
+<p>Finally, we can compute the variance:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = E[X^2] - (E[X])^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = (\lambda^2 + \lambda) - (\lambda)^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = \lambda^2 + \lambda - \lambda^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = \lambda\]</div>
+<p>A remarkable property of the Poisson distribution is that its variance is equal to its mean, both being <span class="math notranslate nohighlight">\(\lambda\)</span>. This mean-variance equality is a key characteristic that is often tested when determining if a dataset can be modeled by a Poisson distribution. If a dataset shows significant over-dispersion (variance much greater than mean) or under-dispersion (variance much less than mean), a Poisson model might not be appropriate.</p>
+</section>
+</section>
+<section id="id9">
+<h3>Cumulative Distribution Function (CDF)<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<p>The CDF, <span class="math notranslate nohighlight">\(F_X(k) = P(X \le k)\)</span>, for a Poisson random variable is given by the sum of its PMF values up to <span class="math notranslate nohighlight">\(k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[F_X(k) = \sum_{i=0}^{k} \frac{\lambda^i e^{-\lambda}}{i!}\]</div>
+<p>Similar to the Bernoulli and Binomial distributions, the Poisson CDF is a step function. Each step occurs at an integer value <span class="math notranslate nohighlight">\(k\)</span>, and the height of the step corresponds to <span class="math notranslate nohighlight">\(P(X=k)\)</span>. The CDF accumulates the probabilities from <span class="math notranslate nohighlight">\(X=0\)</span> up to <span class="math notranslate nohighlight">\(k\)</span>, eventually approaching 1 as <span class="math notranslate nohighlight">\(k \to \infty\)</span>. This function is essential for calculating probabilities over intervals, such as <span class="math notranslate nohighlight">\(P(a &lt; X \le b) = F_X(b) - F_X(a)\)</span>. There is no simple closed-form expression for the Poisson CDF, so it’s usually calculated by summing terms or using computational tools.</p>
+</section>
+<section id="example-and-analogy">
+<h3>Example and Analogy<a class="headerlink" href="#example-and-analogy" title="Link to this heading">#</a></h3>
+<p><strong>Example</strong>: A call center receives an average of 5 calls per hour. Assuming the number of calls follows a Poisson distribution, what is the probability of receiving exactly 3 calls in the next hour?
+Here, <span class="math notranslate nohighlight">\(\lambda=5\)</span> (average calls per hour), and we want <span class="math notranslate nohighlight">\(k=3\)</span> calls.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(X \sim \text{Poisson}(5)\)</span></p></li>
+<li><p>PMF: <span class="math notranslate nohighlight">\(P(X=3) = \frac{5^3 e^{-5}}{3!}\)</span>
+<span class="math notranslate nohighlight">\(P(X=3) = \frac{125 \cdot e^{-5}}{6}\)</span>
+<span class="math notranslate nohighlight">\(P(X=3) \approx \frac{125 \cdot 0.0067379}{6} \approx 0.14037\)</span></p></li>
+<li><p>Mean: <span class="math notranslate nohighlight">\(E[X] = \lambda = 5\)</span>. We expect 5 calls per hour.</p></li>
+<li><p>Variance: <span class="math notranslate nohighlight">\(Var(X) = \lambda = 5\)</span>.</p></li>
+</ul>
+<p><strong>Analogy</strong>: Think of the Poisson distribution as counting the number of unpredictable occurrences in a given window, like the number of typos on a page of a book, or the number of meteors observed in an hour during a meteor shower.</p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="relationships-and-approximations">
+<h1>Relationships and Approximations<a class="headerlink" href="#relationships-and-approximations" title="Link to this heading">#</a></h1>
+<p>Understanding the relationships between these distributions provides deeper insights into their applicability and allows for useful approximations in practical scenarios.</p>
+<section id="binomial-to-poisson-approximation">
+<h2>Binomial to Poisson Approximation<a class="headerlink" href="#binomial-to-poisson-approximation" title="Link to this heading">#</a></h2>
+<p>As we discussed during the derivation of the Poisson PMF, the Poisson distribution can be seen as a special limiting case of the Binomial distribution. This relationship is not just a mathematical curiosity; it’s a powerful tool for approximation, especially when direct Binomial calculations become cumbersome.</p>
+<p><strong>Conditions for Approximation:</strong>
+A Binomial distribution <span class="math notranslate nohighlight">\(B(n, p)\)</span> can be accurately approximated by a Poisson distribution <span class="math notranslate nohighlight">\(\text{Poisson}(\lambda)\)</span> when:</p>
+<ol class="arabic simple">
+<li><p>The number of trials <span class="math notranslate nohighlight">\(n\)</span> is very large (<span class="math notranslate nohighlight">\(n \to \infty\)</span>).</p></li>
+<li><p>The probability of success <span class="math notranslate nohighlight">\(p\)</span> is very small (<span class="math notranslate nohighlight">\(p \to 0\)</span>).</p></li>
+<li><p>The product <span class="math notranslate nohighlight">\(np\)</span> is moderate and remains relatively constant, where <span class="math notranslate nohighlight">\(\lambda = np\)</span>.</p></li>
+</ol>
+<p><strong>Intuition:</strong>
+Consider a situation where we have many opportunities for an event to occur (large <span class="math notranslate nohighlight">\(n\)</span>), but each individual event is very unlikely (small <span class="math notranslate nohighlight">\(p\)</span>). For example, the number of typographical errors on a page of a large book. There are many words (large <span class="math notranslate nohighlight">\(n\)</span>), but the probability of any single word having a typo is very small (small <span class="math notranslate nohighlight">\(p\)</span>). The total number of typos on the page would then be well-approximated by a Poisson distribution with <span class="math notranslate nohighlight">\(\lambda\)</span> being the average number of typos per page. Each word is a Bernoulli trial, and the page is a collection of many such trials where success (typo) is rare.</p>
+<p>This approximation is extremely useful because calculating Binomial probabilities for large <span class="math notranslate nohighlight">\(n\)</span> can be computationally intensive due to the factorials involved (e.g., <span class="math notranslate nohighlight">\(n!\)</span> for large <span class="math notranslate nohighlight">\(n\)</span>). The Poisson PMF, with its single parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, often provides a much simpler and sufficiently accurate calculation, making it a valuable shortcut in many real-world applications.</p>
+<p><strong>Rule of Thumb for Practical Use:</strong>
+The approximation is generally considered good when:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n \ge 20\)</span> and <span class="math notranslate nohighlight">\(p \le 0.05\)</span></p></li>
+<li><p>Even better when <span class="math notranslate nohighlight">\(n \ge 100\)</span> and <span class="math notranslate nohighlight">\(np \le 10\)</span></p></li>
+</ul>
+<p><strong>Example Demonstrating Approximation:</strong>
+Suppose a manufacturer produces light bulbs, and the defect rate is <span class="math notranslate nohighlight">\(p=0.01\)</span>. If we inspect a batch of <span class="math notranslate nohighlight">\(n=200\)</span> bulbs, what is the probability of finding exactly 3 defective bulbs?</p>
+<ol class="arabic simple">
+<li><p><strong>Exact Binomial Calculation:</strong>
+This is a Binomial problem: <span class="math notranslate nohighlight">\(X \sim \text{Binomial}(200, 0.01)\)</span>.
+$<span class="math notranslate nohighlight">\(P(X=3) = \binom{200}{3} (0.01)^3 (0.99)^{197}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(P(X=3) = \frac{200!}{3!197!} (0.01)^3 (0.99)^{197}\)</span><span class="math notranslate nohighlight">\(
+Calculating this exactly requires a scientific calculator or software and yields approximately \)</span>0.1808$.</p></li>
+<li><p><strong>Poisson Approximation:</strong>
+First, we check the conditions: <span class="math notranslate nohighlight">\(n=200\)</span> (large) and <span class="math notranslate nohighlight">\(p=0.01\)</span> (small).
+Calculate <span class="math notranslate nohighlight">\(\lambda = np = 200 \cdot 0.01 = 2\)</span>.
+Now, approximate with <span class="math notranslate nohighlight">\(Y \sim \text{Poisson}(2)\)</span>:
+$<span class="math notranslate nohighlight">\(P(Y=3) = \frac{e^{-2} 2^3}{3!} = \frac{e^{-2} \cdot 8}{6}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(P(Y=3) \approx \frac{0.135335 \cdot 8}{6} \approx 0.1804\)</span>$</p></li>
+</ol>
+<p>As we can see, the Poisson approximation (<span class="math notranslate nohighlight">\(0.1804\)</span>) provides a very close estimate to the exact Binomial probability (<span class="math notranslate nohighlight">\(0.1808\)</span>), significantly simplifying the calculation.</p>
+</section>
+<hr class="docutils" />
+<section id="when-to-use-poisson-vs-binomial">
+<h2>When to Use Poisson vs. Binomial<a class="headerlink" href="#when-to-use-poisson-vs-binomial" title="Link to this heading">#</a></h2>
+<p>It’s helpful to distinguish when to apply the Binomial versus the Poisson distribution:</p>
+<ul class="simple">
+<li><p><strong>Binomial Distribution</strong>: Used when we have a <em>fixed number of trials</em> (<span class="math notranslate nohighlight">\(n\)</span>) and are counting the number of “successes” among them. The probability of success <span class="math notranslate nohighlight">\(p\)</span> is constant for each trial. The outcomes are binary (success/failure).</p>
+<ul>
+<li><p><em>Example</em>: Number of defective items in a batch of 100.</p></li>
+</ul>
+</li>
+<li><p><strong>Poisson Distribution</strong>: Used when we are counting the number of events in a <em>fixed interval of time or space</em>, and we know the average rate (<span class="math notranslate nohighlight">\(\lambda\)</span>) at which these events occur. There isn’t a predefined “number of trials” in the same way as the Binomial; rather, there are infinitely many “opportunities” for the event to occur, but each with an infinitesimally small probability. It’s often associated with rare events.</p>
+<ul>
+<li><p><em>Example</em>: Number of emails received in a day.</p></li>
+</ul>
+</li>
+</ul>
+<p>As we saw in the derivation, the Poisson distribution can be viewed as an approximation to the Binomial distribution when <span class="math notranslate nohighlight">\(n\)</span> is very large and <span class="math notranslate nohighlight">\(p\)</span> is very small, such that <span class="math notranslate nohighlight">\(np\)</span> (which is <span class="math notranslate nohighlight">\(\lambda\)</span>) remains constant. This is why the Poisson is often called the “law of rare events.”</p>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="diagnostic-checks-and-real-world-considerations">
+<h1>Diagnostic Checks and Real-World Considerations<a class="headerlink" href="#diagnostic-checks-and-real-world-considerations" title="Link to this heading">#</a></h1>
+<p>Successfully applying these discrete distributions in data science involves more than just understanding their formulas; it requires careful consideration of their underlying assumptions and how well they fit observed data.</p>
+<section id="goodness-of-fit-and-assumption-verification">
+<h2>Goodness-of-Fit and Assumption Verification<a class="headerlink" href="#goodness-of-fit-and-assumption-verification" title="Link to this heading">#</a></h2>
+<p>Once a distribution (Bernoulli, Binomial, or Poisson) has been hypothesized and its parameters estimated from data, it’s crucial to perform <strong>goodness-of-fit tests</strong> to assess whether the model adequately describes the observed phenomenon.</p>
+<ul class="simple">
+<li><p><strong>Graphical Methods:</strong> Visual comparisons, such as plotting observed frequencies against the probabilities predicted by the fitted PMF, or comparing empirical CDFs to theoretical CDFs, can reveal discrepancies. For count data, a bar chart of observed counts versus expected counts (from the fitted distribution) is a simple yet powerful diagnostic tool.</p></li>
+<li><p><strong>Formal Statistical Tests:</strong> The <strong>Chi-squared goodness-of-fit test</strong> is a common method to statistically evaluate if the observed counts in different categories (or counts of successes for Binomial, or event counts for Poisson) deviate significantly from the counts expected under the assumed distribution.</p></li>
+<li><p><strong>Assumption Checks:</strong> Beyond statistical fit, verifying the core assumptions is paramount. For Binomial, this includes checking if the probability of success <span class="math notranslate nohighlight">\(p\)</span> is truly constant across trials and if trials are independent (e.g., using run charts or autocorrelation analysis). For Poisson, verifying that events are independent and occur at a constant average rate <span class="math notranslate nohighlight">\(\lambda\)</span> is critical. Violations of these assumptions often necessitate alternative modeling approaches.</p></li>
+</ul>
+</section>
+<section id="overdispersion-in-poisson-data">
+<h2>Overdispersion in Poisson Data<a class="headerlink" href="#overdispersion-in-poisson-data" title="Link to this heading">#</a></h2>
+<p>A common challenge with real-world count data modeled by the Poisson distribution is <strong>overdispersion</strong>. This occurs when the observed variance of the data is significantly greater than its mean (<span class="math notranslate nohighlight">\(Var(X) &gt; E[X]\)</span>), which directly contradicts the Poisson property <span class="math notranslate nohighlight">\(E[X] = Var[X] = \lambda\)</span>. Overdispersion typically arises from unobserved heterogeneity in the event rate across observations, or from positive correlation between events. When overdispersion is present and not accounted for, a Poisson model will underestimate standard errors, leading to artificially narrow confidence intervals and potentially erroneous conclusions about statistical significance. In such cases, the <strong>Negative Binomial distribution</strong> is often a more appropriate alternative, as it includes an additional parameter to model this extra variability, offering a more flexible fit to overdispersed count data. Conversely, <em>underdispersion</em> (variance less than mean) is rarer but can occur due to highly regular event patterns.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="summary-and-conclusion">
+<h1>Summary and Conclusion<a class="headerlink" href="#summary-and-conclusion" title="Link to this heading">#</a></h1>
+<p>We have taken a comprehensive journey through three cornerstone discrete probability distributions: Bernoulli, Binomial, and Poisson.</p>
+<ul class="simple">
+<li><p>The <strong>Bernoulli distribution</strong> is the simplest, modeling a single trial with two outcomes (success/failure) and parameterized by the probability of success, <span class="math notranslate nohighlight">\(p\)</span> (dimensionless). It forms the fundamental building block for more complex models, with <span class="math notranslate nohighlight">\(X \sim \text{Bernoulli}(p)\)</span> being equivalent to <span class="math notranslate nohighlight">\(X \sim \text{Binomial}(1, p)\)</span>. We derived its mean as <span class="math notranslate nohighlight">\(p\)</span> and variance as <span class="math notranslate nohighlight">\(p(1-p)\)</span>.</p></li>
+<li><p>The <strong>Binomial distribution</strong> extends the Bernoulli concept to a fixed number of independent trials, counting the number of successes. Its parameters are the number of trials, <span class="math notranslate nohighlight">\(n\)</span> (dimensionless count), and the probability of success in each trial, <span class="math notranslate nohighlight">\(p\)</span> (dimensionless probability). We saw how its PMF arises from combinatorial arguments and how linearity of expectation simplifies its mean (<span class="math notranslate nohighlight">\(np\)</span>) and variance (<span class="math notranslate nohighlight">\(np(1-p)\)</span>) derivations.</p></li>
+<li><p>The <strong>Poisson distribution</strong> excels at modeling the number of rare events occurring in a fixed interval, given a constant average rate <span class="math notranslate nohighlight">\(\lambda\)</span> (dimensionless count). Its elegant PMF and the intriguing property of having equal mean and variance (<span class="math notranslate nohighlight">\(\lambda\)</span>) make it invaluable for a wide array of applications. Crucially, we derived the Poisson distribution as a limiting case of the Binomial distribution, providing a powerful approximation tool when <span class="math notranslate nohighlight">\(n\)</span> is large and <span class="math notranslate nohighlight">\(p\)</span> is small.</p></li>
+</ul>
+<p>For all three distributions, we explored their Cumulative Distribution Functions (CDFs), highlighting their role as step functions that accumulate probability and are essential for calculating probabilities over intervals. The factorial terms in their PMFs naturally define their discrete, integer domains.</p>
+<section id="advanced-applications-in-data-science">
+<h2>Advanced Applications in Data Science<a class="headerlink" href="#advanced-applications-in-data-science" title="Link to this heading">#</a></h2>
+<p>These distributions form the bedrock for many advanced statistical and machine learning techniques, providing the likelihood functions for various models:</p>
+<ul class="simple">
+<li><p><strong>A/B Testing:</strong> The Binomial distribution is central to A/B testing, where we compare conversion rates (probabilities of success) between two or more groups to determine which performs better.</p></li>
+<li><p><strong>Logistic Regression:</strong> For binary classification tasks, the underlying statistical model is often a <strong>Generalized Linear Model (GLM)</strong> that assumes a Bernoulli (or Binomial, if data are grouped) distribution for the response variable, linking the probability of success to predictor variables via a logit function.</p></li>
+<li><p><strong>Poisson Regression:</strong> For modeling count data (e.g., number of website clicks, customer arrivals, disease cases), <strong>Poisson Regression</strong> is a standard GLM where the response variable is assumed to follow a Poisson distribution, allowing us to quantify the effect of various factors on the expected event count.</p></li>
+<li><p><strong>Anomaly Detection:</strong> Poisson distributions can be used to model expected counts of rare events; significant deviations from these expected counts might signal an anomaly or unusual activity (e.g., an unexpected surge in network traffic).</p></li>
+</ul>
+</section>
+<section id="beyond-these-basics-related-distributions">
+<h2>Beyond These Basics: Related Distributions<a class="headerlink" href="#beyond-these-basics-related-distributions" title="Link to this heading">#</a></h2>
+<p>While these three distributions are fundamental, it’s worth noting that they are part of a larger family of discrete probability distributions, each suitable for specific scenarios. For instance, the <strong>Geometric distribution</strong> models the number of Bernoulli trials needed to get the <em>first</em> success, while the <strong>Negative Binomial distribution</strong> generalizes this to the number of trials needed for <span class="math notranslate nohighlight">\(r\)</span> successes (and, as noted, also serves as an important alternative to the Poisson distribution for overdispersed count data). Understanding these foundational distributions is the gateway to exploring these more specialized models and building sophisticated probabilistic reasoning skills.</p>
+<p>These distributions are not just abstract mathematical constructs; they are practical tools for understanding, modeling, and predicting discrete phenomena in various fields, from engineering and finance to biology and social sciences. By understanding their assumptions, PMFs, CDFs, properties, and interrelationships, we are better equipped to analyze count data and make informed decisions based on probabilistic reasoning.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Poisson Distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-poisson-process-and-its-conditions">The Poisson Process and its Conditions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parameter-lambda">The Parameter <span class="math notranslate nohighlight">\(\lambda\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-pmf">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-pmf-from-the-binomial-distribution">Derivation of the PMF from the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-pmf-validation">Properties of the PMF (Validation)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean">Expected Value (Mean)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mean">Derivation of the Mean</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-variance">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-poisson-distribution">Mode of the Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mode">Derivation of the Mode</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-and-analogies">Examples and Analogies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-website-traffic">Example: Website Traffic</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-other-distributions">Relationship to Other Distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-approximation-to-the-binomial-distribution">Poisson Approximation to the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-the-exponential-distribution">Relationship to the Exponential Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-approximation">Normal Approximation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-insights">Further Insights</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-of-the-poisson-pmf">Shape of the Poisson PMF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-in-stochastic-processes">Applications in Stochastic Processes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-of-pmf-normalization">Verification of PMF Normalization</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean-of-a-poisson-distribution">Expected Value (Mean) of a Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Derivation of the Mean</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-of-a-poisson-distribution">Variance of a Poisson Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Cumulative Distribution Function (CDF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-cdf">Derivation of the CDF</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-poisson-distribution">Example of Poisson Distribution</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Poisson Distribution</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-poisson-distribution">What is a Poisson Distribution?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-of-the-poisson-distribution">Parameters of the Poisson Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clarification-on-units-for-lambda">Clarification on Units for <span class="math notranslate nohighlight">\(\lambda\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-estimation-in-data-science">Parameter Estimation in Data Science</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Probability Mass Function (PMF)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-pmf-as-a-limit-of-binomial-distribution">Derivation of the PMF (as a limit of Binomial Distribution)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Expected Value (Mean)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-expected-value">Derivation of the Expected Value</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Derivation of the Variance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Cumulative Distribution Function (CDF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-and-analogy">Example and Analogy</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#relationships-and-approximations">Relationships and Approximations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-to-poisson-approximation">Binomial to Poisson Approximation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-poisson-vs-binomial">When to Use Poisson vs. Binomial</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic-checks-and-real-world-considerations">Diagnostic Checks and Real-World Considerations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#goodness-of-fit-and-assumption-verification">Goodness-of-Fit and Assumption Verification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overdispersion-in-poisson-data">Overdispersion in Poisson Data</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-conclusion">Summary and Conclusion</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-applications-in-data-science">Advanced Applications in Data Science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-these-basics-related-distributions">Beyond These Basics: Related Distributions</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

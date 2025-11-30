@@ -1,0 +1,1101 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Bernoulli Distribution and Binomial Distributions &#8212; Quantopia&#39;:&#39; Physics, Python and Pi</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math/bernoulli-and-binomial-distributions';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bernoulli Distribution and Binomial Distributions - Code Examples" href="bernoulli-and-binomial-distributions-code.html" />
+    <link rel="prev" title="PMF, PDF, CDF - Code Examples" href="pmf-pdf-cdf-code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Quantopia':' Physics, Python and Pi - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Quantopia':' Physics, Python and Pi - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Quantopia: Physics, Python, and Pi (Alpha Version)
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
+<li class="toctree-l1"><a class="reference internal" href="divergence.html">Divergence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf.html">Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf-code.html">PMF, PDF, CDF - Code Examples</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bernoulli Distribution and Binomial Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions-code.html">Bernoulli Distribution and Binomial Distributions - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
+<li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares.html">Ordinary Least Squares (OLS) Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ordinary-least-squares-code.html">Ordinary Least Squares (OLS) Regression - Code Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance.html">Variance and Covariance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variance-covariance-code.html">Variance and Covariance - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients.html">Correlation Coefficients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="correlation-coefficients-code.html">Correlation Coefficients - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares.html">Weighted Least Squares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-1.html">WLS - Code Examples Part 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-2.html">WLS - Code Examples Part 2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="goodness-of-fit-and-chi-squared.html">Goodness of Fit and Chi-Squared Statistic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aic-and-bic.html">Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weighted-least-squares-code-3.html">WLS - Code Examples Part 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="orthogonal-distance-regression.html">Orthogonal Distance Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="odr-code.html">ODR - Code Examples</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">PHYSICS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-01.html">The Continuity Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/continuity-equation-02.html">The Continuity Equation: One-Dimensional Advection of a Density Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/ensemble.html">Statistical Ensembles and Liouville’s Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/microcanonical-ensemble.html">Microcanonical Ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/inertial_vs_gravitational_mass.html">Mass: Inertial vs. Gravitational</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">DATA ANALYSIS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data-analysis/rate-of-return-metrics.html">Advanced Rate of Return Metrics (IRR, XIRR, MIRR, XMIRR, PV, FV, NPV, XNPV)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/Yakovliev/quantopia/issues/new?title=Issue%20on%20page%20%2Fmath/bernoulli-and-binomial-distributions.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/math/bernoulli-and-binomial-distributions.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bernoulli Distribution and Binomial Distributions</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoulli-distribution">Bernoulli Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-of-a-bernoulli-distribution">Probability Mass Function of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean-of-a-bernoulli-distribution">Expected Value (Mean) of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-of-a-bernoulli-distribution">Variance of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-bernoulli-distribution">Mode of the Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-models-number-of-successes-in-fixed-trials">What it Models: Number of Successes in Fixed Trials</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-i-i-d-trials-and-common-violations">Importance of i.i.d. Trials and Common Violations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-bernoulli-distribution">Relationship to Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-of-the-binomial-distribution">Parameters of the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-of-a-binomial-distribution">Probability Mass Function of a Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean">Expected Value (Mean)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-binomial-distribution">Mode of the Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mode">Derivation of the Mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-of-a-binomial-distribution">Cumulative Distribution Function of a Binomial Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Relationship to Bernoulli Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-manufacturing-defects">Example: Manufacturing Defects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-insights-and-advanced-considerations">Further Insights and Advanced Considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-and-skewness-of-the-binomial-distribution">Shape and Skewness of the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approximations-to-the-binomial-distribution">Approximations to the Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-approximation">Normal Approximation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-approximation">Poisson Approximation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bernoulli-distribution-and-binomial-distributions">
+<h1>Bernoulli Distribution and Binomial Distributions<a class="headerlink" href="#bernoulli-distribution-and-binomial-distributions" title="Link to this heading">#</a></h1>
+<section id="bernoulli-distribution">
+<h2>Bernoulli Distribution<a class="headerlink" href="#bernoulli-distribution" title="Link to this heading">#</a></h2>
+<p>We will start the simplest of all probability distributions for a discrete random variable: the Bernoulli Distribution. It serves as the basic building block for understanding more complex distributions like the Binomial distribution.</p>
+<p>The <strong>Bernoulli distribution</strong> models a single random experiment that has exactly two mutually exclusive possible outcomes. These outcomes are conventionally labeled “success” and “failure.” Think of any situation where an event either happens or it doesn’t. This single experiment is known as a <strong>Bernoulli trial</strong>.</p>
+<p>Examples include:</p>
+<ul class="simple">
+<li><p>Flipping a coin: heads (success) or tails (failure).</p></li>
+<li><p>A product being defective (success) or not defective (failure).</p></li>
+<li><p>A customer clicking on an advertisement (success) or not clicking (failure).</p></li>
+<li><p>A student passing an exam (success) or failing (failure).</p></li>
+</ul>
+<p>The random variable associated with a Bernoulli trial is a <strong>discrete random variable</strong> that takes on a value of 1 for a “success” and 0 for a “failure.”</p>
+<p>A Bernoulli distribution is characterized by a single parameter <span class="math notranslate nohighlight">\(p\)</span>: the probability of “success” in a single trial. This is a dimensionless quantity, constrained such that <span class="math notranslate nohighlight">\(0 \le p \le 1\)</span>.</p>
+<p>Naturally, the probability of “failure” is <span class="math notranslate nohighlight">\(1-p\)</span>. We often denote this as <span class="math notranslate nohighlight">\(q = 1-p\)</span>.</p>
+<section id="probability-mass-function-of-a-bernoulli-distribution">
+<h3>Probability Mass Function of a Bernoulli Distribution<a class="headerlink" href="#probability-mass-function-of-a-bernoulli-distribution" title="Link to this heading">#</a></h3>
+<p>The Probability Mass Function (PMF) of a Bernoulli random variable describes the probability of observing each of its two possible outcomes.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a Bernoulli random variable.</p>
+<ul class="simple">
+<li><p>The probability of observing a success (i.e., <span class="math notranslate nohighlight">\(X=1\)</span>) is <span class="math notranslate nohighlight">\(p\)</span>.</p></li>
+<li><p>The probability of observing a failure (i.e., <span class="math notranslate nohighlight">\(X=0\)</span>) is <span class="math notranslate nohighlight">\(1-p\)</span>.</p></li>
+</ul>
+<p>We can write this compactly as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_X(x) = P(X=x) = \begin{cases} p &amp; \text{if } x=1 \\ 1-p &amp; \text{if } x=0 \\ 0 &amp; \text{otherwise} \end{cases}\end{split}\]</div>
+<p>While the PMF for a Bernoulli variable is primarily a direct definition based on the two outcomes and their probabilities, we can represent it elegantly in a single formula by observing the pattern:</p>
+<ol class="arabic simple">
+<li><p>If <span class="math notranslate nohighlight">\(x=1\)</span> (success): The probability is <span class="math notranslate nohighlight">\(p\)</span>. We can write this as <span class="math notranslate nohighlight">\(p^1 (1-p)^0 = p \cdot 1 = p\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(x=0\)</span> (failure): The probability is <span class="math notranslate nohighlight">\(1-p\)</span>. We can write this as <span class="math notranslate nohighlight">\(p^0 (1-p)^1 = 1 \cdot (1-p) = 1-p\)</span>.</p></li>
+</ol>
+<p>Combining these, we arrive at the standard compact form of the Bernoulli PMF:</p>
+<div class="math notranslate nohighlight">
+\[p_X(x) = P(X=x) = p^x (1-p)^{1-x} \quad \text{for } x \in \{0, 1\}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(p\)</span> is the <strong>parameter</strong> of the Bernoulli distribution. It must be a value between 0 and 1, i.e., <span class="math notranslate nohighlight">\(p \in [0, 1]\)</span>. Since <span class="math notranslate nohighlight">\(p\)</span> is a probability, it is a dimensionless quantity. The random variable <span class="math notranslate nohighlight">\(X\)</span> takes on values that are counts (0 or 1), which are also dimensionless.</p>
+<p>Let’s check the properties of a valid PMF:</p>
+<ol class="arabic">
+<li><p><strong>Non-negativity</strong>: Since <span class="math notranslate nohighlight">\(p \in [0, 1]\)</span>, both <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(1-p\)</span> are non-negative. Thus, <span class="math notranslate nohighlight">\(p_X(x) \ge 0\)</span> for all <span class="math notranslate nohighlight">\(x\)</span>.</p></li>
+<li><p><strong>Normalization</strong>: The sum of probabilities for all possible values of <span class="math notranslate nohighlight">\(x\)</span> must equal 1.</p>
+<div class="math notranslate nohighlight">
+\[\sum_{x \in \{0,1\}} p_X(x) = p_X(0) + p_X(1) = (1-p) + p = 1\]</div>
+<p>Both properties hold, confirming this is a valid PMF.</p>
+</li>
+</ol>
+</section>
+<section id="expected-value-mean-of-a-bernoulli-distribution">
+<h3>Expected Value (Mean) of a Bernoulli Distribution<a class="headerlink" href="#expected-value-mean-of-a-bernoulli-distribution" title="Link to this heading">#</a></h3>
+<p>The <strong>expected value</strong> or <strong>mean</strong> of a discrete random variable <span class="math notranslate nohighlight">\(X\)</span>, denoted <span class="math notranslate nohighlight">\(E[X]\)</span> or <span class="math notranslate nohighlight">\(\mu\)</span>, is the weighted average of its possible values, where the weights are their probabilities.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = \sum_{x} x \cdot p_X(x)\]</div>
+<p>For a Bernoulli random variable <span class="math notranslate nohighlight">\(X\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = (0 \cdot P(X=0)) + (1 \cdot P(X=1))\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = (0 \cdot (1-p)) + (1 \cdot p)\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = p\]</div>
+<p>The mean of a Bernoulli distribution is simply the probability of success <span class="math notranslate nohighlight">\(p\)</span>. This makes intuitive sense: if for example an event has a 30% chance of success (1) and 70% chance of failure (0), on average, over many trials, the outcome will be 0.3.</p>
+</section>
+<section id="variance-of-a-bernoulli-distribution">
+<h3>Variance of a Bernoulli Distribution<a class="headerlink" href="#variance-of-a-bernoulli-distribution" title="Link to this heading">#</a></h3>
+<p>The <strong>variance</strong> of a random variable, denoted <span class="math notranslate nohighlight">\(Var(X)\)</span> or <span class="math notranslate nohighlight">\(\sigma^2\)</span>, measures the spread or dispersion of its values around the mean. It is defined as the expected value of the squared difference from the mean:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = E[(X - E[X])^2]\]</div>
+<p>Alternatively, a computationally convenient formula is:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = E[X^2] - (E[X])^2\]</div>
+<p>First, let’s calculate <span class="math notranslate nohighlight">\(E[X^2]\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[E[X^2] = (0^2 \cdot P(X=0)) + (1^2 \cdot P(X=1))\]</div>
+<div class="math notranslate nohighlight">
+\[E[X^2] = (0 \cdot (1-p)) + (1 \cdot p)\]</div>
+<div class="math notranslate nohighlight">
+\[E[X^2] = p\]</div>
+<p>Now, substitute this into the variance formula:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = E[X^2] - (E[X])^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = p - (p)^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = p - p^2\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = p(1-p)\]</div>
+<p>The variance of a Bernoulli random variable is <span class="math notranslate nohighlight">\(p(1-p)\)</span>. This quantity is maximized when <span class="math notranslate nohighlight">\(p=0.5\)</span>, indicating the highest uncertainty or spread when success and failure are equally likely. Since outcomes are dimensionless counts, the variance is also dimensionless.</p>
+</section>
+<section id="standard-deviation">
+<h3>Standard Deviation<a class="headerlink" href="#standard-deviation" title="Link to this heading">#</a></h3>
+<p>The <strong>standard deviation</strong>, denoted <span class="math notranslate nohighlight">\(\sigma\)</span>, is the square root of the variance. It provides a measure of spread in the same units as the random variable itself.</p>
+<div class="math notranslate nohighlight">
+\[\sigma_X = \sqrt{Var(X)}\]</div>
+<p>For a Bernoulli random variable:</p>
+<div class="math notranslate nohighlight">
+\[\sigma_X = \sqrt{p(1-p)}\]</div>
+</section>
+<section id="mode-of-the-bernoulli-distribution">
+<h3>Mode of the Bernoulli Distribution<a class="headerlink" href="#mode-of-the-bernoulli-distribution" title="Link to this heading">#</a></h3>
+<p>The <strong>mode</strong> of a discrete distribution is the value that occurs with the highest probability.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(p &gt; 0.5\)</span>, then <span class="math notranslate nohighlight">\(P(X=1) = p\)</span> is greater than <span class="math notranslate nohighlight">\(P(X=0) = 1-p\)</span>. So the mode is 1.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(p &lt; 0.5\)</span>, then <span class="math notranslate nohighlight">\(P(X=0) = 1-p\)</span> is greater than <span class="math notranslate nohighlight">\(P(X=1) = p\)</span>. So the mode is 0.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(p = 0.5\)</span>, then <span class="math notranslate nohighlight">\(P(X=0) = P(X=1) = 0.5\)</span>. In this case, the distribution is bimodal, with modes at 0 and 1.</p></li>
+</ul>
+</section>
+<section id="cumulative-distribution-function-cdf">
+<h3>Cumulative Distribution Function (CDF)<a class="headerlink" href="#cumulative-distribution-function-cdf" title="Link to this heading">#</a></h3>
+<p>The CDF for a Bernoulli random variable <span class="math notranslate nohighlight">\(X\)</span> is a step function. The CDF <span class="math notranslate nohighlight">\(F_X(x) = P(X \le x)\)</span> is found by summing the probabilities from the PMF for all values less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<ul class="simple">
+<li><p>For <span class="math notranslate nohighlight">\(x &lt; 0\)</span>: No possible outcomes are less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
+$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = 0\)</span>$</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(0 \le x &lt; 1\)</span>: Only <span class="math notranslate nohighlight">\(X=0\)</span> is a possible outcome less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
+$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) = 1-p\)</span>$</p></li>
+<li><p>For <span class="math notranslate nohighlight">\(x \ge 1\)</span>: Both <span class="math notranslate nohighlight">\(X=0\)</span> and <span class="math notranslate nohighlight">\(X=1\)</span> are possible outcomes less than or equal to <span class="math notranslate nohighlight">\(x\)</span>.
+$<span class="math notranslate nohighlight">\(F_X(x) = P(X \le x) = P(X=0) + P(X=1) = (1-p) + p = 1\)</span>$</p></li>
+</ul>
+<p>So, the CDF for a Bernoulli random variable is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}F_X(x) = \begin{cases} 0 &amp; \text{for } x &lt; 0 \\ 1-p &amp; \text{for } 0 \le x &lt; 1 \\ 1 &amp; \text{for } x \ge 1 \end{cases}\end{split}\]</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="binomial-distribution">
+<h2>Binomial Distribution<a class="headerlink" href="#binomial-distribution" title="Link to this heading">#</a></h2>
+<p>Now that we understand the Bernoulli distribution, we can extend it to model scenarios involving multiple independent trials. This brings us to the Binomial distribution.</p>
+<section id="what-it-models-number-of-successes-in-fixed-trials">
+<h3>What it Models: Number of Successes in Fixed Trials<a class="headerlink" href="#what-it-models-number-of-successes-in-fixed-trials" title="Link to this heading">#</a></h3>
+<p>The <strong>Binomial distribution</strong> models the number of “successes” in a fixed number of independent and identically distributed (i.i.d.) Bernoulli trials. It’s used when we are interested in how many times an event occurs out of a predetermined total number of attempts.</p>
+<p>For a random variable <span class="math notranslate nohighlight">\(X\)</span> to follow a Binomial distribution, the following conditions (often called the “BINOM” conditions) must be met:</p>
+<ol class="arabic simple">
+<li><p><strong>Binary outcomes</strong>: Each trial must have only two possible outcomes: “success” or “failure.”</p></li>
+<li><p><strong>Independence</strong>: Each trial is independent of the others. The outcome of one trial does not influence the outcome of any other trial.</p></li>
+<li><p><strong>Number of trials (<span class="math notranslate nohighlight">\(n\)</span>)</strong>: The experiment consists of a fixed number of trials, say <span class="math notranslate nohighlight">\(n\)</span>. This is a dimensionless count, <span class="math notranslate nohighlight">\(n \in \{1, 2, 3, \ldots\}\)</span>.</p></li>
+<li><p><strong>Same probability (<span class="math notranslate nohighlight">\(p\)</span>)</strong>: The probability of success <span class="math notranslate nohighlight">\(p\)</span> is the same for every trial. This is a dimensionless quantity, <span class="math notranslate nohighlight">\(0 \le p \le 1\)</span>.</p></li>
+</ol>
+<p>If any of these conditions are violated, the Binomial distribution may not be an appropriate model. For example, if trials are not independent (e.g., drawing cards without replacement), we might need a Hypergeometric distribution. If the probability of success changes over trials, a more complex model is needed.</p>
+<p>Examples include:</p>
+<ul class="simple">
+<li><p>The number of heads in 10 coin flips.</p></li>
+<li><p>The number of defective items in a sample of 50 products.</p></li>
+<li><p>The number of patients who recover from a disease in a group of 20, given a certain treatment.</p></li>
+<li><p>The number of clicks an ad receives out of 100 impressions.</p></li>
+</ul>
+</section>
+<section id="importance-of-i-i-d-trials-and-common-violations">
+<h3>Importance of i.i.d. Trials and Common Violations<a class="headerlink" href="#importance-of-i-i-d-trials-and-common-violations" title="Link to this heading">#</a></h3>
+<p>The assumption of <strong>independent and identically distributed (i.i.d.)</strong> Bernoulli trials is paramount for the Binomial distribution.</p>
+<ul class="simple">
+<li><p><strong>Violation of Independence</strong>: If trials are not independent, such as drawing cards without replacement from a small deck, the probability of success changes with each draw. In such cases, the <strong>Hypergeometric distribution</strong> would be the correct model, as it accounts for sampling without replacement from a finite population.</p></li>
+<li><p><strong>Violation of Identical Distribution (Constant <span class="math notranslate nohighlight">\(p\)</span>)</strong>: If the probability of success <span class="math notranslate nohighlight">\(p\)</span> changes from trial to trial (e.g., due to learning, fatigue, or external factors), the Binomial distribution is no longer appropriate. More advanced models, such as those incorporating trial-specific probabilities, would be necessary. Recognizing these violations through exploratory data analysis is a critical data science skill.</p></li>
+</ul>
+</section>
+<section id="relationship-to-bernoulli-distribution">
+<h3>Relationship to Bernoulli Distribution<a class="headerlink" href="#relationship-to-bernoulli-distribution" title="Link to this heading">#</a></h3>
+<p>A Binomial random variable <span class="math notranslate nohighlight">\(X\)</span> can be thought of as the sum of <span class="math notranslate nohighlight">\(n\)</span> independent and identically distributed (i.i.d.) Bernoulli random variables. If <span class="math notranslate nohighlight">\(X_1, X_2, \ldots, X_n\)</span> are <span class="math notranslate nohighlight">\(n\)</span> independent Bernoulli(<span class="math notranslate nohighlight">\(p\)</span>) random variables, then their sum <span class="math notranslate nohighlight">\(X = X_1 + X_2 + \ldots + X_n\)</span> follows a Binomial distribution. This is a crucial conceptual link.</p>
+</section>
+<section id="parameters-of-the-binomial-distribution">
+<h3>Parameters of the Binomial Distribution<a class="headerlink" href="#parameters-of-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>A Binomial distribution is characterized by two parameters:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span>: The total number of independent trials. This is a dimensionless count, <span class="math notranslate nohighlight">\(n \in \{1, 2, 3, \ldots\}\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span>: The probability of “success” in a single trial. This is a dimensionless quantity, <span class="math notranslate nohighlight">\(0 \le p \le 1\)</span>.</p></li>
+</ul>
+<p>We denote a Binomial random variable as <span class="math notranslate nohighlight">\(X \sim \text{Binomial}(n, p)\)</span>. The possible values for <span class="math notranslate nohighlight">\(X\)</span> are <span class="math notranslate nohighlight">\(k \in \{0, 1, 2, \ldots, n\}\)</span>.</p>
+</section>
+<section id="probability-mass-function-of-a-binomial-distribution">
+<h3>Probability Mass Function of a Binomial Distribution<a class="headerlink" href="#probability-mass-function-of-a-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>The PMF of a Binomial random variable <span class="math notranslate nohighlight">\(X\)</span> gives the probability of observing exactly <span class="math notranslate nohighlight">\(k\)</span> successes in <span class="math notranslate nohighlight">\(n\)</span> trials.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a Binomial random variable with parameters <span class="math notranslate nohighlight">\(n\)</span> (number of trials) and <span class="math notranslate nohighlight">\(p\)</span> (probability of success on a single trial).</p>
+<p><strong>Derivation of the PMF</strong></p>
+<p>To derive the Binomial PMF, we need to consider two main components:</p>
+<ol class="arabic simple">
+<li><p>The probability of a <em>specific sequence</em> of <span class="math notranslate nohighlight">\(k\)</span> successes and <span class="math notranslate nohighlight">\(n-k\)</span> failures.</p></li>
+<li><p>The <em>number of different ways</em> to arrange <span class="math notranslate nohighlight">\(k\)</span> successes and <span class="math notranslate nohighlight">\(n-k\)</span> failures among the <span class="math notranslate nohighlight">\(n\)</span> trials.</p></li>
+</ol>
+<p>Let’s assume we want to find the probability of exactly <span class="math notranslate nohighlight">\(k\)</span> successes in <span class="math notranslate nohighlight">\(n\)</span> trials.
+The probability of success on any single trial is <span class="math notranslate nohighlight">\(p\)</span>, and the probability of failure is <span class="math notranslate nohighlight">\(1-p\)</span>.</p>
+<p><strong>Step 1: Probability of a specific sequence</strong></p>
+<p>Consider a specific sequence of outcomes, for example, <span class="math notranslate nohighlight">\(k\)</span> successes followed by <span class="math notranslate nohighlight">\(n-k\)</span> failures:</p>
+<div class="math notranslate nohighlight">
+\[ \underbrace{S, S, \dots, S}_{k \text{ successes}}, \underbrace{F, F, \dots, F}_{n-k \text{ failures}} \]</div>
+<p>Since the trials are independent, the probability of this specific sequence occurring is the product of the individual probabilities:</p>
+<div class="math notranslate nohighlight">
+\[P(\text{this specific sequence}) = p \cdot p \cdot \dots \cdot p \quad (k \text{ times}) \cdot (1-p) \cdot (1-p) \cdot \dots \cdot (1-p) \quad (n-k \text{ times})\]</div>
+<div class="math notranslate nohighlight">
+\[P(\text{this specific sequence}) = p^k (1-p)^{n-k}\]</div>
+<p><strong>Step 2: Number of different sequences</strong></p>
+<p>Now, we need to account for all possible arrangements of <span class="math notranslate nohighlight">\(k\)</span> successes and <span class="math notranslate nohighlight">\(n-k\)</span> failures. For example, if <span class="math notranslate nohighlight">\(n=3\)</span> and <span class="math notranslate nohighlight">\(k=1\)</span>, we could have SFF, FSF, or FFS. Each of these sequences has the same probability <span class="math notranslate nohighlight">\(p^1 (1-p)^2\)</span>.</p>
+<p>The number of ways to choose <span class="math notranslate nohighlight">\(k\)</span> positions for successes out of <span class="math notranslate nohighlight">\(n\)</span> available positions is given by the <strong>binomial coefficient</strong>, denoted as <span class="math notranslate nohighlight">\(\binom{n}{k}\)</span> (read as “n choose k”).</p>
+<div class="math notranslate nohighlight">
+\[\binom{n}{k} = \frac{n!}{k!(n-k)!}\]</div>
+<p>where <span class="math notranslate nohighlight">\(n!\)</span> (n factorial) is the product of all positive integers up to <span class="math notranslate nohighlight">\(n\)</span> (<span class="math notranslate nohighlight">\(n! = n \times (n-1) \times \dots \times 2 \times 1\)</span>), and <span class="math notranslate nohighlight">\(0! = 1\)</span>.</p>
+<p><strong>Step 3: Combining the components</strong></p>
+<p>To get the total probability of exactly <span class="math notranslate nohighlight">\(k\)</span> successes, we multiply the probability of one specific sequence (from Step 1) by the number of such sequences (from Step 2).</p>
+<p>So, the PMF for a Binomial random variable <span class="math notranslate nohighlight">\(X\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[p_X(k) = P(X=k) = \binom{n}{k} p^k (1-p)^{n-k} \quad \text{for } k \in \{0, 1, \dots, n\}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(n\)</span> is the number of trials (a dimensionless count) and <span class="math notranslate nohighlight">\(p\)</span> is the probability of success (dimensionless). The number of successes <span class="math notranslate nohighlight">\(k\)</span> is also a dimensionless count.</p>
+<p>Let’s check the properties of a valid PMF:</p>
+<ol class="arabic">
+<li><p><strong>Non-negativity</strong>: Since <span class="math notranslate nohighlight">\(n!\)</span>, <span class="math notranslate nohighlight">\(k!\)</span>, <span class="math notranslate nohighlight">\((n-k)!\)</span> are positive, and <span class="math notranslate nohighlight">\(p \in [0, 1]\)</span>, <span class="math notranslate nohighlight">\(p^k \ge 0\)</span> and <span class="math notranslate nohighlight">\((1-p)^{n-k} \ge 0\)</span>. Thus, <span class="math notranslate nohighlight">\(p_X(k) \ge 0\)</span> for all <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p><strong>Normalization</strong>: The sum of probabilities for all possible values of <span class="math notranslate nohighlight">\(k\)</span> must equal 1. This is a direct consequence of the <strong>Binomial Theorem</strong>:</p>
+<div class="math notranslate nohighlight">
+\[(a+b)^n = \sum_{k=0}^{n} \binom{n}{k} a^k b^{n-k}\]</div>
+<p>If we let <span class="math notranslate nohighlight">\(a=p\)</span> and <span class="math notranslate nohighlight">\(b=1-p\)</span>, then:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{k=0}^{n} P(X=k) = \sum_{k=0}^{n} \binom{n}{k} p^k (1-p)^{n-k} = (p + (1-p))^n = (1)^n = 1\]</div>
+<p>Both properties hold, confirming this is a valid PMF.</p>
+</li>
+</ol>
+</section>
+<section id="expected-value-mean">
+<h3>Expected Value (Mean)<a class="headerlink" href="#expected-value-mean" title="Link to this heading">#</a></h3>
+<p>The expected value of a Binomial random variable <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = np\]</div>
+<p>There are a few ways to derive this. We will use the property of <strong>linearity of expectation</strong>, which is a powerful tool in probability.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> be a Binomial random variable representing the number of successes in <span class="math notranslate nohighlight">\(n\)</span> trials. We can think of <span class="math notranslate nohighlight">\(X\)</span> as the sum of <span class="math notranslate nohighlight">\(n\)</span> independent Bernoulli random variables.</p>
+<p>Let <span class="math notranslate nohighlight">\(X_i\)</span> be a Bernoulli random variable for the <span class="math notranslate nohighlight">\(i\)</span>-th trial, where <span class="math notranslate nohighlight">\(X_i=1\)</span> if the <span class="math notranslate nohighlight">\(i\)</span>-th trial is a success and <span class="math notranslate nohighlight">\(X_i=0\)</span> if it’s a failure. Each <span class="math notranslate nohighlight">\(X_i\)</span> has a probability of success <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>Then, <span class="math notranslate nohighlight">\(X = X_1 + X_2 + \dots + X_n\)</span>.</p>
+<p>By linearity of expectation, the expected value of a sum of random variables is the sum of their individual expected values:</p>
+<div class="math notranslate nohighlight">
+\[E[X] = E[X_1 + X_2 + \dots + X_n]\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = E[X_1] + E[X_2] + \dots + E[X_n]\]</div>
+<p>We already know that the expected value of a single Bernoulli random variable <span class="math notranslate nohighlight">\(X_i\)</span> is <span class="math notranslate nohighlight">\(p\)</span>. So, <span class="math notranslate nohighlight">\(E[X_i] = p\)</span> for each <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[E[X] = p + p + \dots + p \quad (n \text{ times})\]</div>
+<div class="math notranslate nohighlight">
+\[E[X] = np\]</div>
+</section>
+<section id="variance">
+<h3>Variance<a class="headerlink" href="#variance" title="Link to this heading">#</a></h3>
+<p>The variance of a Binomial random variable <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = np(1-p)\]</div>
+<p>Since the <span class="math notranslate nohighlight">\(n\)</span> Bernoulli trials are <strong>independent</strong>, the variance of their sum is the sum of their individual variances. This is a crucial property for independent random variables.
+Let <span class="math notranslate nohighlight">\(X_i\)</span> be independent Bernoulli random variables as defined above. We know that <span class="math notranslate nohighlight">\(Var(X_i) = p(1-p)\)</span> for each <span class="math notranslate nohighlight">\(X_i\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Var(X) = Var(X_1 + X_2 + \dots + X_n)\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = Var(X_1) + Var(X_2) + \dots + Var(X_n) \quad (\text{due to independence})\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = p(1-p) + p(1-p) + \dots + p(1-p) \quad (n \text{ times})\]</div>
+<div class="math notranslate nohighlight">
+\[Var(X) = np(1-p)\]</div>
+<p>The variance <span class="math notranslate nohighlight">\(np(1-p)\)</span> is also dimensionless.</p>
+</section>
+<section id="id1">
+<h3>Standard Deviation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>The standard deviation for a Binomial random variable is:</p>
+<div class="math notranslate nohighlight">
+\[\sigma_X = \sqrt{np(1-p)}\]</div>
+</section>
+<section id="mode-of-the-binomial-distribution">
+<h3>Mode of the Binomial Distribution<a class="headerlink" href="#mode-of-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>The mode of the Binomial distribution, representing the most probable number of successes, is given by <span class="math notranslate nohighlight">\(\lfloor (n+1)p \rfloor\)</span>.</p>
+<p>The symbols <span class="math notranslate nohighlight">\(\lfloor\)</span> and <span class="math notranslate nohighlight">\(\rfloor\)</span> represent the <strong>floor function</strong> in mathematics.</p>
+<p>The <strong>floor function</strong> of a number <span class="math notranslate nohighlight">\(x\)</span>, denoted as <span class="math notranslate nohighlight">\(\lfloor x \rfloor\)</span>, is the largest integer that is less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. Essentially, it means you <strong>round the number down</strong> to the nearest whole number.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\((n+1)p\)</span> is an integer, then there are two modes for binomial distribution: <span class="math notranslate nohighlight">\((n+1)p - 1\)</span> and <span class="math notranslate nohighlight">\((n+1)p\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\((n+1)p\)</span> is not an integer, then there is a unique mode: <span class="math notranslate nohighlight">\(\lfloor (n+1)p \rfloor\)</span>.
+For example, if <span class="math notranslate nohighlight">\(n=10, p=0.5\)</span>, then <span class="math notranslate nohighlight">\((10+1)0.5 = 5.5\)</span>. The mode is <span class="math notranslate nohighlight">\(\lfloor 5.5 \rfloor = 5\)</span>.
+If <span class="math notranslate nohighlight">\(n=9, p=0.5\)</span>, then <span class="math notranslate nohighlight">\((9+1)0.5 = 5\)</span>. The modes are <span class="math notranslate nohighlight">\(5-1=4\)</span> and <span class="math notranslate nohighlight">\(5\)</span>.</p></li>
+</ul>
+<section id="derivation-of-the-mode">
+<h4>Derivation of the Mode<a class="headerlink" href="#derivation-of-the-mode" title="Link to this heading">#</a></h4>
+<p>To understand why this formula is true, we need to find the value of <span class="math notranslate nohighlight">\(k\)</span> that maximizes the probability mass function, <span class="math notranslate nohighlight">\(P(X=k)\)</span>. We can do this by examining the ratio of the probability of <span class="math notranslate nohighlight">\(k\)</span> successes to the probability of <span class="math notranslate nohighlight">\(k-1\)</span> successes, <span class="math notranslate nohighlight">\(\frac{P(X=k)}{P(X=k-1)}\)</span>.</p>
+<ul class="simple">
+<li><p>If this ratio is greater than 1, it means the probability is still increasing as we go from <span class="math notranslate nohighlight">\(k-1\)</span> to <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>If the ratio is less than 1, the probability is decreasing, meaning we have passed the peak.</p></li>
+<li><p>The mode is the value of <span class="math notranslate nohighlight">\(k\)</span> for which the probability stops increasing.</p></li>
+</ul>
+<p>Let’s set up the ratio:</p>
+<div class="math notranslate nohighlight">
+\[ \frac{P(X=k)}{P(X=k-1)} = \frac{\binom{n}{k} p^k (1-p)^{n-k}}{\binom{n}{k-1} p^{k-1} (1-p)^{n-k+1}} =\]</div>
+<p>Now, let’s expand the binomial coefficients and simplify:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{\frac{n!}{k!(n-k)!}}{\frac{n!}{(k-1)!(n-k+1)!}} \cdot \frac{p^k (1-p)^{n-k}}{p^{k-1} (1-p)^{n-k+1}} =\]</div>
+<div class="math notranslate nohighlight">
+\[ = \frac{(k-1)!(n-k+1)!}{k!(n-k)!} \cdot \frac{p}{1-p} =\]</div>
+<p>Using the property that <span class="math notranslate nohighlight">\(k! = k \cdot (k-1)!\)</span> and <span class="math notranslate nohighlight">\((n-k+1)! = (n-k+1) \cdot (n-k)!\)</span>, we get:</p>
+<div class="math notranslate nohighlight">
+\[ = \frac{n-k+1}{k} \cdot \frac{p}{1-p} \]</div>
+<p>We are looking for the value of <span class="math notranslate nohighlight">\(k\)</span> where the probability is greatest. This will occur when <span class="math notranslate nohighlight">\(P(X=k) \ge P(X=k-1)\)</span>, which is equivalent to our ratio being greater than or equal to 1.</p>
+<div class="math notranslate nohighlight">
+\[ \frac{n-k+1}{k} \cdot \frac{p}{1-p} \ge 1 \]</div>
+<p>Now, we solve for <span class="math notranslate nohighlight">\(k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ (n-k+1)p \ge k(1-p) \]</div>
+<div class="math notranslate nohighlight">
+\[ np - kp + p \ge k - kp \]</div>
+<div class="math notranslate nohighlight">
+\[ np + p \ge k \]</div>
+<div class="math notranslate nohighlight">
+\[ k \le (n+1)p \]</div>
+<p>This inequality tells us that the probability <span class="math notranslate nohighlight">\(P(X=k)\)</span> continues to increase as long as <span class="math notranslate nohighlight">\(k\)</span> is less than or equal to <span class="math notranslate nohighlight">\((n+1)p\)</span>. The value of <span class="math notranslate nohighlight">\(k\)</span> for which the probability is maximized (the mode) is therefore the largest integer that satisfies this condition. This is precisely the definition of the floor function.</p>
+<p>Thus, the mode is <span class="math notranslate nohighlight">\(\lfloor (n+1)p \rfloor\)</span>.</p>
+<p><strong>Handling the special cases:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>If <span class="math notranslate nohighlight">\((n+1)p\)</span> is not an integer</strong>: The inequality <span class="math notranslate nohighlight">\(k &lt; (n+1)p\)</span> holds strictly for the largest integer <span class="math notranslate nohighlight">\(k\)</span> below it, which is <span class="math notranslate nohighlight">\(\lfloor (n+1)p \rfloor\)</span>. For the next value, <span class="math notranslate nohighlight">\(k+1\)</span>, the inequality will be reversed, meaning the probability will start to decrease. This results in a single, unique mode.</p></li>
+<li><p><strong>If <span class="math notranslate nohighlight">\((n+1)p\)</span> is an integer</strong>: Let’s call this integer <span class="math notranslate nohighlight">\(m\)</span>. When <span class="math notranslate nohighlight">\(k = m\)</span>, the inequality becomes <span class="math notranslate nohighlight">\(m \le m\)</span>, which means our ratio is exactly equal to 1. This implies that <span class="math notranslate nohighlight">\(P(X=m) = P(X=m-1)\)</span>. Since the probability decreases for <span class="math notranslate nohighlight">\(k &gt; m\)</span>, the distribution has two adjacent values with the same highest probability. Therefore, the distribution is bimodal with modes at <span class="math notranslate nohighlight">\(m-1\)</span> and <span class="math notranslate nohighlight">\(m\)</span>, which is <span class="math notranslate nohighlight">\((n+1)p - 1\)</span> and <span class="math notranslate nohighlight">\((n+1)p\)</span>.</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="cumulative-distribution-function-of-a-binomial-distribution">
+<h2>Cumulative Distribution Function of a Binomial Distribution<a class="headerlink" href="#cumulative-distribution-function-of-a-binomial-distribution" title="Link to this heading">#</a></h2>
+<p>The CDF <span class="math notranslate nohighlight">\(F_X(x)\)</span> for a Binomial random variable <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span> is the sum of the probabilities for all possible values of successes up to <span class="math notranslate nohighlight">\(x\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[F_X(x) = P(X \le x) = \sum_{k=0}^{\lfloor x \rfloor} \binom{n}{k} p^k (1-p)^{n-k}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lfloor x \rfloor\)</span> is the floor function, representing the largest integer less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. Due to the summation, there is generally no simple closed-form expression for the Binomial CDF. It is typically calculated using tables or computational software. Like all CDFs for discrete variables, it is a step function.</p>
+</section>
+<section id="id2">
+<h2>Relationship to Bernoulli Distribution<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>It’s important to recognize that a Bernoulli distribution is a special case of a Binomial distribution. If we set the number of trials <span class="math notranslate nohighlight">\(n=1\)</span> in a Binomial distribution, we get the Bernoulli distribution.</p>
+<p>Let’s test this with the PMF:
+For <span class="math notranslate nohighlight">\(X \sim B(1, p)\)</span>, the PMF is <span class="math notranslate nohighlight">\(P(X=k) = \binom{1}{k} p^k (1-p)^{1-k}\)</span>.</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(k=0\)</span>: <span class="math notranslate nohighlight">\(P(X=0) = \binom{1}{0} p^0 (1-p)^{1-0} = 1 \cdot 1 \cdot (1-p) = 1-p\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(k=1\)</span>: <span class="math notranslate nohighlight">\(P(X=1) = \binom{1}{1} p^1 (1-p)^{1-1} = 1 \cdot p \cdot 1 = p\)</span>.
+This perfectly matches the Bernoulli PMF.</p></li>
+</ul>
+<p>Similarly, for <span class="math notranslate nohighlight">\(n=1\)</span>:</p>
+<ul class="simple">
+<li><p>Mean: <span class="math notranslate nohighlight">\(E[X] = np = 1 \cdot p = p\)</span>.</p></li>
+<li><p>Variance: <span class="math notranslate nohighlight">\(Var(X) = np(1-p) = 1 \cdot p(1-p) = p(1-p)\)</span>.
+These also match the Bernoulli distribution’s properties.</p></li>
+</ul>
+</section>
+<section id="example-manufacturing-defects">
+<h2>Example: Manufacturing Defects<a class="headerlink" href="#example-manufacturing-defects" title="Link to this heading">#</a></h2>
+<p>Suppose a factory produces electronic components, and historically, 5% of the components are defective. We randomly select a sample of 10 components from the production line. Let <span class="math notranslate nohighlight">\(X\)</span> be the number of defective components in our sample.</p>
+<p>This is a Binomial experiment:</p>
+<ol class="arabic simple">
+<li><p><strong>Fixed number of trials</strong>: <span class="math notranslate nohighlight">\(n=10\)</span> components.</p></li>
+<li><p><strong>Two outcomes</strong>: Each component is either defective (success) or not defective (failure). We define “defective” as success since that’s what we’re counting.</p></li>
+<li><p><strong>Constant probability of success</strong>: <span class="math notranslate nohighlight">\(p=0.05\)</span> (5% chance of being defective).</p></li>
+<li><p><strong>Independent trials</strong>: We assume the defect status of one component does not affect another.</p></li>
+</ol>
+<p>So, <span class="math notranslate nohighlight">\(X \sim B(10, 0.05)\)</span>.</p>
+<ul>
+<li><p><strong>What is the probability that exactly 2 components are defective?</strong></p>
+<p>We use the PMF with <span class="math notranslate nohighlight">\(k=2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[P(X=2) = \binom{10}{2} (0.05)^2 (1-0.05)^{10-2}\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=2) = \binom{10}{2} (0.05)^2 (0.95)^8\]</div>
+<p>First, calculate <span class="math notranslate nohighlight">\(\binom{10}{2} = \frac{10!}{2!(10-2)!} = \frac{10!}{2!8!} = \frac{10 \times 9}{2 \times 1} = 45\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[P(X=2) = 45 \times (0.0025) \times (0.95)^8 \approx 45 \times 0.0025 \times 0.66342\]</div>
+<div class="math notranslate nohighlight">
+\[P(X=2) \approx 0.0746\]</div>
+<p>So, there’s about a 7.46% chance of finding exactly 2 defective components in a sample of 10.</p>
+</li>
+<li><p><strong>What is the expected number of defective components?</strong></p>
+<div class="math notranslate nohighlight">
+\[E[X] = np = 10 \times 0.05 = 0.5\]</div>
+<p>On average, we expect to find 0.5 defective components in a sample of 10. Note that the expected value doesn’t have to be an integer.</p>
+</li>
+<li><p><strong>What is the variance and standard deviation of the number of defective components?</strong></p>
+<div class="math notranslate nohighlight">
+\[Var(X) = np(1-p) = 10 \times 0.05 \times (1-0.05) = 10 \times 0.05 \times 0.95 = 0.475\]</div>
+<div class="math notranslate nohighlight">
+\[\sigma_X = \sqrt{Var(X)} = \sqrt{0.475} \approx 0.689\]</div>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="further-insights-and-advanced-considerations">
+<h2>Further Insights and Advanced Considerations<a class="headerlink" href="#further-insights-and-advanced-considerations" title="Link to this heading">#</a></h2>
+<p>To deepen our understanding of the Binomial distribution, let’s explore its graphical representation, shape, and connections to other distributions.</p>
+<section id="shape-and-skewness-of-the-binomial-distribution">
+<h3>Shape and Skewness of the Binomial Distribution<a class="headerlink" href="#shape-and-skewness-of-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>The shape of the Binomial PMF, when plotted as a bar chart, is influenced significantly by the parameter <span class="math notranslate nohighlight">\(p\)</span>:</p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(p = 0.5\)</span>, the distribution is <strong>symmetrical</strong>. The PMF values are highest around the mean <span class="math notranslate nohighlight">\(np\)</span> and decrease symmetrically outwards.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(p &lt; 0.5\)</span>, the distribution is <strong>skewed to the right</strong> (positively skewed). This means the tail of the distribution extends further to the right, and more probability mass is concentrated at lower values of <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(p &gt; 0.5\)</span>, the distribution is <strong>skewed to the left</strong> (negatively skewed). This means the tail extends further to the left, and more probability mass is concentrated at higher values of <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+</ul>
+<p>As <span class="math notranslate nohighlight">\(n\)</span> (the number of trials) increases, the Binomial distribution generally becomes more bell-shaped and less skewed, regardless of <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Visualisation_mode_median_mean.svg" alt="Visualisation mode median mean.svg" height="500" width="291.6">
+<br>
+Fig. Geometric visualisation of the mode, median and mean of an arbitrary probability density function.
+Author: <a href="https://commons.wikimedia.org/wiki/User:Cmglee" title="User:Cmglee">Cmglee</a> - <span class="int-own-work" lang="en">Own work</span>, <a href="https://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=38969094">Link</a>. <a href="https://en.wikipedia.org/wiki/Mode_(statistics)">Wikipedia</a></p>
+</section>
+<section id="approximations-to-the-binomial-distribution">
+<h3>Approximations to the Binomial Distribution<a class="headerlink" href="#approximations-to-the-binomial-distribution" title="Link to this heading">#</a></h3>
+<p>For certain conditions, the Binomial distribution can be well-approximated by other, often simpler, distributions. These approximations are incredibly useful in practice, especially when exact Binomial calculations become computationally intensive for very large <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<section id="normal-approximation">
+<h4>Normal Approximation<a class="headerlink" href="#normal-approximation" title="Link to this heading">#</a></h4>
+<p>When <span class="math notranslate nohighlight">\(n\)</span> is large, and <span class="math notranslate nohighlight">\(p\)</span> is not too close to 0 or 1 (a common rule of thumb is <span class="math notranslate nohighlight">\(np \ge 5\)</span> and <span class="math notranslate nohighlight">\(n(1-p) \ge 5\)</span>), the Binomial distribution can be approximated by a <strong>Normal (Gaussian) distribution</strong> (we will learn this distribution in the following lectures).</p>
+<p>Specifically, if <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span>, then for large <span class="math notranslate nohighlight">\(n\)</span>, <span class="math notranslate nohighlight">\(X\)</span> can be approximated by <span class="math notranslate nohighlight">\(X \sim N(\mu, \sigma^2)\)</span> where <span class="math notranslate nohighlight">\(\mu = np\)</span> and <span class="math notranslate nohighlight">\(\sigma^2 = np(1-p)\)</span>.</p>
+<p>This approximation is widely used for hypothesis testing and confidence interval estimation when dealing with proportions from large samples. A “continuity correction” is often applied when using a continuous distribution (Normal) to approximate a discrete one (Binomial) for better accuracy.</p>
+</section>
+<section id="poisson-approximation">
+<h4>Poisson Approximation<a class="headerlink" href="#poisson-approximation" title="Link to this heading">#</a></h4>
+<p>When <span class="math notranslate nohighlight">\(n\)</span> is large and <span class="math notranslate nohighlight">\(p\)</span> is small (i.e., we are looking for a rare event in many trials), the Binomial distribution can be approximated by a <strong>Poisson distribution</strong> (we will learn this distribution in the following lectures).</p>
+<p>If <span class="math notranslate nohighlight">\(X \sim B(n, p)\)</span> and <span class="math notranslate nohighlight">\(n \to \infty\)</span> while <span class="math notranslate nohighlight">\(p \to 0\)</span> such that the product <span class="math notranslate nohighlight">\(np\)</span> remains constant, say <span class="math notranslate nohighlight">\(\lambda = np\)</span>, then <span class="math notranslate nohighlight">\(X\)</span> can be approximated by a Poisson distribution with parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<p>The Poisson distribution is typically used to model the number of events occurring in a fixed interval of time or space, and its connection to the Binomial distribution highlights how it arises from counting rare successes in numerous trials.</p>
+</section>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Concept</p></th>
+<th class="head text-left"><p>Bernoulli Distribution</p></th>
+<th class="head text-left"><p>Binomial Distribution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Description</strong></p></td>
+<td class="text-left"><p>Models a single trial with two possible outcomes: success (1) or failure (0).</p></td>
+<td class="text-left"><p>Models the number of successes in a fixed number, <span class="math notranslate nohighlight">\(n\)</span>, of independent Bernoulli trials.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Parameters</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(p\)</span> (probability of success)</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(n\)</span> (number of trials) and <span class="math notranslate nohighlight">\(p\)</span> (probability of success)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Probability Mass Function (PMF)</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P(X=x) = p^x (1-p)^{1-x}\)</span> for <span class="math notranslate nohighlight">\(x \in \{0, 1\}\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P(X=k) = \binom{n}{k} p^k (1-p)^{n-k}\)</span> for <span class="math notranslate nohighlight">\(k \in \{0, 1, ..., n\}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Expected Value (Mean)</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(E[X] = p\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(E[X] = np\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Variance</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(Var(X) = p(1-p)\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(Var(X) = np(1-p)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Standard Deviation</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sigma = \sqrt{p(1-p)}\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sigma = \sqrt{np(1-p)}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Mode</strong></p></td>
+<td class="text-left"><p>1 if <span class="math notranslate nohighlight">\(p &gt; 0.5\)</span>, 0 if <span class="math notranslate nohighlight">\(p &lt; 0.5\)</span>, and 0 and 1 if <span class="math notranslate nohighlight">\(p = 0.5\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\lfloor (n+1)p \rfloor\)</span>. If <span class="math notranslate nohighlight">\((n+1)p\)</span> is an integer, modes are at <span class="math notranslate nohighlight">\((n+1)p\)</span> and <span class="math notranslate nohighlight">\((n+1)p - 1\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Cumulative Distribution Function (CDF)</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X(x) = \begin{cases} 0 &amp; \text{for } x &lt; 0 \\ 1-p &amp; \text{for } 0 \le x &lt; 1 \\ 1 &amp; \text{for } x \ge 1 \end{cases}\)</span></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X(x) = \sum_{k=0}^{\lfloor x \rfloor} \binom{n}{k} p^k (1-p)^{n-k}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Relationship</strong></p></td>
+<td class="text-left"><p>The Bernoulli distribution is a special case of the Binomial distribution where <span class="math notranslate nohighlight">\(n=1\)</span>.</p></td>
+<td class="text-left"><p>A Binomial random variable is the sum of <span class="math notranslate nohighlight">\(n\)</span> independent and identically distributed Bernoulli random variables.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Shape</strong></p></td>
+<td class="text-left"><p>Asymmetric if <span class="math notranslate nohighlight">\(p \ne 0.5\)</span>, symmetric if <span class="math notranslate nohighlight">\(p=0.5\)</span>.</p></td>
+<td class="text-left"><p>Skewed right if <span class="math notranslate nohighlight">\(p &lt; 0.5\)</span>, skewed left if <span class="math notranslate nohighlight">\(p &gt; 0.5\)</span>, and symmetric if <span class="math notranslate nohighlight">\(p=0.5\)</span>. Becomes more bell-shaped as <span class="math notranslate nohighlight">\(n\)</span> increases.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Approximations</strong></p></td>
+<td class="text-left"><p>Not applicable.</p></td>
+<td class="text-left"><p><strong>Normal Approx.</strong>: When <span class="math notranslate nohighlight">\(n\)</span> is large and <span class="math notranslate nohighlight">\(p\)</span> is not near 0 or 1 (rule of thumb: <span class="math notranslate nohighlight">\(np \ge 5\)</span> and <span class="math notranslate nohighlight">\(n(1-p) \ge 5\)</span>).<br><strong>Poisson Approx.</strong>: When <span class="math notranslate nohighlight">\(n\)</span> is large and <span class="math notranslate nohighlight">\(p\)</span> is small, but <span class="math notranslate nohighlight">\(np = \lambda\)</span> is constant.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="additional-materials">
+<h2>Additional materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Binomial_coefficient">https://en.wikipedia.org/wiki/Binomial_coefficient</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mode_(statistics)">https://en.wikipedia.org/wiki/Mode_(statistics)</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Median">https://en.wikipedia.org/wiki/Median</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Standard_deviation">https://en.wikipedia.org/wiki/Standard_deviation</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Expected_value">https://en.wikipedia.org/wiki/Expected_value</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Probability_distribution">https://en.wikipedia.org/wiki/Probability_distribution</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Skewness">https://en.wikipedia.org/wiki/Skewness</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Bernoulli_distribution">https://en.wikipedia.org/wiki/Bernoulli_distribution</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Binomial_distribution">https://en.wikipedia.org/wiki/Binomial_distribution</a></p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./math"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pmf-pdf-cdf-code.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">PMF, PDF, CDF - Code Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="bernoulli-and-binomial-distributions-code.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Bernoulli Distribution and Binomial Distributions - Code Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bernoulli-distribution">Bernoulli Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-of-a-bernoulli-distribution">Probability Mass Function of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean-of-a-bernoulli-distribution">Expected Value (Mean) of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-of-a-bernoulli-distribution">Variance of a Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-deviation">Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-bernoulli-distribution">Mode of the Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-cdf">Cumulative Distribution Function (CDF)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-it-models-number-of-successes-in-fixed-trials">What it Models: Number of Successes in Fixed Trials</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#importance-of-i-i-d-trials-and-common-violations">Importance of i.i.d. Trials and Common Violations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relationship-to-bernoulli-distribution">Relationship to Bernoulli Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-of-the-binomial-distribution">Parameters of the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#probability-mass-function-of-a-binomial-distribution">Probability Mass Function of a Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-value-mean">Expected Value (Mean)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Standard Deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mode-of-the-binomial-distribution">Mode of the Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#derivation-of-the-mode">Derivation of the Mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-distribution-function-of-a-binomial-distribution">Cumulative Distribution Function of a Binomial Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Relationship to Bernoulli Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-manufacturing-defects">Example: Manufacturing Defects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-insights-and-advanced-considerations">Further Insights and Advanced Considerations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-and-skewness-of-the-binomial-distribution">Shape and Skewness of the Binomial Distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approximations-to-the-binomial-distribution">Approximations to the Binomial Distribution</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-approximation">Normal Approximation</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-approximation">Poisson Approximation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-materials">Additional materials</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Vladyslav Yakovliev (Ukraine)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

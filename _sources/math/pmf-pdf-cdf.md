@@ -173,7 +173,7 @@ For a function $f_X(x)$ to be a valid PDF, it must satisfy the following propert
 
 ### Conceptual Derivation and Intuition
 
-While a formal "derivation" of a PDF in the physical sense is not typical, we can understand its mathematical definition and intuitive meaning. Formally, a PDF $f_X(x)$ for a continuous random variable $X$ is defined as the derivative of its Cumulative Distribution Function (CDF), which we will discuss next:
+While a formal "derivation" of a PDF in the physical sense is not typical, we can understand its mathematical definition and intuitive meaning. Formally, a PDF $f_X(x)$ for an absolutely continuous random variable $X$ is defined as the derivative of its Cumulative Distribution Function (CDF), which we will discuss next:
 
 $$f_X(x) = \frac{d}{dx} F_X(x)$$
 (This holds where $F_X(x)$ is differentiable). This means the PDF is the *rate of change* of the cumulative probability.
@@ -424,6 +424,25 @@ From an information theory perspective, a probability distribution quantifies th
 ---
 
 ## Summary
+
+| Concept | Description | Formula / Properties |
+| :--- | :--- | :--- |
+| **Probability Space** | The formal foundation for probability, consisting of three parts: the set of all possible outcomes (sample space), a set of events, and a probability measure. | 1. Sample Space $\Omega$ <br> 2. Set of Events $\mathcal{F}$ <br> 3. Probability Measure $P$ |
+| **Random Variable (RV)** | A function that maps outcomes from a sample space to real numbers. It quantifies the results of a random experiment. | $X: \Omega \to \mathbb{R}$ |
+| **Discrete RV** | A random variable whose possible values are countable (e.g., integers). | Examples: Number of heads, result of a die roll. |
+| **Continuous RV** | A random variable whose possible values are uncountable and lie within an interval. The probability of any single specific value is zero. | $P(X=x) = 0$ <br> Examples: Height, weight, time. |
+| **Probability Mass Function (PMF)** | For a **discrete** RV, it gives the probability that the variable takes on a specific value $x$. | $p_X(x) = P(X=x)$ |
+| PMF Properties | 1. **Non-negativity**: Probabilities cannot be negative. <br> 2. **Normalization**: The sum of all probabilities must be 1. | 1. $p_X(x) \ge 0$ <br> 2. $\sum_{x} p_X(x) = 1$ |
+| **Probability Density Function (PDF)** | For a **continuous** RV, it describes the relative likelihood of a value. The area under the curve over an interval gives the probability for that interval. | Probability is the integral: <br> $P(a \le X \le b) = \int_a^b f_X(x) dx$ |
+| PDF Properties | 1. **Non-negativity**: Density cannot be negative. <br> 2. **Normalization**: The total area under the curve must be 1. | 1. $f_X(x) \ge 0$ <br> 2. $\int_{-\infty}^{\infty} f_X(x) dx = 1$ |
+| **Cumulative Distribution Function (CDF)** | For **any** RV, it gives the probability that the variable takes a value less than or equal to $x$. It provides a unified way to describe a distribution. | $F_X(x) = P(X \le x)$ |
+| CDF Properties | 1. **Non-decreasing**: $x_1 \le x_2 \implies F_X(x_1) \le F_X(x_2)$ <br> 2. **Limits**: Approaches 0 at $-\infty$ and 1 at $+\infty$. <br> 3. **Right-continuous**: $\lim_{t \to x^+} F_X(t) = F_X(x)$ | 1. $\lim_{x \to -\infty} F_X(x) = 0$ <br> 2. $\lim_{x \to \infty} F_X(x) = 1$ |
+| **CDF from PMF (Discrete)** | The CDF is the sum of the PMF for all values up to $x$. The result is a step function. | $F_X(x) = \sum_{t \le x} p_X(t)$ |
+| **PMF from CDF (Discrete)** | The PMF is the size of the "jump" in the CDF at point $x$. | $p_X(x) = F_X(x) - \lim_{t \to x^-} F_X(t)$ |
+| **CDF from PDF (Continuous)** | The CDF is the integral of the PDF from $-\infty$ up to $x$. The result is a continuous function. | $F_X(x) = \int_{-\infty}^{x} f_X(t) dt$ |
+| **PDF from CDF (Continuous)**| The PDF is the derivative of the CDF. It is the rate of change of cumulative probability. | $f_X(x) = \frac{d}{dx} F_X(x)$ |
+| **Interval Probability using CDF** | The probability of an RV falling in an interval $(a, b]$ can be easily calculated from the CDF. | $P(a < X \le b) = F_X(b) - F_X(a)$ |
+| **Inverse CDF (Quantile Function)** | Given a probability $p$, it returns the value $x$ for which the cumulative probability is $p$. Used to find medians and percentiles. | $F_X^{-1}(p) = x \text{ such that } F_X(x) = p$ |
 
 ## Additional materials
 

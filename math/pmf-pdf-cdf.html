@@ -183,7 +183,7 @@
                 </a>
             </li>
         </ul>
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH 2</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">MATH</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="gradient-operator.html">Gradient</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gradient-directional-derivative.html">Directional Derivative</a></li>
@@ -191,6 +191,8 @@
 <li class="toctree-l1"><a class="reference internal" href="fourier-transform-01.html">Fourier Transform</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Random Variables, Probability Mass Function, Probability Density Function, Cumulative Distribution Function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pmf-pdf-cdf-code.html">PMF, PDF, CDF - Code Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions.html">Bernoulli Distribution and Binomial Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bernoulli-and-binomial-distributions-code.html">Bernoulli Distribution and Binomial Distributions - Code Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uncertainties-introduction.html">Experimental Errors and Significant Figures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="least-squares-regression.html">Least Squares Regression, RSS, RMSE, R-squared</a></li>
 <li class="toctree-l1"><a class="reference internal" href="least-squares-regression-code.html">Least Squares Regression - Code Examples</a></li>
@@ -625,7 +627,7 @@ $<span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} f_X(x) dx 
 </section>
 <section id="conceptual-derivation-and-intuition">
 <h3>Conceptual Derivation and Intuition<a class="headerlink" href="#conceptual-derivation-and-intuition" title="Link to this heading">#</a></h3>
-<p>While a formal “derivation” of a PDF in the physical sense is not typical, we can understand its mathematical definition and intuitive meaning. Formally, a PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> for a continuous random variable <span class="math notranslate nohighlight">\(X\)</span> is defined as the derivative of its Cumulative Distribution Function (CDF), which we will discuss next:</p>
+<p>While a formal “derivation” of a PDF in the physical sense is not typical, we can understand its mathematical definition and intuitive meaning. Formally, a PDF <span class="math notranslate nohighlight">\(f_X(x)\)</span> for an absolutely continuous random variable <span class="math notranslate nohighlight">\(X\)</span> is defined as the derivative of its Cumulative Distribution Function (CDF), which we will discuss next:</p>
 <div class="math notranslate nohighlight">
 \[f_X(x) = \frac{d}{dx} F_X(x)\]</div>
 <p>(This holds where <span class="math notranslate nohighlight">\(F_X(x)\)</span> is differentiable). This means the PDF is the <em>rate of change</em> of the cumulative probability.</p>
@@ -861,6 +863,81 @@ This is logical; as we include more possible values up to a higher <span class="
 <hr class="docutils" />
 <section id="summary">
 <h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Concept</p></th>
+<th class="head text-left"><p>Description</p></th>
+<th class="head text-left"><p>Formula / Properties</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Probability Space</strong></p></td>
+<td class="text-left"><p>The formal foundation for probability, consisting of three parts: the set of all possible outcomes (sample space), a set of events, and a probability measure.</p></td>
+<td class="text-left"><p>1. Sample Space <span class="math notranslate nohighlight">\(\Omega\)</span> <br> 2. Set of Events <span class="math notranslate nohighlight">\(\mathcal{F}\)</span> <br> 3. Probability Measure <span class="math notranslate nohighlight">\(P\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Random Variable (RV)</strong></p></td>
+<td class="text-left"><p>A function that maps outcomes from a sample space to real numbers. It quantifies the results of a random experiment.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(X: \Omega \to \mathbb{R}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Discrete RV</strong></p></td>
+<td class="text-left"><p>A random variable whose possible values are countable (e.g., integers).</p></td>
+<td class="text-left"><p>Examples: Number of heads, result of a die roll.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Continuous RV</strong></p></td>
+<td class="text-left"><p>A random variable whose possible values are uncountable and lie within an interval. The probability of any single specific value is zero.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P(X=x) = 0\)</span> <br> Examples: Height, weight, time.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Probability Mass Function (PMF)</strong></p></td>
+<td class="text-left"><p>For a <strong>discrete</strong> RV, it gives the probability that the variable takes on a specific value <span class="math notranslate nohighlight">\(x\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(p_X(x) = P(X=x)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>PMF Properties</p></td>
+<td class="text-left"><p>1. <strong>Non-negativity</strong>: Probabilities cannot be negative. <br> 2. <strong>Normalization</strong>: The sum of all probabilities must be 1.</p></td>
+<td class="text-left"><p>1. <span class="math notranslate nohighlight">\(p_X(x) \ge 0\)</span> <br> 2. <span class="math notranslate nohighlight">\(\sum_{x} p_X(x) = 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Probability Density Function (PDF)</strong></p></td>
+<td class="text-left"><p>For a <strong>continuous</strong> RV, it describes the relative likelihood of a value. The area under the curve over an interval gives the probability for that interval.</p></td>
+<td class="text-left"><p>Probability is the integral: <br> <span class="math notranslate nohighlight">\(P(a \le X \le b) = \int_a^b f_X(x) dx\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>PDF Properties</p></td>
+<td class="text-left"><p>1. <strong>Non-negativity</strong>: Density cannot be negative. <br> 2. <strong>Normalization</strong>: The total area under the curve must be 1.</p></td>
+<td class="text-left"><p>1. <span class="math notranslate nohighlight">\(f_X(x) \ge 0\)</span> <br> 2. <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} f_X(x) dx = 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Cumulative Distribution Function (CDF)</strong></p></td>
+<td class="text-left"><p>For <strong>any</strong> RV, it gives the probability that the variable takes a value less than or equal to <span class="math notranslate nohighlight">\(x\)</span>. It provides a unified way to describe a distribution.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X(x) = P(X \le x)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>CDF Properties</p></td>
+<td class="text-left"><p>1. <strong>Non-decreasing</strong>: <span class="math notranslate nohighlight">\(x_1 \le x_2 \implies F_X(x_1) \le F_X(x_2)\)</span> <br> 2. <strong>Limits</strong>: Approaches 0 at <span class="math notranslate nohighlight">\(-\infty\)</span> and 1 at <span class="math notranslate nohighlight">\(+\infty\)</span>. <br> 3. <strong>Right-continuous</strong>: <span class="math notranslate nohighlight">\(\lim_{t \to x^+} F_X(t) = F_X(x)\)</span></p></td>
+<td class="text-left"><p>1. <span class="math notranslate nohighlight">\(\lim_{x \to -\infty} F_X(x) = 0\)</span> <br> 2. <span class="math notranslate nohighlight">\(\lim_{x \to \infty} F_X(x) = 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>CDF from PMF (Discrete)</strong></p></td>
+<td class="text-left"><p>The CDF is the sum of the PMF for all values up to <span class="math notranslate nohighlight">\(x\)</span>. The result is a step function.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X(x) = \sum_{t \le x} p_X(t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>PMF from CDF (Discrete)</strong></p></td>
+<td class="text-left"><p>The PMF is the size of the “jump” in the CDF at point <span class="math notranslate nohighlight">\(x\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(p_X(x) = F_X(x) - \lim_{t \to x^-} F_X(t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>CDF from PDF (Continuous)</strong></p></td>
+<td class="text-left"><p>The CDF is the integral of the PDF from <span class="math notranslate nohighlight">\(-\infty\)</span> up to <span class="math notranslate nohighlight">\(x\)</span>. The result is a continuous function.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X(x) = \int_{-\infty}^{x} f_X(t) dt\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>PDF from CDF (Continuous)</strong></p></td>
+<td class="text-left"><p>The PDF is the derivative of the CDF. It is the rate of change of cumulative probability.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(f_X(x) = \frac{d}{dx} F_X(x)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Interval Probability using CDF</strong></p></td>
+<td class="text-left"><p>The probability of an RV falling in an interval <span class="math notranslate nohighlight">\((a, b]\)</span> can be easily calculated from the CDF.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P(a &lt; X \le b) = F_X(b) - F_X(a)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Inverse CDF (Quantile Function)</strong></p></td>
+<td class="text-left"><p>Given a probability <span class="math notranslate nohighlight">\(p\)</span>, it returns the value <span class="math notranslate nohighlight">\(x\)</span> for which the cumulative probability is <span class="math notranslate nohighlight">\(p\)</span>. Used to find medians and percentiles.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_X^{-1}(p) = x \text{ such that } F_X(x) = p\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="additional-materials">
 <h2>Additional materials<a class="headerlink" href="#additional-materials" title="Link to this heading">#</a></h2>
