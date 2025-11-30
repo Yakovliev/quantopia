@@ -17,6 +17,8 @@ parts:
       - file: math/fourier-transform-01
       - file: math/pmf-pdf-cdf
       - file: math/pmf-pdf-cdf-code
+      - file: math/bernoulli-and-binomial-distributions
+      # - file: math/poisson-distribution
       - file: math/uncertainties-introduction
       - file: math/least-squares-regression
       - file: math/least-squares-regression-code
